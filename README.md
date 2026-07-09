@@ -22,6 +22,9 @@ Quick data-flow check:
 python run_experiment.py --smoke
 ```
 
+Or open `experiment_notebook.ipynb` in Jupyter/VS Code and edit the parameters
+in Section 2.
+
 Outputs are written under `output_dir/run_name/`:
 
 - `trap_matrix.csv`
