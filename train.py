@@ -106,8 +106,9 @@ def run_experiment(config: ExperimentConfig) -> str:
 
         for client_id in active_this_round:
             was_trapped = client_id in selection.trapped_clients
+            was_checked = client_id in selection.checked_clients
             detection = None
-            if selection.phase != "warmup":
+            if selection.phase != "warmup" and was_checked:
                 detection = evaluate_update(deltas[client_id], reference, was_trapped, config)
                 penalties[client_id] += detection.penalty
                 if detection.flagged:
@@ -363,10 +364,10 @@ def build_reference(
     anchors: set[int],
     deltas: dict[int, torch.Tensor],
 ) -> torch.Tensor:
-    if phase == "coverage":
+    if phase in {"coverage", "suspicion_clean"}:
         vectors = [deltas[client_id] for client_id in trapped_clients]
-        return torch.stack(vectors).median(dim=0).values if vectors else _empty_reference(deltas)
-    if phase == "suspicion":
+        return torch.stack(vectors).mean(dim=0) if vectors else _empty_reference(deltas)
+    if phase == "suspicion_flagged":
         anchor_vectors = [deltas[client_id] for client_id in anchors if client_id in deltas]
         if anchor_vectors:
             return torch.stack(anchor_vectors).mean(dim=0)
