@@ -14,6 +14,7 @@ class DetectionResult:
     penalty: int
     cosine_similarity: float | None
     delta_norm: float
+    norm_z_score: float | None
     reason: str | None
 
 
@@ -28,6 +29,7 @@ def evaluate_update(
     reference: torch.Tensor,
     was_trapped: bool,
     config: ExperimentConfig,
+    norm_z_score: float | None = None,
 ) -> DetectionResult:
     norm = float(delta.norm().item())
     if norm < config.zero_update_epsilon:
@@ -36,18 +38,27 @@ def evaluate_update(
             penalty=config.penalty_zero_update,
             cosine_similarity=None,
             delta_norm=norm,
+            norm_z_score=norm_z_score,
             reason="zero_update",
         )
 
     similarity = cosine_similarity(delta, reference)
-    if similarity < config.similarity_threshold:
+    similarity_flagged = similarity > config.similarity_threshold
+    magnitude_flagged = (
+        config.use_magnitude_check
+        and norm_z_score is not None
+        and norm_z_score > config.magnitude_z_threshold
+    )
+    if magnitude_flagged:
         penalty = config.penalty_trap_flag if was_trapped else config.penalty_normal_flag
+        reason = "magnitude_outlier"
         return DetectionResult(
             flagged=True,
             penalty=penalty,
             cosine_similarity=similarity,
             delta_norm=norm,
-            reason="similarity",
+            norm_z_score=norm_z_score,
+            reason=reason,
         )
 
     return DetectionResult(
@@ -55,5 +66,6 @@ def evaluate_update(
         penalty=0,
         cosine_similarity=similarity,
         delta_norm=norm,
+        norm_z_score=norm_z_score,
         reason=None,
     )

@@ -24,7 +24,7 @@ class ExperimentConfig:
     trap_fraction: float = 0.10
     num_anchors: int = 3
     epsilon: float = 1.0
-    similarity_threshold: float = 0.5
+    similarity_threshold: float = 0.55
     penalty_zero_update: int = 4
     penalty_trap_flag: int = 2
     penalty_normal_flag: int = 1
@@ -50,6 +50,8 @@ class ExperimentConfig:
     fr4_noise_fraction: float = 0.1
     trap_noise_scale: float = 0.01
     trap_noise_floor: float = 1e-4
+    use_magnitude_check: bool = True
+    magnitude_z_threshold: float = 3.0
     min_partition_size: int = 1
     max_partition_attempts: int = 50
 

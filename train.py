@@ -100,6 +100,7 @@ def run_experiment(config: ExperimentConfig) -> str:
             deltas[client_id] = flatten_delta(returned_state, received_state)
             local_stats[client_id] = metrics
 
+        norm_z_scores = build_norm_z_scores(deltas, config.zero_update_epsilon)
         reference = build_reference(selection.phase, selection.trapped_clients, selection.anchors, deltas)
         new_flags = 0
         removed_after_round: list[int] = []
@@ -109,7 +110,13 @@ def run_experiment(config: ExperimentConfig) -> str:
             was_checked = client_id in selection.checked_clients
             detection = None
             if selection.phase != "warmup" and was_checked:
-                detection = evaluate_update(deltas[client_id], reference, was_trapped, config)
+                detection = evaluate_update(
+                    deltas[client_id],
+                    reference,
+                    was_trapped,
+                    config,
+                    norm_z_scores.get(client_id),
+                )
                 penalties[client_id] += detection.penalty
                 if detection.flagged:
                     times_flagged[client_id] += 1
@@ -135,8 +142,10 @@ def run_experiment(config: ExperimentConfig) -> str:
                     "local_accuracy": local_stats[client_id]["accuracy"],
                     "local_loss": local_stats[client_id]["loss"],
                     "cosine_similarity": detection.cosine_similarity if detection else "",
+                    "norm_z_score": detection.norm_z_score if detection else norm_z_scores.get(client_id, ""),
                     "delta_norm": detection.delta_norm if detection else float(deltas[client_id].norm().item()),
                     "flagged": int(detection.flagged) if detection else 0,
+                    "detection_reason": detection.reason if detection and detection.reason else "",
                     "penalty_added_this_round": penalty_added,
                 }
             )
@@ -165,8 +174,10 @@ def run_experiment(config: ExperimentConfig) -> str:
                     "local_accuracy": "",
                     "local_loss": "",
                     "cosine_similarity": "",
+                    "norm_z_score": "",
                     "delta_norm": "",
                     "flagged": 0,
+                    "detection_reason": "",
                     "penalty_added_this_round": 0,
                 }
             )
@@ -356,6 +367,26 @@ def evaluate_model(
         total_correct += int((logits.argmax(dim=1) == targets).sum().item())
         total_seen += batch_size
     return {"accuracy": total_correct / total_seen, "loss": total_loss / total_seen}
+
+
+def build_norm_z_scores(
+    deltas: dict[int, torch.Tensor], epsilon: float
+) -> dict[int, float]:
+    if not deltas:
+        return {}
+    client_ids = list(deltas)
+    norms = torch.tensor(
+        [float(deltas[client_id].norm().item()) for client_id in client_ids],
+        dtype=torch.float32,
+    )
+    median = norms.median()
+    mad = (norms - median).abs().median()
+    scale = (mad * 1.4826).clamp_min(epsilon)
+    z_scores = ((norms - median).abs() / scale).tolist()
+    return {
+        client_id: float(z_score)
+        for client_id, z_score in zip(client_ids, z_scores, strict=True)
+    }
 
 
 def build_reference(
