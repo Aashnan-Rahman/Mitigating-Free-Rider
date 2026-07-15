@@ -1,0 +1,12 @@
+attack_type,phase,client_type,cosine_count,mean_cosine,median_cosine,min_cosine,max_cosine,flags,removals
+FR2,coverage_sweep,free_rider,40,0.565196,0.520278,0.391833,0.758324,18,0
+FR2,coverage_sweep,honest,60,0.00861,0.00759,-0.016653,0.036919,60,0
+FR2,suspicion_flagged_subset,free_rider,18,0.013439,0.013808,0.006713,0.019657,18,2
+FR2,suspicion_flagged_subset,honest,55,-0.008692,-0.009929,-0.032281,0.023671,55,15
+FR2,suspicion_unflagged_subset,free_rider,44,0.419673,0.387145,0.323929,0.707141,27,2
+FR2,suspicion_unflagged_subset,honest,33,0.021119,0.024399,-0.008531,0.059877,33,13
+FR3,coverage_sweep,free_rider,40,0.939914,0.981048,0.749052,0.996336,0,0
+FR3,coverage_sweep,honest,60,0.277929,0.282704,-0.039035,0.518126,56,0
+FR3,suspicion_flagged_subset,honest,69,-0.12411,-0.133772,-0.15484,-0.008981,69,15
+FR3,suspicion_unflagged_subset,free_rider,85,0.991065,0.997826,0.946867,1.000005,0,0
+FR3,suspicion_unflagged_subset,honest,13,0.069702,0.061517,-0.109866,0.167569,13,7

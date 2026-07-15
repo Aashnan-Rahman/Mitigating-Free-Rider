@@ -1,0 +1,3 @@
+attack_type,dataset,distribution,clients,rounds,free_rider_percentage,free_riders,trap_fraction,similarity_threshold,removal_threshold,removed_free_riders,removed_honest_clients,missed_free_riders,precision,recall,f1_score,false_positive_removal_rate,final_accuracy,final_active_clients
+FR2,mnist,iid,100,40,0.4,40,0.1,0.5,4,4,28,36,0.125,0.1,0.111111,0.466667,0.1135,68
+FR3,mnist,iid,100,40,0.4,40,0.1,0.5,4,0,22,40,0.0,0.0,0.0,0.366667,0.3572,78
