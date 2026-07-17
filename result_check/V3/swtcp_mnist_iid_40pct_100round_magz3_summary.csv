@@ -1,0 +1,3 @@
+attack_type,rounds,free_riders,rule,removal_threshold,removed_free_riders,missed_free_riders,removed_honest_clients,precision,recall,f1,final_accuracy,honest_flag_events,free_rider_flag_events,missed_free_rider_ids
+FR2,100,40,norm_z > 3.0,10,40,0,0,1.0,1.0,1.0,0.1135,0,240,
+FR3,100,40,norm_z > 3.0,10,40,0,0,1.0,1.0,1.0,0.7796,3,240,
