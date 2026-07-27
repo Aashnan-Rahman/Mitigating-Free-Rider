@@ -20,6 +20,7 @@ class RunLogger:
         self.penalty_rows: list[dict[str, Any]] = []
         self.removal_rows: list[dict[str, Any]] = []
         self.summary_rows: list[dict[str, Any]] = []
+        self.threshold_rows: list[dict[str, Any]] = []
 
     def log_trap_matrix_row(
         self, round_idx: int, phase: str, trapped: set[int], num_clients: int
@@ -35,12 +36,20 @@ class RunLogger:
         self._write_csv("penalty_tracker.csv", self.penalty_rows)
         self._write_csv("removals.csv", self.removal_rows)
         self._write_csv("detection_summary.csv", self.summary_rows)
+        self._write_csv("thresholds.csv", self.threshold_rows)
         with (self.run_dir / "run_config.json").open("w", encoding="utf-8") as handle:
             json.dump(run_config, handle, indent=2, sort_keys=True)
 
     def _write_csv(self, filename: str, rows: list[dict[str, Any]]) -> None:
         path = self.run_dir / filename
-        fieldnames = list(rows[0].keys()) if rows else CSV_HEADERS.get(filename, [])
+        if rows:
+            fieldnames = []
+            for row in rows:
+                for key in row:
+                    if key not in fieldnames:
+                        fieldnames.append(key)
+        else:
+            fieldnames = CSV_HEADERS.get(filename, [])
         with path.open("w", newline="", encoding="utf-8") as handle:
             if not fieldnames:
                 return

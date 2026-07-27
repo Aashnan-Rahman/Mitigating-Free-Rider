@@ -33,6 +33,7 @@ class ExperimentConfig:
     reset_window_size: int = 10
     reset_window_count: int = 2
     zero_update_epsilon: float = 1e-6
+    fedavg_skip_penalty_threshold: int | None = None
     full_participation: bool = True
     seed: int = 42
     output_dir: str = "./results/"
@@ -52,6 +53,9 @@ class ExperimentConfig:
     trap_noise_floor: float = 1e-4
     use_magnitude_check: bool = True
     magnitude_z_threshold: float = 3.0
+    use_batch_mad_threshold: bool = False
+    mad_threshold_k: float = 3.0
+    same_trap_for_batch_sweeps: bool = True
     min_partition_size: int = 1
     max_partition_attempts: int = 50
 

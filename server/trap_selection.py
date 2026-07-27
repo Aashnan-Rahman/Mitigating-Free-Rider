@@ -21,11 +21,7 @@ class TrapSelector:
         self.rng = rng
         self.phase = "warmup"
         self.coverage_queue: list[list[int]] = []
-        self.suspicion_window_rounds = 0
-        self.suspicion_window_flags = 0
-        self.quiet_windows = 0
-        self.suspect_queue: list[int] = []
-        self.clean_queue: list[int] = []
+        self.suspicion_queue: list[tuple[list[int], list[int]]] = []
         self.next_suspicion_round_flagged = True
 
     def select(
@@ -40,53 +36,167 @@ class TrapSelector:
             return TrapSelection("warmup", set(), set(), set())
 
         if self.phase == "warmup":
-            self.start_coverage(active_clients)
+            self.start_cycle(active_clients, penalties, times_flagged)
 
-        if self.phase == "coverage":
-            group = self._next_coverage_group(active_clients)
-            if group:
-                clients = set(group)
-                return TrapSelection("coverage", clients, set(), clients)
-            self.phase = "suspicion"
+        selection = self._next_cycle_selection(active_clients, penalties, times_flagged)
+        if selection is not None:
+            return selection
 
-        phase, trapped, anchors, checked = self._select_suspicion(
-            active_clients, penalties, times_flagged
-        )
-        return TrapSelection(phase, trapped, anchors, checked)
+        self.start_cycle(active_clients, penalties, times_flagged)
+        selection = self._next_cycle_selection(active_clients, penalties, times_flagged)
+        if selection is not None:
+            return selection
+
+        return TrapSelection("warmup", set(), set(), set())
 
     def start_coverage(self, active_clients: list[int]) -> None:
-        self.phase = "coverage"
-        self.coverage_queue = self._build_coverage_queue(active_clients)
-        self.suspicion_window_rounds = 0
-        self.suspicion_window_flags = 0
-        self.quiet_windows = 0
-        self.suspect_queue = []
-        self.clean_queue = []
+        self.start_cycle(active_clients, {}, {})
+
+    def start_cycle(
+        self,
+        active_clients: list[int],
+        penalties: dict[int, int],
+        times_flagged: dict[int, int],
+    ) -> None:
+        self.phase = "cycle"
+        flagged_clients = [
+            client_id
+            for client_id in active_clients
+            if penalties.get(client_id, 0) > 0 or times_flagged.get(client_id, 0) > 0
+        ]
+        unflagged_clients = [
+            client_id
+            for client_id in active_clients
+            if penalties.get(client_id, 0) == 0 and times_flagged.get(client_id, 0) == 0
+        ]
+        self.suspicion_queue = self._build_suspicion_queue(
+            active_clients, flagged_clients, penalties, times_flagged
+        )
+        suspicion_anchors = {
+            client_id for _, anchors in self.suspicion_queue for client_id in anchors
+        }
+        coverage_clients = (
+            [
+                client_id
+                for client_id in unflagged_clients
+                if client_id not in suspicion_anchors
+            ]
+            if flagged_clients
+            else active_clients
+        )
+        self.coverage_queue = self._build_coverage_queue(
+            coverage_clients, self._trap_size(active_clients)
+        )
         self.next_suspicion_round_flagged = True
 
     def observe_round(self, phase: str, new_flags: int, active_clients: list[int]) -> None:
-        if not phase.startswith("suspicion"):
-            return
-        self.suspicion_window_rounds += 1
-        self.suspicion_window_flags += new_flags
-        if self.suspicion_window_rounds < self.config.reset_window_size:
-            return
+        return
 
-        if self.suspicion_window_flags <= self.config.reset_flag_threshold:
-            self.quiet_windows += 1
-        else:
-            self.quiet_windows = 0
-        self.suspicion_window_rounds = 0
-        self.suspicion_window_flags = 0
-
-        if self.quiet_windows >= self.config.reset_window_count:
-            self.start_coverage(active_clients)
-
-    def _build_coverage_queue(self, active_clients: list[int]) -> list[list[int]]:
+    def _build_coverage_queue(
+        self, active_clients: list[int], group_size: int | None = None
+    ) -> list[list[int]]:
         shuffled = active_clients[:]
         self.rng.shuffle(shuffled)
-        size = self._trap_size(active_clients)
+        size = group_size if group_size is not None else self._trap_size(active_clients)
         return [shuffled[start : start + size] for start in range(0, len(shuffled), size)]
+
+    def _build_suspicion_queue(
+        self,
+        active_clients: list[int],
+        flagged_clients: list[int],
+        penalties: dict[int, int],
+        times_flagged: dict[int, int],
+    ) -> list[tuple[list[int], list[int]]]:
+        if not flagged_clients:
+            return []
+        size = self._trap_size(active_clients)
+        anchor_count = min(self.config.num_anchors, size - 1)
+        suspect_count = max(1, size - anchor_count)
+        suspects = sorted(
+            flagged_clients,
+            key=lambda client_id: (
+                -penalties.get(client_id, 0),
+                -times_flagged.get(client_id, 0),
+                self.rng.random(),
+            ),
+        )
+        anchor_candidates = [
+            client_id for client_id in active_clients if client_id not in set(flagged_clients)
+        ]
+        if not anchor_candidates:
+            anchor_candidates = active_clients[:]
+        anchor_pool = self._anchor_sample(
+            anchor_candidates, penalties, times_flagged, len(anchor_candidates)
+        )
+        groups: list[tuple[list[int], list[int]]] = []
+        for start in range(0, len(suspects), suspect_count):
+            suspect_group = suspects[start : start + suspect_count]
+            anchors = [
+                client_id for client_id in anchor_pool if client_id not in set(suspect_group)
+            ][:anchor_count]
+            anchor_pool = [client_id for client_id in anchor_pool if client_id not in anchors]
+            if len(anchors) < anchor_count:
+                fallback = [
+                    client_id
+                    for client_id in active_clients
+                    if client_id not in set(suspect_group) | set(anchors)
+                ]
+                anchors.extend(
+                    self._anchor_sample(
+                        fallback, penalties, times_flagged, anchor_count - len(anchors)
+                    )
+                )
+            groups.append((suspect_group, anchors))
+        return groups
+
+    def _next_cycle_selection(
+        self,
+        active_clients: list[int],
+        penalties: dict[int, int],
+        times_flagged: dict[int, int],
+    ) -> TrapSelection | None:
+        use_suspicion = self.next_suspicion_round_flagged
+        if use_suspicion and not self.suspicion_queue:
+            use_suspicion = False
+        elif not use_suspicion and not self.coverage_queue:
+            use_suspicion = True
+        self.next_suspicion_round_flagged = not self.next_suspicion_round_flagged
+
+        if use_suspicion:
+            selection = self._next_suspicion_group(active_clients)
+            if selection is not None:
+                return selection
+            return self._next_coverage_selection(active_clients)
+        selection = self._next_coverage_selection(active_clients)
+        if selection is not None:
+            return selection
+        return self._next_suspicion_group(active_clients)
+
+    def _next_coverage_selection(self, active_clients: list[int]) -> TrapSelection | None:
+        group = self._next_coverage_group(active_clients)
+        if not group:
+            return None
+        clients = set(group)
+        return TrapSelection("coverage", clients, set(), clients)
+
+    def _next_suspicion_group(self, active_clients: list[int]) -> TrapSelection | None:
+        active = set(active_clients)
+        while self.suspicion_queue:
+            suspects, anchors = self.suspicion_queue.pop(0)
+            suspects = [client_id for client_id in suspects if client_id in active]
+            anchors = [client_id for client_id in anchors if client_id in active]
+            if not suspects:
+                continue
+            size = self._trap_size(active_clients)
+            trapped = set(suspects) | set(anchors)
+            if len(trapped) < size:
+                fill_from = [
+                    client_id for client_id in active_clients if client_id not in trapped
+                ]
+                self.rng.shuffle(fill_from)
+                trapped.update(fill_from[: size - len(trapped)])
+            return TrapSelection("suspicion_flagged", trapped, set(anchors), set(suspects))
+        return None
 
     def _next_coverage_group(self, active_clients: list[int]) -> list[int]:
         active = set(active_clients)
@@ -154,6 +264,8 @@ class TrapSelector:
         size = self._trap_size(active_clients)
         clean_group = self._next_clean_group(clean_clients, size)
         trapped = set(clean_group)
+        if self.config.use_batch_mad_threshold:
+            return "suspicion_clean", trapped, set(), trapped
         if len(trapped) < size:
             fill_from = [client_id for client_id in active_clients if client_id not in trapped]
             self.rng.shuffle(fill_from)
