@@ -73,6 +73,7 @@ def run_experiment(config: ExperimentConfig) -> str:
         local_stats: dict[int, dict[str, float]] = {}
 
         for client_id in active_this_round:
+            client_start = time.perf_counter()
             was_trapped = client_id in selection.trapped_clients
             received_state = trap_state if was_trapped else base_state
             if was_trapped:
@@ -98,6 +99,13 @@ def run_experiment(config: ExperimentConfig) -> str:
 
             returned_states[client_id] = returned_state
             deltas[client_id] = flatten_delta(returned_state, received_state)
+            metrics["num_local_samples"] = len(client_loaders[client_id].dataset)
+            metrics["local_steps"] = (
+                config.local_epochs * len(client_loaders[client_id])
+                if client_id not in free_riders
+                else 0
+            )
+            metrics["local_compute_seconds"] = time.perf_counter() - client_start
             local_stats[client_id] = metrics
 
         reference = build_reference(selection.phase, selection.trapped_clients, selection.anchors, deltas)
@@ -109,10 +117,14 @@ def run_experiment(config: ExperimentConfig) -> str:
             detection = None
             if selection.phase != "warmup":
                 detection = evaluate_update(deltas[client_id], reference, was_trapped, config)
-                penalties[client_id] += detection.penalty
                 if detection.flagged:
+                    penalties[client_id] += detection.penalty
                     times_flagged[client_id] += 1
                     new_flags += 1
+                elif config.penalty_decay:
+                    decay = min(config.penalty_decay, penalties[client_id])
+                    penalties[client_id] -= decay
+                    detection.penalty = -decay
                 if penalties[client_id] > config.removal_threshold:
                     removed_after_round.append(client_id)
                     logger.removal_rows.append(
@@ -133,6 +145,9 @@ def run_experiment(config: ExperimentConfig) -> str:
                     "was_trapped": int(was_trapped),
                     "local_accuracy": local_stats[client_id]["accuracy"],
                     "local_loss": local_stats[client_id]["loss"],
+                    "num_local_samples": local_stats[client_id]["num_local_samples"],
+                    "local_steps": local_stats[client_id]["local_steps"],
+                    "local_compute_seconds": local_stats[client_id]["local_compute_seconds"],
                     "cosine_similarity": detection.cosine_similarity if detection else "",
                     "delta_norm": detection.delta_norm if detection else float(deltas[client_id].norm().item()),
                     "flagged": int(detection.flagged) if detection else 0,
@@ -163,6 +178,9 @@ def run_experiment(config: ExperimentConfig) -> str:
                     "was_trapped": 0,
                     "local_accuracy": "",
                     "local_loss": "",
+                    "num_local_samples": "",
+                    "local_steps": "",
+                    "local_compute_seconds": "",
                     "cosine_similarity": "",
                     "delta_norm": "",
                     "flagged": 0,
@@ -202,6 +220,23 @@ def run_experiment(config: ExperimentConfig) -> str:
                 "round_time_seconds": time.perf_counter() - round_start,
             }
         )
+
+        if config.save_checkpoints and round_idx % config.checkpoint_every == 0:
+            checkpoint = {
+                "round": round_idx,
+                "model_state": clone_state(model.state_dict()),
+                "global_state": clone_state(global_state),
+                "active_clients": active_clients[:],
+                "penalties": penalties.copy(),
+                "times_flagged": times_flagged.copy(),
+                "times_trapped": times_trapped.copy(),
+                "free_riders_ground_truth": sorted(free_riders),
+                "global_metrics": logger.global_rows[-1],
+                "config": config.to_dict(),
+            }
+            torch.save(checkpoint, logger.run_dir / f"checkpoint_round_{round_idx:04d}.pt")
+            torch.save(checkpoint, logger.run_dir / "latest_checkpoint.pt")
+        logger.write_progress(round_idx, config.to_dict())
 
         if not active_clients:
             break

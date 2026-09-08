@@ -52,6 +52,9 @@ class ExperimentConfig:
     trap_noise_floor: float = 1e-4
     min_partition_size: int = 1
     max_partition_attempts: int = 50
+    penalty_decay: int = 0
+    save_checkpoints: bool = True
+    checkpoint_every: int = 1
 
     @classmethod
     def from_dict(cls, values: dict[str, Any]) -> "ExperimentConfig":
@@ -105,3 +108,7 @@ class ExperimentConfig:
             raise ValueError("trap_fraction must be in (0, 1].")
         if self.num_anchors < 0:
             raise ValueError("num_anchors must be non-negative.")
+        if self.penalty_decay < 0:
+            raise ValueError("penalty_decay must be non-negative.")
+        if self.checkpoint_every <= 0:
+            raise ValueError("checkpoint_every must be positive.")

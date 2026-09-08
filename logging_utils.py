@@ -38,6 +38,17 @@ class RunLogger:
         with (self.run_dir / "run_config.json").open("w", encoding="utf-8") as handle:
             json.dump(run_config, handle, indent=2, sort_keys=True)
 
+    def write_progress(self, round_idx: int, run_config: dict[str, Any]) -> None:
+        self.write_all({**run_config, "latest_round": round_idx})
+        latest = {
+            "run_name": self.run_name,
+            "latest_round": round_idx,
+            "latest_global_metrics": self.global_rows[-1] if self.global_rows else {},
+            "files": sorted(path.name for path in self.run_dir.iterdir()),
+        }
+        with (self.run_dir / "latest_results.json").open("w", encoding="utf-8") as handle:
+            json.dump(latest, handle, indent=2, sort_keys=True)
+
     def _write_csv(self, filename: str, rows: list[dict[str, Any]]) -> None:
         path = self.run_dir / filename
         fieldnames = list(rows[0].keys()) if rows else CSV_HEADERS.get(filename, [])
