@@ -43,15 +43,19 @@ elsewhere.
 | `trap_fraction` (rho) | `0.10` | Fraction of *currently active* clients trapped per round, in both phases |
 | `num_anchors` (a_h) | `3` | Confirmed-honest clients placed in every Suspicion-Weighted trap subset |
 | `epsilon` | `1.0` | Baseline sampling weight so a clean client (P=0) still has non-zero trap probability |
-| `similarity_threshold` (tau) | `0.5` | Fixed cosine similarity threshold. Below this = flagged |
+| `similarity_threshold` (tau) | `0.55` | Retained for cosine-similarity reporting; cosine is currently diagnostic and does not flag clients |
 | `penalty_zero_update` | `4` | Penalty for near-zero delta (static replay / no training) |
-| `penalty_trap_flag` | `2` | Penalty for failing similarity check while trapped |
-| `penalty_normal_flag` | `1` | Penalty for failing similarity check while not trapped |
+| `penalty_trap_flag` | `2` | Penalty for a magnitude-based flag while trapped |
+| `penalty_normal_flag` | `1` | Penalty for a magnitude-based flag while not trapped |
 | `removal_threshold_pct` | `0.10` | `P_max = ceil(removal_threshold_pct * num_rounds)` — scales automatically with T |
 | `reset_flag_threshold` | `1` | If new flags in a 10-round window ≤ this, for `reset_window_count` consecutive windows, trigger a fresh Coverage Sweep |
 | `reset_window_size` | `10` | Size (in rounds) of each monitoring window used for the reset trigger |
 | `reset_window_count` | `2` | Consecutive quiet windows required to trigger reset |
 | `zero_update_epsilon` | `1e-6` | Numerical tolerance for "delta ≈ 0" check (L2 norm below this counts as zero) |
+| `use_magnitude_check` | `true` | Enable robust update-norm outlier detection |
+| `magnitude_z_threshold` | `3.0` | Robust z-score threshold for update-norm outliers |
+| `use_batch_mad_threshold` | `false` | Use a batch MAD norm threshold for supported sweep phases |
+| `mad_threshold_k` | `3.0` | Multiplier applied to MAD when building a batch norm threshold |
 | `full_participation` | `true` | All active clients train every round (no dropout simulated) — see Section 3.1 |
 | `seed` | `42` | Global random seed |
 | `output_dir` | `"./results/"` | Where all CSV/log outputs are written |
@@ -72,39 +76,33 @@ the trap subset `T_t` (Section 3.3), which is drawn from the full active pool.
 Each active client in round `t` is either:
 - **Trapped** (`i ∈ T_t`): receives the corrupted/trap model, its update is
   **excluded from aggregation** regardless of outcome, but is still checked for flags.
-- **Normal**: receives the true global model, trains normally, its update **is
-  aggregated** (unless it fails a check — Section 5).
+- **Normal**: receives the true global model, trains normally, and its update is
+  aggregated unless `fedavg_skip_penalty_threshold` is configured and its
+  cumulative penalty exceeds that threshold.
 
 ### 3.3 Phases
 
 **Phase 0 — Warm-Up (rounds 1 to `warmup_rounds`)**
 No trapping. Standard FedAvg over all active clients. No penalties assigned.
 
-**Phase 1 — Coverage Sweep (immediately after warm-up, and re-triggered later)**
+**Phase 1 — Coverage Sweep (immediately after warm-up)**
 - Partition all currently active clients into consecutive groups of size
   `m = ceil(rho * |active_clients|)`.
 - Trap exactly one group per round until every active client has been trapped
   exactly once in this sweep.
-- Reference vector for the similarity check in this phase = **coordinate-wise
-  median** of the trapped group's deltas (robust statistic — composition is not
-  yet known to be trustworthy).
+- The trapped group's mean delta is used as the diagnostic reference vector.
 - When the queue of groups is exhausted, transition to Phase 2.
 
-**Phase 2 — Suspicion-Weighted Sweep (ongoing, until reset trigger)**
-- Each round, build the trap subset `T_t` of size `m = ceil(rho * |active_clients|)`:
-  1. Draw `m - num_anchors` clients **without replacement**, weighted by
-     `P_i + epsilon` (so higher-penalty clients are more likely, but every client
-     has non-zero probability).
-  2. Draw `num_anchors` clients from those with the **lowest current `P_i`**
-     (ties broken randomly; prefer never-flagged clients).
-  3. `T_t` = union of the two draws.
-- Reference vector for the similarity check in this phase = **mean of the
-  `num_anchors` anchors' deltas** (not the median — anchors are known-honest, no
-  need for a robust statistic here).
-- Track `F_k`: number of new flags issued in each `reset_window_size`-round
-  window. If `F_k ≤ reset_flag_threshold` for `reset_window_count` consecutive
-  windows, transition back to **Phase 1** (fresh Coverage Sweep over the current
-  active population).
+**Phase 2 — Suspicion-Flagged Sweep (ongoing)**
+- Each round, build a trap subset `T_t` of size
+  `m = ceil(rho * |active_clients|)`.
+- Previously penalized or flagged clients are ordered by cumulative penalty and
+  flag count, then grouped as suspects.
+- Up to `num_anchors` clients without prior penalties are added as anchors. The
+  remaining slots are filled from active clients if necessary.
+- The anchor mean is used as the diagnostic reference vector when anchors are
+  available.
+- The implementation alternates suspicion-flagged groups with coverage groups.
 
 ---
 
@@ -133,18 +131,25 @@ used only for evaluation metrics, never exposed to the detection logic).
 
 ---
 
-## 5. Per-Round Detection Logic (applies to every client, trapped or not)
+## 5. Per-Round Detection Logic (applies to checked clients)
 
 1. **Zero-update check:** if `||delta|| < zero_update_epsilon`, add
-   `penalty_zero_update` to that client's `P_i`. Skip similarity check.
-2. **Cosine similarity check** (only if step 1 did not trigger): compute
-   `sim(delta_i, reference_vector)`. If `sim < similarity_threshold`:
-   - if client was trapped this round: add `penalty_trap_flag`
-   - else: add `penalty_normal_flag`
-3. **Removal check:** if `P_i > P_max` (where
+  `penalty_zero_update` to that client's `P_i`. Skip the cosine diagnostic.
+2. **Update-magnitude check** (only if step 1 did not trigger): compute a
+  robust z-score for each client's delta norm across active clients. If the
+  score exceeds `magnitude_z_threshold`, flag the client:
+  - if client was trapped this round: add `penalty_trap_flag`
+  - otherwise: add `penalty_normal_flag`
+3. **Cosine diagnostic:** compute cosine similarity against the phase reference
+  and write it to client metrics. It is currently not used to flag or
+  penalize a client.
+4. **Optional batch MAD check:** when `use_batch_mad_threshold` is enabled,
+  supported sweep batches use a median-plus-MAD norm threshold instead of the
+  active-client robust z-score.
+5. **Removal check:** if `P_i >= P_max` (where
    `P_max = ceil(removal_threshold_pct * num_rounds)`), remove client from the
    active pool permanently starting next round. Log the removal event.
-4. **Aggregation:** global model for round `t+1` = mean of deltas from all
+6. **Aggregation:** global model for round `t+1` = mean of deltas from all
    **non-trapped** clients in round `t` (trapped clients' updates are never
    aggregated, regardless of whether they were flagged).
 
@@ -213,8 +218,8 @@ project/
 ├── clients/
 │   └── attacks.py         # FR1–FR4 implementations, applied per client per round
 ├── server/
-│   ├── trap_selection.py  # Phase 0/1/2 logic, coverage queue, weighted sampling
-│   ├── detection.py       # zero-update check, cosine similarity, penalty logic
+│   ├── trap_selection.py  # Warmup, coverage, and suspicion-flagged trap queues
+│   ├── detection.py       # zero-update and norm-outlier checks, penalty logic
 │   └── aggregation.py     # FedAvg over non-trapped clients
 ├── train.py               # main training loop orchestrating the above
 ├── logging_utils.py       # CSV writers for Section 8 outputs
@@ -228,9 +233,9 @@ project/
 - Detection never causes the whole round to be discarded — only trapped clients'
   updates are excluded; all other active clients' updates aggregate normally
   every round.
-- The reference vector computation method differs by phase (median in Coverage
-  Sweep, anchor-mean in Suspicion-Weighted) — this is intentional, not an
-  inconsistency, see Section 3.3.
+- Reference vectors differ by phase: trapped-group mean during Coverage and
+  anchor mean during Suspicion-Flagged. Cosine similarity is logged as a
+  diagnostic and is not currently used for flagging.
 - `P_max` scales automatically with `num_rounds` via `removal_threshold_pct`, so
   switching between `num_rounds=100` and `num_rounds=200` does not require manually
   recalculating the removal threshold.
