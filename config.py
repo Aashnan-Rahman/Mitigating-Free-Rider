@@ -33,6 +33,14 @@ class ExperimentConfig:
     reset_window_size: int = 10
     reset_window_count: int = 2
     zero_update_epsilon: float = 1e-6
+    use_batch_mad_threshold: bool = True
+    mad_threshold_k: float = 3.0
+    mad_floor: float = 0.05
+    magnitude_z_threshold: float = 3.0
+    use_loss_check: bool = False
+    loss_check_rounds: int = 6
+    loss_percentile: float = 75.0
+    loss_requires_small_norm: bool = True
     full_participation: bool = True
     seed: int = 42
     output_dir: str = "./results/"
@@ -52,7 +60,7 @@ class ExperimentConfig:
     trap_noise_floor: float = 1e-4
     min_partition_size: int = 1
     max_partition_attempts: int = 50
-    penalty_decay: int = 0
+    penalty_decay: int = 1
     save_checkpoints: bool = True
     checkpoint_every: int = 1
 
@@ -110,5 +118,9 @@ class ExperimentConfig:
             raise ValueError("num_anchors must be non-negative.")
         if self.penalty_decay < 0:
             raise ValueError("penalty_decay must be non-negative.")
+        if self.mad_threshold_k <= 0 or self.mad_floor < 0:
+            raise ValueError("mad_threshold_k must be positive and mad_floor non-negative.")
+        if self.loss_check_rounds < 0 or not 0.0 < self.loss_percentile < 100.0:
+            raise ValueError("loss_check_rounds must be non-negative and loss_percentile must be in (0, 100).")
         if self.checkpoint_every <= 0:
             raise ValueError("checkpoint_every must be positive.")

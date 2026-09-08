@@ -5,8 +5,8 @@ This checklist is ordered so each stage is run only after the previous stage is 
 ## Before experiments
 
 - [ ] Confirm the dataset cache is available and record the PyTorch/device versions.
-- [ ] Confirm the detector rule used by the current code: cosine similarity below `similarity_threshold` is flagged.
-- [ ] Decide the removal policy for reporting. The specification says `P_i > P_max`; the current code removes at `P_i > P_max`.
+- [ ] Confirm the detector rule used by the current code: batch MAD flags unusually large norms; cosine is diagnostic only.
+- [ ] Decide the removal policy for reporting. The specification says `P_i >= P_max`; the current code removes at `P_i > P_max`.
 - [ ] Keep `save_checkpoints=true` and `checkpoint_every=1` for development runs. Use `checkpoint_every=5` for long final runs if disk space is limited.
 
 ## Stage 0: Pipeline validation

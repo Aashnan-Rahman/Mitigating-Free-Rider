@@ -17,7 +17,7 @@ from data.partition import partition_dataset
 from logging_utils import RunLogger
 from models.architectures import get_model
 from server.aggregation import clone_state, fedavg_delta, make_trap_state
-from server.detection import evaluate_update
+from server.detection import evaluate_updates
 from server.trap_selection import TrapSelector
 
 
@@ -112,11 +112,22 @@ def run_experiment(config: ExperimentConfig) -> str:
         new_flags = 0
         removed_after_round: list[int] = []
 
+        detection_results = {}
+        if selection.phase != "warmup":
+            detection_results = evaluate_updates(
+                deltas,
+                {client_id: local_stats[client_id]["loss"] for client_id in active_this_round},
+                reference,
+                selection.trapped_clients,
+                round_idx,
+                config,
+            )
+
         for client_id in active_this_round:
             was_trapped = client_id in selection.trapped_clients
             detection = None
             if selection.phase != "warmup":
-                detection = evaluate_update(deltas[client_id], reference, was_trapped, config)
+                detection = detection_results[client_id]
                 if detection.flagged:
                     penalties[client_id] += detection.penalty
                     times_flagged[client_id] += 1
@@ -125,7 +136,7 @@ def run_experiment(config: ExperimentConfig) -> str:
                     decay = min(config.penalty_decay, penalties[client_id])
                     penalties[client_id] -= decay
                     detection.penalty = -decay
-                if penalties[client_id] > config.removal_threshold:
+                if penalties[client_id] >= config.removal_threshold:
                     removed_after_round.append(client_id)
                     logger.removal_rows.append(
                         {

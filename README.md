@@ -44,4 +44,7 @@ ground-truth free-rider IDs, and that round's global metrics. See
 
 The trap model perturbation is configurable through `trap_noise_scale` and
 `trap_noise_floor`; all detection and attack hyperparameters are centralized in
-`config.py`.
+`config.py`. Batch MAD detection uses a `mad_floor` to prevent false positives
+when suspicion groups are small. Penalty decay defaults to one point per passed
+check. An optional early-round loss detector can be enabled with
+`use_loss_check=true`; it is limited to the early FR3 loss-separation window.

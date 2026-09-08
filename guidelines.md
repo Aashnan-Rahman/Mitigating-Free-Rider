@@ -52,10 +52,16 @@ elsewhere.
 | `reset_window_size` | `10` | Size (in rounds) of each monitoring window used for the reset trigger |
 | `reset_window_count` | `2` | Consecutive quiet windows required to trigger reset |
 | `zero_update_epsilon` | `1e-6` | Numerical tolerance for "delta ≈ 0" check (L2 norm below this counts as zero) |
+| `mad_floor` | `0.05` | Minimum MAD scale used by the batch norm threshold to prevent collapse in small suspicion groups |
 | `use_magnitude_check` | `true` | Enable robust update-norm outlier detection |
 | `magnitude_z_threshold` | `3.0` | Robust z-score threshold for update-norm outliers |
-| `use_batch_mad_threshold` | `false` | Use a batch MAD norm threshold for supported sweep phases |
+| `use_batch_mad_threshold` | `true` | Use a batch MAD norm threshold for supported sweep phases |
 | `mad_threshold_k` | `3.0` | Multiplier applied to MAD when building a batch norm threshold |
+| `penalty_decay` | `1` | Penalty removed after each passed detection check, capped at the current penalty |
+| `use_loss_check` | `false` | Enable the optional early-round loss detector |
+| `loss_check_rounds` | `6` | Last round in which the loss detector is active |
+| `loss_percentile` | `75.0` | Upper loss percentile used as the early-round loss threshold |
+| `loss_requires_small_norm` | `true` | Require a low norm outlier as well as high loss when using loss detection |
 | `full_participation` | `true` | All active clients train every round (no dropout simulated) — see Section 3.1 |
 | `seed` | `42` | Global random seed |
 | `output_dir` | `"./results/"` | Where all CSV/log outputs are written |
@@ -135,9 +141,11 @@ used only for evaluation metrics, never exposed to the detection logic).
 
 1. **Zero-update check:** if `||delta|| < zero_update_epsilon`, add
   `penalty_zero_update` to that client's `P_i`. Skip the cosine diagnostic.
-2. **Update-magnitude check** (only if step 1 did not trigger): compute a
-  robust z-score for each client's delta norm across active clients. If the
-  score exceeds `magnitude_z_threshold`, flag the client:
+2. **Update-magnitude check** (only if step 1 did not trigger): when
+  `use_batch_mad_threshold` is enabled, compute
+  `median_norm + mad_threshold_k * max(MAD, mad_floor)` over the checked
+  batch. Otherwise use the configured robust z-score. If the score exceeds
+  the threshold, flag the client:
   - if client was trapped this round: add `penalty_trap_flag`
   - otherwise: add `penalty_normal_flag`
 3. **Cosine diagnostic:** compute cosine similarity against the phase reference
@@ -146,10 +154,16 @@ used only for evaluation metrics, never exposed to the detection logic).
 4. **Optional batch MAD check:** when `use_batch_mad_threshold` is enabled,
   supported sweep batches use a median-plus-MAD norm threshold instead of the
   active-client robust z-score.
-5. **Removal check:** if `P_i >= P_max` (where
+5. **Optional early loss check:** when enabled and `round <= loss_check_rounds`,
+  flag clients above `loss_percentile`; when `loss_requires_small_norm` is true,
+  the client must also be a low-norm outlier. This is intentionally limited to
+  early rounds because FR3 loss overlaps honest loss after convergence begins.
+6. **Penalty decay:** after a passed detection check, subtract
+  `penalty_decay` from `P_i`, without allowing it to become negative.
+7. **Removal check:** if `P_i >= P_max` (where
    `P_max = ceil(removal_threshold_pct * num_rounds)`), remove client from the
    active pool permanently starting next round. Log the removal event.
-6. **Aggregation:** global model for round `t+1` = mean of deltas from all
+8. **Aggregation:** global model for round `t+1` = mean of deltas from all
    **non-trapped** clients in round `t` (trapped clients' updates are never
    aggregated, regardless of whether they were flagged).
 
