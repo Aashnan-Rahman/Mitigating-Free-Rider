@@ -1,0 +1,177 @@
+{
+  "batch_id": "batch_20260908_234816",
+  "completed_experiments": 0,
+  "completed_rounds": 0,
+  "current_experiment": "stage1_mnist_iid_fr1_fr40",
+  "elapsed_seconds": 0.0016410350799560547,
+  "experiments": [
+    {
+      "config": {
+        "attack_type": "FR1",
+        "dataset": "mnist",
+        "distribution": "iid",
+        "free_rider_pct": 0.4
+      },
+      "id": "stage1_mnist_iid_fr1_fr40",
+      "started_at": "2026-09-08T23:48:16.886031",
+      "state": "running"
+    },
+    {
+      "config": {
+        "attack_type": "FR2",
+        "dataset": "mnist",
+        "distribution": "iid",
+        "free_rider_pct": 0.4
+      },
+      "id": "stage1_mnist_iid_fr2_fr40",
+      "state": "queued"
+    },
+    {
+      "config": {
+        "attack_type": "FR3",
+        "dataset": "mnist",
+        "distribution": "iid",
+        "free_rider_pct": 0.4
+      },
+      "id": "stage1_mnist_iid_fr3_fr40",
+      "state": "queued"
+    },
+    {
+      "config": {
+        "attack_type": "FR4",
+        "dataset": "mnist",
+        "distribution": "iid",
+        "free_rider_pct": 0.4
+      },
+      "id": "stage1_mnist_iid_fr4_fr40",
+      "state": "queued"
+    },
+    {
+      "config": {
+        "attack_type": "FR1",
+        "dataset": "mnist",
+        "distribution": "noniid",
+        "free_rider_pct": 0.4
+      },
+      "id": "stage2_mnist_noniid_fr1_fr40",
+      "state": "queued"
+    },
+    {
+      "config": {
+        "attack_type": "FR2",
+        "dataset": "mnist",
+        "distribution": "noniid",
+        "free_rider_pct": 0.4
+      },
+      "id": "stage2_mnist_noniid_fr2_fr40",
+      "state": "queued"
+    },
+    {
+      "config": {
+        "attack_type": "FR3",
+        "dataset": "mnist",
+        "distribution": "noniid",
+        "free_rider_pct": 0.4
+      },
+      "id": "stage2_mnist_noniid_fr3_fr40",
+      "state": "queued"
+    },
+    {
+      "config": {
+        "attack_type": "FR4",
+        "dataset": "mnist",
+        "distribution": "noniid",
+        "free_rider_pct": 0.4
+      },
+      "id": "stage2_mnist_noniid_fr4_fr40",
+      "state": "queued"
+    },
+    {
+      "config": {
+        "attack_type": "FR1",
+        "dataset": "cifar10",
+        "distribution": "iid",
+        "free_rider_pct": 0.4
+      },
+      "id": "stage3_cifar10_iid_fr1_fr40",
+      "state": "queued"
+    },
+    {
+      "config": {
+        "attack_type": "FR2",
+        "dataset": "cifar10",
+        "distribution": "iid",
+        "free_rider_pct": 0.4
+      },
+      "id": "stage3_cifar10_iid_fr2_fr40",
+      "state": "queued"
+    },
+    {
+      "config": {
+        "attack_type": "FR3",
+        "dataset": "cifar10",
+        "distribution": "iid",
+        "free_rider_pct": 0.4
+      },
+      "id": "stage3_cifar10_iid_fr3_fr40",
+      "state": "queued"
+    },
+    {
+      "config": {
+        "attack_type": "FR4",
+        "dataset": "cifar10",
+        "distribution": "iid",
+        "free_rider_pct": 0.4
+      },
+      "id": "stage3_cifar10_iid_fr4_fr40",
+      "state": "queued"
+    },
+    {
+      "config": {
+        "attack_type": "FR1",
+        "dataset": "cifar10",
+        "distribution": "noniid",
+        "free_rider_pct": 0.4
+      },
+      "id": "stage4_cifar10_noniid_fr1_fr40",
+      "state": "queued"
+    },
+    {
+      "config": {
+        "attack_type": "FR2",
+        "dataset": "cifar10",
+        "distribution": "noniid",
+        "free_rider_pct": 0.4
+      },
+      "id": "stage4_cifar10_noniid_fr2_fr40",
+      "state": "queued"
+    },
+    {
+      "config": {
+        "attack_type": "FR3",
+        "dataset": "cifar10",
+        "distribution": "noniid",
+        "free_rider_pct": 0.4
+      },
+      "id": "stage4_cifar10_noniid_fr3_fr40",
+      "state": "queued"
+    },
+    {
+      "config": {
+        "attack_type": "FR4",
+        "dataset": "cifar10",
+        "distribution": "noniid",
+        "free_rider_pct": 0.4
+      },
+      "id": "stage4_cifar10_noniid_fr4_fr40",
+      "state": "queued"
+    }
+  ],
+  "failed_experiments": 0,
+  "plan": "configs\\experiment_plan.json",
+  "started_at": "2026-09-08T23:48:16.884390",
+  "state": "running",
+  "total_experiments": 16,
+  "total_rounds": 1600,
+  "updated_at": "2026-09-08T23:48:16.886031"
+}

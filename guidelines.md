@@ -247,7 +247,7 @@ project/
 ├── logging_utils.py       # CSV writers for Section 8 outputs
 └── run_experiment.py      # entry point, reads config, calls train.py
 ```
-
+l
 ---
 
 ## 10. Notes / Assumptions Carried Over From Design Discussion
