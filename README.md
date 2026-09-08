@@ -44,7 +44,12 @@ ground-truth free-rider IDs, and that round's global metrics. See
 
 The trap model perturbation is configurable through `trap_noise_scale` and
 `trap_noise_floor`; all detection and attack hyperparameters are centralized in
-`config.py`. Batch MAD detection uses a `mad_floor` to prevent false positives
-when suspicion groups are small. Penalty decay defaults to one point per passed
-check. An optional early-round loss detector can be enabled with
-`use_loss_check=true`; it is limited to the early FR3 loss-separation window.
+`config.py`. Detection robustly z-normalizes compact update-distribution features
+with median/MAD across the active client batch, estimates covariance from clipped
+z-scores, then flags clients whose regularized Mahalanobis distance exceeds
+`mahalanobis_threshold`. Cosine similarity is logged only as a
+diagnostic and never flags or penalizes a client. Penalty decay defaults to one
+point per passed check. An optional early-round loss detector can be enabled with
+`use_loss_check=true`; it defaults on, requires a low norm z-score, and is limited
+to the empirically separable FR3 loss window (rounds 1–6). Detection runs during
+trap-selection warmup so that window is not discarded.

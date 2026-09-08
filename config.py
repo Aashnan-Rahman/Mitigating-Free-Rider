@@ -24,7 +24,6 @@ class ExperimentConfig:
     trap_fraction: float = 0.10
     num_anchors: int = 3
     epsilon: float = 1.0
-    similarity_threshold: float = 0.5
     penalty_zero_update: int = 4
     penalty_trap_flag: int = 2
     penalty_normal_flag: int = 1
@@ -33,14 +32,17 @@ class ExperimentConfig:
     reset_window_size: int = 10
     reset_window_count: int = 2
     zero_update_epsilon: float = 1e-6
-    use_batch_mad_threshold: bool = True
-    mad_threshold_k: float = 3.0
-    mad_floor: float = 0.05
-    magnitude_z_threshold: float = 3.0
-    use_loss_check: bool = False
+    mahalanobis_threshold: float = 3.0
+    md_covariance_regularization: float = 1e-3
+    md_covariance_clip: float = 2.5
+    md_scale_floor: float = 0.05
+    md_mad_consistency: float = 1.4826
+    md_min_samples: int = 5
+    use_loss_check: bool = True
     loss_check_rounds: int = 6
     loss_percentile: float = 75.0
-    loss_requires_small_norm: bool = True
+    loss_requires_low_norm: bool = True
+    loss_norm_z_threshold: float = -2.0
     full_participation: bool = True
     seed: int = 42
     output_dir: str = "./results/"
@@ -118,8 +120,16 @@ class ExperimentConfig:
             raise ValueError("num_anchors must be non-negative.")
         if self.penalty_decay < 0:
             raise ValueError("penalty_decay must be non-negative.")
-        if self.mad_threshold_k <= 0 or self.mad_floor < 0:
-            raise ValueError("mad_threshold_k must be positive and mad_floor non-negative.")
+        if (
+            self.mahalanobis_threshold <= 0
+            or self.md_covariance_regularization <= 0
+            or self.md_covariance_clip <= 0
+        ):
+            raise ValueError("Mahalanobis threshold, clipping, and regularization must be positive.")
+        if self.md_scale_floor <= 0 or self.md_mad_consistency <= 0 or self.md_min_samples < 2:
+            raise ValueError("MD scale settings must be positive and md_min_samples at least 2.")
+        if self.loss_norm_z_threshold >= 0:
+            raise ValueError("loss_norm_z_threshold must be negative.")
         if self.loss_check_rounds < 0 or not 0.0 < self.loss_percentile < 100.0:
             raise ValueError("loss_check_rounds must be non-negative and loss_percentile must be in (0, 100).")
         if self.checkpoint_every <= 0:

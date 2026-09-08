@@ -112,40 +112,38 @@ def run_experiment(config: ExperimentConfig) -> str:
         new_flags = 0
         removed_after_round: list[int] = []
 
-        detection_results = {}
-        if selection.phase != "warmup":
-            detection_results = evaluate_updates(
-                deltas,
-                {client_id: local_stats[client_id]["loss"] for client_id in active_this_round},
-                reference,
-                selection.trapped_clients,
-                round_idx,
-                config,
-            )
+        # Detection starts immediately so the empirically separable FR3 loss
+        # window (rounds 1-6) is not hidden by trap-selection warmup.
+        detection_results = evaluate_updates(
+            deltas,
+            {client_id: local_stats[client_id]["loss"] for client_id in active_this_round},
+            reference,
+            selection.trapped_clients,
+            round_idx,
+            config,
+        )
 
         for client_id in active_this_round:
             was_trapped = client_id in selection.trapped_clients
-            detection = None
-            if selection.phase != "warmup":
-                detection = detection_results[client_id]
-                if detection.flagged:
-                    penalties[client_id] += detection.penalty
-                    times_flagged[client_id] += 1
-                    new_flags += 1
-                elif config.penalty_decay:
-                    decay = min(config.penalty_decay, penalties[client_id])
-                    penalties[client_id] -= decay
-                    detection.penalty = -decay
-                if penalties[client_id] >= config.removal_threshold:
-                    removed_after_round.append(client_id)
-                    logger.removal_rows.append(
-                        {
-                            "round": round_idx,
-                            "client_id": client_id,
-                            "is_free_rider": int(client_id in free_riders),
-                            "final_penalty": penalties[client_id],
-                        }
-                    )
+            detection = detection_results[client_id]
+            if detection.flagged:
+                penalties[client_id] += detection.penalty
+                times_flagged[client_id] += 1
+                new_flags += 1
+            elif config.penalty_decay:
+                decay = min(config.penalty_decay, penalties[client_id])
+                penalties[client_id] -= decay
+                detection.penalty = -decay
+            if penalties[client_id] >= config.removal_threshold:
+                removed_after_round.append(client_id)
+                logger.removal_rows.append(
+                    {
+                        "round": round_idx,
+                        "client_id": client_id,
+                        "is_free_rider": int(client_id in free_riders),
+                        "final_penalty": penalties[client_id],
+                    }
+                )
 
             penalty_added = detection.penalty if detection else 0
             logger.client_rows.append(
@@ -161,6 +159,9 @@ def run_experiment(config: ExperimentConfig) -> str:
                     "local_compute_seconds": local_stats[client_id]["local_compute_seconds"],
                     "cosine_similarity": detection.cosine_similarity if detection else "",
                     "delta_norm": detection.delta_norm if detection else float(deltas[client_id].norm().item()),
+                    "norm_z_score": detection.norm_z_score if detection else "",
+                    "mahalanobis_distance": detection.mahalanobis_distance if detection else "",
+                    "detection_reason": detection.reason if detection and detection.reason else "",
                     "flagged": int(detection.flagged) if detection else 0,
                     "penalty_added_this_round": penalty_added,
                 }
@@ -194,6 +195,9 @@ def run_experiment(config: ExperimentConfig) -> str:
                     "local_compute_seconds": "",
                     "cosine_similarity": "",
                     "delta_norm": "",
+                    "norm_z_score": "",
+                    "mahalanobis_distance": "",
+                    "detection_reason": "",
                     "flagged": 0,
                     "penalty_added_this_round": 0,
                 }
