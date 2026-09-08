@@ -12,6 +12,7 @@ class TrapSelection:
     phase: str
     trapped_clients: set[int]
     anchors: set[int]
+    coverage_complete: bool = False
 
 
 class TrapSelector:
@@ -41,7 +42,9 @@ class TrapSelector:
         if self.phase == "coverage":
             group = self._next_coverage_group(active_clients)
             if group:
-                return TrapSelection("coverage", set(group), set())
+                return TrapSelection(
+                    "coverage", set(group), set(), not self.coverage_queue
+                )
             self.phase = "suspicion"
 
         trapped, anchors = self._select_suspicion(active_clients, penalties, times_flagged)

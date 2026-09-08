@@ -1,0 +1,70 @@
+{
+  "batch_name": null,
+  "results_root": "./results",
+  "defaults": {
+    "num_clients": 100,
+    "num_rounds": 100,
+    "free_rider_pct": 0.4,
+    "seed": 42,
+    "device": "auto",
+    "save_checkpoints": true,
+    "checkpoint_every": 5
+  },
+  "stages": [
+    {
+      "id": "stage1",
+      "description": "MNIST IID, 40% free riders, four attacks",
+      "enabled": true,
+      "matrix": {
+        "dataset": ["mnist"],
+        "distribution": ["iid"],
+        "attack_type": ["FR1", "FR2", "FR3", "FR4"],
+        "free_rider_pct": [0.4]
+      }
+    },
+    {
+      "id": "stage2",
+      "description": "MNIST non-IID, 40% free riders, four attacks",
+      "enabled": true,
+      "matrix": {
+        "dataset": ["mnist"],
+        "distribution": ["noniid"],
+        "attack_type": ["FR1", "FR2", "FR3", "FR4"],
+        "free_rider_pct": [0.4]
+      }
+    },
+    {
+      "id": "stage3",
+      "description": "CIFAR-10 IID, 40% free riders, four attacks",
+      "enabled": true,
+      "matrix": {
+        "dataset": ["cifar10"],
+        "distribution": ["iid"],
+        "attack_type": ["FR1", "FR2", "FR3", "FR4"],
+        "free_rider_pct": [0.4]
+      }
+    },
+    {
+      "id": "stage4",
+      "description": "CIFAR-10 non-IID, 40% free riders, four attacks",
+      "enabled": true,
+      "matrix": {
+        "dataset": ["cifar10"],
+        "distribution": ["noniid"],
+        "attack_type": ["FR1", "FR2", "FR3", "FR4"],
+        "free_rider_pct": [0.4]
+      }
+    },
+    {
+      "id": "stage5_pct",
+      "description": "Disabled percentage sweep; enable after the 40% matrix is reviewed",
+      "enabled": false,
+      "matrix": {
+        "dataset": ["mnist", "cifar10"],
+        "distribution": ["iid", "noniid"],
+        "attack_type": ["FR1", "FR2", "FR3", "FR4"],
+        "free_rider_pct": [0.1, 0.2, 0.4]
+      }
+    }
+  ]
+}

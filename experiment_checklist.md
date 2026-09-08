@@ -5,7 +5,7 @@ This checklist is ordered so each stage is run only after the previous stage is 
 ## Before experiments
 
 - [ ] Confirm the dataset cache is available and record the PyTorch/device versions.
-- [ ] Confirm the detector rule used by the current code: z-normalized update features plus Mahalanobis distance; cosine is diagnostic only.
+- [ ] Confirm the detector rule used by the current code: robust update-norm z-score using median/MAD; cosine is diagnostic only.
 - [ ] Decide the removal policy for reporting. The specification says `P_i >= P_max`; the current code removes at `P_i > P_max`.
 - [ ] Keep `save_checkpoints=true` and `checkpoint_every=1` for development runs. Use `checkpoint_every=5` for long final runs if disk space is limited.
 
@@ -42,10 +42,10 @@ Use the baseline detector and run the two most relevant attacks at each prevalen
 
 ## Stage 3: FR2 false-positive mitigation
 
-Validate the z-normalized Mahalanobis detector before running this stage. Keep all other settings fixed:
+Validate the robust norm-z/MAD detector before running this stage. Keep all other settings fixed:
 
-- [ ] FR2, 40%, z-normalized Mahalanobis detector
-- [ ] FR2, 40%, Mahalanobis threshold sensitivity check
+- [ ] FR2, 40%, norm-z/MAD detector
+- [ ] FR2, 40%, z-threshold sensitivity check
 - [ ] FR2, 40%, selected threshold plus `penalty_decay=1`
 - [ ] Repeat the winning configuration with seeds 43 and 44
 
@@ -89,7 +89,7 @@ Run the selected detector configuration, not every discarded variant:
 ## Required result files per run
 
 - `global_metrics.csv`: one row per round, including accuracy, loss, active clients, trapped clients, aggregated clients, and time.
-- `client_metrics.csv`: one row per active or inactive client per round, including local accuracy/loss, delta norm, robust norm z-score, cosine diagnostic, Mahalanobis distance, detection reason, flag, and penalty adjustment.
+- `client_metrics.csv`: one row per active or inactive client per round, including local accuracy/loss, norm/loss robust z-scores and median/MAD baselines, coverage observation round, cosine diagnostic, detection reason, flag, and penalty adjustment.
 - `penalty_tracker.csv`: cumulative penalty and counts per client per round.
 - `trap_matrix.csv`: trap membership and phase per round.
 - `removals.csv`: removal round and ground-truth role.

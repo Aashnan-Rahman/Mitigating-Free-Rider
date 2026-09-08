@@ -20,6 +20,9 @@ class RunLogger:
         self.penalty_rows: list[dict[str, Any]] = []
         self.removal_rows: list[dict[str, Any]] = []
         self.summary_rows: list[dict[str, Any]] = []
+        self.detection_round_rows: list[dict[str, Any]] = []
+        self.detection_event_rows: list[dict[str, Any]] = []
+        self.client_summary_rows: list[dict[str, Any]] = []
 
     def log_trap_matrix_row(
         self, round_idx: int, phase: str, trapped: set[int], num_clients: int
@@ -35,6 +38,13 @@ class RunLogger:
         self._write_csv("penalty_tracker.csv", self.penalty_rows)
         self._write_csv("removals.csv", self.removal_rows)
         self._write_csv("detection_summary.csv", self.summary_rows)
+        self._write_csv("round_detection_metrics.csv", self.detection_round_rows)
+        self._write_csv("detection_events.csv", self.detection_event_rows)
+        self._write_csv("client_detection_summary.csv", self.client_summary_rows)
+        self._write_metric_matrix("norm_z_matrix.csv", "norm_z_score")
+        self._write_metric_matrix("loss_z_matrix.csv", "loss_z_score")
+        self._write_metric_matrix("delta_norm_matrix.csv", "delta_norm")
+        self._write_metric_matrix("flag_matrix.csv", "flagged")
         with (self.run_dir / "run_config.json").open("w", encoding="utf-8") as handle:
             json.dump(run_config, handle, indent=2, sort_keys=True)
 
@@ -60,6 +70,27 @@ class RunLogger:
             if rows:
                 writer.writerows(rows)
 
+    def _write_metric_matrix(self, filename: str, value_field: str) -> None:
+        """Pivot a client metric to one row per observation round."""
+        by_round: dict[int, dict[str, Any]] = {}
+        for row in self.client_rows:
+            value = row.get(value_field, "")
+            if value == "" or value is None:
+                continue
+            observation_round = row.get("detection_observation_round", "")
+            matrix_round = int(observation_round) if observation_round != "" else int(row["round"])
+            matrix_row = by_round.setdefault(matrix_round, {"round": matrix_round})
+            matrix_row[f"client_{int(row['client_id'])}"] = value
+        fieldnames = ["round"] + [
+            f"client_{client_id}" for client_id in range(self.config.num_clients)
+        ]
+        path = self.run_dir / filename
+        with path.open("w", newline="", encoding="utf-8") as handle:
+            writer = csv.DictWriter(handle, fieldnames=fieldnames)
+            writer.writeheader()
+            for matrix_round in sorted(by_round):
+                writer.writerow(by_round[matrix_round])
+
 
 CSV_HEADERS: dict[str, list[str]] = {
     "removals.csv": ["round", "client_id", "is_free_rider", "final_penalty"],
@@ -70,6 +101,13 @@ CSV_HEADERS: dict[str, list[str]] = {
         "precision",
         "recall",
         "f1",
+        "detection_accuracy",
         "false_positive_removal_rate",
+    ],
+    "round_detection_metrics.csv": [
+        "round", "evaluated_clients", "true_positives", "false_positives",
+        "true_negatives", "false_negatives", "detection_accuracy", "precision",
+        "recall", "f1", "false_positive_rate", "false_negative_rate",
+        "specificity", "new_removals",
     ],
 }

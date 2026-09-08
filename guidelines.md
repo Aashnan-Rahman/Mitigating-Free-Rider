@@ -51,17 +51,14 @@ elsewhere.
 | `reset_window_size` | `10` | Size (in rounds) of each monitoring window used for the reset trigger |
 | `reset_window_count` | `2` | Consecutive quiet windows required to trigger reset |
 | `zero_update_epsilon` | `1e-6` | Numerical tolerance for "delta ≈ 0" check (L2 norm below this counts as zero) |
-| `mahalanobis_threshold` | `3.0` | Flag threshold after feature-wise z-normalization and Mahalanobis scoring |
-| `md_covariance_regularization` | `0.001` | Diagonal regularization for a stable covariance inverse |
-| `md_covariance_clip` | `2.5` | Winsorization bound that limits attacker influence on covariance |
-| `md_scale_floor` | `0.05` | Real minimum robust scale, preventing small-batch MAD collapse |
-| `md_mad_consistency` | `1.4826` | Normal-consistency multiplier applied to feature MAD |
-| `md_min_samples` | `5` | Minimum checked-client batch size needed to estimate MD |
+| `magnitude_z_threshold` | `3.0` | Upper robust norm z-score threshold used for FR2 |
+| `mad_floor` | `0.05` | Real minimum MAD scale, preventing small-batch threshold collapse |
+| `mad_min_samples` | `5` | Minimum reference sample count for robust threshold estimation |
 | `penalty_decay` | `1` | Penalty removed after each passed detection check, capped at the current penalty |
 | `use_loss_check` | `true` | Enable the early-round FR3 loss detector |
 | `loss_check_rounds` | `6` | Last round in which the loss detector is active |
-| `loss_percentile` | `75.0` | Upper loss percentile used as the early-round loss threshold |
-| `loss_requires_low_norm` | `true` | Require a negative norm z-outlier as well as high loss |
+| `loss_mad_floor` | `0.05` | Minimum MAD scale for robust loss z-scores |
+| `loss_z_threshold` | `2.0` | High-loss z-score required by the FR3 combined rule |
 | `loss_norm_z_threshold` | `-2.0` | Maximum robust norm z-score for the combined FR3 loss signal |
 | `full_participation` | `true` | All active clients train every round (no dropout simulated) — see Section 3.1 |
 | `seed` | `42` | Global random seed |
@@ -90,16 +87,21 @@ Each active client in round `t` is either:
 ### 3.3 Phases
 
 **Phase 0 — Warm-Up (rounds 1 to `warmup_rounds`)**
-No trapping. Standard FedAvg over all active clients. Passive z-normalized MD
+No trapping. Standard FedAvg over all active clients. Passive norm-z/MAD
 detection and penalties remain active so rounds 1–6 can supply the only reliable
 FR3 loss signal; "warm-up" applies to trap selection, not anomaly observation.
 
 **Phase 1 — Coverage Sweep (immediately after warm-up)**
+- Generate one trap model at the beginning of the sweep and freeze its exact
+  weights until the sweep finishes. A later coverage sweep generates a new one.
 - Partition all currently active clients into consecutive groups of size
   `m = ceil(rho * |active_clients|)`.
 - Trap exactly one group per round until every active client has been trapped
   exactly once in this sweep.
-- The trapped group's mean delta is used as the diagnostic reference vector.
+- Store each trapped response without flagging or penalizing it immediately.
+- After the final group responds, compute the norm and loss median/MAD over the
+  complete sweep and apply flags and penalties together.
+- The complete sweep's median delta is used as the diagnostic reference vector.
 - When the queue of groups is exhausted, transition to Phase 2.
 
 **Phase 2 — Suspicion-Flagged Sweep (ongoing)**
@@ -144,22 +146,25 @@ used only for evaluation metrics, never exposed to the detection logic).
 
 1. **Zero-update check:** if `||delta|| < zero_update_epsilon`, add
   `penalty_zero_update` to that client's `P_i`. Skip the cosine diagnostic.
-2. **Z-normalization + Mahalanobis-distance check** (only if step 1 did not
-  trigger): extract compact update-distribution features (log norm, log mean
-  absolute magnitude, log standard deviation, and normalized maximum magnitude),
-  robustly z-normalize each feature with median/MAD across the active-client
-  batch, estimate a clipped robust covariance, and compute regularized
-  Mahalanobis distance. If it exceeds `mahalanobis_threshold`, flag the client:
+2. **Robust norm-z check** (only if step 1 did not trigger): compute the batch
+  norm median and MAD, use `max(MAD, mad_floor)` as the scale, and calculate
+  `norm_z = (delta_norm - median_norm) / scale`. If
+  `norm_z > magnitude_z_threshold`, flag the client as an FR2-style large-norm
+  outlier:
   - if client was trapped this round: add `penalty_trap_flag`
   - otherwise: add `penalty_normal_flag`
 3. **Cosine diagnostic:** compute cosine similarity against the phase reference
   and write it to client metrics. It is currently not used to flag or
   penalize a client.
-4. **Early loss check:** when enabled and `round <= loss_check_rounds`, flag
-  clients above `loss_percentile`; when `loss_requires_low_norm` is true, the
-  client must also have `norm_z_score < loss_norm_z_threshold`. This AND rule is
-  intentionally limited to
+4. **Early loss check:** compute
+  `loss_z = (loss - median_loss) / max(loss_MAD, loss_mad_floor)` without a
+  percentile. During observations made at `round <= loss_check_rounds`, flag
+  only when `loss_z > loss_z_threshold` AND
+  `norm_z_score < loss_norm_z_threshold`. This AND rule is intentionally limited to
   early rounds because FR3 loss overlaps honest loss after convergence begins.
+  A consistent early flag receives
+  `ceil(removal_threshold / loss_check_rounds)` penalty points so the finite
+  six-round signal can reach the removal threshold.
 5. **Penalty decay:** after a passed detection check, subtract
   `penalty_decay` from `P_i`, without allowing it to become negative.
 6. **Removal check:** if `P_i >= P_max` (where
@@ -206,7 +211,7 @@ be swapped for other architectures without touching the training loop.
    global_loss, num_active_clients, num_trapped, num_aggregated, round_time_seconds`.
 3. **`client_metrics.csv`** — one row per (round, client): `round, client_id,
    is_free_rider (ground truth), was_trapped, local_accuracy, local_loss,
-   cosine_similarity, delta_norm, norm_z_score, mahalanobis_distance, detection_reason,
+   cosine_similarity, delta_norm, norm_z_score, norm_median, norm_mad, detection_reason,
    flagged (bool), penalty_added_this_round`.
 4. **`penalty_tracker.csv`** — one row per (round, client): `round, client_id,
    cumulative_penalty, times_flagged_so_far, times_trapped_so_far`.

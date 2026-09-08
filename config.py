@@ -32,16 +32,13 @@ class ExperimentConfig:
     reset_window_size: int = 10
     reset_window_count: int = 2
     zero_update_epsilon: float = 1e-6
-    mahalanobis_threshold: float = 3.0
-    md_covariance_regularization: float = 1e-3
-    md_covariance_clip: float = 2.5
-    md_scale_floor: float = 0.05
-    md_mad_consistency: float = 1.4826
-    md_min_samples: int = 5
+    magnitude_z_threshold: float = 3.0
+    mad_floor: float = 0.05
+    mad_min_samples: int = 5
     use_loss_check: bool = True
     loss_check_rounds: int = 6
-    loss_percentile: float = 75.0
-    loss_requires_low_norm: bool = True
+    loss_mad_floor: float = 0.05
+    loss_z_threshold: float = 2.0
     loss_norm_z_threshold: float = -2.0
     full_participation: bool = True
     seed: int = 42
@@ -83,6 +80,18 @@ class ExperimentConfig:
 
         return math.ceil(self.removal_threshold_pct * self.num_rounds)
 
+    @property
+    def early_loss_penalty(self) -> int:
+        """Penalty needed for consistent early evidence to reach removal."""
+        import math
+
+        if self.loss_check_rounds <= 0:
+            return self.penalty_normal_flag
+        return max(
+            self.penalty_normal_flag,
+            math.ceil(self.removal_threshold / self.loss_check_rounds),
+        )
+
     def resolved_run_name(self) -> str:
         if self.run_name:
             return self.run_name
@@ -120,17 +129,13 @@ class ExperimentConfig:
             raise ValueError("num_anchors must be non-negative.")
         if self.penalty_decay < 0:
             raise ValueError("penalty_decay must be non-negative.")
-        if (
-            self.mahalanobis_threshold <= 0
-            or self.md_covariance_regularization <= 0
-            or self.md_covariance_clip <= 0
-        ):
-            raise ValueError("Mahalanobis threshold, clipping, and regularization must be positive.")
-        if self.md_scale_floor <= 0 or self.md_mad_consistency <= 0 or self.md_min_samples < 2:
-            raise ValueError("MD scale settings must be positive and md_min_samples at least 2.")
+        if self.magnitude_z_threshold <= 0 or self.mad_floor <= 0:
+            raise ValueError("magnitude_z_threshold and mad_floor must be positive.")
+        if self.mad_min_samples < 2:
+            raise ValueError("mad_min_samples must be at least 2.")
         if self.loss_norm_z_threshold >= 0:
             raise ValueError("loss_norm_z_threshold must be negative.")
-        if self.loss_check_rounds < 0 or not 0.0 < self.loss_percentile < 100.0:
-            raise ValueError("loss_check_rounds must be non-negative and loss_percentile must be in (0, 100).")
+        if self.loss_check_rounds < 0 or self.loss_mad_floor <= 0 or self.loss_z_threshold <= 0:
+            raise ValueError("Loss-check rounds, MAD floor, and z threshold are invalid.")
         if self.checkpoint_every <= 0:
             raise ValueError("checkpoint_every must be positive.")
