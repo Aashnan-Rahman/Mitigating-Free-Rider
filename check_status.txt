@@ -1,0 +1,37 @@
+$run = "E:\New Projects\Mitigating-Free-Rider\results\mnist_iid_fr40\FR3"
+$totalRounds = 100
+
+while ($true) {
+    Clear-Host
+
+    $results = Get-Content "$run\latest_results.json" | ConvertFrom-Json
+    $config = Get-Content "$run\run_config.json" | ConvertFrom-Json
+    $metrics = $results.latest_global_metrics
+
+    $round = [int]$results.latest_round
+    $roundTime = [double]$metrics.round_time_seconds
+    $remaining = $totalRounds - $round
+    $etaSeconds = $remaining * $roundTime
+
+    Write-Host "Experiment: $($config.dataset) $($config.distribution) $($config.attack_type) $($config.free_rider_pct * 100)% free riders"
+    Write-Host "Run name:   $($results.run_name)"
+    Write-Host "Round:      $round / $totalRounds"
+    Write-Host "Progress:   $([math]::Round(($round / $totalRounds) * 100, 1))%"
+    Write-Host "Time/round: $([math]::Round($roundTime / 60, 2)) minutes"
+    Write-Host "Rounds left: $remaining"
+    Write-Host "Approx. ETA: $([TimeSpan]::FromSeconds($etaSeconds))"
+    Write-Host "Accuracy:   $($metrics.global_accuracy)"
+    Write-Host "Loss:       $($metrics.global_loss)"
+    Write-Host "Checked:    $(Get-Date)"
+
+    if ($round -ge $totalRounds) {
+        Write-Host "`nExperiment complete."
+        break
+    }
+
+    Start-Sleep -Seconds 30
+}
+
+
+
+
