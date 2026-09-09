@@ -5,6 +5,7 @@ import os
 import platform
 import random
 import time
+from pathlib import Path
 from datetime import datetime
 from typing import Callable
 
@@ -67,8 +68,45 @@ def run_experiment(
     coverage_deltas: dict[int, torch.Tensor] = {}
     coverage_losses: dict[int, float] = {}
     coverage_observation_rounds: dict[int, int] = {}
+    start_round = 1
 
-    for round_idx in range(1, config.num_rounds + 1):
+    if config.resume_checkpoint:
+        checkpoint_path = Path(config.resume_checkpoint)
+        if not checkpoint_path.exists():
+            raise FileNotFoundError(f"Resume checkpoint not found: {checkpoint_path}")
+        checkpoint = torch.load(checkpoint_path, map_location=device, weights_only=False)
+        checkpoint_config = checkpoint.get("config", {})
+        if checkpoint_config.get("attack_type") != config.attack_type:
+            raise ValueError("Resume checkpoint attack_type does not match the requested config.")
+        if checkpoint_config.get("dataset") != config.dataset:
+            raise ValueError("Resume checkpoint dataset does not match the requested config.")
+        if checkpoint_config.get("distribution") != config.distribution:
+            raise ValueError(
+                "Resume checkpoint distribution does not match the requested config."
+            )
+        completed_round = int(checkpoint["round"])
+        if completed_round >= config.num_rounds:
+            raise ValueError("Resume checkpoint already reached the configured num_rounds.")
+        model.load_state_dict(checkpoint["model_state"])
+        global_state = clone_state(checkpoint["global_state"])
+        active_clients = [int(client_id) for client_id in checkpoint["active_clients"]]
+        penalties = {int(client_id): int(value) for client_id, value in checkpoint["penalties"].items()}
+        times_flagged = {
+            int(client_id): int(value) for client_id, value in checkpoint["times_flagged"].items()
+        }
+        times_trapped = {
+            int(client_id): int(value) for client_id, value in checkpoint["times_trapped"].items()
+        }
+        free_riders = {int(client_id) for client_id in checkpoint["free_riders_ground_truth"]}
+        logger.load_existing(completed_round)
+        start_round = completed_round + 1
+        selector.phase = "suspicion"
+        if "rng_state" in checkpoint:
+            rng.setstate(checkpoint["rng_state"])
+        if "generator_state" in checkpoint:
+            generator.set_state(checkpoint["generator_state"])
+
+    for round_idx in range(start_round, config.num_rounds + 1):
         round_start = time.perf_counter()
         process_start = time.process_time()
         if device.type == "cuda":
@@ -374,6 +412,8 @@ def run_experiment(
                 "free_riders_ground_truth": sorted(free_riders),
                 "global_metrics": logger.global_rows[-1],
                 "config": config.to_dict(),
+                "rng_state": rng.getstate(),
+                "generator_state": generator.get_state(),
             }
             torch.save(checkpoint, logger.run_dir / f"checkpoint_round_{round_idx:04d}.pt")
             torch.save(checkpoint, logger.run_dir / "latest_checkpoint.pt")

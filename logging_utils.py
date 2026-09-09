@@ -59,6 +59,32 @@ class RunLogger:
         with (self.run_dir / "latest_results.json").open("w", encoding="utf-8") as handle:
             json.dump(latest, handle, indent=2, sort_keys=True)
 
+    def load_existing(self, completed_round: int) -> None:
+        """Restore round logs when continuing a checkpointed run."""
+        loaders = (
+            ("trap_matrix.csv", "trap_rows"),
+            ("global_metrics.csv", "global_rows"),
+            ("client_metrics.csv", "client_rows"),
+            ("penalty_tracker.csv", "penalty_rows"),
+            ("removals.csv", "removal_rows"),
+            ("round_detection_metrics.csv", "detection_round_rows"),
+            ("detection_events.csv", "detection_event_rows"),
+        )
+        for filename, attribute in loaders:
+            path = self.run_dir / filename
+            if not path.exists():
+                continue
+            with path.open(newline="", encoding="utf-8") as handle:
+                rows = list(csv.DictReader(handle))
+            restored = [_coerce_row(row) for row in rows]
+            if attribute != "removal_rows":
+                restored = [
+                    row for row in restored
+                    if row.get("round", completed_round) in ("", None)
+                    or int(row.get("round", completed_round)) <= completed_round
+                ]
+            setattr(self, attribute, restored)
+
     def _write_csv(self, filename: str, rows: list[dict[str, Any]]) -> None:
         path = self.run_dir / filename
         fieldnames = list(rows[0].keys()) if rows else CSV_HEADERS.get(filename, [])
@@ -91,6 +117,23 @@ class RunLogger:
             for matrix_round in sorted(by_round):
                 writer.writerow(by_round[matrix_round])
 
+
+def _coerce_row(row: dict[str, str]) -> dict[str, Any]:
+    converted: dict[str, Any] = {}
+    for key, value in row.items():
+        if value == "":
+            converted[key] = ""
+            continue
+        try:
+            converted[key] = int(value)
+            continue
+        except ValueError:
+            pass
+        try:
+            converted[key] = float(value)
+        except ValueError:
+            converted[key] = value
+    return converted
 
 CSV_HEADERS: dict[str, list[str]] = {
     "removals.csv": ["round", "client_id", "is_free_rider", "final_penalty"],

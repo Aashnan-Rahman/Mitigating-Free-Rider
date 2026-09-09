@@ -44,6 +44,7 @@ class ExperimentConfig:
     seed: int = 42
     output_dir: str = "./results/"
     run_name: str | None = None
+    resume_checkpoint: str | None = None
     device: str = "auto"
 
     data_dir: str = "./data_cache/"
