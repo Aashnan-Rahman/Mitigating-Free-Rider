@@ -42,18 +42,18 @@
     "cuda_allocated_mb": "",
     "cuda_peak_allocated_mb": "",
     "cuda_reserved_mb": "",
-    "global_accuracy": 0.9889,
-    "global_loss": 0.034639585277331936,
-    "num_active_clients": 60,
-    "num_aggregated": 54,
-    "num_trapped": 6,
-    "process_cpu_seconds": 270.71875,
-    "process_rss_mb": 535.890625,
+    "global_accuracy": 0.9884,
+    "global_loss": 0.03736094086643643,
+    "num_active_clients": 100,
+    "num_aggregated": 90,
+    "num_trapped": 10,
+    "process_cpu_seconds": 244.234375,
+    "process_rss_mb": 616.35546875,
     "round": 100,
-    "round_compute_seconds": 46.49363459999995,
-    "round_time_seconds": 46.516085700000076,
-    "system_memory_percent": 96.6
+    "round_compute_seconds": 41.05421269999988,
+    "round_time_seconds": 41.06330980000075,
+    "system_memory_percent": 84.1
   },
   "latest_round": 100,
-  "run_name": "FR3"
+  "run_name": "FR4"
 }
