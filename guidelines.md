@@ -27,6 +27,7 @@ elsewhere.
 
 | Variable | Default | Description |
 |---|---|---|
+| `methodology_version` | `"swtcp_v4"` | Rejects checkpoints produced by an incompatible detector protocol |
 | `dataset` | `"mnist"` | `"mnist"` or `"cifar10"` |
 | `distribution` | `"iid"` | `"iid"` or `"noniid"` |
 | `dirichlet_alpha` | `0.5` | Concentration parameter for Non-IID Dirichlet partitioning. Lower = more skewed. Only used if `distribution == "noniid"` |
@@ -40,30 +41,32 @@ elsewhere.
 | `learning_rate` | `0.01` | Local optimizer learning rate |
 | `momentum` | `0.9` | Only used if `optimizer == "sgd"` |
 | `warmup_rounds` (n_w) | `10` | Rounds before trap selection activates; passive update detection still runs |
-| `trap_fraction` (rho) | `0.10` | Fraction of *currently active* clients trapped per round, in both phases |
-| `num_anchors` (a_h) | `3` | Confirmed-honest clients placed in every Suspicion-Weighted trap subset |
-| `epsilon` | `1.0` | Baseline sampling weight so a clean client (P=0) still has non-zero trap probability |
-| `penalty_zero_update` | `4` | Penalty for near-zero delta (static replay / no training) |
-| `penalty_trap_flag` | `2` | Penalty for a magnitude-based flag while trapped |
-| `penalty_normal_flag` | `1` | Penalty for a magnitude-based flag while not trapped |
-| `removal_threshold_pct` | `0.10` | `P_max = ceil(removal_threshold_pct * num_rounds)` — scales automatically with T |
-| `reset_flag_threshold` | `1` | If new flags in a 10-round window ≤ this, for `reset_window_count` consecutive windows, trigger a fresh Coverage Sweep |
-| `reset_window_size` | `10` | Size (in rounds) of each monitoring window used for the reset trigger |
-| `reset_window_count` | `2` | Consecutive quiet windows required to trigger reset |
+| `trap_fraction` (rho) | `0.10` | Base group size for the initial double-coverage sweep |
+| `coverage_checks_per_client` | `2` | Coverage observations per client; `2` enables balanced double checking, while `1` retains the original single sweep |
+| `anchors_per_suspicion_group` | `3` | Maximum low-suspicion anchors assigned to each suspicious group |
+| `max_suspicion_anchors` | `10` | Maximum total anchors excluded in one round |
+| `surveillance_groups` | `10` | Fixed number of groups in every post-initial unflagged sweep |
+| `penalty_zero_update` | `5` | Penalty for near-zero delta (static replay / no training) |
+| `penalty_trap_flag` | `2` | Compatibility penalty used only when initial coverage is configured for one check |
+| `penalty_normal_flag` | `1` | Penalty for a one-check surveillance magnitude flag |
+| `penalty_suspicion_flag` | `3` | Penalty for an anchor-relative suspicion-group flag |
+| `removal_threshold_points` | `15` | Fixed cumulative penalty required for removal |
+| `dodge_min_probes` | `10` | Minimum frequent-suspicion probes before rehabilitation |
+| `dodge_max_flag_rate` | `0.10` | Maximum per-episode trap-flag rate allowed for rehabilitation |
 | `zero_update_epsilon` | `1e-6` | Numerical tolerance for "delta ≈ 0" check (L2 norm below this counts as zero) |
 | `magnitude_z_threshold` | `3.0` | Upper robust norm z-score threshold used for FR2 |
 | `mad_floor` | `0.05` | Real minimum MAD scale, preventing small-batch threshold collapse |
-| `mad_min_samples` | `5` | Minimum reference sample count for robust threshold estimation |
-| `penalty_decay` | `1` | Penalty removed after each passed detection check, capped at the current penalty |
-| `use_loss_check` | `true` | Enable the early-round FR3 loss detector |
-| `loss_check_rounds` | `6` | Last round in which the loss detector is active |
-| `loss_mad_floor` | `0.05` | Minimum MAD scale for robust loss z-scores |
-| `loss_z_threshold` | `2.0` | High-loss z-score required by the FR3 combined rule |
-| `loss_norm_z_threshold` | `-2.0` | Maximum robust norm z-score for the combined FR3 loss signal |
+| `fr2_update_range` | `1e-3` | Half-width of the bounded uniform random update used by FR2 |
+| `fr3_window` | `5` | Maximum number of received models averaged by FR3 |
+| `fr4_history_size` | `5` | Maximum number of received-model deltas averaged by FR4 |
+| `fr4_noise_fraction` | `0.1` | FR4 noise norm as a fraction of its predicted update norm |
+| `fr4_cold_start_scale` | `1e-4` | FR4 Gaussian update scale before a historical delta exists |
 | `full_participation` | `true` | All active clients train every round (no dropout simulated) — see Section 3.1 |
 | `seed` | `42` | Global random seed |
 | `output_dir` | `"./results/"` | Where all CSV/log outputs are written |
 | `run_name` | auto-generated | e.g. `"{dataset}_{distribution}_{attack_type}_fr{free_rider_pct}_{timestamp}"`, used as subfolder / filename prefix |
+| `save_checkpoints` | `true` | Save a complete recovery checkpoint after every round |
+| `checkpoint_keep_last` | `5` | Retain only the newest numbered checkpoints; `latest_checkpoint.pt` aliases the newest snapshot |
 
 ---
 
@@ -81,60 +84,74 @@ Each active client in round `t` is either:
 - **Trapped** (`i ∈ T_t`): receives the corrupted/trap model, its update is
   **excluded from aggregation** regardless of outcome, but is still checked for flags.
 - **Normal**: receives the true global model, trains normally, and its update is
-  aggregated unless `fedavg_skip_penalty_threshold` is configured and its
-  cumulative penalty exceeds that threshold.
+  aggregated.
 
 ### 3.3 Phases
 
 **Phase 0 — Warm-Up (rounds 1 to `warmup_rounds`)**
 No trapping. Standard FedAvg over all active clients. Passive norm-z/MAD
-detection and penalties remain active so rounds 1–6 can supply the only reliable
-FR3 loss signal; "warm-up" applies to trap selection, not anomaly observation.
+detection and penalties remain active. In particular, the exact send-back check
+applies from round one; "warm-up" applies only to trap selection.
 
 **Phase 1 — Coverage Sweep (immediately after warm-up)**
-- Generate one trap model at the beginning of the sweep and freeze its exact
-  weights until the sweep finishes. A later coverage sweep generates a new one.
+- Generate one trap model at the beginning of the initial sweep and freeze its
+  exact weights until that sweep finishes.
 - Partition all currently active clients into consecutive groups of size
   `m = ceil(rho * |active_clients|)`.
-- Trap exactly one group per round until every active client has been trapped
-  exactly once in this sweep.
+- Trap two distinct groups per round using a randomized schedule with no
+  repeated group-pair, until every active client has been trapped exactly twice
+  in this sweep.
 - Store each trapped response without flagging or penalizing it immediately.
-- After the final group responds, compute the norm and loss median/MAD over the
-  complete sweep and apply flags and penalties together.
+- After the final pair responds, compute the norm median/MAD over all
+  probe responses in the complete sweep. Combine the two decisions per client:
+  one magnitude flag adds one point, two add two points, and every zero update
+  applies the five-point zero-update penalty.
 - The complete sweep's median delta is used as the diagnostic reference vector.
 - When the queue of groups is exhausted, transition to Phase 2.
 
 **Phase 2 — Suspicion-Flagged Sweep (ongoing)**
-- Each round, build a trap subset `T_t` of size
-  `m = ceil(rho * |active_clients|)`.
-- Previously penalized or flagged clients are ordered by cumulative penalty and
-  flag count, then grouped as suspects.
-- Up to `num_anchors` clients without prior penalties are added as anchors. The
-  remaining slots are filled from active clients if necessary.
-- The anchor mean is used as the diagnostic reference vector when anchors are
-  available.
-- The implementation alternates suspicion-flagged groups with coverage groups.
+- Maintain separate suspicious (`S`) and unflagged (`U`) pools.
+- Build `X = max(1, floor(|S| / 10))` groups when `S` is non-empty. Every
+  suspicious client is included, so group size is not capped at ten.
+- Select at most ten low-suspicion anchors for each ten-round cycle and assign up
+  to three per suspicious group. Shuffle suspects and anchors among groups every
+  round.
+- Give every suspicious group its own fresh trap model. Compare suspect update
+  norms with the median/MAD interval from that group's anchors. An out-of-range
+  result adds three points; an exact send-back adds five and a zero-update anchor
+  is excluded from the magnitude baseline.
+- Independently partition non-anchor `U` clients into exactly ten surveillance
+  groups. Probe one group per round with a frozen model shared across that whole
+  ten-round sweep, exclude it from aggregation, and evaluate the sweep together.
+- A surveillance magnitude flag adds one point and moves the client to `S`.
+- After ten suspicion probes, a client with at most a ten-percent episode flag
+  rate returns to `U`; its cumulative penalty remains.
+- When `S` is empty, continue ten-group single-check surveillance sweeps. The
+  initial double-coverage sweep is not repeated.
 
 ---
 
 ## 4. Free-Rider Attack Types (implement all four, select one per run via `attack_type`)
 
-- **`FR1` (Static Replay):** client ignores whatever it received this round and
-  returns the last model it legitimately held (i.e. simply does not update its
-  local copy).
-- **`FR2` (Bounded Random Noise):** client returns a tensor of random weights
-  matching the model's shape, sampled within a plausible magnitude range (e.g.
-  uniform or normal scaled to match the empirical parameter std of the received
-  model). If a generated tensor's shape doesn't match the model architecture,
-  resample.
-- **`FR3` (Sliding-Window Average):** client maintains a buffer of its last 5
-  received global models and returns their average, regardless of what it
-  actually received this round.
-- **`FR4` (Distribution-Aware Adaptive):** client estimates the expected norm and
-  direction of a genuine update (e.g. from its own history of past legitimate
-  updates, or from the global model's trajectory across rounds) and fabricates a
-  noise vector calibrated to match those statistics, rather than fabricating
-  blindly.
+- **`FR1` (Static Replay):** client returns the last model it received without
+  training. On its first participation it returns the current received model.
+- **`FR2` (Bounded Random Update):** client adds an independently sampled update
+  from `Uniform(-fr2_update_range, fr2_update_range)` to every floating-point
+  parameter of the currently received model. It is memoryless and uses no
+  privileged information.
+- **`FR3` (Sliding-Window Average):** client maintains a buffer of up to its last
+  `fr3_window` received models and returns their element-wise average.
+- **`FR4` (Distribution-Aware Adaptive):** client records differences between
+  consecutive models it receives, averages up to `fr4_history_size` recent
+  differences, and adds isotropic noise whose norm is
+  `fr4_noise_fraction` of that predicted update norm. Before one difference is
+  available, it adds Gaussian noise scaled by `fr4_cold_start_scale`.
+
+All attackers have only client-observable information: client identity, round,
+the current received model, models previously sent to that same client, public
+configuration, and local randomness. The server never discloses whether a model
+is a trap. Consequently, every received model enters FR1/FR3/FR4 history under
+the same rules, including a secret trap model.
 
 Free riders are assigned once at the start of the run: `ceil(free_rider_pct * N)`
 clients are randomly selected and flagged internally as free riders (ground truth,
@@ -145,34 +162,31 @@ used only for evaluation metrics, never exposed to the detection logic).
 ## 5. Per-Round Detection Logic (applies to checked clients)
 
 1. **Zero-update check:** if `||delta|| < zero_update_epsilon`, add
-  `penalty_zero_update` to that client's `P_i`. Skip the cosine diagnostic.
-2. **Robust norm-z check** (only if step 1 did not trigger): compute the batch
-  norm median and MAD, use `max(MAD, mad_floor)` as the scale, and calculate
-  `norm_z = (delta_norm - median_norm) / scale`. If
-  `norm_z > magnitude_z_threshold`, flag the client as an FR2-style large-norm
-  outlier:
-  - if client was trapped this round: add `penalty_trap_flag`
-  - otherwise: add `penalty_normal_flag`
+  `penalty_zero_update` to that client's `P_i`. This applies during warm-up as
+  well as coverage and suspicion. Skip the cosine diagnostic.
+2. **Robust norm-z check** (only if step 1 did not trigger): during coverage or
+  surveillance, compute the complete sweep's norm median/MAD and apply the
+  configured upper robust-z boundary. During frequent suspicion probing, use
+  only the two or three anchors that received the same trap, and flag the
+  suspect when `abs((norm - anchor_median) / max(anchor_MAD, mad_floor))`
+  exceeds `magnitude_z_threshold`:
+  - during double coverage: add one point for each flagged probe (one or two)
+  - during frequent suspicion probing: add three points
+  - during one-check surveillance: add one point
 3. **Cosine diagnostic:** compute cosine similarity against the phase reference
   and write it to client metrics. It is currently not used to flag or
   penalize a client.
-4. **Early loss check:** compute
-  `loss_z = (loss - median_loss) / max(loss_MAD, loss_mad_floor)` without a
-  percentile. During observations made at `round <= loss_check_rounds`, flag
-  only when `loss_z > loss_z_threshold` AND
-  `norm_z_score < loss_norm_z_threshold`. This AND rule is intentionally limited to
-  early rounds because FR3 loss overlaps honest loss after convergence begins.
-  A consistent early flag receives
-  `ceil(removal_threshold / loss_check_rounds)` penalty points so the finite
-  six-round signal can reach the removal threshold.
-5. **Penalty decay:** after a passed detection check, subtract
-  `penalty_decay` from `P_i`, without allowing it to become negative.
-6. **Removal check:** if `P_i >= P_max` (where
-   `P_max = ceil(removal_threshold_pct * num_rounds)`), remove client from the
+4. **Rehabilitation:** after at least ten frequent-suspicion probes, return a
+   client to the unflagged pool if its episode flag rate is at most ten percent.
+   Retain its cumulative penalty and reset only its episode counters.
+5. **Removal check:** if `P_i >= 15`, remove the client from the
    active pool permanently starting next round. Log the removal event.
-7. **Aggregation:** global model for round `t+1` = mean of deltas from all
+6. **Aggregation:** global model for round `t+1` = mean of deltas from all
    **non-trapped** clients in round `t` (trapped clients' updates are never
    aggregated, regardless of whether they were flagged).
+
+Client-local loss and accuracy may be recorded by the simulator for evaluation,
+but they are not detector inputs and cannot change suspicion or penalties.
 
 ---
 
@@ -213,6 +227,8 @@ be swapped for other architectures without touching the training loop.
    is_free_rider (ground truth), was_trapped, local_accuracy, local_loss,
    cosine_similarity, delta_norm, norm_z_score, norm_median, norm_mad, detection_reason,
    flagged (bool), penalty_added_this_round`.
+   Local accuracy/loss are simulator diagnostics only. Legacy loss-z fields may
+   remain present but blank for compatibility and are not detector inputs.
 4. **`penalty_tracker.csv`** — one row per (round, client): `round, client_id,
    cumulative_penalty, times_flagged_so_far, times_trapped_so_far`.
 5. **`removals.csv`** — one row per removal event: `round, client_id,
@@ -247,7 +263,6 @@ project/
 ├── logging_utils.py       # CSV writers for Section 8 outputs
 └── run_experiment.py      # entry point, reads config, calls train.py
 ```
-l
 ---
 
 ## 10. Notes / Assumptions Carried Over From Design Discussion
@@ -255,12 +270,10 @@ l
 - Detection never causes the whole round to be discarded — only trapped clients'
   updates are excluded; all other active clients' updates aggregate normally
   every round.
-- Reference vectors differ by phase: trapped-group mean during Coverage and
-  anchor mean during Suspicion-Flagged. Cosine similarity is logged as a
-  diagnostic and is not currently used for flagging.
-- `P_max` scales automatically with `num_rounds` via `removal_threshold_pct`, so
-  switching between `num_rounds=100` and `num_rounds=200` does not require manually
-  recalculating the removal threshold.
+- Reference populations differ by phase: complete stored responses during
+  coverage/surveillance and same-model anchors during frequent suspicion.
+  Cosine similarity remains diagnostic only.
+- `P_max` is a fixed 15 evidence points, independent of experiment length.
 - Ground-truth free-rider labels must be tracked internally for evaluation
   metrics (precision/recall/F1 of detection, false-positive removal rate) but must
   never be accessible to the detection/trap-selection logic itself — the whole

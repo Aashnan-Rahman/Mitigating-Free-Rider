@@ -41,7 +41,6 @@ def main() -> None:
                 "local_epochs": 1,
                 "batch_size": 16,
                 "trap_fraction": 0.5,
-                "num_anchors": 1,
                 "run_name": values.get("run_name", "smoke"),
             }
         )

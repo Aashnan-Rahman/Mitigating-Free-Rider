@@ -1,5 +1,10 @@
 # SWT-CP False Detection Analysis
 
+> Historical analysis only. Its references to the "current code" describe the
+> earlier result-producing implementation, not the current `swtcp_v4` protocol.
+> In particular, the current detector does not use client-local loss, cosine
+> thresholds, automatic penalty decay, or attack-specific branches.
+
 **Date:** August 12, 2026
 **For:** Ashnan Sir
 **Purpose:** Explain why false detection (honest clients wrongly flagged/removed) happens in each version of SWT-CP, backed by data from experiments.

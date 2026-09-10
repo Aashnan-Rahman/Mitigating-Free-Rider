@@ -15,10 +15,13 @@ class RunLogger:
         self.run_dir = Path(config.output_dir) / run_name
         self.run_dir.mkdir(parents=True, exist_ok=True)
         self.trap_rows: list[dict[str, Any]] = []
+        self.trap_assignment_rows: list[dict[str, Any]] = []
         self.global_rows: list[dict[str, Any]] = []
         self.client_rows: list[dict[str, Any]] = []
         self.penalty_rows: list[dict[str, Any]] = []
         self.removal_rows: list[dict[str, Any]] = []
+        self.rehabilitation_rows: list[dict[str, Any]] = []
+        self.dodge_rows: list[dict[str, Any]] = []
         self.summary_rows: list[dict[str, Any]] = []
         self.detection_round_rows: list[dict[str, Any]] = []
         self.detection_event_rows: list[dict[str, Any]] = []
@@ -33,10 +36,13 @@ class RunLogger:
 
     def write_all(self, run_config: dict[str, Any]) -> None:
         self._write_csv("trap_matrix.csv", self.trap_rows)
+        self._write_csv("trap_assignments.csv", self.trap_assignment_rows)
         self._write_csv("global_metrics.csv", self.global_rows)
         self._write_csv("client_metrics.csv", self.client_rows)
         self._write_csv("penalty_tracker.csv", self.penalty_rows)
         self._write_csv("removals.csv", self.removal_rows)
+        self._write_csv("rehabilitations.csv", self.rehabilitation_rows)
+        self._write_csv("dodge_tracker.csv", self.dodge_rows)
         self._write_csv("detection_summary.csv", self.summary_rows)
         self._write_csv("round_detection_metrics.csv", self.detection_round_rows)
         self._write_csv("detection_events.csv", self.detection_event_rows)
@@ -63,10 +69,13 @@ class RunLogger:
         """Restore round logs when continuing a checkpointed run."""
         loaders = (
             ("trap_matrix.csv", "trap_rows"),
+            ("trap_assignments.csv", "trap_assignment_rows"),
             ("global_metrics.csv", "global_rows"),
             ("client_metrics.csv", "client_rows"),
             ("penalty_tracker.csv", "penalty_rows"),
             ("removals.csv", "removal_rows"),
+            ("rehabilitations.csv", "rehabilitation_rows"),
+            ("dodge_tracker.csv", "dodge_rows"),
             ("round_detection_metrics.csv", "detection_round_rows"),
             ("detection_events.csv", "detection_event_rows"),
         )
@@ -136,7 +145,15 @@ def _coerce_row(row: dict[str, str]) -> dict[str, Any]:
     return converted
 
 CSV_HEADERS: dict[str, list[str]] = {
+    "trap_assignments.csv": ["round", "client_id", "phase", "role", "group_id"],
     "removals.csv": ["round", "client_id", "is_free_rider", "final_penalty"],
+    "rehabilitations.csv": [
+        "round", "client_id", "is_free_rider", "penalty", "probes", "flags", "dodge_index"
+    ],
+    "dodge_tracker.csv": [
+        "round", "client_id", "is_suspected", "episode_probes", "episode_flags",
+        "dodge_index", "lifetime_trap_flags"
+    ],
     "detection_summary.csv": [
         "removed_free_riders",
         "removed_honest_clients",
@@ -151,6 +168,6 @@ CSV_HEADERS: dict[str, list[str]] = {
         "round", "evaluated_clients", "true_positives", "false_positives",
         "true_negatives", "false_negatives", "detection_accuracy", "precision",
         "recall", "f1", "false_positive_rate", "false_negative_rate",
-        "specificity", "new_removals",
+        "specificity", "new_removals", "new_rehabilitations", "num_suspected",
     ],
 }

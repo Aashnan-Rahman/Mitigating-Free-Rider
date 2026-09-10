@@ -2,7 +2,8 @@ from __future__ import annotations
 
 import math
 import random
-from dataclasses import dataclass
+from dataclasses import dataclass, field
+from typing import Any, Mapping
 
 from config import ExperimentConfig
 
@@ -13,6 +14,9 @@ class TrapSelection:
     trapped_clients: set[int]
     anchors: set[int]
     coverage_complete: bool = False
+    suspicion_groups: list[tuple[set[int], set[int]]] = field(default_factory=list)
+    surveillance_clients: set[int] = field(default_factory=set)
+    surveillance_complete: bool = False
 
 
 class TrapSelector:
@@ -21,9 +25,37 @@ class TrapSelector:
         self.rng = rng
         self.phase = "warmup"
         self.coverage_queue: list[list[int]] = []
-        self.suspicion_window_rounds = 0
-        self.suspicion_window_flags = 0
-        self.quiet_windows = 0
+        self.initial_coverage_done = False
+        self.surveillance_queue: list[list[int]] = []
+        self.completed_surveillance_clients: set[int] = set()
+        self.anchor_pool: set[int] = set()
+
+    def state_dict(self) -> dict[str, Any]:
+        return {
+            "phase": self.phase,
+            "coverage_queue": [group[:] for group in self.coverage_queue],
+            "initial_coverage_done": self.initial_coverage_done,
+            "surveillance_queue": [group[:] for group in self.surveillance_queue],
+            "completed_surveillance_clients": sorted(self.completed_surveillance_clients),
+            "anchor_pool": sorted(self.anchor_pool),
+        }
+
+    def load_state_dict(self, state: Mapping[str, Any]) -> None:
+        self.phase = str(state.get("phase", "suspicion"))
+        self.coverage_queue = [
+            [int(client_id) for client_id in group]
+            for group in state.get("coverage_queue", [])
+        ]
+        self.initial_coverage_done = bool(state.get("initial_coverage_done", False))
+        self.surveillance_queue = [
+            [int(client_id) for client_id in group]
+            for group in state.get("surveillance_queue", [])
+        ]
+        self.completed_surveillance_clients = {
+            int(client_id)
+            for client_id in state.get("completed_surveillance_clients", [])
+        }
+        self.anchor_pool = {int(client_id) for client_id in state.get("anchor_pool", [])}
 
     def select(
         self,
@@ -31,55 +63,170 @@ class TrapSelector:
         active_clients: list[int],
         penalties: dict[int, int],
         times_flagged: dict[int, int],
+        suspected_clients: set[int] | None = None,
     ) -> TrapSelection:
         if round_idx <= self.config.warmup_rounds or not active_clients:
             self.phase = "warmup"
             return TrapSelection("warmup", set(), set())
 
-        if self.phase == "warmup":
+        if not self.initial_coverage_done and self.phase == "warmup":
             self.start_coverage(active_clients)
 
-        if self.phase == "coverage":
+        if not self.initial_coverage_done and self.phase == "coverage":
             group = self._next_coverage_group(active_clients)
             if group:
+                complete = not self.coverage_queue
+                if complete:
+                    self.initial_coverage_done = True
                 return TrapSelection(
-                    "coverage", set(group), set(), not self.coverage_queue
+                    "coverage", set(group), set(), complete
                 )
-            self.phase = "suspicion"
+            self.initial_coverage_done = True
 
-        trapped, anchors = self._select_suspicion(active_clients, penalties, times_flagged)
-        return TrapSelection("suspicion", trapped, anchors)
+        return self._select_post_coverage(
+            active_clients,
+            suspected_clients or set(),
+            penalties,
+            times_flagged,
+        )
 
     def start_coverage(self, active_clients: list[int]) -> None:
         self.phase = "coverage"
         self.coverage_queue = self._build_coverage_queue(active_clients)
-        self.suspicion_window_rounds = 0
-        self.suspicion_window_flags = 0
-        self.quiet_windows = 0
 
-    def observe_round(self, phase: str, new_flags: int, active_clients: list[int]) -> None:
-        if phase != "suspicion":
-            return
-        self.suspicion_window_rounds += 1
-        self.suspicion_window_flags += new_flags
-        if self.suspicion_window_rounds < self.config.reset_window_size:
-            return
+    def _select_post_coverage(
+        self,
+        active_clients: list[int],
+        suspected_clients: set[int],
+        penalties: dict[int, int],
+        times_flagged: dict[int, int],
+    ) -> TrapSelection:
+        active = set(active_clients)
+        suspects = active & suspected_clients
+        unflagged = active - suspects
+        x_groups = max(1, len(suspects) // self.config.suspicion_target_group_size) if suspects else 0
+        desired_anchors = min(
+            self.config.max_suspicion_anchors,
+            self.config.anchors_per_suspicion_group * x_groups,
+            len(unflagged),
+        )
 
-        if self.suspicion_window_flags <= self.config.reset_flag_threshold:
-            self.quiet_windows += 1
+        if not self.surveillance_queue:
+            self.completed_surveillance_clients.clear()
+            self.anchor_pool = set(
+                self._anchor_sample(
+                    list(unflagged), penalties, times_flagged, desired_anchors
+                )
+            )
+            surveillance = list(unflagged - self.anchor_pool)
+            self.rng.shuffle(surveillance)
+            self.surveillance_queue = [[] for _ in range(self.config.surveillance_groups)]
+            for index, client_id in enumerate(surveillance):
+                self.surveillance_queue[index % self.config.surveillance_groups].append(client_id)
         else:
-            self.quiet_windows = 0
-        self.suspicion_window_rounds = 0
-        self.suspicion_window_flags = 0
+            self.anchor_pool &= unflagged
+            if len(self.anchor_pool) > desired_anchors:
+                released = list(self.anchor_pool)
+                self.rng.shuffle(released)
+                released = released[desired_anchors:]
+                self.anchor_pool.difference_update(released)
+                for client_id in released:
+                    if client_id not in self.completed_surveillance_clients:
+                        self.rng.choice(self.surveillance_queue).append(client_id)
+            elif len(self.anchor_pool) < desired_anchors:
+                candidates = list(unflagged - self.anchor_pool)
+                additions = self._anchor_sample(
+                    candidates,
+                    penalties,
+                    times_flagged,
+                    desired_anchors - len(self.anchor_pool),
+                )
+                self.anchor_pool.update(additions)
+                for group in self.surveillance_queue:
+                    group[:] = [client_id for client_id in group if client_id not in self.anchor_pool]
 
-        if self.quiet_windows >= self.config.reset_window_count:
-            self.start_coverage(active_clients)
+            scheduled_unflagged = self.anchor_pool | self.completed_surveillance_clients | {
+                client_id for group in self.surveillance_queue for client_id in group
+            }
+            newly_available = list(unflagged - scheduled_unflagged)
+            self.rng.shuffle(newly_available)
+            for client_id in newly_available:
+                self.rng.choice(self.surveillance_queue).append(client_id)
+
+        suspect_list = list(suspects)
+        self.rng.shuffle(suspect_list)
+        suspect_groups = [[] for _ in range(x_groups)]
+        for index, client_id in enumerate(suspect_list):
+            suspect_groups[index % x_groups].append(client_id)
+
+        anchors = list(self.anchor_pool)
+        self.rng.shuffle(anchors)
+        anchor_groups = [[] for _ in range(x_groups)]
+        for index, client_id in enumerate(anchors):
+            anchor_groups[index % x_groups].append(client_id)
+
+        grouped = [
+            (set(suspect_groups[index]), set(anchor_groups[index]))
+            for index in range(x_groups)
+        ]
+        surveillance_group = {
+            client_id
+            for client_id in self.surveillance_queue.pop(0)
+            if client_id in unflagged and client_id not in self.anchor_pool
+        }
+        self.completed_surveillance_clients.update(surveillance_group)
+        surveillance_complete = not self.surveillance_queue
+        if surveillance_complete:
+            self.anchor_pool.clear()
+
+        anchors_set = set().union(*(group_anchors for _, group_anchors in grouped)) if grouped else set()
+        trapped = surveillance_group | anchors_set | suspects
+        self.phase = "suspicion" if suspects else "surveillance"
+        return TrapSelection(
+            self.phase,
+            trapped,
+            anchors_set,
+            suspicion_groups=grouped,
+            surveillance_clients=surveillance_group,
+            surveillance_complete=surveillance_complete,
+        )
 
     def _build_coverage_queue(self, active_clients: list[int]) -> list[list[int]]:
         shuffled = active_clients[:]
         self.rng.shuffle(shuffled)
         size = self._trap_size(active_clients)
-        return [shuffled[start : start + size] for start in range(0, len(shuffled), size)]
+        groups = [shuffled[start : start + size] for start in range(0, len(shuffled), size)]
+
+        if self.config.coverage_checks_per_client == 1:
+            return groups
+
+        # Probe two different groups per coverage round while giving every group
+        # exactly two observations.  Pairing a random cyclic ordering with a
+        # non-self-inverse offset guarantees that an unordered pair is never
+        # repeated during the sweep.
+        if len(groups) == 1:
+            return [groups[0], groups[0]]
+        if len(groups) == 2:
+            # Two groups have no second distinct pairing. Keep the two checks,
+            # even though the only possible pair must be repeated.
+            combined = groups[0] + groups[1]
+            return [combined, combined]
+
+        group_order = list(range(len(groups)))
+        self.rng.shuffle(group_order)
+        offsets = [
+            offset
+            for offset in range(1, len(groups))
+            if (2 * offset) % len(groups) != 0
+        ]
+        offset = self.rng.choice(offsets)
+        schedule = [
+            groups[group_order[index]]
+            + groups[group_order[(index + offset) % len(groups)]]
+            for index in range(len(groups))
+        ]
+        self.rng.shuffle(schedule)
+        return schedule
 
     def _next_coverage_group(self, active_clients: list[int]) -> list[int]:
         active = set(active_clients)
@@ -88,45 +235,6 @@ class TrapSelector:
             if group:
                 return group
         return []
-
-    def _select_suspicion(
-        self,
-        active_clients: list[int],
-        penalties: dict[int, int],
-        times_flagged: dict[int, int],
-    ) -> tuple[set[int], set[int]]:
-        size = self._trap_size(active_clients)
-        suspect_count = max(0, size - min(self.config.num_anchors, size))
-        suspects = self._weighted_sample(active_clients, penalties, suspect_count)
-        remaining = [client_id for client_id in active_clients if client_id not in suspects]
-        anchor_count = min(self.config.num_anchors, size - len(suspects), len(remaining))
-        anchors = self._anchor_sample(remaining, penalties, times_flagged, anchor_count)
-        trapped = set(suspects) | set(anchors)
-
-        if len(trapped) < size:
-            fill_from = [client_id for client_id in active_clients if client_id not in trapped]
-            self.rng.shuffle(fill_from)
-            trapped.update(fill_from[: size - len(trapped)])
-        return trapped, set(anchors)
-
-    def _weighted_sample(
-        self, clients: list[int], penalties: dict[int, int], count: int
-    ) -> list[int]:
-        pool = clients[:]
-        selected: list[int] = []
-        for _ in range(min(count, len(pool))):
-            weights = [penalties.get(client_id, 0) + self.config.epsilon for client_id in pool]
-            total = sum(weights)
-            pick = self.rng.random() * total
-            cursor = 0.0
-            chosen_index = 0
-            for idx, weight in enumerate(weights):
-                cursor += weight
-                if cursor >= pick:
-                    chosen_index = idx
-                    break
-            selected.append(pool.pop(chosen_index))
-        return selected
 
     def _anchor_sample(
         self,

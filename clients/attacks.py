@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from collections import defaultdict, deque
 from collections.abc import Mapping
-from typing import Deque
+from typing import Any, Deque
 
 import torch
 
@@ -16,30 +16,58 @@ class FreeRiderAttacker:
     def __init__(self, config: ExperimentConfig, device: torch.device) -> None:
         self.config = config
         self.device = device
-        self.last_legit_state: dict[int, dict[str, torch.Tensor]] = {}
+        # Attackers only know models that the server sent to them. They are never
+        # told whether a received model is a trap.
+        self.last_received_state: dict[int, dict[str, torch.Tensor]] = {}
         self.fr3_buffers: dict[int, Deque[dict[str, torch.Tensor]]] = defaultdict(
             lambda: deque(maxlen=config.fr3_window)
         )
-        self.previous_legit_state: dict[int, dict[str, torch.Tensor]] = {}
+        self.previous_received_state: dict[int, dict[str, torch.Tensor]] = {}
         self.fr4_delta_history: dict[int, Deque[torch.Tensor]] = defaultdict(
             lambda: deque(maxlen=config.fr4_history_size)
         )
 
-    def observe_received(
-        self, client_id: int, received_state: StateDict, is_trapped: bool
-    ) -> None:
-        if self.config.attack_type == "FR3":
-            self.fr3_buffers[client_id].append(clone_state(received_state))
+    def state_dict(self) -> dict[str, Any]:
+        """Preserve attacker-visible history when continuing a simulation."""
+        return {
+            "last_received_state": {
+                client_id: clone_state(state)
+                for client_id, state in self.last_received_state.items()
+            },
+            "fr3_buffers": {
+                client_id: [clone_state(state) for state in states]
+                for client_id, states in self.fr3_buffers.items()
+            },
+            "previous_received_state": {
+                client_id: clone_state(state)
+                for client_id, state in self.previous_received_state.items()
+            },
+            "fr4_delta_history": {
+                client_id: [delta.detach().clone() for delta in deltas]
+                for client_id, deltas in self.fr4_delta_history.items()
+            },
+        }
 
-        if not is_trapped:
-            current = clone_state(received_state)
-            previous = self.previous_legit_state.get(client_id)
-            if previous is not None:
-                self.fr4_delta_history[client_id].append(
-                    flatten_delta(current, previous).detach().cpu()
-                )
-            self.previous_legit_state[client_id] = clone_state(current)
-            self.last_legit_state[client_id] = clone_state(current)
+    def load_state_dict(self, state: Mapping[str, Any]) -> None:
+        """Restore only history that the simulated client previously observed."""
+        self.last_received_state = {
+            int(client_id): clone_state(client_state)
+            for client_id, client_state in state.get("last_received_state", {}).items()
+        }
+        self.fr3_buffers.clear()
+        for client_id, states in state.get("fr3_buffers", {}).items():
+            self.fr3_buffers[int(client_id)].extend(
+                clone_state(client_state) for client_state in states
+            )
+        self.previous_received_state = {
+            int(client_id): clone_state(client_state)
+            for client_id, client_state in state.get("previous_received_state", {}).items()
+        }
+        self.fr4_delta_history.clear()
+        for client_id, deltas in state.get("fr4_delta_history", {}).items():
+            self.fr4_delta_history[int(client_id)].extend(
+                delta.detach().clone() for delta in deltas
+            )
 
     def fabricate(
         self,
@@ -60,32 +88,36 @@ class FreeRiderAttacker:
         raise ValueError(f"Unsupported attack type: {attack_type}")
 
     def _fr1(self, client_id: int, received_state: StateDict) -> dict[str, torch.Tensor]:
-        return clone_state(self.last_legit_state.get(client_id, received_state))
+        # Replay the last model this client saw. On its first participation it
+        # has no history, so returning the current model is the only possible
+        # no-computation fallback.
+        fabricated = clone_state(self.last_received_state.get(client_id, received_state))
+        self.last_received_state[client_id] = clone_state(received_state)
+        return fabricated
 
     def _fr2(
         self, received_state: StateDict, generator: torch.Generator
     ) -> dict[str, torch.Tensor]:
+        """Add a bounded, memoryless random update to the received model."""
         fabricated: dict[str, torch.Tensor] = {}
         for key, tensor in received_state.items():
             if torch.is_floating_point(tensor):
-                std = tensor.detach().float().std(unbiased=False).clamp_min(
-                    self.config.trap_noise_floor
-                )
-                mean = tensor.detach().float().mean()
-                fabricated[key] = torch.randn(
+                random_update = torch.rand(
                     tensor.shape,
                     generator=generator,
                     device=tensor.device,
                     dtype=tensor.dtype,
-                ).mul(std).add(mean)
+                ).mul(2.0).sub(1.0).mul(self.config.fr2_update_range)
+                fabricated[key] = tensor.detach() + random_update
             else:
                 fabricated[key] = tensor.detach().clone()
         return fabricated
 
     def _fr3(self, client_id: int, received_state: StateDict) -> dict[str, torch.Tensor]:
         buffer = self.fr3_buffers[client_id]
-        if not buffer:
-            return clone_state(received_state)
+        # The client cannot distinguish trap models, so every received model is
+        # part of the same observable history.
+        buffer.append(clone_state(received_state))
         averaged = clone_state(received_state)
         for key, tensor in averaged.items():
             if torch.is_floating_point(tensor):
@@ -100,6 +132,17 @@ class FreeRiderAttacker:
         round_idx: int,
         generator: torch.Generator,
     ) -> dict[str, torch.Tensor]:
+        # Derive public trajectory information from every model this client has
+        # received. A secret trap therefore contaminates the attacker's estimate
+        # just like any other model; there is intentionally no trap-status input.
+        current = clone_state(received_state)
+        previous = self.previous_received_state.get(client_id)
+        if previous is not None:
+            self.fr4_delta_history[client_id].append(
+                flatten_delta(current, previous).detach().cpu()
+            )
+        self.previous_received_state[client_id] = current
+
         history = self.fr4_delta_history[client_id]
         keys = floating_keys(received_state)
         if history:
@@ -123,7 +166,7 @@ class FreeRiderAttacker:
                     device=received_state[key].device,
                     dtype=received_state[key].dtype,
                 )
-                * self.config.trap_noise_floor
+                * self.config.fr4_cold_start_scale
                 for key in keys
             ]
             fabricated_delta = torch.cat(parts) if parts else torch.empty(0, device=self.device)

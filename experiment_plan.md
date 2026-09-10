@@ -56,7 +56,7 @@ the default file read by `monitor.py`.
   F1, and removals for every decision round.
 - `detection_events.csv`: when and why each client was flagged.
 - `client_detection_summary.csv`: first flag/removal rounds and final status.
-- `norm_z_matrix.csv`, `loss_z_matrix.csv`, `delta_norm_matrix.csv`, and
+- `norm_z_matrix.csv`, legacy-empty `loss_z_matrix.csv`, `delta_norm_matrix.csv`, and
   `flag_matrix.csv`: client-by-round matrices.
 - `global_metrics.csv`: wall time, process CPU time, RSS/system memory,
   process CPU percentage, and CUDA allocated/reserved/peak memory per round.
