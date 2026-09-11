@@ -1,0 +1,26 @@
+{
+  "batch_name": "stage1_mnist_iid_fr40_20260911",
+  "results_root": "./results",
+  "defaults": {
+    "num_clients": 100,
+    "num_rounds": 100,
+    "free_rider_pct": 0.4,
+    "seed": 42,
+    "device": "auto",
+    "save_checkpoints": true,
+    "checkpoint_keep_last": 5
+  },
+  "stages": [
+    {
+      "id": "stage1",
+      "description": "MNIST IID, 40% free riders, four attacks",
+      "enabled": true,
+      "matrix": {
+        "dataset": ["mnist"],
+        "distribution": ["iid"],
+        "attack_type": ["FR1", "FR2", "FR3", "FR4"],
+        "free_rider_pct": [0.4]
+      }
+    }
+  ]
+}

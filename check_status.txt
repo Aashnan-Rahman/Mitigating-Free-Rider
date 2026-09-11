@@ -1,37 +1,160 @@
-$run = "E:\New Projects\Mitigating-Free-Rider\results\mnist_iid_fr40\FR4"
-$totalRounds = 100
+# Run once from PowerShell:
+#   & ([scriptblock]::Create((Get-Content .\check_status.txt -Raw))) -Once
+# Run continuously with a 30-second refresh:
+#   & ([scriptblock]::Create((Get-Content .\check_status.txt -Raw)))
+# Use another refresh interval:
+#   & ([scriptblock]::Create((Get-Content .\check_status.txt -Raw))) -RefreshSeconds 10
 
-while ($true) {
-    Clear-Host
+param(
+    [string]$StatusPath = "",
+    [int]$RefreshSeconds = 30,
+    [switch]$Once
+)
 
-    $results = Get-Content "$run\latest_results.json" | ConvertFrom-Json
-    $config = Get-Content "$run\run_config.json" | ConvertFrom-Json
-    $metrics = $results.latest_global_metrics
+$ErrorActionPreference = "Stop"
 
-    $round = [int]$results.latest_round
-    $roundTime = [double]$metrics.round_time_seconds
-    $remaining = $totalRounds - $round
-    $etaSeconds = $remaining * $roundTime
-
-    Write-Host "Experiment: $($config.dataset) $($config.distribution) $($config.attack_type) $($config.free_rider_pct * 100)% free riders"
-    Write-Host "Run name:   $($results.run_name)"
-    Write-Host "Round:      $round / $totalRounds"
-    Write-Host "Progress:   $([math]::Round(($round / $totalRounds) * 100, 1))%"
-    Write-Host "Time/round: $([math]::Round($roundTime / 60, 2)) minutes"
-    Write-Host "Rounds left: $remaining"
-    Write-Host "Approx. ETA: $([TimeSpan]::FromSeconds($etaSeconds))"
-    Write-Host "Accuracy:   $($metrics.global_accuracy)"
-    Write-Host "Loss:       $($metrics.global_loss)"
-    Write-Host "Checked:    $(Get-Date)"
-
-    if ($round -ge $totalRounds) {
-        Write-Host "`nExperiment complete."
-        break
+function Format-Duration([double]$Seconds) {
+    if ($Seconds -lt 0 -or [double]::IsNaN($Seconds)) {
+        return "n/a"
     }
-
-    Start-Sleep -Seconds 30
+    return ([TimeSpan]::FromSeconds($Seconds).ToString("dd\.hh\:mm\:ss"))
 }
 
+function Clear-Display {
+    try {
+        Clear-Host
+    } catch {
+        # Non-interactive PowerShell hosts do not expose a console buffer.
+    }
+}
 
+function Get-StatusPath {
+    if ($StatusPath) {
+        return (Resolve-Path -LiteralPath $StatusPath).Path
+    }
 
+    $scriptRoot = if ($PSScriptRoot) { $PSScriptRoot } else { (Get-Location).Path }
+    $root = if ((Split-Path -Leaf $scriptRoot) -eq "Mitigating-Free-Rider") {
+        $scriptRoot
+    } else {
+        Split-Path -Parent $scriptRoot
+    }
+    $candidates = @(
+        Get-ChildItem -LiteralPath (Join-Path $root "results") -Filter "experiment_status.json" -File -ErrorAction SilentlyContinue
+        Get-ChildItem -LiteralPath (Join-Path $root "results") -Directory -ErrorAction SilentlyContinue |
+            ForEach-Object {
+                Get-Item -LiteralPath (Join-Path $_.FullName "experiment_status.json") -ErrorAction SilentlyContinue
+            }
+    ) | Sort-Object LastWriteTime -Descending
 
+    if (-not $candidates) {
+        throw "No results\experiment_status.json file was found."
+    }
+    return $candidates[0].FullName
+}
+
+function Show-Status {
+    $path = Get-StatusPath
+    $status = Get-Content -LiteralPath $path -Raw | ConvertFrom-Json
+    $experiments = @($status.experiments)
+    $totalRoundsPerExperiment = if ($status.total_experiments -gt 0) {
+        [int]($status.total_rounds / $status.total_experiments)
+    } else {
+        0
+    }
+    $completedRounds = [int]$status.completed_rounds
+    $totalRounds = [int]$status.total_rounds
+    $overallPercent = if ($totalRounds -gt 0) {
+        100.0 * $completedRounds / $totalRounds
+    } else {
+        0
+    }
+    $avgRoundSeconds = if ($completedRounds -gt 0) {
+        [double]$status.elapsed_seconds / $completedRounds
+    } else {
+        0
+    }
+    $etaSeconds = if ($status.estimated_remaining_seconds -ne $null) {
+        [double]$status.estimated_remaining_seconds
+    } else {
+        0
+    }
+
+    Clear-Display
+    Write-Host "=== Free-Rider Experiment Status ===" -ForegroundColor Cyan
+    Write-Host "Batch:           $($status.batch_id)"
+    Write-Host "State:           $($status.state)"
+    Write-Host "Status file:     $path"
+    Write-Host "Started:         $($status.started_at)"
+    Write-Host "Last updated:    $($status.updated_at)"
+    Write-Host ""
+    Write-Host "Overall progress: $completedRounds / $totalRounds rounds ($([math]::Round($overallPercent, 1))%)"
+    Write-Host "Experiments:     $($status.completed_experiments) / $($status.total_experiments) completed"
+    Write-Host "Failures:        $($status.failed_experiments)"
+    Write-Host "Elapsed time:    $(Format-Duration ([double]$status.elapsed_seconds))"
+    Write-Host "Avg time/round:  $(Format-Duration $avgRoundSeconds)"
+    Write-Host "Overall ETA:     $(Format-Duration $etaSeconds)"
+    Write-Host "Checked:         $(Get-Date)"
+    Write-Host ""
+
+    $current = $experiments | Where-Object { $_.state -eq "running" } | Select-Object -First 1
+    if ($current) {
+        $progress = $current.progress
+        $round = [int]$current.completed_rounds
+        $roundPercent = if ($totalRoundsPerExperiment -gt 0) {
+            100.0 * $round / $totalRoundsPerExperiment
+        } else {
+            0
+        }
+        $roundTime = if ($progress -and $progress.round_time_seconds -ne $null) {
+            [double]$progress.round_time_seconds
+        } else {
+            0
+        }
+        $remainingRounds = [math]::Max(0, $totalRoundsPerExperiment - $round)
+
+        Write-Host "=== Current Experiment ===" -ForegroundColor Yellow
+        Write-Host "ID:              $($current.id)"
+        Write-Host "Attack:          $($current.config.attack_type)"
+        Write-Host "Dataset:         $($current.config.dataset) / $($current.config.distribution)"
+        Write-Host "Free riders:     $([math]::Round([double]$current.config.free_rider_pct * 100, 1))%"
+        Write-Host "Round:           $round / $totalRoundsPerExperiment ($([math]::Round($roundPercent, 1))%)"
+        Write-Host "Time/round:      $(Format-Duration $roundTime)"
+        Write-Host "Rounds remaining: $remainingRounds"
+        Write-Host "Experiment ETA:  $(Format-Duration ($remainingRounds * $roundTime))"
+        if ($progress) {
+            Write-Host "Accuracy:        $($progress.global_accuracy)"
+            Write-Host "Loss:            $($progress.global_loss)"
+            Write-Host "Active clients:  $($progress.active_clients)"
+            Write-Host "Suspected:       $($progress.suspected_clients)"
+            Write-Host "Phase:           $($progress.phase)"
+        }
+    } else {
+        Write-Host "=== Current Experiment ===" -ForegroundColor Yellow
+        Write-Host "No experiment is currently running."
+    }
+
+    Write-Host ""
+    Write-Host "=== Queue ===" -ForegroundColor Yellow
+    foreach ($experiment in $experiments) {
+        $round = if ($experiment.completed_rounds -ne $null) {
+            $experiment.completed_rounds
+        } else {
+            0
+        }
+        Write-Host ("{0,-38} {1,-18} round {2}/{3}" -f $experiment.id, $experiment.state, $round, $totalRoundsPerExperiment)
+    }
+}
+
+do {
+    try {
+        Show-Status
+    } catch {
+        Clear-Display
+        Write-Host "Unable to read experiment status: $($_.Exception.Message)" -ForegroundColor Red
+    }
+
+    if (-not $Once) {
+        Start-Sleep -Seconds $RefreshSeconds
+    }
+} while (-not $Once)

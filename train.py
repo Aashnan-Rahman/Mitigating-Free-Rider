@@ -118,7 +118,7 @@ def run_experiment(
             int(client_id): int(value) for client_id, value in checkpoint["times_trapped"].items()
         }
         free_riders = {int(client_id) for client_id in checkpoint["free_riders_ground_truth"]}
-        logger.load_existing(completed_round)
+        logger.load_existing(completed_round, checkpoint.get("global_metrics"))
         start_round = completed_round + 1
         if "selector_state" in checkpoint:
             selector.load_state_dict(checkpoint["selector_state"])
@@ -155,6 +155,15 @@ def run_experiment(
             )
             lifetime_trap_flags.update(
                 {int(key): int(value) for key, value in checkpoint.get("lifetime_trap_flags", {}).items()}
+            )
+            first_flag_round.update(
+                {int(key): int(value) for key, value in checkpoint.get("first_flag_round", {}).items()}
+            )
+            first_removal_round.update(
+                {
+                    int(key): int(value)
+                    for key, value in checkpoint.get("first_removal_round", {}).items()
+                }
             )
         else:
             raise ValueError(
@@ -725,6 +734,8 @@ def run_experiment(
                 "dodge_probe_counts": dodge_probe_counts.copy(),
                 "dodge_flag_counts": dodge_flag_counts.copy(),
                 "lifetime_trap_flags": lifetime_trap_flags.copy(),
+                "first_flag_round": first_flag_round.copy(),
+                "first_removal_round": first_removal_round.copy(),
                 "free_riders_ground_truth": sorted(free_riders),
                 "global_metrics": logger.global_rows[-1],
                 "config": config.to_dict(),

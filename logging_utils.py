@@ -65,7 +65,11 @@ class RunLogger:
         with (self.run_dir / "latest_results.json").open("w", encoding="utf-8") as handle:
             json.dump(latest, handle, indent=2, sort_keys=True)
 
-    def load_existing(self, completed_round: int) -> None:
+    def load_existing(
+        self,
+        completed_round: int,
+        checkpoint_global_metrics: dict[str, Any] | None = None,
+    ) -> None:
         """Restore round logs when continuing a checkpointed run."""
         loaders = (
             ("trap_matrix.csv", "trap_rows"),
@@ -93,6 +97,10 @@ class RunLogger:
                     or int(row.get("round", completed_round)) <= completed_round
                 ]
             setattr(self, attribute, restored)
+        if checkpoint_global_metrics is not None and not any(
+            int(row.get("round", -1)) == completed_round for row in self.global_rows
+        ):
+            self.global_rows.append(dict(checkpoint_global_metrics))
 
     def _write_csv(self, filename: str, rows: list[dict[str, Any]]) -> None:
         path = self.run_dir / filename
