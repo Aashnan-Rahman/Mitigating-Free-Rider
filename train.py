@@ -852,6 +852,8 @@ def save_rolling_checkpoint(
     """Atomically save this round and retain only the newest snapshots."""
     if keep_last <= 0:
         raise ValueError("keep_last must be positive.")
+    run_dir = run_dir.resolve()
+    run_dir.mkdir(parents=True, exist_ok=True)
     checkpoint_path = run_dir / f"checkpoint_round_{round_idx:04d}.pt"
     temporary_path = run_dir / f".{checkpoint_path.name}.tmp"
     torch.save(checkpoint, temporary_path)
@@ -866,16 +868,11 @@ def save_rolling_checkpoint(
     for _, obsolete_path in numbered[:-keep_last]:
         obsolete_path.unlink()
 
-    # Preserve the convenient resume filename without normally duplicating the
-    # newest checkpoint's disk blocks. Fall back to a copy on filesystems that
-    # do not support hard links.
+    # Publish a portable resume filename after the numbered checkpoint exists.
     latest_path = run_dir / "latest_checkpoint.pt"
     latest_temporary = run_dir / ".latest_checkpoint.pt.tmp"
     latest_temporary.unlink(missing_ok=True)
-    try:
-        os.link(checkpoint_path, latest_temporary)
-    except OSError:
-        shutil.copy2(checkpoint_path, latest_temporary)
+    shutil.copy2(checkpoint_path, latest_temporary)
     latest_temporary.replace(latest_path)
 
 

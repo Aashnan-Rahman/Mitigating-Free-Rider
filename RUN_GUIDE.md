@@ -1,10 +1,16 @@
+
 # SWT-CP Experiment Run Guide
 
 Run every command in PowerShell from the repository root:
 
 ```powershell
-cd "D:\Code\Mitigating Free Rider"
+cd "C:\Users\USER\Documents\GitHub\Mitigating-Free-Rider"
+.\.venv\Scripts\Activate.ps1
 ```
+
+The project environment contains the CUDA-enabled PyTorch installation. If PowerShell
+does not allow activation scripts, run the commands with the environment's Python
+directly, for example `\.venv\Scripts\python.exe -m pytest -q`.
 
 ## 1. Before a long run
 

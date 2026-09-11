@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import time
 from datetime import timedelta
 from pathlib import Path
@@ -18,7 +19,8 @@ def main() -> None:
 
     while True:
         if args.watch:
-            print("\033[2J\033[H", end="")
+            clear_screen()
+            print("Refreshing status...")
         state = read_status(args.status)
         if state is None:
             print(f"Waiting for status file: {args.status}")
@@ -29,6 +31,13 @@ def main() -> None:
         if not args.watch:
             break
         time.sleep(max(args.interval, 0.2))
+
+
+def clear_screen() -> None:
+    if os.name == "nt":
+        os.system("cls")
+    else:
+        print("\033[2J\033[H", end="")
 
 
 def read_status(path: Path) -> dict | None:
