@@ -1,0 +1,238 @@
+# SWT-CP Experiment Run Guide
+
+Run every command in PowerShell from the repository root:
+
+```powershell
+cd "D:\Code\Mitigating Free Rider"
+```
+
+## 1. Before a long run
+
+Activate the Python environment containing PyTorch and the project dependencies,
+then confirm whether PyTorch can actually use CUDA:
+
+```powershell
+python -c "import torch; print('PyTorch:', torch.__version__); print('CUDA available:', torch.cuda.is_available()); print('CUDA device:', torch.cuda.get_device_name(0) if torch.cuda.is_available() else 'CPU only')"
+```
+
+If this prints `CUDA available: False`, `device=auto` will run on the CPU. Fix the
+PyTorch/CUDA installation before launching a long experiment if GPU execution is
+required.
+
+Run the automated checks on the execution laptop:
+
+```powershell
+python -m pytest -q
+```
+
+Optional short data-flow check:
+
+```powershell
+python run_experiment.py --smoke --set device=auto --set run_name=smoke_check
+```
+
+Do not reuse a `run_name` containing results that must be preserved. A repeated
+name writes into the same result directory.
+
+## 2. Run FR1, FR2, FR3, or FR4 individually
+
+The following commands run 100 clients for 100 rounds on MNIST IID with 40% free
+riders, seed 42, and automatic CUDA/CPU selection. Their output directories are
+kept separate from scheduled batch output.
+
+### FR1
+
+```powershell
+python run_experiment.py --set dataset=mnist --set distribution=iid --set free_rider_pct=0.4 --set attack_type=FR1 --set num_clients=100 --set num_rounds=100 --set seed=42 --set device=auto --set output_dir=results/manual_mnist_iid_fr40 --set run_name=FR1_swtcp_v4_seed42
+```
+
+### FR2
+
+```powershell
+python run_experiment.py --set dataset=mnist --set distribution=iid --set free_rider_pct=0.4 --set attack_type=FR2 --set num_clients=100 --set num_rounds=100 --set seed=42 --set device=auto --set output_dir=results/manual_mnist_iid_fr40 --set run_name=FR2_swtcp_v4_seed42
+```
+
+### FR3
+
+```powershell
+python run_experiment.py --set dataset=mnist --set distribution=iid --set free_rider_pct=0.4 --set attack_type=FR3 --set num_clients=100 --set num_rounds=100 --set seed=42 --set device=auto --set output_dir=results/manual_mnist_iid_fr40 --set run_name=FR3_swtcp_v4_seed42
+```
+
+### FR4
+
+```powershell
+python run_experiment.py --set dataset=mnist --set distribution=iid --set free_rider_pct=0.4 --set attack_type=FR4 --set num_clients=100 --set num_rounds=100 --set seed=42 --set device=auto --set output_dir=results/manual_mnist_iid_fr40 --set run_name=FR4_swtcp_v4_seed42
+```
+
+To require CUDA rather than silently falling back to CPU, replace
+`--set device=auto` with `--set device=cuda`. The program will stop immediately
+if CUDA is unavailable.
+
+An individual run does not create the batch-level `experiment_status.json` used
+by `monitor.py`. Its latest completed round can instead be read from:
+
+```powershell
+Get-Content results/manual_mnist_iid_fr40/FR1_swtcp_v4_seed42/latest_results.json
+```
+
+Change `FR1_swtcp_v4_seed42` to the applicable individual run name.
+
+## 3. Schedule FR1 → FR2 → FR3 → FR4 automatically
+
+The existing plan `configs/stage1_final_plan.json` contains exactly four runs in
+this order:
+
+1. MNIST IID FR1, 40%
+2. MNIST IID FR2, 40%
+3. MNIST IID FR3, 40%
+4. MNIST IID FR4, 40%
+
+Start the sequence with:
+
+```powershell
+python run_experiments.py --plan configs/stage1_final_plan.json --stop-on-error
+```
+
+The batch runner is sequential: it completes all 100 rounds of FR1 before FR2,
+then FR3, and finally FR4. `--stop-on-error` prevents later experiments from
+running if an earlier one fails. Omit it only when continuing after a failed run
+is intentional.
+
+The plan currently uses this fixed batch directory:
+
+```text
+results/stage1_mnist_iid_fr40_20260911/
+```
+
+Do not launch the same plan twice at the same time. Before starting a new batch
+in the future, change `batch_name` in `configs/stage1_final_plan.json` to a new,
+unique name so an earlier batch is not overwritten.
+
+## 4. Monitor the scheduled batch
+
+Open a second PowerShell terminal in the repository root.
+
+Show one status snapshot:
+
+```powershell
+python monitor.py
+```
+
+Continuously refresh until the batch finishes:
+
+```powershell
+python monitor.py --watch
+```
+
+Use a slower five-second refresh if preferred:
+
+```powershell
+python monitor.py --watch --interval 5
+```
+
+Monitor the batch-specific status file directly:
+
+```powershell
+python monitor.py --status results/stage1_mnist_iid_fr40_20260911/experiment_status.json --watch
+```
+
+The monitor displays:
+
+- which experiment is running or queued;
+- current round and total rounds;
+- current methodology phase;
+- actual device (`cpu` or `cuda`);
+- active-client count;
+- time taken by the latest round;
+- global accuracy and loss;
+- process memory and peak CUDA memory;
+- estimated time remaining for the complete four-experiment batch.
+
+The ETA is an estimate based on completed rounds. It becomes more useful after
+several rounds and may change as clients are removed or different phases begin.
+After an experiment finishes, its exact total and average-round times are stored
+in that experiment's `run_config.json` as `total_wall_clock_seconds` and
+`average_round_time_seconds`.
+
+To estimate the running experiment by itself—elapsed time, average seconds per
+round, remaining time, and estimated total time—use:
+
+```powershell
+$status = Get-Content results/experiment_status.json | ConvertFrom-Json
+$current = $status.experiments | Where-Object id -eq $status.current_experiment
+$elapsed = ([datetime]$status.updated_at - [datetime]$current.started_at).TotalSeconds
+$round = [int]$current.progress.round
+$totalRounds = [int]$current.progress.total_rounds
+$average = if ($round -gt 0) { $elapsed / $round } else { 0 }
+[pscustomobject]@{
+    Experiment = $current.id
+    Round = "$round/$totalRounds"
+    Elapsed = [timespan]::FromSeconds($elapsed)
+    AverageSecondsPerRound = [math]::Round($average, 2)
+    EstimatedRemaining = [timespan]::FromSeconds($average * ($totalRounds - $round))
+    EstimatedExperimentTotal = [timespan]::FromSeconds($average * $totalRounds)
+}
+```
+
+For example, after FR1 completes:
+
+```powershell
+$result = Get-Content results/stage1_mnist_iid_fr40_20260911/stage1_mnist_iid_fr1_fr40/run_config.json | ConvertFrom-Json
+$result | Select-Object total_wall_clock_seconds, average_round_time_seconds, final_global_accuracy, removed_free_riders, removed_honest_clients
+```
+
+## 5. Check status without Python
+
+The top-level batch status is ordinary JSON and can also be inspected directly:
+
+```powershell
+Get-Content results/experiment_status.json
+```
+
+Useful result locations are:
+
+```text
+results/experiment_status.json
+results/stage1_mnist_iid_fr40_20260911/experiment_status.json
+results/stage1_mnist_iid_fr40_20260911/experiment_manifest.json
+results/stage1_mnist_iid_fr40_20260911/<experiment-id>/latest_results.json
+results/stage1_mnist_iid_fr40_20260911/<experiment-id>/global_metrics.csv
+results/stage1_mnist_iid_fr40_20260911/<experiment-id>/run_config.json
+```
+
+## 6. Checkpoints and interruption
+
+When `save_checkpoints=true`, every completed round creates a recovery
+checkpoint. Only the five newest numbered checkpoints are retained, controlled
+by `checkpoint_keep_last=5`. `latest_checkpoint.pt` identifies the newest
+snapshot without normally consuming another checkpoint's worth of disk space.
+
+If the process is interrupted during a round, the unfinished round is lost, but
+the last completed round remains recoverable. Resume an individual run using the
+same experiment settings, output directory, and run name, plus its checkpoint:
+
+```powershell
+python run_experiment.py --set dataset=mnist --set distribution=iid --set free_rider_pct=0.4 --set attack_type=FR1 --set num_clients=100 --set num_rounds=100 --set seed=42 --set device=auto --set output_dir=results/manual_mnist_iid_fr40 --set run_name=FR1_swtcp_v4_seed42 --set resume_checkpoint=results/manual_mnist_iid_fr40/FR1_swtcp_v4_seed42/latest_checkpoint.pt
+```
+
+Do not resume a checkpoint using a different attack, dataset, distribution, or
+methodology version.
+
+## 7. Changing the experiment
+
+Common command-line overrides are:
+
+```text
+dataset=mnist or cifar10
+distribution=iid or noniid
+dirichlet_alpha=0.5
+free_rider_pct=0.1, 0.2, or 0.4
+attack_type=FR1, FR2, FR3, or FR4
+num_clients=100
+num_rounds=100
+seed=42
+device=auto, cpu, or cuda
+checkpoint_keep_last=5
+```
+
+Use a different `run_name` for every seed or configuration.

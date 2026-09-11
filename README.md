@@ -3,6 +3,9 @@
 This repository implements the `guidelines.md` specification for Suspicion-Weighted
 Trap Detection with Cumulative Penalty.
 
+For complete individual-run, four-attack scheduling, monitoring, timing, CUDA,
+checkpoint, and resume commands, see [`RUN_GUIDE.md`](RUN_GUIDE.md).
+
 ## Run
 
 ```powershell
