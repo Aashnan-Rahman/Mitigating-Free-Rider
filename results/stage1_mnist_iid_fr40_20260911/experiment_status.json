@@ -1,61 +1,20 @@
 {
   "batch_id": "stage1_mnist_iid_fr40_20260911",
-  "completed_experiments": 1,
-  "completed_rounds": 100,
+  "completed_experiments": 0,
+  "completed_rounds": 0,
   "current_experiment": null,
-  "elapsed_seconds": 5626.448473453522,
-  "estimated_remaining_seconds": 16735.18047451973,
+  "elapsed_seconds": 43.05318021774292,
   "experiments": [
     {
-      "completed_rounds": 100,
       "config": {
         "attack_type": "FR1",
         "dataset": "mnist",
         "distribution": "iid",
         "free_rider_pct": 0.4
       },
-      "finished_at": "2026-09-11T15:59:36.865437",
       "id": "stage1_mnist_iid_fr1_fr40",
-      "progress": {
-        "active_clients": 54,
-        "cpu_percent": 0.0,
-        "cuda_allocated_mb": 506.16552734375,
-        "cuda_peak_allocated_mb": 576.62890625,
-        "cuda_reserved_mb": 1448.0,
-        "device": "cuda",
-        "global_accuracy": 0.9881,
-        "global_loss": 0.03574385553818865,
-        "new_flags": 1,
-        "new_rehabilitations": 0,
-        "new_removals": 0,
-        "phase": "suspicion",
-        "process_rss_mb": 894.7265625,
-        "round": 100,
-        "round_time_seconds": 55.60642210001242,
-        "suspected_clients": 3,
-        "system_memory_percent": 50.1,
-        "total_rounds": 100
-      },
-      "run_dir": "results\\stage1_mnist_iid_fr40_20260911\\stage1_mnist_iid_fr1_fr40",
-      "started_at": "2026-09-11T14:26:37.936184",
-      "state": "completed",
-      "summary": {
-        "average_round_time_seconds": 55.5492591079991,
-        "best_global_accuracy": 0.9887,
-        "detection_accuracy": 0.94,
-        "f1": 0.9302325581395349,
-        "false_positive_removal_rate": 0.1,
-        "final_global_accuracy": 0.9881,
-        "final_global_loss": 0.03574385553818865,
-        "missed_free_riders": 0,
-        "peak_cuda_allocated_mb": 974.45849609375,
-        "peak_process_rss_mb": 923.140625,
-        "precision": 0.8695652173913043,
-        "recall": 1.0,
-        "removed_free_riders": 40,
-        "removed_honest_clients": 6,
-        "total_wall_clock_seconds": 5578.429081899987
-      }
+      "started_at": "2026-09-11T16:15:54.353212",
+      "state": "running"
     },
     {
       "config": {
@@ -65,8 +24,7 @@
         "free_rider_pct": 0.4
       },
       "id": "stage1_mnist_iid_fr2_fr40",
-      "started_at": "2026-09-11T15:59:36.869112",
-      "state": "running"
+      "state": "queued"
     },
     {
       "config": {
@@ -91,9 +49,9 @@
   ],
   "failed_experiments": 0,
   "plan": "configs\\stage1_final_plan.json",
-  "started_at": "2026-09-11T14:26:37.930589",
+  "started_at": "2026-09-11T16:15:54.348609",
   "state": "interrupted",
   "total_experiments": 4,
   "total_rounds": 400,
-  "updated_at": "2026-09-11T16:00:24.379046"
+  "updated_at": "2026-09-11T16:16:37.401765"
 }

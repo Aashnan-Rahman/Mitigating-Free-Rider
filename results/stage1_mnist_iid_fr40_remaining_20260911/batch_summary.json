@@ -1,10 +1,7 @@
 {
   "batch_id": "stage1_mnist_iid_fr40_remaining_20260911",
   "completed_experiments": 3,
-  "completed_rounds": 300,
-  "current_experiment": null,
   "elapsed_seconds": 18557.597917556763,
-  "estimated_remaining_seconds": 0.0,
   "experiments": [
     {
       "completed_rounds": 100,
@@ -162,10 +159,6 @@
   ],
   "failed_experiments": 0,
   "finished_at": "2026-09-11T21:36:48.824663",
-  "plan": "configs\\stage1_remaining_fr2_fr4_plan.json",
   "started_at": "2026-09-11T16:27:31.226782",
-  "state": "completed",
-  "total_experiments": 3,
-  "total_rounds": 300,
-  "updated_at": "2026-09-11T21:36:48.824692"
+  "state": "completed"
 }
