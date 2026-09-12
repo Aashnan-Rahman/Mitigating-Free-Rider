@@ -51,7 +51,8 @@ flag = near_zero_update
 ```
 
 - Near-zero updates target static/no-update behavior such as FR1.
-- The large positive norm-z branch targets FR2.
+- Both unusually high and unusually low update norms are detected using
+  `abs(norm_z)`, without selecting a branch based on attack type.
 - FR3 and FR4 are tested through the same secret-model probes and statistical
   response rules; the server does not select a detector branch by attack type.
 - Client-local accuracy and loss are never trusted detector inputs. They may be
@@ -77,26 +78,28 @@ the expensive suspicion path.
 The initial coverage is evaluated as a complete experiment, not as unrelated per-round
 decisions:
 
-1. At the beginning of a coverage sweep, the server creates one trap model.
-2. The exact trap-model weights are frozen for the complete sweep.
+1. At the beginning of the initial coverage sweep, the server creates two
+   distinct trap models from the same global base model.
+2. Each trap model's exact weights are frozen for its complete pass.
 3. Active clients are randomly partitioned into small groups.
-4. Two distinct groups receive the frozen trap model per round. The randomized
-   schedule contains no repeated group-pair and gives every group exactly two
-   probes during the sweep.
+4. Two distinct groups are probed per round. A randomized first pass gives every
+   client trap A once; a separately randomized second pass gives every client
+   trap B once, while avoiding repeated group-pairs where possible.
 5. The server stores both of each client's deltas and observation rounds.
 6. No coverage client is flagged, penalized, or decayed during an incomplete
    sweep.
-7. After the last pair responds, median/MAD statistics are calculated over all
-   stored probe responses from the complete sweep.
+7. After the last pair responds, median/MAD statistics are calculated separately
+   for trap A and trap B, so responses to different models never define one
+   another's baseline.
 8. The two decisions are combined per client: each magnitude flag adds one point
    and every near-zero response adds the five-point zero-update penalty.
-9. The frozen model and stored evidence are cleared.
+9. Both frozen models and the stored evidence are cleared.
 10. The initial double sweep is not repeated; later unflagged surveillance uses
     ten single-check groups and a newly frozen model for each ten-round cycle.
 
 This prevents an unlucky group containing a majority of free riders from defining
-its own baseline. It also ensures that all clients in one coverage sweep are
-compared after receiving the same model, rather than different random models.
+its own baseline. Within each pass, all clients are compared only after receiving
+the same trap model; the second distinct trap makes repeated evasion harder.
 
 The normal global model may continue evolving during the sweep, but trapped
 updates are measured relative to the exact frozen model they received and are
@@ -110,12 +113,20 @@ metric is requested or trusted for detection.
 
 ## Suspicion phase and anchors
 
-After the initial double-coverage sweep, clients flagged at least once enter a
-separate suspicious pool. If `S` clients are suspicious, the server creates
+After the initial double-coverage sweep, clients are divided into unflagged (`U`),
+candidate (`C`), and suspicious (`S`) states. One nonzero magnitude flag moves a
+client from U to C and quarantines its update. A candidate receives an immediate
+fresh-trap confirmation against clean anchors: a second flag moves it to S, while
+a pass returns it to U without erasing its accumulated penalty. Two flags in the
+initial double coverage move a client directly to S. An exact send-back is strong
+evidence and also moves a client directly to S.
+
+Candidates and every client ever flagged are ineligible to act as anchors. If
+`S` clients are suspicious, the server creates
 `max(1, floor(S / 10))` groups and distributes every suspicious client among
 them; ten is a target group size, not a maximum.
 
-At most ten low-suspicion anchors are selected for a ten-round surveillance
+At most ten never-flagged anchors are selected for a ten-round surveillance
 cycle, with up to three assigned to each suspicious group. Suspects and anchors
 are reshuffled between groups every round. Every group receives its own newly
 generated trap model, and suspect update norms are tested against the median/MAD
@@ -128,7 +139,7 @@ Independently of the number of suspicious groups, all non-anchor unflagged
 clients are partitioned into exactly ten surveillance groups. One group receives
 the same frozen surveillance trap per round and is excluded from aggregation.
 After all ten groups have been processed, their responses are evaluated together;
-a magnitude flag adds one point and moves the client into the suspicious pool.
+a magnitude flag adds one point and moves the client into the candidate pool.
 Released anchors and rehabilitated suspects are inserted into a not-yet-processed
 surveillance group when one remains. Later surveillance cycles use one check even
 when the suspicious pool is empty; the initial double check is not repeated.
@@ -149,10 +160,15 @@ counters reset. Lifetime trap and flag counts remain available for analysis.
 - Flag during the one-check unflagged surveillance sweep: one point.
 - There is no automatic per-pass penalty decay; rehabilitation is controlled by
   the dodge index.
-- Remove when cumulative penalty is greater than or equal to the configured
-  fixed removal threshold of 15. Three exact send-backs therefore cause removal.
+- Three accumulated exact send-backs cause immediate removal, because their
+  five-point penalties reach the fixed threshold of 15.
+- Magnitude-only evidence cannot remove a client until it has received at least
+  ten frequent S-state probes. Once that gate is met, cumulative penalty at or
+  above 15 removes it.
 
 Trapped updates are excluded from aggregation regardless of their flag result.
+Candidate updates are also quarantined until confirmation; a clearing response
+is excluded in its own round and normal aggregation resumes on the next round.
 
 ## Logged evidence
 

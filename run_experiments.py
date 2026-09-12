@@ -117,6 +117,7 @@ def main() -> None:
                                 "final_global_loss", "peak_process_rss_mb",
                                 "peak_cuda_allocated_mb", "removed_free_riders",
                                 "removed_honest_clients", "missed_free_riders",
+                                "final_candidate_clients", "final_suspected_clients",
                                 "precision", "recall", "f1", "detection_accuracy",
                                 "false_positive_removal_rate",
                             )

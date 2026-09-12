@@ -17,14 +17,25 @@ def _batch(fr_norm: float) -> dict[int, torch.Tensor]:
     }
 
 
-def test_large_norm_z_flags_fr2_style_updates() -> None:
+def test_high_norm_z_flags_outlying_updates() -> None:
     config = ExperimentConfig()
     deltas = _batch(fr_norm=3.0)
 
     results = evaluate_updates(deltas, torch.ones(2), set(), config)
 
     assert all(not results[client_id].flagged for client_id in range(6))
-    assert all(results[client_id].reason == "large_norm_z" for client_id in range(6, 10))
+    assert all(results[client_id].reason == "norm_z_outlier" for client_id in range(6, 10))
+
+
+def test_low_norm_z_flags_outlying_updates() -> None:
+    config = ExperimentConfig()
+    deltas = _batch(fr_norm=0.1)
+
+    results = evaluate_updates(deltas, torch.ones(2), set(), config)
+
+    assert all(not results[client_id].flagged for client_id in range(6))
+    assert all(results[client_id].norm_z_score < -3 for client_id in range(6, 10))
+    assert all(results[client_id].reason == "norm_z_outlier" for client_id in range(6, 10))
 
 
 def test_gradient_only_detection_leaves_legacy_loss_fields_empty() -> None:
@@ -85,6 +96,23 @@ def test_each_zero_update_in_double_coverage_adds_five_points() -> None:
     assert combined.reason == "zero_update"
     assert combined.penalty == 6
     assert combine_coverage_checks([zero_results[0], zero_results[0]]).penalty == 10
+
+
+def test_coverage_reporting_keeps_the_largest_absolute_outlier() -> None:
+    config = ExperimentConfig()
+    positive = evaluate_updates(
+        _batch(fr_norm=3.0), torch.ones(2), set(), config
+    )[6]
+    negative = evaluate_updates(
+        _batch(fr_norm=0.1), torch.ones(2), set(), config
+    )[6]
+
+    combined = combine_coverage_checks([positive, negative])
+
+    expected = max(
+        (positive.norm_z_score, negative.norm_z_score), key=abs
+    )
+    assert combined.norm_z_score == expected
 
 
 def test_suspicion_group_uses_anchor_range_and_penalty_three() -> None:

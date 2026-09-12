@@ -49,25 +49,25 @@ kept separate from scheduled batch output.
 ### FR1
 
 ```powershell
-python run_experiment.py --set dataset=mnist --set distribution=iid --set free_rider_pct=0.4 --set attack_type=FR1 --set num_clients=100 --set num_rounds=100 --set seed=42 --set device=auto --set output_dir=results/manual_mnist_iid_fr40 --set run_name=FR1_swtcp_v4_seed42
+python run_experiment.py --set dataset=mnist --set distribution=iid --set free_rider_pct=0.4 --set attack_type=FR1 --set num_clients=100 --set num_rounds=100 --set seed=42 --set device=auto --set output_dir=results/manual_mnist_iid_fr40 --set run_name=FR1_swtcp_v6_seed42
 ```
 
 ### FR2
 
 ```powershell
-python run_experiment.py --set dataset=mnist --set distribution=iid --set free_rider_pct=0.4 --set attack_type=FR2 --set num_clients=100 --set num_rounds=100 --set seed=42 --set device=auto --set output_dir=results/manual_mnist_iid_fr40 --set run_name=FR2_swtcp_v4_seed42
+python run_experiment.py --set dataset=mnist --set distribution=iid --set free_rider_pct=0.4 --set attack_type=FR2 --set num_clients=100 --set num_rounds=100 --set seed=42 --set device=auto --set output_dir=results/manual_mnist_iid_fr40 --set run_name=FR2_swtcp_v6_seed42
 ```
 
 ### FR3
 
 ```powershell
-python run_experiment.py --set dataset=mnist --set distribution=iid --set free_rider_pct=0.4 --set attack_type=FR3 --set num_clients=100 --set num_rounds=100 --set seed=42 --set device=auto --set output_dir=results/manual_mnist_iid_fr40 --set run_name=FR3_swtcp_v4_seed42
+python run_experiment.py --set dataset=mnist --set distribution=iid --set free_rider_pct=0.4 --set attack_type=FR3 --set num_clients=100 --set num_rounds=100 --set seed=42 --set device=auto --set output_dir=results/manual_mnist_iid_fr40 --set run_name=FR3_swtcp_v6_seed42
 ```
 
 ### FR4
 
 ```powershell
-python run_experiment.py --set dataset=mnist --set distribution=iid --set free_rider_pct=0.4 --set attack_type=FR4 --set num_clients=100 --set num_rounds=100 --set seed=42 --set device=auto --set output_dir=results/manual_mnist_iid_fr40 --set run_name=FR4_swtcp_v4_seed42
+python run_experiment.py --set dataset=mnist --set distribution=iid --set free_rider_pct=0.4 --set attack_type=FR4 --set num_clients=100 --set num_rounds=100 --set seed=42 --set device=auto --set output_dir=results/manual_mnist_iid_fr40 --set run_name=FR4_swtcp_v6_seed42
 ```
 
 To require CUDA rather than silently falling back to CPU, replace
@@ -78,14 +78,14 @@ An individual run does not create the batch-level `experiment_status.json` used
 by `monitor.py`. Its latest completed round can instead be read from:
 
 ```powershell
-Get-Content results/manual_mnist_iid_fr40/FR1_swtcp_v4_seed42/latest_results.json
+Get-Content results/manual_mnist_iid_fr40/FR1_swtcp_v6_seed42/latest_results.json
 ```
 
-Change `FR1_swtcp_v4_seed42` to the applicable individual run name.
+Change `FR1_swtcp_v6_seed42` to the applicable individual run name.
 
 ## 3. Schedule FR1 → FR2 → FR3 → FR4 automatically
 
-The existing plan `configs/stage1_final_plan.json` contains exactly four runs in
+The v6 plan `configs/stage1_v6_plan.json` contains exactly four runs in
 this order:
 
 1. MNIST IID FR1, 40%
@@ -96,7 +96,7 @@ this order:
 Start the sequence with:
 
 ```powershell
-python run_experiments.py --plan configs/stage1_final_plan.json --stop-on-error
+python run_experiments.py --plan configs/stage1_v6_plan.json --stop-on-error
 ```
 
 The batch runner is sequential: it completes all 100 rounds of FR1 before FR2,
@@ -104,15 +104,9 @@ then FR3, and finally FR4. `--stop-on-error` prevents later experiments from
 running if an earlier one fails. Omit it only when continuing after a failed run
 is intentional.
 
-The plan currently uses this fixed batch directory:
-
-```text
-results/stage1_mnist_iid_fr40_20260911/
-```
-
-Do not launch the same plan twice at the same time. Before starting a new batch
-in the future, change `batch_name` in `configs/stage1_final_plan.json` to a new,
-unique name so an earlier batch is not overwritten.
+The plan leaves `batch_name` as `null`, so the runner creates a fresh timestamped
+batch directory and does not overwrite the earlier v4/v5 results. Do not launch
+the same plan twice at exactly the same time.
 
 ## 4. Monitor the scheduled batch
 
@@ -139,7 +133,8 @@ python monitor.py --watch --interval 5
 Monitor the batch-specific status file directly:
 
 ```powershell
-python monitor.py --status results/stage1_mnist_iid_fr40_20260911/experiment_status.json --watch
+$batchId = (Get-Content results/experiment_status.json | ConvertFrom-Json).batch_id
+python monitor.py --status "results/$batchId/experiment_status.json" --watch
 ```
 
 The monitor displays:
@@ -149,6 +144,7 @@ The monitor displays:
 - current methodology phase;
 - actual device (`cpu` or `cuda`);
 - active-client count;
+- candidate and suspicious-client counts;
 - time taken by the latest round;
 - global accuracy and loss;
 - process memory and peak CUDA memory;
@@ -183,7 +179,8 @@ $average = if ($round -gt 0) { $elapsed / $round } else { 0 }
 For example, after FR1 completes:
 
 ```powershell
-$result = Get-Content results/stage1_mnist_iid_fr40_20260911/stage1_mnist_iid_fr1_fr40/run_config.json | ConvertFrom-Json
+$batchId = (Get-Content results/experiment_status.json | ConvertFrom-Json).batch_id
+$result = Get-Content "results/$batchId/stage1_v6_mnist_iid_fr1_fr40/run_config.json" | ConvertFrom-Json
 $result | Select-Object total_wall_clock_seconds, average_round_time_seconds, final_global_accuracy, removed_free_riders, removed_honest_clients
 ```
 
@@ -199,26 +196,29 @@ Useful result locations are:
 
 ```text
 results/experiment_status.json
-results/stage1_mnist_iid_fr40_20260911/experiment_status.json
-results/stage1_mnist_iid_fr40_20260911/experiment_manifest.json
-results/stage1_mnist_iid_fr40_20260911/<experiment-id>/latest_results.json
-results/stage1_mnist_iid_fr40_20260911/<experiment-id>/global_metrics.csv
-results/stage1_mnist_iid_fr40_20260911/<experiment-id>/run_config.json
+results/<batch-id>/experiment_status.json
+results/<batch-id>/experiment_manifest.json
+results/<batch-id>/<experiment-id>/latest_results.json
+results/<batch-id>/<experiment-id>/global_metrics.csv
+results/<batch-id>/<experiment-id>/run_config.json
 ```
 
 ## 6. Checkpoints and interruption
 
 When `save_checkpoints=true`, every completed round creates a recovery
-checkpoint. Only the five newest numbered checkpoints are retained, controlled
-by `checkpoint_keep_last=5`. `latest_checkpoint.pt` identifies the newest
-snapshot without normally consuming another checkpoint's worth of disk space.
+checkpoint. While a run is active or interrupted, only the five newest numbered
+checkpoints are retained, controlled by `checkpoint_keep_last=5`, and
+`latest_checkpoint.pt` is a portable copy of the newest snapshot. After an
+experiment completes successfully, all numbered checkpoints and
+`latest_checkpoint.pt` are deleted automatically. Failed or interrupted runs
+keep their recovery checkpoints.
 
 If the process is interrupted during a round, the unfinished round is lost, but
-the last completed round remains recoverable. Resume an individual run using the
+the last completed round remains recoverable. Resume an interrupted individual run using the
 same experiment settings, output directory, and run name, plus its checkpoint:
 
 ```powershell
-python run_experiment.py --set dataset=mnist --set distribution=iid --set free_rider_pct=0.4 --set attack_type=FR1 --set num_clients=100 --set num_rounds=100 --set seed=42 --set device=auto --set output_dir=results/manual_mnist_iid_fr40 --set run_name=FR1_swtcp_v4_seed42 --set resume_checkpoint=results/manual_mnist_iid_fr40/FR1_swtcp_v4_seed42/latest_checkpoint.pt
+python run_experiment.py --set dataset=mnist --set distribution=iid --set free_rider_pct=0.4 --set attack_type=FR1 --set num_clients=100 --set num_rounds=100 --set seed=42 --set device=auto --set output_dir=results/manual_mnist_iid_fr40 --set run_name=FR1_swtcp_v6_seed42 --set resume_checkpoint=results/manual_mnist_iid_fr40/FR1_swtcp_v6_seed42/latest_checkpoint.pt
 ```
 
 Do not resume a checkpoint using a different attack, dataset, distribution, or
@@ -239,6 +239,7 @@ num_rounds=100
 seed=42
 device=auto, cpu, or cuda
 checkpoint_keep_last=5
+candidate_confirmation_flags=2
 ```
 
 Use a different `run_name` for every seed or configuration.

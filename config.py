@@ -8,7 +8,7 @@ from typing import Any
 
 @dataclass
 class ExperimentConfig:
-    methodology_version: str = "swtcp_v4"
+    methodology_version: str = "swtcp_v6"
     dataset: str = "mnist"
     distribution: str = "iid"
     dirichlet_alpha: float = 0.5
@@ -24,6 +24,7 @@ class ExperimentConfig:
     warmup_rounds: int = 10
     trap_fraction: float = 0.10
     coverage_checks_per_client: int = 2
+    candidate_confirmation_flags: int = 2
     suspicion_target_group_size: int = 10
     anchors_per_suspicion_group: int = 3
     max_suspicion_anchors: int = 10
@@ -120,6 +121,8 @@ class ExperimentConfig:
             raise ValueError("trap_fraction must be in (0, 1].")
         if self.coverage_checks_per_client not in {1, 2}:
             raise ValueError("coverage_checks_per_client must be 1 or 2.")
+        if self.candidate_confirmation_flags < 2:
+            raise ValueError("candidate_confirmation_flags must be at least 2.")
         if (
             self.suspicion_target_group_size <= 0
             or self.anchors_per_suspicion_group <= 0

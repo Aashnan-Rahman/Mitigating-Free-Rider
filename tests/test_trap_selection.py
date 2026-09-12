@@ -24,6 +24,7 @@ def test_coverage_probes_two_groups_and_every_client_twice() -> None:
     assert len(selections) == 10
     assert all(len(selection.trapped_clients) == 20 for selection in selections)
     assert len({frozenset(selection.trapped_clients) for selection in selections}) == 10
+    assert Counter(selection.coverage_trap_id for selection in selections) == {0: 5, 1: 5}
     probe_counts = Counter(
         client_id
         for selection in selections
@@ -31,6 +32,12 @@ def test_coverage_probes_two_groups_and_every_client_twice() -> None:
     )
     assert set(probe_counts) == set(active_clients)
     assert set(probe_counts.values()) == {2}
+    per_trap_counts = Counter(
+        (client_id, selection.coverage_trap_id)
+        for selection in selections
+        for client_id in selection.trapped_clients
+    )
+    assert set(per_trap_counts.values()) == {1}
 
 
 def test_warmup_has_no_trapped_clients() -> None:
@@ -62,12 +69,12 @@ def test_post_coverage_uses_four_suspicion_groups_ten_anchors_and_ten_y_groups()
 
     assert all(len(selection.suspicion_groups) == 4 for selection in selections)
     assert all(
-        set().union(*(suspects for suspects, _ in selection.suspicion_groups)) == suspected
+        set().union(*(suspects for suspects, _, _ in selection.suspicion_groups)) == suspected
         for selection in selections
     )
     assert all(len(selection.anchors) == 10 for selection in selections)
     assert all(
-        max(len(anchors) for _, anchors in selection.suspicion_groups) <= 3
+        max(len(anchors) for _, _, anchors in selection.suspicion_groups) <= 3
         for selection in selections
     )
     assert sum(len(selection.surveillance_clients) for selection in selections) == 45
@@ -158,3 +165,46 @@ def test_later_surveillance_cycles_probe_each_client_once_not_twice() -> None:
     assert set(counts) == set(active_clients)
     assert set(counts.values()) == {1}
     assert selector.initial_coverage_done
+
+
+def test_candidates_are_confirmed_with_anchors_and_never_used_as_anchors() -> None:
+    config = ExperimentConfig(num_clients=100)
+    selector = TrapSelector(config, random.Random(29))
+    selector.initial_coverage_done = True
+    active_clients = list(range(100))
+    penalties = {client_id: 0 for client_id in active_clients}
+    flags = {client_id: 0 for client_id in active_clients}
+    candidates = {4, 17}
+    flags.update({client_id: 1 for client_id in candidates})
+
+    selection = selector.select(
+        21, active_clients, penalties, flags, set(), candidates
+    )
+
+    grouped_candidates = set().union(
+        *(group_candidates for _, group_candidates, _ in selection.suspicion_groups)
+    )
+    assert selection.phase == "confirmation"
+    assert grouped_candidates == candidates
+    assert candidates <= selection.trapped_clients
+    assert candidates.isdisjoint(selection.anchors)
+    assert len(selection.suspicion_groups) == 1
+    assert len(selection.anchors) == 3
+
+
+def test_any_previously_flagged_client_is_ineligible_as_an_anchor() -> None:
+    config = ExperimentConfig(num_clients=100)
+    selector = TrapSelector(config, random.Random(31))
+    selector.initial_coverage_done = True
+    active_clients = list(range(100))
+    suspected = set(range(10))
+    penalties = {client_id: int(client_id in suspected) for client_id in active_clients}
+    flags = penalties.copy()
+    previously_flagged = 50
+    flags[previously_flagged] = 1
+
+    selection = selector.select(
+        21, active_clients, penalties, flags, suspected, set()
+    )
+
+    assert previously_flagged not in selection.anchors

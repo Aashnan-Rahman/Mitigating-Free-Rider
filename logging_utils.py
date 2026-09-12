@@ -21,6 +21,7 @@ class RunLogger:
         self.penalty_rows: list[dict[str, Any]] = []
         self.removal_rows: list[dict[str, Any]] = []
         self.rehabilitation_rows: list[dict[str, Any]] = []
+        self.candidate_event_rows: list[dict[str, Any]] = []
         self.dodge_rows: list[dict[str, Any]] = []
         self.summary_rows: list[dict[str, Any]] = []
         self.detection_round_rows: list[dict[str, Any]] = []
@@ -42,6 +43,7 @@ class RunLogger:
         self._write_csv("penalty_tracker.csv", self.penalty_rows)
         self._write_csv("removals.csv", self.removal_rows)
         self._write_csv("rehabilitations.csv", self.rehabilitation_rows)
+        self._write_csv("candidate_events.csv", self.candidate_event_rows)
         self._write_csv("dodge_tracker.csv", self.dodge_rows)
         self._write_csv("detection_summary.csv", self.summary_rows)
         self._write_csv("round_detection_metrics.csv", self.detection_round_rows)
@@ -65,6 +67,21 @@ class RunLogger:
         with (self.run_dir / "latest_results.json").open("w", encoding="utf-8") as handle:
             json.dump(latest, handle, indent=2, sort_keys=True)
 
+    def write_completion(
+        self, run_config: dict[str, Any], completed_rounds: int
+    ) -> None:
+        """Write final outputs and refresh the completed-run file inventory."""
+        self.write_all(run_config)
+        latest = {
+            "run_name": self.run_name,
+            "latest_round": completed_rounds,
+            "completed": True,
+            "latest_global_metrics": self.global_rows[-1] if self.global_rows else {},
+            "files": sorted(path.name for path in self.run_dir.iterdir()),
+        }
+        with (self.run_dir / "latest_results.json").open("w", encoding="utf-8") as handle:
+            json.dump(latest, handle, indent=2, sort_keys=True)
+
     def load_existing(
         self,
         completed_round: int,
@@ -79,6 +96,7 @@ class RunLogger:
             ("penalty_tracker.csv", "penalty_rows"),
             ("removals.csv", "removal_rows"),
             ("rehabilitations.csv", "rehabilitation_rows"),
+            ("candidate_events.csv", "candidate_event_rows"),
             ("dodge_tracker.csv", "dodge_rows"),
             ("round_detection_metrics.csv", "detection_round_rows"),
             ("detection_events.csv", "detection_event_rows"),
@@ -154,12 +172,18 @@ def _coerce_row(row: dict[str, str]) -> dict[str, Any]:
 
 CSV_HEADERS: dict[str, list[str]] = {
     "trap_assignments.csv": ["round", "client_id", "phase", "role", "group_id"],
-    "removals.csv": ["round", "client_id", "is_free_rider", "final_penalty"],
+    "removals.csv": [
+        "round", "client_id", "is_free_rider", "final_penalty",
+        "removal_basis", "zero_update_count", "suspicion_probes"
+    ],
     "rehabilitations.csv": [
         "round", "client_id", "is_free_rider", "penalty", "probes", "flags", "dodge_index"
     ],
+    "candidate_events.csv": [
+        "round", "client_id", "is_free_rider", "event", "reason", "cumulative_penalty"
+    ],
     "dodge_tracker.csv": [
-        "round", "client_id", "is_suspected", "episode_probes", "episode_flags",
+        "round", "client_id", "is_suspected", "is_candidate", "episode_probes", "episode_flags",
         "dodge_index", "lifetime_trap_flags"
     ],
     "detection_summary.csv": [
@@ -177,5 +201,6 @@ CSV_HEADERS: dict[str, list[str]] = {
         "true_negatives", "false_negatives", "detection_accuracy", "precision",
         "recall", "f1", "false_positive_rate", "false_negative_rate",
         "specificity", "new_removals", "new_rehabilitations", "num_suspected",
+        "num_candidates",
     ],
 }

@@ -46,9 +46,10 @@ Outputs are written under `output_dir/run_name/`:
 - `client_metrics.csv`
 - `penalty_tracker.csv`
 - `removals.csv`
-- `rehabilitations.csv` and `dodge_tracker.csv`
+- `rehabilitations.csv`, `candidate_events.csv`, and `dodge_tracker.csv`
 - `latest_results.json`
-- `latest_checkpoint.pt` and the five newest numbered `checkpoint_round_XXXX.pt` files
+- during active/interrupted runs, `latest_checkpoint.pt` and the five newest
+  numbered `checkpoint_round_XXXX.pt` files
 - `run_config.json`
 - `detection_summary.csv`
 - `round_detection_metrics.csv` and `detection_events.csv`
@@ -60,8 +61,10 @@ checkpoint containing the model state, active clients, penalties, flag/trap coun
 ground-truth free-rider IDs, and that round's global metrics. See
 `experiment_checklist.md` for the staged experiment plan and stopping criteria.
 Checkpointing occurs every round. Older numbered snapshots are deleted
-automatically according to `checkpoint_keep_last` (default five); the latest
-alias uses a hard link where supported to avoid duplicating the newest snapshot.
+automatically according to `checkpoint_keep_last` (default five), and
+`latest_checkpoint.pt` is a portable copy of the newest snapshot. All recovery
+checkpoints are deleted after successful completion; failed or interrupted runs
+retain them for resume.
 
 The trap model perturbation is configurable through `trap_noise_scale` and
 `trap_noise_floor`; all detection and attack hyperparameters are centralized in
@@ -75,8 +78,12 @@ exact send-back check remains active during trap-selection warmup. Local loss an
 accuracy are simulation diagnostics only; neither is trusted by, or supplied to,
 the detector.
 
-The initial coverage sweep uses one exact frozen trap model for every group. Two
-distinct groups are probed per round, every group is probed exactly twice without
-repeating a group-pair, and decisions are deferred until the complete double
-sweep is available. Later unflagged surveillance uses ten groups and one check
-per client, alongside frequent anchor-referenced probing of suspicious clients.
+The initial coverage sweep uses two distinct frozen trap models generated from
+the same base model. Two groups are probed per round; every client receives each
+trap exactly once, with separately calibrated median/MAD baselines. Decisions
+are deferred until the complete double sweep is available. A single magnitude
+flag creates a quarantined candidate that must pass or fail an anchor-referenced
+confirmation before returning to the unflagged pool or entering frequent
+suspicion probing. Later unflagged surveillance uses ten groups and one check per
+client. Magnitude-only removal requires at least ten suspicion probes, while
+three exact send-backs still remove immediately.

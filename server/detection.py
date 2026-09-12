@@ -38,7 +38,7 @@ def combine_coverage_checks(results: list[DetectionResult]) -> DetectionResult:
         zero_updates = [result for result in flagged if result.reason == "zero_update"]
         representative = max(
             zero_updates or flagged,
-            key=lambda result: result.norm_z_score
+            key=lambda result: abs(result.norm_z_score)
             if result.norm_z_score is not None
             else float("-inf"),
         )
@@ -256,16 +256,16 @@ def evaluate_update(
         )
 
     similarity = cosine_similarity(delta, reference)
-    large_norm_flag = (
+    norm_outlier_flag = (
         norm_z_score is not None
-        and norm_z_score > config.magnitude_z_threshold
+        and abs(norm_z_score) > config.magnitude_z_threshold
     )
-    flagged = large_norm_flag
-    if large_norm_flag:
+    flagged = norm_outlier_flag
+    if norm_outlier_flag:
         penalty = config.penalty_trap_flag if was_trapped else config.penalty_normal_flag
     else:
         penalty = 0
-    reason = "large_norm_z" if large_norm_flag else None
+    reason = "norm_z_outlier" if norm_outlier_flag else None
     return DetectionResult(
         flagged,
         penalty,

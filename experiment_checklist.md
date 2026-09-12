@@ -13,7 +13,8 @@ This checklist is ordered so each stage is run only after the previous stage is 
       same rule; secret trap models must not be selectively excluded.
 - [ ] Confirm checkpoint/resume preserves attacker-visible FR1/FR3/FR4 history.
 - [ ] Confirm a 100-client, 10% coverage sweep probes 20 clients per round for
-      10 rounds, each client appears exactly twice, and no group-pair repeats.
+      10 rounds, each client receives trap A once and trap B once, each trap has
+      its own complete-pass baseline, and no group-pair repeats where avoidable.
 - [ ] Confirm coverage gives one point per magnitude flag and five points for
       every zero-update response; two zero responses therefore give ten points.
 - [ ] Confirm a warm-up zero update also receives the five-point penalty.
@@ -21,16 +22,22 @@ This checklist is ordered so each stage is run only after the previous stage is 
       suspects exist, while `Y` always contains ten surveillance groups.
 - [ ] Confirm every suspicious group receives a different fresh trap each round,
       while the ten `Y` groups share one frozen trap over their cycle.
+- [ ] Confirm one magnitude flag creates a quarantined candidate, a candidate
+      pass returns it to U, and a second independent flag moves it to S.
+- [ ] Confirm candidates and all previously flagged clients are never anchors.
 - [ ] Run one short smoke test per attack and inspect returned-update norms and
       first-round behavior before launching the experiment matrix.
 - [ ] Confirm the detector rule used by the current code: robust update-norm z-score using median/MAD; cosine is diagnostic only.
 - [ ] Confirm client-local loss and accuracy never enter flag, penalty, suspicion,
       rehabilitation, or removal decisions; their CSV values are diagnostics only.
-- [ ] Confirm the removal policy remains `P_i >= P_max` in both the specification
-      and implementation.
+- [ ] Confirm magnitude-only removal requires both `P_i >= P_max` and at least
+      ten S-state probes, while three accumulated exact send-backs remove without
+      waiting for that probe gate.
 - [ ] Keep `save_checkpoints=true` and `checkpoint_keep_last=5`; confirm every
       round creates a recoverable checkpoint and only the five newest numbered
-      snapshots remain.
+      snapshots remain while running.
+- [ ] Confirm successful experiments delete all numbered checkpoints and
+      `latest_checkpoint.pt`, while interrupted/failed experiments retain them.
 
 Results generated before the attack-information-boundary correction must be kept
 for provenance but must not be mixed with or reported as results from the corrected
@@ -42,8 +49,9 @@ threat model.
 - [ ] Confirm suspicious clients leave the suspicious pool only after at least
       ten probes with an episode flag rate at or below ten percent.
 
-**Go criterion:** the run completes and `latest_results.json`,
-`latest_checkpoint.pt`, and no more than five newest numbered checkpoints are present.
+**Go criterion:** during an interrupted check, `latest_checkpoint.pt` and no more
+than five numbered checkpoints are present; after a successful run,
+`latest_results.json` remains and all checkpoint files are gone.
 
 ## Stage 1: Baselines, IID, 100 rounds
 
@@ -78,7 +86,8 @@ Validate the robust norm-z/MAD detector before running this stage. Keep all othe
 - [ ] FR2, 40%, selected threshold plus dodge-index rehabilitation
 - [ ] Repeat the winning configuration with seeds 43 and 44
 
-Primary decision metrics: honest removal rate, FR2 recall, precision, F1, and accuracy. Inspect robust norm z-scores and MD values for scale stability.
+Primary decision metrics: honest removal rate, FR2 recall, precision, F1, and
+accuracy. Inspect robust norm z-scores and MAD values for scale stability.
 
 ## Stage 4: FR3 detection limits
 
@@ -126,14 +135,18 @@ Run the selected detector configuration, not every discarded variant:
   median/MAD baselines, coverage observation round, coverage check/flag counts,
   cosine diagnostic, detection reason, flag, and penalty adjustment. Legacy
   loss-z fields must remain empty.
-- `penalty_tracker.csv`: cumulative penalty and counts per client per round.
+- `penalty_tracker.csv`: cumulative penalty, U/C/S state, zero-update count, and
+  flag/trap counts per client per round.
 - `trap_matrix.csv`: trap membership and phase per round.
 - `trap_assignments.csv`: role and suspicious-group assignment for every probed client.
 - `dodge_tracker.csv`: suspicious-episode probes, flags, dodge index, and lifetime trap flags.
 - `rehabilitations.csv`: clients returned from the suspicious pool to the unflagged pool.
-- `removals.csv`: removal round and ground-truth role.
+- `candidate_events.csv`: candidate entry, confirmation, and clearance events.
+- `removals.csv`: removal round, ground-truth role, evidence basis, zero count,
+  and suspicion-probe count.
 - `run_config.json`: complete configuration and final summary.
 - `latest_results.json`: latest completed round and latest global metrics.
-- `latest_checkpoint.pt`: alias of the latest model and detector state snapshot.
-- `checkpoint_round_XXXX.pt`: rolling numbered snapshots; only the newest
-  `checkpoint_keep_last` files are retained.
+- `latest_checkpoint.pt`: active/interrupted-run copy of the latest detector state;
+  deleted after successful completion.
+- `checkpoint_round_XXXX.pt`: rolling snapshots; only the newest
+  `checkpoint_keep_last` files are retained while running, then deleted on success.

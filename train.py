@@ -73,16 +73,20 @@ def run_experiment(
     times_trapped = {client_id: 0 for client_id in range(config.num_clients)}
     first_flag_round: dict[int, int] = {}
     first_removal_round: dict[int, int] = {}
-    coverage_trap_state: dict[str, torch.Tensor] | None = None
+    coverage_trap_states: dict[int, dict[str, torch.Tensor]] = {}
     coverage_deltas: dict[int, list[torch.Tensor]] = {}
+    coverage_trap_ids: dict[int, list[int]] = {}
     coverage_observation_rounds: dict[int, list[int]] = {}
     surveillance_trap_state: dict[str, torch.Tensor] | None = None
     surveillance_deltas: dict[int, torch.Tensor] = {}
     surveillance_observation_rounds: dict[int, int] = {}
     suspected_clients: set[int] = set()
+    candidate_clients: set[int] = set()
+    candidate_flag_counts = {client_id: 0 for client_id in range(config.num_clients)}
     dodge_probe_counts = {client_id: 0 for client_id in range(config.num_clients)}
     dodge_flag_counts = {client_id: 0 for client_id in range(config.num_clients)}
     lifetime_trap_flags = {client_id: 0 for client_id in range(config.num_clients)}
+    zero_update_counts = {client_id: 0 for client_id in range(config.num_clients)}
     start_round = 1
 
     if config.resume_checkpoint:
@@ -122,10 +126,17 @@ def run_experiment(
         start_round = completed_round + 1
         if "selector_state" in checkpoint:
             selector.load_state_dict(checkpoint["selector_state"])
-            coverage_trap_state = checkpoint.get("coverage_trap_state")
+            coverage_trap_states = {
+                int(trap_id): clone_state(state)
+                for trap_id, state in checkpoint.get("coverage_trap_states", {}).items()
+            }
             coverage_deltas = {
                 int(client_id): [delta.detach().clone() for delta in values]
                 for client_id, values in checkpoint.get("coverage_deltas", {}).items()
+            }
+            coverage_trap_ids = {
+                int(client_id): [int(trap_id) for trap_id in values]
+                for client_id, values in checkpoint.get("coverage_trap_ids", {}).items()
             }
             coverage_observation_rounds = {
                 int(client_id): [int(value) for value in values]
@@ -147,6 +158,17 @@ def run_experiment(
             suspected_clients = {
                 int(client_id) for client_id in checkpoint.get("suspected_clients", [])
             }
+            candidate_clients = {
+                int(client_id) for client_id in checkpoint.get("candidate_clients", [])
+            }
+            candidate_flag_counts.update(
+                {
+                    int(key): int(value)
+                    for key, value in checkpoint.get(
+                        "candidate_flag_counts", {}
+                    ).items()
+                }
+            )
             dodge_probe_counts.update(
                 {int(key): int(value) for key, value in checkpoint.get("dodge_probe_counts", {}).items()}
             )
@@ -155,6 +177,9 @@ def run_experiment(
             )
             lifetime_trap_flags.update(
                 {int(key): int(value) for key, value in checkpoint.get("lifetime_trap_flags", {}).items()}
+            )
+            zero_update_counts.update(
+                {int(key): int(value) for key, value in checkpoint.get("zero_update_counts", {}).items()}
             )
             first_flag_round.update(
                 {int(key): int(value) for key, value in checkpoint.get("first_flag_round", {}).items()}
@@ -182,20 +207,32 @@ def run_experiment(
         if device.type == "cuda":
             torch.cuda.reset_peak_memory_stats(device)
         active_this_round = active_clients[:]
+        candidate_clients_at_round_start = candidate_clients.copy()
         base_state = clone_state(global_state)
         selection = selector.select(
-            round_idx, active_clients, penalties, times_flagged, suspected_clients
+            round_idx,
+            active_clients,
+            penalties,
+            times_flagged,
+            suspected_clients,
+            candidate_clients,
         )
         client_trap_states: dict[int, dict[str, torch.Tensor]] = {}
         if selection.phase == "coverage":
-            if coverage_trap_state is None:
-                coverage_trap_state = make_trap_state(
-                    base_state,
-                    config.trap_noise_scale,
-                    config.trap_noise_floor,
-                    generator,
-                )
-            trap_state = coverage_trap_state
+            if not coverage_trap_states:
+                trap_count = config.coverage_checks_per_client
+                coverage_trap_states = {
+                    trap_id: make_trap_state(
+                        base_state,
+                        config.trap_noise_scale,
+                        config.trap_noise_floor,
+                        generator,
+                    )
+                    for trap_id in range(trap_count)
+                }
+            if selection.coverage_trap_id is None:
+                raise RuntimeError("Coverage selection is missing its trap-model ID.")
+            trap_state = coverage_trap_states[selection.coverage_trap_id]
         else:
             trap_state = base_state
             if selection.surveillance_clients:
@@ -208,14 +245,14 @@ def run_experiment(
                     )
                 for client_id in selection.surveillance_clients:
                     client_trap_states[client_id] = surveillance_trap_state
-            for suspects, anchors in selection.suspicion_groups:
+            for suspects, candidates, anchors in selection.suspicion_groups:
                 group_trap_state = make_trap_state(
                     base_state,
                     config.trap_noise_scale,
                     config.trap_noise_floor,
                     generator,
                 )
-                for client_id in suspects | anchors:
+                for client_id in suspects | candidates | anchors:
                     client_trap_states[client_id] = group_trap_state
         logger.log_trap_matrix_row(
             round_idx, selection.phase, selection.trapped_clients, config.num_clients
@@ -228,11 +265,11 @@ def run_experiment(
                         "client_id": client_id,
                         "phase": selection.phase,
                         "role": "initial_coverage",
-                        "group_id": "coverage",
+                        "group_id": f"coverage_trap_{selection.coverage_trap_id}",
                     }
                 )
         else:
-            for group_id, (suspects, anchors) in enumerate(selection.suspicion_groups):
+            for group_id, (suspects, candidates, anchors) in enumerate(selection.suspicion_groups):
                 for client_id in suspects:
                     logger.trap_assignment_rows.append(
                         {
@@ -250,6 +287,16 @@ def run_experiment(
                             "client_id": client_id,
                             "phase": selection.phase,
                             "role": "anchor",
+                            "group_id": group_id,
+                        }
+                    )
+                for client_id in candidates:
+                    logger.trap_assignment_rows.append(
+                        {
+                            "round": round_idx,
+                            "client_id": client_id,
+                            "phase": selection.phase,
+                            "role": "candidate",
                             "group_id": group_id,
                         }
                     )
@@ -317,31 +364,44 @@ def run_experiment(
         coverage_flags_used: dict[int, int] = {}
         decision_flag_counts: dict[int, int] = {}
         trap_flag_counts: dict[int, int] = {}
+        zero_responses_added: dict[int, int] = {}
         suspicion_probed: set[int] = set()
+        candidate_probed: set[int] = set()
         if selection.phase == "coverage":
+            if selection.coverage_trap_id is None:
+                raise RuntimeError("Coverage evidence is missing its trap-model ID.")
             for client_id in selection.trapped_clients:
                 coverage_deltas.setdefault(client_id, []).append(deltas[client_id])
+                coverage_trap_ids.setdefault(client_id, []).append(
+                    selection.coverage_trap_id
+                )
                 coverage_observation_rounds.setdefault(client_id, []).append(round_idx)
             if selection.coverage_complete:
-                probe_deltas: dict[int, torch.Tensor] = {}
                 client_probe_ids: dict[int, list[int]] = {}
+                probe_results = {}
                 probe_id = 0
-                for client_id, client_deltas in coverage_deltas.items():
-                    if client_id not in set(active_this_round):
-                        continue
-                    for delta in client_deltas:
-                        probe_deltas[probe_id] = delta
-                        client_probe_ids.setdefault(client_id, []).append(probe_id)
-                        probe_id += 1
-                coverage_reference = build_reference(
-                    "coverage", set(probe_deltas), set(), probe_deltas
-                )
-                probe_results = evaluate_updates(
-                    probe_deltas,
-                    coverage_reference,
-                    set(probe_deltas),
-                    config,
-                )
+                for trap_id in range(config.coverage_checks_per_client):
+                    trap_deltas: dict[int, torch.Tensor] = {}
+                    for client_id, client_deltas in coverage_deltas.items():
+                        if client_id not in set(active_this_round):
+                            continue
+                        for index, delta in enumerate(client_deltas):
+                            if coverage_trap_ids[client_id][index] != trap_id:
+                                continue
+                            trap_deltas[probe_id] = delta
+                            client_probe_ids.setdefault(client_id, []).append(probe_id)
+                            probe_id += 1
+                    coverage_reference = build_reference(
+                        "coverage", set(trap_deltas), set(), trap_deltas
+                    )
+                    probe_results.update(
+                        evaluate_updates(
+                            trap_deltas,
+                            coverage_reference,
+                            set(trap_deltas),
+                            config,
+                        )
+                    )
                 coverage_checks_used = {
                     client_id: len(probe_ids)
                     for client_id, probe_ids in client_probe_ids.items()
@@ -352,6 +412,15 @@ def run_experiment(
                 }
                 decision_flag_counts.update(coverage_flags_used)
                 trap_flag_counts.update(coverage_flags_used)
+                zero_responses_added.update(
+                    {
+                        client_id: sum(
+                            probe_results[item].reason == "zero_update"
+                            for item in probe_ids
+                        )
+                        for client_id, probe_ids in client_probe_ids.items()
+                    }
+                )
                 if config.coverage_checks_per_client == 1:
                     detection_results = {
                         client_id: probe_results[probe_ids[0]]
@@ -378,6 +447,7 @@ def run_experiment(
                     detection_results.get(client_id), result
                 )
                 decision_flag_counts[client_id] = decision_flag_counts.get(client_id, 0) + 1
+                zero_responses_added[client_id] = zero_responses_added.get(client_id, 0) + 1
                 detection_rounds_used[client_id] = round_idx
         elif selection.phase == "warmup":
             # Trap selection is inactive, but server-observed checks still run.
@@ -390,19 +460,29 @@ def run_experiment(
             detection_rounds_used = {
                 client_id: round_idx for client_id in active_this_round
             }
+            zero_responses_added.update(
+                {
+                    client_id: 1
+                    for client_id, result in detection_results.items()
+                    if result.reason == "zero_update"
+                }
+            )
         else:
             # Every suspicious group has its own fresh trap and is evaluated
             # only against the low-suspicion anchors that received that trap.
-            for suspects, anchors in selection.suspicion_groups:
+            for suspects, candidates, anchors in selection.suspicion_groups:
                 suspicion_probed.update(suspects)
+                candidate_probed.update(candidates)
                 group_results = evaluate_suspicion_group(
-                    deltas, suspects, anchors, config
+                    deltas, suspects | candidates, anchors, config
                 )
                 detection_results.update(group_results)
                 for client_id in group_results:
                     if group_results[client_id].flagged:
                         decision_flag_counts[client_id] = 1
                         trap_flag_counts[client_id] = 1
+                        if group_results[client_id].reason == "zero_update":
+                            zero_responses_added[client_id] = 1
                     detection_rounds_used[client_id] = round_idx
 
             # Exact send-back remains detectable even for ordinary clients that
@@ -415,6 +495,7 @@ def run_experiment(
             detection_results.update(ordinary_zero_results)
             for client_id in ordinary_zero_results:
                 decision_flag_counts[client_id] = 1
+                zero_responses_added[client_id] = 1
                 detection_rounds_used[client_id] = round_idx
 
             for client_id in selection.surveillance_clients:
@@ -425,7 +506,9 @@ def run_experiment(
                     set(surveillance_deltas)
                     & set(active_this_round)
                     - suspected_clients
+                    - candidate_clients
                     - suspicion_probed
+                    - candidate_probed
                     - selection.anchors
                 )
                 eligible_deltas = {
@@ -460,6 +543,10 @@ def run_experiment(
                             decision_flag_counts.get(client_id, 0) + 1
                         )
                         trap_flag_counts[client_id] = trap_flag_counts.get(client_id, 0) + 1
+                        if result.reason == "zero_update":
+                            zero_responses_added[client_id] = (
+                                zero_responses_added.get(client_id, 0) + 1
+                            )
                 detection_rounds_used.update(eligible_rounds)
                 coverage_checks_used.update(
                     {client_id: 1 for client_id in surveillance_results}
@@ -482,16 +569,62 @@ def run_experiment(
             if detection is not None:
                 if detection.flagged:
                     penalties[client_id] += detection.penalty
+                    zero_update_counts[client_id] += zero_responses_added.get(
+                        client_id, 0
+                    )
                     flag_count = decision_flag_counts.get(client_id, 1)
                     times_flagged[client_id] += flag_count
                     lifetime_trap_flags[client_id] += trap_flag_counts.get(
                         client_id,
                         int(was_trapped),
                     )
-                    if client_id not in suspected_clients:
+
+                    was_candidate = (
+                        client_id in candidate_clients_at_round_start
+                        or client_id in candidate_clients
+                    )
+                    is_zero_response = zero_responses_added.get(client_id, 0) > 0
+                    candidate_evidence = (
+                        candidate_flag_counts[client_id] if was_candidate else 0
+                    ) + flag_count
+                    confirmed = (
+                        is_zero_response
+                        or candidate_evidence >= config.candidate_confirmation_flags
+                    )
+                    if confirmed and client_id not in suspected_clients:
                         suspected_clients.add(client_id)
+                        candidate_clients.discard(client_id)
+                        candidate_flag_counts[client_id] = 0
                         dodge_probe_counts[client_id] = 0
                         dodge_flag_counts[client_id] = 0
+                    elif not confirmed and client_id not in suspected_clients:
+                        candidate_clients.add(client_id)
+                        candidate_flag_counts[client_id] = candidate_evidence
+                        logger.candidate_event_rows.append(
+                            {
+                                "round": round_idx,
+                                "client_id": client_id,
+                                "is_free_rider": int(client_id in free_riders),
+                                "event": (
+                                    "additional_candidate_flag"
+                                    if was_candidate
+                                    else "entered_candidate_state"
+                                ),
+                                "reason": detection.reason,
+                                "cumulative_penalty": penalties[client_id],
+                            }
+                        )
+                    if confirmed and was_candidate:
+                        logger.candidate_event_rows.append(
+                            {
+                                "round": round_idx,
+                                "client_id": client_id,
+                                "is_free_rider": int(client_id in free_riders),
+                                "event": "confirmed_suspicious",
+                                "reason": detection.reason,
+                                "cumulative_penalty": penalties[client_id],
+                            }
+                        )
                     first_flag_round.setdefault(client_id, round_idx)
                     new_flags += flag_count
                     logger.detection_event_rows.append(
@@ -515,9 +648,34 @@ def run_experiment(
                             "penalty": detection.penalty,
                         }
                     )
-                if penalties[client_id] >= config.removal_threshold:
+
+                elif client_id in candidate_probed:
+                    candidate_clients.discard(client_id)
+                    candidate_flag_counts[client_id] = 0
+                    logger.candidate_event_rows.append(
+                        {
+                            "round": round_idx,
+                            "client_id": client_id,
+                            "is_free_rider": int(client_id in free_riders),
+                            "event": "cleared_after_confirmation",
+                            "reason": "confirmation_pass",
+                            "cumulative_penalty": penalties[client_id],
+                        }
+                    )
+
+                zero_removal_ready = (
+                    zero_update_counts[client_id] * config.penalty_zero_update
+                    >= config.removal_threshold
+                )
+                magnitude_removal_ready = (
+                    penalties[client_id] >= config.removal_threshold
+                    and dodge_probe_counts[client_id] >= config.dodge_min_probes
+                )
+                if zero_removal_ready or magnitude_removal_ready:
                     removed_after_round.append(client_id)
                     suspected_clients.discard(client_id)
+                    candidate_clients.discard(client_id)
+                    candidate_flag_counts[client_id] = 0
                     first_removal_round.setdefault(client_id, round_idx)
                     logger.removal_rows.append(
                         {
@@ -525,6 +683,13 @@ def run_experiment(
                             "client_id": client_id,
                             "is_free_rider": int(client_id in free_riders),
                             "final_penalty": penalties[client_id],
+                            "removal_basis": (
+                                "exact_sendbacks"
+                                if zero_removal_ready
+                                else "magnitude_after_minimum_probes"
+                            ),
+                            "zero_update_count": zero_update_counts[client_id],
+                            "suspicion_probes": dodge_probe_counts[client_id],
                         }
                     )
 
@@ -564,6 +729,10 @@ def run_experiment(
                     "cumulative_penalty": penalties[client_id],
                     "times_flagged_so_far": times_flagged[client_id],
                     "times_trapped_so_far": times_trapped[client_id],
+                    "is_candidate": int(client_id in candidate_clients),
+                    "candidate_episode_flags": candidate_flag_counts[client_id],
+                    "is_suspected": int(client_id in suspected_clients),
+                    "zero_update_count": zero_update_counts[client_id],
                 }
             )
 
@@ -608,12 +777,17 @@ def run_experiment(
                     "cumulative_penalty": penalties[client_id],
                     "times_flagged_so_far": times_flagged[client_id],
                     "times_trapped_so_far": times_trapped[client_id],
+                    "is_candidate": int(client_id in candidate_clients),
+                    "candidate_episode_flags": candidate_flag_counts[client_id],
+                    "is_suspected": int(client_id in suspected_clients),
+                    "zero_update_count": zero_update_counts[client_id],
                 }
             )
 
         if selection.phase == "coverage" and selection.coverage_complete:
-            coverage_trap_state = None
+            coverage_trap_states.clear()
             coverage_deltas.clear()
+            coverage_trap_ids.clear()
             coverage_observation_rounds.clear()
         if selection.surveillance_complete:
             surveillance_trap_state = None
@@ -627,6 +801,8 @@ def run_experiment(
             flag_rate = dodge_flag_counts[client_id] / probes if probes else 0.0
             if should_rehabilitate(probes, dodge_flag_counts[client_id], config):
                 suspected_clients.discard(client_id)
+                candidate_clients.discard(client_id)
+                candidate_flag_counts[client_id] = 0
                 rehabilitated_after_round.append(client_id)
                 logger.rehabilitation_rows.append(
                     {
@@ -649,6 +825,7 @@ def run_experiment(
                     "round": round_idx,
                     "client_id": client_id,
                     "is_suspected": int(client_id in suspected_clients),
+                    "is_candidate": int(client_id in candidate_clients),
                     "episode_probes": probes,
                     "episode_flags": dodge_flag_counts[client_id],
                     "dodge_index": dodge_flag_counts[client_id] / probes if probes else "",
@@ -683,11 +860,19 @@ def run_experiment(
                 "new_removals": len(removed_after_round),
                 "new_rehabilitations": len(rehabilitated_after_round),
                 "num_suspected": len(suspected_clients),
+                "num_candidates": len(candidate_clients),
             }
         )
 
+        quarantined_clients = (
+            selection.trapped_clients
+            | candidate_clients_at_round_start
+            | candidate_clients
+        )
         aggregated_clients = [
-            client_id for client_id in active_this_round if client_id not in selection.trapped_clients
+            client_id
+            for client_id in active_this_round
+            if client_id not in quarantined_clients
         ]
         global_state = fedavg_delta(base_state, [returned_states[client_id] for client_id in aggregated_clients])
         model.load_state_dict(global_state)
@@ -705,6 +890,7 @@ def run_experiment(
                 "global_loss": global_metrics["loss"],
                 "num_active_clients": len(active_clients),
                 "num_suspected_clients": len(suspected_clients),
+                "num_candidate_clients": len(candidate_clients),
                 "num_trapped": len(selection.trapped_clients),
                 "num_aggregated": len(aggregated_clients),
                 "round_compute_seconds": time.perf_counter() - round_start,
@@ -724,16 +910,20 @@ def run_experiment(
                 "times_flagged": times_flagged.copy(),
                 "times_trapped": times_trapped.copy(),
                 "selector_state": selector.state_dict(),
-                "coverage_trap_state": coverage_trap_state,
+                "coverage_trap_states": coverage_trap_states,
                 "coverage_deltas": coverage_deltas,
+                "coverage_trap_ids": coverage_trap_ids,
                 "coverage_observation_rounds": coverage_observation_rounds,
                 "surveillance_trap_state": surveillance_trap_state,
                 "surveillance_deltas": surveillance_deltas,
                 "surveillance_observation_rounds": surveillance_observation_rounds,
                 "suspected_clients": sorted(suspected_clients),
+                "candidate_clients": sorted(candidate_clients),
+                "candidate_flag_counts": candidate_flag_counts.copy(),
                 "dodge_probe_counts": dodge_probe_counts.copy(),
                 "dodge_flag_counts": dodge_flag_counts.copy(),
                 "lifetime_trap_flags": lifetime_trap_flags.copy(),
+                "zero_update_counts": zero_update_counts.copy(),
                 "first_flag_round": first_flag_round.copy(),
                 "first_removal_round": first_removal_round.copy(),
                 "free_riders_ground_truth": sorted(free_riders),
@@ -767,6 +957,7 @@ def run_experiment(
                     "new_removals": len(removed_after_round),
                     "new_rehabilitations": len(rehabilitated_after_round),
                     "suspected_clients": len(suspected_clients),
+                    "candidate_clients": len(candidate_clients),
                     **resource_metrics,
                 }
             )
@@ -788,7 +979,9 @@ def run_experiment(
             "first_removal_round": first_removal_round.get(client_id, ""),
             "final_penalty": penalties[client_id],
             "suspected_at_end": int(client_id in suspected_clients),
+            "candidate_at_end": int(client_id in candidate_clients),
             "lifetime_trap_flags": lifetime_trap_flags[client_id],
+            "zero_update_count": zero_update_counts[client_id],
             "active_at_end": int(client_id in active_clients),
         }
         for client_id in range(config.num_clients)
@@ -811,6 +1004,7 @@ def run_experiment(
             ),
             "final_global_loss": final_global.get("global_loss"),
             "final_suspected_clients": len(suspected_clients),
+            "final_candidate_clients": len(candidate_clients),
             "total_rehabilitations": len(logger.rehabilitation_rows),
             "average_round_time_seconds": (
                 sum(row["round_time_seconds"] for row in logger.global_rows) / completed_rounds
@@ -839,8 +1033,29 @@ def run_experiment(
             **detection_summary,
         }
     )
+    run_config["checkpoint_cleanup_on_success"] = True
+    run_config["checkpoints_deleted_on_success"] = []
     logger.write_all(run_config)
+    deleted_checkpoints = delete_successful_checkpoints(logger.run_dir)
+    run_config["checkpoints_deleted_on_success"] = deleted_checkpoints
+    logger.write_completion(run_config, completed_rounds)
     return str(logger.run_dir)
+
+
+def delete_successful_checkpoints(run_dir: Path) -> list[str]:
+    """Delete recovery snapshots only after a run has completed successfully."""
+    run_dir = run_dir.resolve()
+    checkpoint_paths = sorted(run_dir.glob("checkpoint_round_*.pt"))
+    latest_path = run_dir / "latest_checkpoint.pt"
+    if latest_path.is_file():
+        checkpoint_paths.append(latest_path)
+
+    deleted: list[str] = []
+    for checkpoint_path in checkpoint_paths:
+        if checkpoint_path.is_file() and checkpoint_path.parent.resolve() == run_dir:
+            checkpoint_path.unlink()
+            deleted.append(checkpoint_path.name)
+    return deleted
 
 
 def save_rolling_checkpoint(

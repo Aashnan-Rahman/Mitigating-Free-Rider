@@ -14,7 +14,8 @@ run at a time.
 | 4 | CIFAR-10 | non-IID | FR1, FR2, FR3, FR4 | 4 |
 
 All use 100 clients, 100 rounds, 40% free riders, seed 42, automatic CUDA/CPU
-selection, and checkpoints every five rounds by default.
+selection, and per-round rolling checkpoints. The five newest snapshots remain
+recoverable while running; successful experiments delete them.
 
 ## Percentage experiments (disabled initially)
 
@@ -28,6 +29,12 @@ or run with `--include-disabled`.
 ```powershell
 python run_experiments.py
 python monitor.py --watch
+```
+
+For the focused MNIST IID v6 FR1-to-FR4 sequence discussed in the run guide:
+
+```powershell
+python run_experiments.py --plan configs/stage1_v6_plan.json --stop-on-error
 ```
 
 To include the percentage matrix:

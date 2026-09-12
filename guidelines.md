@@ -27,7 +27,7 @@ elsewhere.
 
 | Variable | Default | Description |
 |---|---|---|
-| `methodology_version` | `"swtcp_v4"` | Rejects checkpoints produced by an incompatible detector protocol |
+| `methodology_version` | `"swtcp_v6"` | Rejects checkpoints produced by an incompatible detector protocol |
 | `dataset` | `"mnist"` | `"mnist"` or `"cifar10"` |
 | `distribution` | `"iid"` | `"iid"` or `"noniid"` |
 | `dirichlet_alpha` | `0.5` | Concentration parameter for Non-IID Dirichlet partitioning. Lower = more skewed. Only used if `distribution == "noniid"` |
@@ -43,6 +43,7 @@ elsewhere.
 | `warmup_rounds` (n_w) | `10` | Rounds before trap selection activates; passive update detection still runs |
 | `trap_fraction` (rho) | `0.10` | Base group size for the initial double-coverage sweep |
 | `coverage_checks_per_client` | `2` | Coverage observations per client; `2` enables balanced double checking, while `1` retains the original single sweep |
+| `candidate_confirmation_flags` | `2` | Independent magnitude flags required to enter S; a single flag enters C for confirmation |
 | `anchors_per_suspicion_group` | `3` | Maximum low-suspicion anchors assigned to each suspicious group |
 | `max_suspicion_anchors` | `10` | Maximum total anchors excluded in one round |
 | `surveillance_groups` | `10` | Fixed number of groups in every post-initial unflagged sweep |
@@ -54,7 +55,7 @@ elsewhere.
 | `dodge_min_probes` | `10` | Minimum frequent-suspicion probes before rehabilitation |
 | `dodge_max_flag_rate` | `0.10` | Maximum per-episode trap-flag rate allowed for rehabilitation |
 | `zero_update_epsilon` | `1e-6` | Numerical tolerance for "delta ≈ 0" check (L2 norm below this counts as zero) |
-| `magnitude_z_threshold` | `3.0` | Upper robust norm z-score threshold used for FR2 |
+| `magnitude_z_threshold` | `3.0` | Two-sided robust norm z-score boundary used for every attack |
 | `mad_floor` | `0.05` | Real minimum MAD scale, preventing small-batch threshold collapse |
 | `fr2_update_range` | `1e-3` | Half-width of the bounded uniform random update used by FR2 |
 | `fr3_window` | `5` | Maximum number of received models averaged by FR3 |
@@ -66,7 +67,7 @@ elsewhere.
 | `output_dir` | `"./results/"` | Where all CSV/log outputs are written |
 | `run_name` | auto-generated | e.g. `"{dataset}_{distribution}_{attack_type}_fr{free_rider_pct}_{timestamp}"`, used as subfolder / filename prefix |
 | `save_checkpoints` | `true` | Save a complete recovery checkpoint after every round |
-| `checkpoint_keep_last` | `5` | Retain only the newest numbered checkpoints; `latest_checkpoint.pt` aliases the newest snapshot |
+| `checkpoint_keep_last` | `5` | While running, retain only the newest numbered checkpoints; delete all recovery checkpoints after success |
 
 ---
 
@@ -83,39 +84,46 @@ the trap subset `T_t` (Section 3.3), which is drawn from the full active pool.
 Each active client in round `t` is either:
 - **Trapped** (`i ∈ T_t`): receives the corrupted/trap model, its update is
   **excluded from aggregation** regardless of outcome, but is still checked for flags.
-- **Normal**: receives the true global model, trains normally, and its update is
-  aggregated.
+- **Candidate** (`i ∈ C`): quarantined after one magnitude flag; its update is
+  excluded until its confirmation result is resolved.
+- **Normal**: receives the true global model and is aggregated when it is not
+  simultaneously selected for a trap or held in C.
 
 ### 3.3 Phases
 
 **Phase 0 — Warm-Up (rounds 1 to `warmup_rounds`)**
-No trapping. Standard FedAvg over all active clients. Passive norm-z/MAD
-detection and penalties remain active. In particular, the exact send-back check
-applies from round one; "warm-up" applies only to trap selection.
+No trapping. Passive norm-z/MAD detection and penalties remain active, so a
+newly created candidate is quarantined even during warm-up. In particular, the
+exact send-back check applies from round one; "warm-up" applies only to trap
+selection.
 
 **Phase 1 — Coverage Sweep (immediately after warm-up)**
-- Generate one trap model at the beginning of the initial sweep and freeze its
-  exact weights until that sweep finishes.
+- Generate two distinct trap models from the same global base at the beginning
+  of the initial sweep and freeze each model for its complete pass.
 - Partition all currently active clients into consecutive groups of size
   `m = ceil(rho * |active_clients|)`.
-- Trap two distinct groups per round using a randomized schedule with no
-  repeated group-pair, until every active client has been trapped exactly twice
-  in this sweep.
+- Trap two distinct groups per round. In the first randomized pass every client
+  receives trap A once; in the second randomized pass every client receives trap
+  B once. Avoid repeating a group-pair where possible.
 - Store each trapped response without flagging or penalizing it immediately.
-- After the final pair responds, compute the norm median/MAD over all
-  probe responses in the complete sweep. Combine the two decisions per client:
+- After the final pair responds, compute norm median/MAD separately for the
+  complete trap-A pass and the complete trap-B pass. Combine the two decisions per client:
   one magnitude flag adds one point, two add two points, and every zero update
   applies the five-point zero-update penalty.
-- The complete sweep's median delta is used as the diagnostic reference vector.
+- Each trap pass's median delta is used as its diagnostic reference vector.
 - When the queue of groups is exhausted, transition to Phase 2.
 
 **Phase 2 — Suspicion-Flagged Sweep (ongoing)**
-- Maintain separate suspicious (`S`) and unflagged (`U`) pools.
+- Maintain unflagged (`U`), candidate (`C`), and suspicious (`S`) pools.
+- One magnitude flag moves U to quarantined C. Confirm C on a fresh group trap
+  against never-flagged anchors: another flag moves it to S; a pass returns it to
+  U while retaining its penalty. Two initial-coverage flags or an exact
+  send-back move a client directly to S.
 - Build `X = max(1, floor(|S| / 10))` groups when `S` is non-empty. Every
   suspicious client is included, so group size is not capped at ten.
-- Select at most ten low-suspicion anchors for each ten-round cycle and assign up
-  to three per suspicious group. Shuffle suspects and anchors among groups every
-  round.
+- Select at most ten never-flagged anchors for each ten-round cycle and assign up
+  to three per suspicious/confirmation group. A candidate or any client with a
+  prior flag can never anchor. Shuffle suspects and anchors among groups every round.
 - Give every suspicious group its own fresh trap model. Compare suspect update
   norms with the median/MAD interval from that group's anchors. An out-of-range
   result adds three points; an exact send-back adds five and a zero-update anchor
@@ -123,7 +131,7 @@ applies from round one; "warm-up" applies only to trap selection.
 - Independently partition non-anchor `U` clients into exactly ten surveillance
   groups. Probe one group per round with a frozen model shared across that whole
   ten-round sweep, exclude it from aggregation, and evaluate the sweep together.
-- A surveillance magnitude flag adds one point and moves the client to `S`.
+- A surveillance magnitude flag adds one point and moves the client to `C`.
 - After ten suspicion probes, a client with at most a ten-percent episode flag
   rate returns to `U`; its cumulative penalty remains.
 - When `S` is empty, continue ten-group single-check surveillance sweeps. The
@@ -166,7 +174,7 @@ used only for evaluation metrics, never exposed to the detection logic).
   well as coverage and suspicion. Skip the cosine diagnostic.
 2. **Robust norm-z check** (only if step 1 did not trigger): during coverage or
   surveillance, compute the complete sweep's norm median/MAD and apply the
-  configured upper robust-z boundary. During frequent suspicion probing, use
+  configured two-sided robust-z boundary. During frequent suspicion probing, use
   only the two or three anchors that received the same trap, and flag the
   suspect when `abs((norm - anchor_median) / max(anchor_MAD, mad_floor))`
   exceeds `magnitude_z_threshold`:
@@ -179,11 +187,13 @@ used only for evaluation metrics, never exposed to the detection logic).
 4. **Rehabilitation:** after at least ten frequent-suspicion probes, return a
    client to the unflagged pool if its episode flag rate is at most ten percent.
    Retain its cumulative penalty and reset only its episode counters.
-5. **Removal check:** if `P_i >= 15`, remove the client from the
-   active pool permanently starting next round. Log the removal event.
+5. **Removal check:** three accumulated exact send-backs remove immediately.
+   Magnitude-only evidence additionally requires at least ten completed S-state
+   probes before `P_i >= 15` can remove the client. Log the removal event.
 6. **Aggregation:** global model for round `t+1` = mean of deltas from all
-   **non-trapped** clients in round `t` (trapped clients' updates are never
-   aggregated, regardless of whether they were flagged).
+   clients that are neither trapped nor quarantined candidates in round `t`.
+   A candidate clearing response is still excluded in its confirmation round;
+   ordinary aggregation resumes in the next round.
 
 Client-local loss and accuracy may be recorded by the simulator for evaluation,
 but they are not detector inputs and cannot change suspicion or penalties.
@@ -220,22 +230,28 @@ be swapped for other architectures without touching the training loop.
 
 1. **`trap_matrix.csv`** — rows = rounds (1..T), columns = client IDs (0..N-1).
    Cell value: `1` if that client was trapped that round, `0` otherwise. Include a
-   `phase` column per row (`warmup` / `coverage` / `suspicion`).
+   `phase` column per row (`warmup`, `coverage`, `confirmation`, `suspicion`, or
+   `surveillance`).
 2. **`global_metrics.csv`** — one row per round: `round, global_accuracy,
-   global_loss, num_active_clients, num_trapped, num_aggregated, round_time_seconds`.
+   global_loss, num_active_clients, num_candidate_clients,
+   num_suspected_clients, num_trapped, num_aggregated, round_time_seconds`.
 3. **`client_metrics.csv`** — one row per (round, client): `round, client_id,
    is_free_rider (ground truth), was_trapped, local_accuracy, local_loss,
    cosine_similarity, delta_norm, norm_z_score, norm_median, norm_mad, detection_reason,
    flagged (bool), penalty_added_this_round`.
    Local accuracy/loss are simulator diagnostics only. Legacy loss-z fields may
    remain present but blank for compatibility and are not detector inputs.
-4. **`penalty_tracker.csv`** — one row per (round, client): `round, client_id,
-   cumulative_penalty, times_flagged_so_far, times_trapped_so_far`.
+4. **`penalty_tracker.csv`** — one row per (round, client), including cumulative
+   penalty, C/S state, candidate-episode flags, exact-zero count, and lifetime
+   flag/trap counts.
 5. **`removals.csv`** — one row per removal event: `round, client_id,
-   is_free_rider (ground truth), final_penalty`.
+   is_free_rider (ground truth), final_penalty, removal_basis,
+   zero_update_count, suspicion_probes`.
 6. **`run_config.csv`** (or `.json`, whichever is easier to generate) — a full dump
    of every config variable in Section 2 for that run, plus `run_name`, `seed`,
    `device`, start/end timestamp, and total wall-clock runtime.
+7. **`candidate_events.csv`** — U-to-C entries, additional candidate evidence,
+   C-to-S confirmations, and confirmation passes that return C to U.
 
 All files for a given run should share a common `run_name` prefix or live in a
 common per-run folder so multiple experiment configurations (different datasets,
@@ -267,9 +283,8 @@ project/
 
 ## 10. Notes / Assumptions Carried Over From Design Discussion
 
-- Detection never causes the whole round to be discarded — only trapped clients'
-  updates are excluded; all other active clients' updates aggregate normally
-  every round.
+- Detection never causes the whole round to be discarded. Trapped and candidate
+  clients' updates are excluded; other active clients aggregate normally.
 - Reference populations differ by phase: complete stored responses during
   coverage/surveillance and same-model anchors during frequent suspicion.
   Cosine similarity remains diagnostic only.

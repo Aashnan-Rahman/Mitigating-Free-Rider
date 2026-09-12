@@ -73,6 +73,8 @@ def render(status: dict) -> None:
         print(f"Phase:   {progress.get('phase', '-')}")
         print(f"Device:  {progress.get('device', '-')}")
         print(f"Active:  {progress.get('active_clients', '-')}")
+        print(f"Candidate: {progress.get('candidate_clients', '-')}")
+        print(f"Suspected: {progress.get('suspected_clients', '-')}")
         print(f"Round time: {format_number(progress.get('round_time_seconds'), 's')}")
         print(f"Accuracy:   {format_number(progress.get('global_accuracy'), '')}")
         print(f"Loss:       {format_number(progress.get('global_loss'), '')}")
