@@ -133,24 +133,24 @@ Candidates and every client ever flagged are ineligible to act as anchors. If
 `max(1, floor(S / 10))` groups and distributes every suspicious client among
 them; ten is a target group size, not a maximum.
 
-At most ten never-flagged anchors are selected for a ten-round surveillance
-cycle, with up to three assigned to each suspicious group. Suspects and anchors
-are reshuffled between groups every round. Every group receives its own newly
-generated trap model, and suspect norm and profile scores are tested against the
-anchors that received that same model. A joint failure receives three penalty
-points; either signal alone receives none. Anchors supply both baselines but remain
-subject to the five-point exact send-back check; a zero-update anchor is excluded
-from the group baseline so it cannot collapse the reference.
+Every never-flagged U client belongs to the eligible anchor roster. At most ten
+are active anchors in a round, with up to three assigned to each suspicious
+group. A rotation queue avoids reusing an anchor until the eligible roster has
+been traversed where possible. Suspects and active anchors are reshuffled between
+groups every round. Every group receives its own fresh trap, and suspect norm and
+profile scores are tested against the active anchors that received that model. A
+joint failure receives three points; either signal alone receives none. Active
+anchors supply both baselines but remain subject to exact-sendback detection.
 
-Independently of the number of suspicious groups, all non-anchor unflagged
-clients are partitioned into exactly ten surveillance groups. One group receives
-the same frozen surveillance trap per round and is excluded from aggregation.
-After all ten groups have been processed, their responses are evaluated together;
-a one-signal anomaly moves the client into C and a joint failure also adds the
-configured surveillance penalty.
-Released anchors and rehabilitated suspects are inserted into a not-yet-processed
-surveillance group when one remains. Later surveillance cycles use one check even
-when the suspicious pool is empty; the initial double check is not repeated.
+Independently of the number of suspicious groups, all unflagged clients—including
+off-duty members of the anchor roster—are partitioned into exactly ten Y groups.
+The current Y group is excluded from active-anchor selection, receives the frozen
+surveillance trap, and is excluded from aggregation. This periodically audits
+anchor eligibility against the wider U population. A Y anomaly moves the client
+to C and permanently disqualifies it from anchoring; only a joint failure adds
+the surveillance penalty. Off-duty roster members outside the current Y group
+receive the global model and aggregate normally. Later cycles continue even when
+S is empty; the initial double check is not repeated.
 
 Candidate and suspicious clients maintain episode probe and joint-failure counts.
 After at least ten relevant probes, a client with a joint-failure rate at or

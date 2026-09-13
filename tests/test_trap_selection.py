@@ -77,7 +77,7 @@ def test_post_coverage_uses_four_suspicion_groups_ten_anchors_and_ten_y_groups()
         max(len(anchors) for _, _, anchors in selection.suspicion_groups) <= 3
         for selection in selections
     )
-    assert sum(len(selection.surveillance_clients) for selection in selections) == 45
+    assert sum(len(selection.surveillance_clients) for selection in selections) == 55
     assert selections[-1].surveillance_complete
 
 
@@ -98,7 +98,7 @@ def test_released_anchors_join_an_unfinished_y_sweep_without_duplicate_checks() 
         assert observed.isdisjoint(selection.surveillance_clients)
         observed.update(selection.surveillance_clients)
 
-    assert len(observed) == 82
+    assert len(observed) == 85
     assert selection.surveillance_complete
 
 
@@ -208,3 +208,44 @@ def test_any_previously_flagged_client_is_ineligible_as_an_anchor() -> None:
     )
 
     assert previously_flagged not in selection.anchors
+
+
+def test_single_suspicion_group_rotates_to_fresh_anchor_panels() -> None:
+    config = ExperimentConfig(num_clients=100)
+    selector = TrapSelector(config, random.Random(37))
+    selector.initial_coverage_done = True
+    active_clients = list(range(100))
+    suspected = set(range(10))
+    penalties = {client_id: int(client_id in suspected) for client_id in active_clients}
+    flags = penalties.copy()
+
+    selections = [
+        selector.select(round_idx, active_clients, penalties, flags, suspected)
+        for round_idx in range(21, 25)
+    ]
+    panels = [selection.anchors for selection in selections]
+
+    assert all(len(panel) == 3 for panel in panels)
+    assert len(set().union(*panels)) == 12
+    assert all(panel <= selection.anchor_roster for panel, selection in zip(panels, selections))
+
+
+def test_off_duty_anchor_roster_members_aggregate_unless_y_audited() -> None:
+    config = ExperimentConfig(num_clients=100)
+    selector = TrapSelector(config, random.Random(41))
+    selector.initial_coverage_done = True
+    active_clients = list(range(100))
+    suspected = set(range(10))
+    penalties = {client_id: int(client_id in suspected) for client_id in active_clients}
+    flags = penalties.copy()
+
+    selection = selector.select(21, active_clients, penalties, flags, suspected)
+    off_duty = (
+        selection.anchor_roster
+        - selection.anchors
+        - selection.surveillance_clients
+    )
+
+    assert off_duty
+    assert off_duty.isdisjoint(selection.trapped_clients)
+    assert selection.surveillance_clients <= selection.anchor_roster

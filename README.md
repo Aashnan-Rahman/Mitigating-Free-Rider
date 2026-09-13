@@ -87,6 +87,9 @@ moves it into frequent suspicion probing; a fully normal confirmation clears it.
 Later unflagged surveillance uses ten groups and one check per client. Candidate
 clearance and rehabilitation erase only the current magnitude episode, while
 exact-zero evidence remains permanent and three exact send-backs still remove.
+In v8, active anchor panels rotate through the never-flagged U roster. Off-duty
+roster members aggregate normally, and the Y sweep periodically audits them;
+any flagged client permanently loses anchor eligibility.
 
-See [`VERSION_HISTORY.md`](VERSION_HISTORY.md) for the v4-v7 methodology and
+See [`VERSION_HISTORY.md`](VERSION_HISTORY.md) for the v4-v8 methodology and
 result provenance.

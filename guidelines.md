@@ -27,7 +27,7 @@ elsewhere.
 
 | Variable | Default | Description |
 |---|---|---|
-| `methodology_version` | `"swtcp_v7"` | Rejects checkpoints produced by an incompatible detector protocol |
+| `methodology_version` | `"swtcp_v8"` | Rejects checkpoints produced by an incompatible detector protocol |
 | `dataset` | `"mnist"` | `"mnist"` or `"cifar10"` |
 | `distribution` | `"iid"` | `"iid"` or `"noniid"` |
 | `dirichlet_alpha` | `0.5` | Concentration parameter for Non-IID Dirichlet partitioning. Lower = more skewed. Only used if `distribution == "noniid"` |
@@ -122,16 +122,22 @@ send-back penalty applies from round one.
   An exact send-back moves it directly to S.
 - Build `X = max(1, floor(|S| / 10))` groups when `S` is non-empty. Every
   suspicious client is included, so group size is not capped at ten.
-- Select at most ten never-flagged anchors for each ten-round cycle and assign up
-  to three per suspicious/confirmation group. A candidate or any client with a
-  prior flag can never anchor. Shuffle suspects and anchors among groups every round.
+- Treat every never-flagged U client as eligible for the anchor roster. Select at
+  most ten active anchors per round and assign up to three per suspicious or
+  confirmation group. Rotate through the eligible roster before reusing anchors
+  where possible. A candidate or any previously flagged client can never anchor.
+  Shuffle suspects and active anchors among groups every round.
 - Give every suspicious group its own fresh trap model. Compare suspect update
   norms and layer profiles with baselines from that group's anchors. A joint
   failure adds three points; either signal alone adds none. An exact send-back adds five and a zero-update anchor
   is excluded from the magnitude baseline.
-- Independently partition non-anchor `U` clients into exactly ten surveillance
-  groups. Probe one group per round with a frozen model shared across that whole
-  ten-round sweep, exclude it from aggregation, and evaluate the sweep together.
+- Independently partition all U clients, including off-duty anchor-roster members,
+  into exactly ten Y surveillance groups. Exclude the current Y group from active
+  anchor selection, probe it with the cycle's frozen surveillance model, and
+  evaluate the complete sweep together. A flagged Y client loses anchor
+  eligibility permanently.
+- Off-duty anchor-roster members receive the normal global model and contribute
+  to aggregation unless they are the current Y group.
 - A surveillance anomaly moves the client to C; only a joint failure adds one point.
 - After ten episode probes, a C or S client with at most a ten-percent joint-
   failure rate returns to U. Its magnitude episode is cleared while exact-zero

@@ -19,6 +19,8 @@ class TrapSelection:
     candidate_clients: set[int] = field(default_factory=set)
     surveillance_clients: set[int] = field(default_factory=set)
     surveillance_complete: bool = False
+    anchor_roster: set[int] = field(default_factory=set)
+    anchor_rotation_cycle: int = 0
 
 
 class TrapSelector:
@@ -30,7 +32,8 @@ class TrapSelector:
         self.initial_coverage_done = False
         self.surveillance_queue: list[list[int]] = []
         self.completed_surveillance_clients: set[int] = set()
-        self.anchor_pool: set[int] = set()
+        self.anchor_rotation_queue: list[int] = []
+        self.anchor_rotation_cycle = 0
 
     def state_dict(self) -> dict[str, Any]:
         return {
@@ -42,7 +45,8 @@ class TrapSelector:
             "initial_coverage_done": self.initial_coverage_done,
             "surveillance_queue": [group[:] for group in self.surveillance_queue],
             "completed_surveillance_clients": sorted(self.completed_surveillance_clients),
-            "anchor_pool": sorted(self.anchor_pool),
+            "anchor_rotation_queue": self.anchor_rotation_queue[:],
+            "anchor_rotation_cycle": self.anchor_rotation_cycle,
         }
 
     def load_state_dict(self, state: Mapping[str, Any]) -> None:
@@ -63,7 +67,10 @@ class TrapSelector:
             int(client_id)
             for client_id in state.get("completed_surveillance_clients", [])
         }
-        self.anchor_pool = {int(client_id) for client_id in state.get("anchor_pool", [])}
+        self.anchor_rotation_queue = [
+            int(client_id) for client_id in state.get("anchor_rotation_queue", [])
+        ]
+        self.anchor_rotation_cycle = int(state.get("anchor_rotation_cycle", 0))
 
     def select(
         self,
@@ -128,53 +135,40 @@ class TrapSelector:
             for client_id in unflagged
             if times_flagged.get(client_id, 0) == 0
         }
-        desired_anchors = min(
-            self.config.max_suspicion_anchors,
-            self.config.anchors_per_suspicion_group * probe_group_count,
-            len(anchor_eligible),
-        )
-
+        # Every unflagged client, including off-duty members of the anchor
+        # roster, belongs to the ten-group Y audit. Only the group selected this
+        # round is withheld from aggregation.
         if not self.surveillance_queue:
             self.completed_surveillance_clients.clear()
-            self.anchor_pool = set(
-                self._anchor_sample(
-                    list(anchor_eligible), penalties, times_flagged, desired_anchors
-                )
-            )
-            surveillance = list(unflagged - self.anchor_pool)
+            surveillance = list(unflagged)
             self.rng.shuffle(surveillance)
             self.surveillance_queue = [[] for _ in range(self.config.surveillance_groups)]
             for index, client_id in enumerate(surveillance):
                 self.surveillance_queue[index % self.config.surveillance_groups].append(client_id)
         else:
-            self.anchor_pool &= anchor_eligible
-            if len(self.anchor_pool) > desired_anchors:
-                released = list(self.anchor_pool)
-                self.rng.shuffle(released)
-                released = released[desired_anchors:]
-                self.anchor_pool.difference_update(released)
-                for client_id in released:
-                    if client_id not in self.completed_surveillance_clients:
-                        self.rng.choice(self.surveillance_queue).append(client_id)
-            elif len(self.anchor_pool) < desired_anchors:
-                anchor_candidates = list(anchor_eligible - self.anchor_pool)
-                additions = self._anchor_sample(
-                    anchor_candidates,
-                    penalties,
-                    times_flagged,
-                    desired_anchors - len(self.anchor_pool),
-                )
-                self.anchor_pool.update(additions)
-                for group in self.surveillance_queue:
-                    group[:] = [client_id for client_id in group if client_id not in self.anchor_pool]
-
-            scheduled_unflagged = self.anchor_pool | self.completed_surveillance_clients | {
+            scheduled_unflagged = self.completed_surveillance_clients | {
                 client_id for group in self.surveillance_queue for client_id in group
             }
             newly_available = list(unflagged - scheduled_unflagged)
             self.rng.shuffle(newly_available)
             for client_id in newly_available:
                 self.rng.choice(self.surveillance_queue).append(client_id)
+
+        scheduled_surveillance = {
+            client_id
+            for client_id in self.surveillance_queue[0]
+            if client_id in unflagged
+        }
+        desired_anchors = min(
+            self.config.max_suspicion_anchors,
+            self.config.anchors_per_suspicion_group * probe_group_count,
+            len(anchor_eligible - scheduled_surveillance),
+        )
+        active_anchors = self._next_rotating_anchors(
+            anchor_eligible,
+            scheduled_surveillance,
+            desired_anchors,
+        )
 
         suspect_list = list(suspects)
         self.rng.shuffle(suspect_list)
@@ -188,7 +182,7 @@ class TrapSelector:
         for index, client_id in enumerate(candidate_list):
             candidate_groups[index % probe_group_count].append(client_id)
 
-        anchors = list(self.anchor_pool)
+        anchors = list(active_anchors)
         self.rng.shuffle(anchors)
         anchor_groups = [[] for _ in range(probe_group_count)]
         for index, client_id in enumerate(anchors):
@@ -205,13 +199,10 @@ class TrapSelector:
         surveillance_group = {
             client_id
             for client_id in self.surveillance_queue.pop(0)
-            if client_id in unflagged and client_id not in self.anchor_pool
+            if client_id in unflagged and client_id not in active_anchors
         }
         self.completed_surveillance_clients.update(surveillance_group)
         surveillance_complete = not self.surveillance_queue
-        if surveillance_complete:
-            self.anchor_pool.clear()
-
         anchors_set = set().union(*(group_anchors for _, _, group_anchors in grouped)) if grouped else set()
         trapped = surveillance_group | anchors_set | suspects | candidates
         self.phase = "suspicion" if suspects else "confirmation" if candidates else "surveillance"
@@ -223,7 +214,49 @@ class TrapSelector:
             candidate_clients=candidates,
             surveillance_clients=surveillance_group,
             surveillance_complete=surveillance_complete,
+            anchor_roster=anchor_eligible,
+            anchor_rotation_cycle=self.anchor_rotation_cycle,
         )
+
+    def _next_rotating_anchors(
+        self,
+        eligible: set[int],
+        excluded: set[int],
+        count: int,
+    ) -> set[int]:
+        """Draw an off-Y anchor panel without reusing anchors until necessary."""
+        if count <= 0:
+            self.anchor_rotation_queue = [
+                client_id
+                for client_id in self.anchor_rotation_queue
+                if client_id in eligible
+            ]
+            return set()
+
+        self.anchor_rotation_queue = [
+            client_id
+            for client_id in self.anchor_rotation_queue
+            if client_id in eligible
+        ]
+        selected: list[int] = []
+
+        def consume_available() -> None:
+            retained: list[int] = []
+            for client_id in self.anchor_rotation_queue:
+                if len(selected) < count and client_id not in excluded:
+                    selected.append(client_id)
+                else:
+                    retained.append(client_id)
+            self.anchor_rotation_queue = retained
+
+        consume_available()
+        if len(selected) < count:
+            refill = list(eligible - excluded - set(selected))
+            self.rng.shuffle(refill)
+            self.anchor_rotation_queue.extend(refill)
+            self.anchor_rotation_cycle += 1
+            consume_available()
+        return set(selected)
 
     def _build_coverage_queue(self, active_clients: list[int]) -> list[tuple[int, list[int]]]:
         shuffled = active_clients[:]

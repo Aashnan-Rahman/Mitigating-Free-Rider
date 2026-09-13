@@ -563,7 +563,6 @@ def run_experiment(
                     - candidate_clients
                     - suspicion_probed
                     - candidate_probed
-                    - selection.anchors
                 )
                 eligible_deltas = {
                     client_id: surveillance_deltas[client_id]
@@ -802,6 +801,8 @@ def run_experiment(
                     "client_id": client_id,
                     "is_free_rider": int(client_id in free_riders),
                     "was_trapped": int(was_trapped),
+                    "was_active_anchor": int(client_id in selection.anchors),
+                    "was_y_audited": int(client_id in selection.surveillance_clients),
                     "local_accuracy": local_stats[client_id]["accuracy"],
                     "local_loss": local_stats[client_id]["loss"],
                     "num_local_samples": local_stats[client_id]["num_local_samples"],
@@ -861,6 +862,8 @@ def run_experiment(
                     "client_id": client_id,
                     "is_free_rider": int(client_id in free_riders),
                     "was_trapped": 0,
+                    "was_active_anchor": 0,
+                    "was_y_audited": 0,
                     "local_accuracy": "",
                     "local_loss": "",
                     "num_local_samples": "",
@@ -1080,6 +1083,9 @@ def run_experiment(
                 "num_suspected_clients": len(suspected_clients),
                 "num_candidate_clients": len(candidate_clients),
                 "num_trapped": len(selection.trapped_clients),
+                "num_anchor_roster": len(selection.anchor_roster),
+                "num_active_anchors": len(selection.anchors),
+                "anchor_rotation_cycle": selection.anchor_rotation_cycle,
                 "num_aggregated": len(aggregated_clients),
                 "round_compute_seconds": time.perf_counter() - round_start,
                 "round_time_seconds": 0.0,

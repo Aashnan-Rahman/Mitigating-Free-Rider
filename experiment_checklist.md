@@ -27,6 +27,12 @@ This checklist is ordered so each stage is run only after the previous stage is 
 - [ ] Confirm any single-signal anomaly creates C, a fully normal candidate probe
       returns it to U, and two joint failures move it to S.
 - [ ] Confirm candidates and all previously flagged clients are never anchors.
+- [ ] Confirm active anchor panels rotate through never-flagged U clients and a
+      one-group S phase does not reuse the same three anchors in consecutive rounds.
+- [ ] Confirm all U clients, including off-duty potential anchors, appear once in
+      each ten-group Y audit cycle; a Y flag permanently removes anchor eligibility.
+- [ ] Confirm off-duty anchor-roster clients contribute normally unless selected
+      as an active anchor or as part of the current trapped Y group.
 - [ ] Run one short smoke test per attack and inspect returned-update norms and
       first-round behavior before launching the experiment matrix.
 - [ ] Confirm the detector uses robust norm z-score plus normalized per-tensor

@@ -59,6 +59,33 @@ be pooled as if they used the same detector.
 - Checkpoints now preserve profiles, separate zero/magnitude penalties, and
   candidate probe counters. Logs expose both individual signals, joint evidence,
   and their matrices.
-- v7 has not yet been experimentally validated. It is intended to reduce v6's
-  honest norm-tail removals while retaining general, attack-independent evidence
-  for FR2 and FR4; that expectation must be tested across attacks and seeds.
+- MNIST IID, 40%, seed 42 results removed 40/40 free riders and three honest
+  clients for each of FR1-FR4. Final accuracies were 0.9887, 0.9887, 0.9888,
+  and 0.9881. This reduced v6's total honest removals from 43 to 12 without
+  reducing recall.
+- The remaining false removals were systematic: clients 51 and 59 recurred, and
+  small S pools repeatedly used the same three-anchor panel. Ten probes were
+  therefore not ten independent reference comparisons.
+
+## v8 — Rotating anchor roster with Y auditing
+
+- Replaces the fixed per-cycle anchor pool with a rotation queue drawn from all
+  active, unflagged clients that have never produced any anomaly.
+- Active anchor usage remains capped by `max_suspicion_anchors`; each suspicious
+  group still receives no more than `anchors_per_suspicion_group` anchors.
+- Anchors are not reused until the eligible rotation queue is exhausted where
+  population size permits, so a one-group S episode receives changing panels.
+- Every unflagged client remains in the ten-group Y surveillance schedule.
+  Potential anchors are therefore periodically audited with the same secret
+  surveillance probes as other U clients.
+- A client producing any anomaly becomes permanently anchor-ineligible through
+  the existing `times_flagged > 0` rule.
+- Only anchors actively serving an S/C group and clients selected for the current
+  Y probe receive traps and are excluded from aggregation. Off-duty eligible
+  anchors receive the global model and contribute normally.
+- The v7 joint-evidence penalties, candidate confirmation, rehabilitation,
+  exact-zero rules, and attack-independent detector are otherwise unchanged.
+- Checkpoints preserve the anchor rotation queue/cycle. Per-round logs record
+  roster size, active-anchor count, rotation cycle, and whether each client was
+  an active anchor or received the Y audit.
+- v8 has not yet been experimentally validated.

@@ -8,7 +8,7 @@ from typing import Any
 
 @dataclass
 class ExperimentConfig:
-    methodology_version: str = "swtcp_v7"
+    methodology_version: str = "swtcp_v8"
     dataset: str = "mnist"
     distribution: str = "iid"
     dirichlet_alpha: float = 0.5
