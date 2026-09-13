@@ -43,16 +43,20 @@ norm_scale  = max(norm_MAD, 0.05)
 norm_z      = (norm - norm_median) / norm_scale
 ```
 
-The unified decision is:
+For every nonzero checked update, v7 also forms a scale-free layer profile:
 
 ```text
-flag = near_zero_update
-       OR phase-appropriate robust norm outlier
+profile[k] = norm(update tensor k) / sum_j(norm(update tensor j))
+profile_score = L2 distance from the median reference profile
 ```
 
-- Near-zero updates target static/no-update behavior such as FR1.
+- Near-zero updates target static/no-update behavior such as FR1 and retain a
+  permanent five-point evidence counter.
 - Both unusually high and unusually low update norms are detected using
   `abs(norm_z)`, without selecting a branch based on attack type.
+- A norm or layer-profile anomaly alone causes quarantine/confirmation but no
+  magnitude penalty. Only both signals failing on the same response creates
+  penalized joint gradient evidence.
 - FR3 and FR4 are tested through the same secret-model probes and statistical
   response rules; the server does not select a detector branch by attack type.
 - Client-local accuracy and loss are never trusted detector inputs. They may be
@@ -68,10 +72,10 @@ The analysis found that very small MAD values made minor honest norm differences
 look extreme. The real `mad_floor=0.05` prevents this scale collapse.
 
 An isolated honest anomaly can still occur. Automatic per-round penalty decay is
-disabled; instead, a suspicious client returns to the unflagged pool after at
-least ten frequent probes when no more than ten percent are flagged. This keeps
-its accumulated evidence while allowing a consistently normal client to leave
-the expensive suspicion path.
+disabled; instead, a candidate or suspicious client returns to the unflagged
+pool after at least ten episode probes when no more than ten percent contain a
+joint failure. Rehabilitation clears the current magnitude episode but preserves
+all exact-zero evidence.
 
 ## Coverage sweep protocol
 
@@ -91,8 +95,9 @@ decisions:
 7. After the last pair responds, median/MAD statistics are calculated separately
    for trap A and trap B, so responses to different models never define one
    another's baseline.
-8. The two decisions are combined per client: each magnitude flag adds one point
-   and every near-zero response adds the five-point zero-update penalty.
+8. The two decisions are combined per client. A one-signal failure creates
+   candidate evidence without a magnitude penalty; a joint norm/profile failure
+   earns the configured trap penalty. Every near-zero response adds five points.
 9. Both frozen models and the stored evidence are cleared.
 10. The initial double sweep is not repeated; later unflagged surveillance uses
     ten single-check groups and a newly frozen model for each ten-round cycle.
@@ -107,19 +112,21 @@ excluded from global aggregation.
 
 ## Warm-up
 
-Trap selection begins only after warm-up, but the universal exact send-back and
-server-observed update checks remain active from round one. No private client
-metric is requested or trusted for detection.
+Trap selection begins only after warm-up. During warm-up, the server performs
+only the universal exact send-back check: it does not compute norm/profile flags
+or create candidates from nonzero updates. No private client metric is requested
+or trusted for detection.
 
 ## Suspicion phase and anchors
 
 After the initial double-coverage sweep, clients are divided into unflagged (`U`),
-candidate (`C`), and suspicious (`S`) states. One nonzero magnitude flag moves a
-client from U to C and quarantines its update. A candidate receives an immediate
-fresh-trap confirmation against clean anchors: a second flag moves it to S, while
-a pass returns it to U without erasing its accumulated penalty. Two flags in the
-initial double coverage move a client directly to S. An exact send-back is strong
-evidence and also moves a client directly to S.
+candidate (`C`), and suspicious (`S`) states. A nonzero one-signal or joint
+anomaly moves a client from U to C and quarantines its update. A candidate
+receives fresh-trap confirmation against clean anchors. Two joint failures move
+it to S by default; a fully normal response returns it immediately to U and
+clears its current magnitude episode. Repeated one-signal-only responses are
+eligible for the ten-probe rehabilitation rule. An exact send-back moves a
+client directly to S.
 
 Candidates and every client ever flagged are ineligible to act as anchors. If
 `S` clients are suspicious, the server creates
@@ -129,9 +136,9 @@ them; ten is a target group size, not a maximum.
 At most ten never-flagged anchors are selected for a ten-round surveillance
 cycle, with up to three assigned to each suspicious group. Suspects and anchors
 are reshuffled between groups every round. Every group receives its own newly
-generated trap model, and suspect update norms are tested against the median/MAD
-interval of the anchors that received that same model. An out-of-range suspect
-receives three penalty points. Anchors supply the magnitude baseline but remain
+generated trap model, and suspect norm and profile scores are tested against the
+anchors that received that same model. A joint failure receives three penalty
+points; either signal alone receives none. Anchors supply both baselines but remain
 subject to the five-point exact send-back check; a zero-update anchor is excluded
 from the group baseline so it cannot collapse the reference.
 
@@ -139,32 +146,34 @@ Independently of the number of suspicious groups, all non-anchor unflagged
 clients are partitioned into exactly ten surveillance groups. One group receives
 the same frozen surveillance trap per round and is excluded from aggregation.
 After all ten groups have been processed, their responses are evaluated together;
-a magnitude flag adds one point and moves the client into the candidate pool.
+a one-signal anomaly moves the client into C and a joint failure also adds the
+configured surveillance penalty.
 Released anchors and rehabilitated suspects are inserted into a not-yet-processed
 surveillance group when one remains. Later surveillance cycles use one check even
 when the suspicious pool is empty; the initial double check is not repeated.
 
-Suspicious clients maintain per-episode probe and flag counts. After at least ten
-suspicion probes, a client with a flag rate at or below ten percent is returned
-to the unflagged pool. Its cumulative penalty is retained, while its episode
-counters reset. Lifetime trap and flag counts remain available for analysis.
+Candidate and suspicious clients maintain episode probe and joint-failure counts.
+After at least ten relevant probes, a client with a joint-failure rate at or
+below ten percent returns to U. Its current magnitude penalty is cleared, exact-
+zero points are retained, and episode counters reset.
 
 ## Penalties and removal
 
 - Every near-zero update in any phase, including warm-up and each initial
   coverage probe, adds `penalty_zero_update` (default 5). Three exact send-backs
   therefore reach the removal threshold.
-- Coverage magnitude flag: one point per flagged probe, giving one point for one
-  of two checks or two points for both.
-- Anchor-relative flag during frequent suspicion probing: three points.
-- Flag during the one-check unflagged surveillance sweep: one point.
+- A magnitude-only or profile-only response earns no magnitude points.
+- A joint failure earns the phase-configured penalty: `penalty_trap_flag` in
+  initial coverage, three points in frequent suspicion, and one in surveillance.
 - There is no automatic per-pass penalty decay; rehabilitation is controlled by
   the dodge index.
 - Three accumulated exact send-backs cause immediate removal, because their
   five-point penalties reach the fixed threshold of 15.
-- Magnitude-only evidence cannot remove a client until it has received at least
-  ten frequent S-state probes. Once that gate is met, cumulative penalty at or
-  above 15 removes it.
+- Nonzero joint evidence cannot remove a client until it has received at least
+  ten frequent S-state probes. Once that gate is met, total retained zero points
+  plus current magnitude-episode points at or above 15 remove it. If the episode
+  simultaneously qualifies for rehabilitation, rehabilitation wins and its
+  magnitude points are cleared instead of removing the client.
 
 Trapped updates are excluded from aggregation regardless of their flag result.
 Candidate updates are also quarantined until confirmation; a clearing response
@@ -173,7 +182,8 @@ is excluded in its own round and normal aggregation resumes on the next round.
 ## Logged evidence
 
 `client_metrics.csv` records the diagnostic cosine value, delta norm, norm z-score,
-norm median/MAD, detection reason, and stored coverage observation round. Legacy
+layer-profile score/z-score, both signal flags, joint evidence, detection reason,
+and stored coverage observation round. Legacy
 loss-z columns may remain blank for result-schema compatibility. Locally computed
 loss and accuracy are simulation evaluation metrics and are never used for a flag.
 

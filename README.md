@@ -54,7 +54,8 @@ Outputs are written under `output_dir/run_name/`:
 - `detection_summary.csv`
 - `round_detection_metrics.csv` and `detection_events.csv`
 - `client_detection_summary.csv`
-- `norm_z_matrix.csv`, `loss_z_matrix.csv`, `delta_norm_matrix.csv`, `flag_matrix.csv`
+- `norm_z_matrix.csv`, `profile_z_matrix.csv`, `loss_z_matrix.csv`,
+  `delta_norm_matrix.csv`, `flag_matrix.csv`, and `joint_flag_matrix.csv`
 
 Each completed round rewrites the CSV/JSON snapshots and, when enabled, saves a
 checkpoint containing the model state, active clients, penalties, flag/trap counts,
@@ -68,22 +69,24 @@ retain them for resume.
 
 The trap model perturbation is configurable through `trap_noise_scale` and
 `trap_noise_floor`; all detection and attack hyperparameters are centralized in
-`config.py`. Detection computes a robust update-norm z-score using the batch
-median and `max(MAD, mad_floor)`. During trap phases, responses are compared
-only with responses generated from the same frozen or group-specific model. No
-percentile is used. Cosine similarity is logged only as a
-diagnostic and never flags or penalizes a client. Automatic penalty decay is
-disabled; repeated suspicion checks use a dodge-index rehabilitation rule. An
-exact send-back check remains active during trap-selection warmup. Local loss and
-accuracy are simulation diagnostics only; neither is trusted by, or supplied to,
-the detector.
+`config.py`. During secret-trap phases, detection combines a two-sided robust
+update-norm z-score with a scale-free profile of how update norm is distributed
+across parameter tensors. A single abnormal signal quarantines the client for
+confirmation but earns no magnitude penalty; only simultaneous norm and profile
+failure earns one. Responses are compared only with responses generated from the
+same frozen or group-specific model. Cosine similarity is diagnostic only. The
+warm-up performs only the exact send-back check. Local loss and accuracy are
+simulation diagnostics and are never detector inputs.
 
 The initial coverage sweep uses two distinct frozen trap models generated from
 the same base model. Two groups are probed per round; every client receives each
 trap exactly once, with separately calibrated median/MAD baselines. Decisions
-are deferred until the complete double sweep is available. A single magnitude
-flag creates a quarantined candidate that must pass or fail an anchor-referenced
-confirmation before returning to the unflagged pool or entering frequent
-suspicion probing. Later unflagged surveillance uses ten groups and one check per
-client. Magnitude-only removal requires at least ten suspicion probes, while
-three exact send-backs still remove immediately.
+are deferred until the complete double sweep is available. Any single-signal
+anomaly creates a quarantined candidate. Repeated joint norm/profile evidence
+moves it into frequent suspicion probing; a fully normal confirmation clears it.
+Later unflagged surveillance uses ten groups and one check per client. Candidate
+clearance and rehabilitation erase only the current magnitude episode, while
+exact-zero evidence remains permanent and three exact send-backs still remove.
+
+See [`VERSION_HISTORY.md`](VERSION_HISTORY.md) for the v4-v7 methodology and
+result provenance.

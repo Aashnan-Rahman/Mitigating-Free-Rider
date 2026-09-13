@@ -8,7 +8,7 @@ from typing import Any
 
 @dataclass
 class ExperimentConfig:
-    methodology_version: str = "swtcp_v6"
+    methodology_version: str = "swtcp_v7"
     dataset: str = "mnist"
     distribution: str = "iid"
     dirichlet_alpha: float = 0.5
@@ -39,6 +39,8 @@ class ExperimentConfig:
     zero_update_epsilon: float = 1e-6
     magnitude_z_threshold: float = 3.0
     mad_floor: float = 0.05
+    profile_z_threshold: float = 3.0
+    profile_mad_floor: float = 0.01
     full_participation: bool = True
     seed: int = 42
     output_dir: str = "./results/"
@@ -146,8 +148,10 @@ class ExperimentConfig:
             self.zero_update_epsilon <= 0
             or self.magnitude_z_threshold <= 0
             or self.mad_floor <= 0
+            or self.profile_z_threshold <= 0
+            or self.profile_mad_floor <= 0
         ):
-            raise ValueError("Zero epsilon, magnitude z threshold, and MAD floor must be positive.")
+            raise ValueError("Zero epsilon and norm/profile MAD settings must be positive.")
         if self.checkpoint_keep_last <= 0:
             raise ValueError("checkpoint_keep_last must be positive.")
         if self.fr2_update_range <= 0:

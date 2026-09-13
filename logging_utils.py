@@ -50,9 +50,11 @@ class RunLogger:
         self._write_csv("detection_events.csv", self.detection_event_rows)
         self._write_csv("client_detection_summary.csv", self.client_summary_rows)
         self._write_metric_matrix("norm_z_matrix.csv", "norm_z_score")
+        self._write_metric_matrix("profile_z_matrix.csv", "profile_z_score")
         self._write_metric_matrix("loss_z_matrix.csv", "loss_z_score")
         self._write_metric_matrix("delta_norm_matrix.csv", "delta_norm")
         self._write_metric_matrix("flag_matrix.csv", "flagged")
+        self._write_metric_matrix("joint_flag_matrix.csv", "joint_flag_count")
         with (self.run_dir / "run_config.json").open("w", encoding="utf-8") as handle:
             json.dump(run_config, handle, indent=2, sort_keys=True)
 
@@ -177,14 +179,16 @@ CSV_HEADERS: dict[str, list[str]] = {
         "removal_basis", "zero_update_count", "suspicion_probes"
     ],
     "rehabilitations.csv": [
-        "round", "client_id", "is_free_rider", "penalty", "probes", "flags", "dodge_index"
+        "round", "client_id", "is_free_rider", "cleared_magnitude_penalty",
+        "remaining_penalty", "probes", "flags", "dodge_index"
     ],
     "candidate_events.csv": [
         "round", "client_id", "is_free_rider", "event", "reason", "cumulative_penalty"
     ],
     "dodge_tracker.csv": [
-        "round", "client_id", "is_suspected", "is_candidate", "episode_probes", "episode_flags",
-        "dodge_index", "lifetime_trap_flags"
+        "round", "client_id", "is_suspected", "is_candidate",
+        "candidate_episode_probes", "candidate_episode_flags", "episode_probes",
+        "episode_flags", "dodge_index", "lifetime_trap_flags"
     ],
     "detection_summary.csv": [
         "removed_free_riders",
@@ -200,7 +204,7 @@ CSV_HEADERS: dict[str, list[str]] = {
         "round", "evaluated_clients", "true_positives", "false_positives",
         "true_negatives", "false_negatives", "detection_accuracy", "precision",
         "recall", "f1", "false_positive_rate", "false_negative_rate",
-        "specificity", "new_removals", "new_rehabilitations", "num_suspected",
-        "num_candidates",
+        "specificity", "joint_true_positives", "joint_false_positives",
+        "new_removals", "new_rehabilitations", "num_suspected", "num_candidates",
     ],
 }

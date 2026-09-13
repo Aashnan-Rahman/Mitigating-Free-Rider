@@ -34,7 +34,7 @@ python monitor.py --watch
 For the focused MNIST IID v6 FR1-to-FR4 sequence discussed in the run guide:
 
 ```powershell
-python run_experiments.py --plan configs/stage1_v6_plan.json --stop-on-error
+python run_experiments.py --plan configs/stage1_v7_plan.json --stop-on-error
 ```
 
 To include the percentage matrix:

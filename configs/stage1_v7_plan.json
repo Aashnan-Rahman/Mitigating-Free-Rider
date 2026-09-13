@@ -1,0 +1,27 @@
+{
+  "batch_name": null,
+  "results_root": "./results",
+  "defaults": {
+    "methodology_version": "swtcp_v7",
+    "num_clients": 100,
+    "num_rounds": 100,
+    "free_rider_pct": 0.4,
+    "seed": 42,
+    "device": "auto",
+    "save_checkpoints": true,
+    "checkpoint_keep_last": 5
+  },
+  "stages": [
+    {
+      "id": "stage1_v7",
+      "description": "SWT-CP v7 joint gradient evidence: MNIST IID, 40% free riders, FR1 through FR4",
+      "enabled": true,
+      "matrix": {
+        "dataset": ["mnist"],
+        "distribution": ["iid"],
+        "attack_type": ["FR1", "FR2", "FR3", "FR4"],
+        "free_rider_pct": [0.4]
+      }
+    }
+  ]
+}

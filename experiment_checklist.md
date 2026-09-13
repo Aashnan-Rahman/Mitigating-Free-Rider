@@ -15,24 +15,29 @@ This checklist is ordered so each stage is run only after the previous stage is 
 - [ ] Confirm a 100-client, 10% coverage sweep probes 20 clients per round for
       10 rounds, each client receives trap A once and trap B once, each trap has
       its own complete-pass baseline, and no group-pair repeats where avoidable.
-- [ ] Confirm coverage gives one point per magnitude flag and five points for
-      every zero-update response; two zero responses therefore give ten points.
-- [ ] Confirm a warm-up zero update also receives the five-point penalty.
+- [ ] Confirm coverage treats magnitude-only and profile-only failures as
+      non-penalized candidate evidence, and applies `penalty_trap_flag` only when
+      both fail on the same response. Every zero response still adds five points.
+- [ ] Confirm warm-up runs only exact-zero detection and a zero response receives
+      five points; nonzero norm/profile outliers must not create candidates.
 - [ ] Confirm `X` and `Y` are independent: `X=max(1,floor(|S|/10))` when
       suspects exist, while `Y` always contains ten surveillance groups.
 - [ ] Confirm every suspicious group receives a different fresh trap each round,
       while the ten `Y` groups share one frozen trap over their cycle.
-- [ ] Confirm one magnitude flag creates a quarantined candidate, a candidate
-      pass returns it to U, and a second independent flag moves it to S.
+- [ ] Confirm any single-signal anomaly creates C, a fully normal candidate probe
+      returns it to U, and two joint failures move it to S.
 - [ ] Confirm candidates and all previously flagged clients are never anchors.
 - [ ] Run one short smoke test per attack and inspect returned-update norms and
       first-round behavior before launching the experiment matrix.
-- [ ] Confirm the detector rule used by the current code: robust update-norm z-score using median/MAD; cosine is diagnostic only.
+- [ ] Confirm the detector uses robust norm z-score plus normalized per-tensor
+      layer-profile distance; cosine is diagnostic only.
 - [ ] Confirm client-local loss and accuracy never enter flag, penalty, suspicion,
       rehabilitation, or removal decisions; their CSV values are diagnostics only.
-- [ ] Confirm magnitude-only removal requires both `P_i >= P_max` and at least
+- [ ] Confirm nonzero joint-evidence removal requires both `P_i >= P_max` and at least
       ten S-state probes, while three accumulated exact send-backs remove without
       waiting for that probe gate.
+- [ ] Confirm a client meeting the ten-probe, at-most-10% rehabilitation rule is
+      rehabilitated rather than removed by its reversible magnitude episode.
 - [ ] Keep `save_checkpoints=true` and `checkpoint_keep_last=5`; confirm every
       round creates a recoverable checkpoint and only the five newest numbered
       snapshots remain while running.
@@ -46,8 +51,9 @@ threat model.
 ## Stage 0: Pipeline validation
 
 - [ ] Smoke run: 4 clients, 2 rounds, CPU. Verify all CSV/JSON/PT files exist.
-- [ ] Confirm suspicious clients leave the suspicious pool only after at least
-      ten probes with an episode flag rate at or below ten percent.
+- [ ] Confirm C/S clients leave their episode only after a fully normal candidate
+      confirmation or at least ten probes with a joint-failure rate at or below
+      ten percent; magnitude points clear but exact-zero points remain.
 
 **Go criterion:** during an interrupted check, `latest_checkpoint.pt` and no more
 than five numbered checkpoints are present; after a successful run,
@@ -131,8 +137,8 @@ Run the selected detector configuration, not every discarded variant:
 
 - `global_metrics.csv`: one row per round, including accuracy, loss, active clients, trapped clients, aggregated clients, and time.
 - `client_metrics.csv`: one row per active or inactive client per round, including
-  simulation-only local accuracy/loss, gradient-norm robust z-scores and
-  median/MAD baselines, coverage observation round, coverage check/flag counts,
+  simulation-only local accuracy/loss, gradient-norm and layer-profile robust
+  z-scores and median/MAD baselines, individual and joint flags, coverage observation round, coverage check/flag counts,
   cosine diagnostic, detection reason, flag, and penalty adjustment. Legacy
   loss-z fields must remain empty.
 - `penalty_tracker.csv`: cumulative penalty, U/C/S state, zero-update count, and

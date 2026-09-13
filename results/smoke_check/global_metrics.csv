@@ -1,3 +1,0 @@
-round,global_accuracy,global_loss,num_active_clients,num_suspected_clients,num_candidate_clients,num_trapped,num_aggregated,round_compute_seconds,round_time_seconds,process_cpu_seconds,process_rss_mb,system_memory_percent,cpu_percent,cuda_allocated_mb,cuda_reserved_mb,cuda_peak_allocated_mb
-1,0.9729,0.2683214019536972,4,1,0,0,4,30.929990100034047,30.94989980000537,42.03125,924.8046875,54.3,0.0,27.31689453125,76.0,50.2197265625
-2,0.9729,0.2683214019536972,4,1,0,4,0,30.983619800012093,31.016407700022683,42.3125,935.76953125,54.2,0.0,31.27197265625,78.0,54.1748046875
