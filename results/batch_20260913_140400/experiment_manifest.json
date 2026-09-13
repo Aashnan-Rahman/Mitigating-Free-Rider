@@ -1,0 +1,53 @@
+{
+  "batch_id": "batch_20260913_140400",
+  "created_at": "2026-09-13T14:04:00.287218",
+  "defaults": {
+    "checkpoint_keep_last": 5,
+    "device": "auto",
+    "free_rider_pct": 0.4,
+    "methodology_version": "swtcp_v7",
+    "num_clients": 100,
+    "num_rounds": 100,
+    "save_checkpoints": true,
+    "seed": 42
+  },
+  "experiments": [
+    {
+      "config": {
+        "attack_type": "FR1",
+        "dataset": "mnist",
+        "distribution": "iid",
+        "free_rider_pct": 0.4
+      },
+      "id": "stage1_v7_mnist_iid_fr1_fr40"
+    },
+    {
+      "config": {
+        "attack_type": "FR2",
+        "dataset": "mnist",
+        "distribution": "iid",
+        "free_rider_pct": 0.4
+      },
+      "id": "stage1_v7_mnist_iid_fr2_fr40"
+    },
+    {
+      "config": {
+        "attack_type": "FR3",
+        "dataset": "mnist",
+        "distribution": "iid",
+        "free_rider_pct": 0.4
+      },
+      "id": "stage1_v7_mnist_iid_fr3_fr40"
+    },
+    {
+      "config": {
+        "attack_type": "FR4",
+        "dataset": "mnist",
+        "distribution": "iid",
+        "free_rider_pct": 0.4
+      },
+      "id": "stage1_v7_mnist_iid_fr4_fr40"
+    }
+  ],
+  "source_plan": "configs\\stage1_v7_plan.json"
+}
