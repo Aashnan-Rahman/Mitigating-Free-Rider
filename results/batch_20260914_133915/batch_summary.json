@@ -1,10 +1,7 @@
 {
   "batch_id": "batch_20260914_133915",
   "completed_experiments": 4,
-  "completed_rounds": 400,
-  "current_experiment": null,
   "elapsed_seconds": 22852.87626194954,
-  "estimated_remaining_seconds": 0.0,
   "experiments": [
     {
       "completed_rounds": 100,
@@ -225,10 +222,6 @@
   ],
   "failed_experiments": 0,
   "finished_at": "2026-09-14T20:00:08.519001",
-  "plan": "configs\\stage1_v8_plan.json",
   "started_at": "2026-09-14T13:39:15.642767",
-  "state": "completed",
-  "total_experiments": 4,
-  "total_rounds": 400,
-  "updated_at": "2026-09-14T20:00:08.519019"
+  "state": "completed"
 }
