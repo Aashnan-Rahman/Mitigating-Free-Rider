@@ -14,7 +14,11 @@
   "stages": [
     {
       "id": "stage1_v8",
+<<<<<<< HEAD
       "description": "SWT-CP v8 rotating audited anchors: MNIST IID, 30% free riders, FR1 through FR4",
+=======
+      "description": "SWT-CP v8 rotating audited anchors: MNIST IID, 30% free riders, FR1 through FR4, seed 42",
+>>>>>>> 224e434c3262b3ba258b1653c85eebe62232ad9f
       "enabled": true,
       "matrix": {
         "dataset": ["mnist"],
