@@ -43,47 +43,31 @@ name writes into the same result directory.
 ## 2. Run FR1, FR2, FR3, or FR4 individually
 
 The following commands run 100 clients for 100 rounds on MNIST IID with 30% free
-riders, seed 42, and automatic CUDA/CPU selection. Their output directories are
+riders, seed 43, and automatic CUDA/CPU selection. Their output directories are
 kept separate from scheduled batch output.
 
 ### FR1
 
 ```powershell
-<<<<<<< HEAD
-python run_experiment.py --set dataset=mnist --set distribution=iid --set free_rider_pct=0.3 --set attack_type=FR1 --set num_clients=100 --set num_rounds=100 --set seed=42 --set device=auto --set output_dir=results/manual_mnist_iid_fr30 --set run_name=FR1_swtcp_v8_seed42
-=======
-python run_experiment.py --set dataset=mnist --set distribution=iid --set free_rider_pct=0.3 --set attack_type=FR1 --set num_clients=100 --set num_rounds=100 --set seed=42 --set device=auto --set output_dir=results/manual_mnist_iid_fr30 --set run_name=FR1_swtcp_v8_fr30_seed42
->>>>>>> 224e434c3262b3ba258b1653c85eebe62232ad9f
+python run_experiment.py --set dataset=mnist --set distribution=iid --set free_rider_pct=0.3 --set attack_type=FR1 --set num_clients=100 --set num_rounds=100 --set seed=43 --set device=auto --set output_dir=results/manual_mnist_iid_fr30 --set run_name=FR1_swtcp_v8_fr30_seed43
 ```
 
 ### FR2
 
 ```powershell
-<<<<<<< HEAD
-python run_experiment.py --set dataset=mnist --set distribution=iid --set free_rider_pct=0.3 --set attack_type=FR2 --set num_clients=100 --set num_rounds=100 --set seed=42 --set device=auto --set output_dir=results/manual_mnist_iid_fr30 --set run_name=FR2_swtcp_v8_seed42
-=======
-python run_experiment.py --set dataset=mnist --set distribution=iid --set free_rider_pct=0.3 --set attack_type=FR2 --set num_clients=100 --set num_rounds=100 --set seed=42 --set device=auto --set output_dir=results/manual_mnist_iid_fr30 --set run_name=FR2_swtcp_v8_fr30_seed42
->>>>>>> 224e434c3262b3ba258b1653c85eebe62232ad9f
+python run_experiment.py --set dataset=mnist --set distribution=iid --set free_rider_pct=0.3 --set attack_type=FR2 --set num_clients=100 --set num_rounds=100 --set seed=43 --set device=auto --set output_dir=results/manual_mnist_iid_fr30 --set run_name=FR2_swtcp_v8_fr30_seed43
 ```
 
 ### FR3
 
 ```powershell
-<<<<<<< HEAD
-python run_experiment.py --set dataset=mnist --set distribution=iid --set free_rider_pct=0.3 --set attack_type=FR3 --set num_clients=100 --set num_rounds=100 --set seed=42 --set device=auto --set output_dir=results/manual_mnist_iid_fr30 --set run_name=FR3_swtcp_v8_seed42
-=======
-python run_experiment.py --set dataset=mnist --set distribution=iid --set free_rider_pct=0.3 --set attack_type=FR3 --set num_clients=100 --set num_rounds=100 --set seed=42 --set device=auto --set output_dir=results/manual_mnist_iid_fr30 --set run_name=FR3_swtcp_v8_fr30_seed42
->>>>>>> 224e434c3262b3ba258b1653c85eebe62232ad9f
+python run_experiment.py --set dataset=mnist --set distribution=iid --set free_rider_pct=0.3 --set attack_type=FR3 --set num_clients=100 --set num_rounds=100 --set seed=43 --set device=auto --set output_dir=results/manual_mnist_iid_fr30 --set run_name=FR3_swtcp_v8_fr30_seed43
 ```
 
 ### FR4
 
 ```powershell
-<<<<<<< HEAD
-python run_experiment.py --set dataset=mnist --set distribution=iid --set free_rider_pct=0.3 --set attack_type=FR4 --set num_clients=100 --set num_rounds=100 --set seed=42 --set device=auto --set output_dir=results/manual_mnist_iid_fr30 --set run_name=FR4_swtcp_v8_seed42
-=======
-python run_experiment.py --set dataset=mnist --set distribution=iid --set free_rider_pct=0.3 --set attack_type=FR4 --set num_clients=100 --set num_rounds=100 --set seed=42 --set device=auto --set output_dir=results/manual_mnist_iid_fr30 --set run_name=FR4_swtcp_v8_fr30_seed42
->>>>>>> 224e434c3262b3ba258b1653c85eebe62232ad9f
+python run_experiment.py --set dataset=mnist --set distribution=iid --set free_rider_pct=0.3 --set attack_type=FR4 --set num_clients=100 --set num_rounds=100 --set seed=43 --set device=auto --set output_dir=results/manual_mnist_iid_fr30 --set run_name=FR4_swtcp_v8_fr30_seed43
 ```
 
 To require CUDA rather than silently falling back to CPU, replace
@@ -94,31 +78,20 @@ An individual run does not create the batch-level `experiment_status.json` used
 by `monitor.py`. Its latest completed round can instead be read from:
 
 ```powershell
-<<<<<<< HEAD
-Get-Content results/manual_mnist_iid_fr30/FR1_swtcp_v8_seed42/latest_results.json
-=======
-Get-Content results/manual_mnist_iid_fr30/FR1_swtcp_v8_fr30_seed42/latest_results.json
->>>>>>> 224e434c3262b3ba258b1653c85eebe62232ad9f
+Get-Content results/manual_mnist_iid_fr30/FR1_swtcp_v8_fr30_seed43/latest_results.json
 ```
 
-Change `FR1_swtcp_v8_fr30_seed42` to the applicable individual run name.
+Change `FR1_swtcp_v8_fr30_seed43` to the applicable individual run name.
 
 ## 3. Schedule FR1 → FR2 → FR3 → FR4 automatically
 
 The v8 plan `configs/stage1_v8_plan.json` contains exactly four runs in
 this order:
 
-<<<<<<< HEAD
-1. MNIST IID FR1, 30%
-2. MNIST IID FR2, 30%
-3. MNIST IID FR3, 30%
-4. MNIST IID FR4, 30%
-=======
-1. MNIST IID FR1, 30%, seed 42
-2. MNIST IID FR2, 30%, seed 42
-3. MNIST IID FR3, 30%, seed 42
-4. MNIST IID FR4, 30%, seed 42
->>>>>>> 224e434c3262b3ba258b1653c85eebe62232ad9f
+1. MNIST IID FR1, 30%, seed 43
+2. MNIST IID FR2, 30%, seed 43
+3. MNIST IID FR3, 30%, seed 43
+4. MNIST IID FR4, 30%, seed 43
 
 Start the sequence with:
 
@@ -245,11 +218,7 @@ the last completed round remains recoverable. Resume an interrupted individual r
 same experiment settings, output directory, and run name, plus its checkpoint:
 
 ```powershell
-<<<<<<< HEAD
-python run_experiment.py --set dataset=mnist --set distribution=iid --set free_rider_pct=0.3 --set attack_type=FR1 --set num_clients=100 --set num_rounds=100 --set seed=42 --set device=auto --set output_dir=results/manual_mnist_iid_fr30 --set run_name=FR1_swtcp_v8_seed42 --set resume_checkpoint=results/manual_mnist_iid_fr30/FR1_swtcp_v8_seed42/latest_checkpoint.pt
-=======
-python run_experiment.py --set dataset=mnist --set distribution=iid --set free_rider_pct=0.3 --set attack_type=FR1 --set num_clients=100 --set num_rounds=100 --set seed=42 --set device=auto --set output_dir=results/manual_mnist_iid_fr30 --set run_name=FR1_swtcp_v8_fr30_seed42 --set resume_checkpoint=results/manual_mnist_iid_fr30/FR1_swtcp_v8_fr30_seed42/latest_checkpoint.pt
->>>>>>> 224e434c3262b3ba258b1653c85eebe62232ad9f
+python run_experiment.py --set dataset=mnist --set distribution=iid --set free_rider_pct=0.3 --set attack_type=FR1 --set num_clients=100 --set num_rounds=100 --set seed=43 --set device=auto --set output_dir=results/manual_mnist_iid_fr30 --set run_name=FR1_swtcp_v8_fr30_seed43 --set resume_checkpoint=results/manual_mnist_iid_fr30/FR1_swtcp_v8_fr30_seed43/latest_checkpoint.pt
 ```
 
 Do not resume a checkpoint using a different attack, dataset, distribution, or
@@ -267,7 +236,7 @@ free_rider_pct=0.1, 0.2, 0.3, or 0.4
 attack_type=FR1, FR2, FR3, or FR4
 num_clients=100
 num_rounds=100
-seed=42
+seed=43
 device=auto, cpu, or cuda
 checkpoint_keep_last=5
 candidate_confirmation_flags=2
