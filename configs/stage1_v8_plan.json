@@ -5,8 +5,8 @@
     "methodology_version": "swtcp_v8",
     "num_clients": 100,
     "num_rounds": 100,
-    "free_rider_pct": 0.4,
-    "seed": 43,
+    "free_rider_pct": 0.3,
+    "seed": 42,
     "device": "auto",
     "save_checkpoints": true,
     "checkpoint_keep_last": 5
@@ -14,13 +14,13 @@
   "stages": [
     {
       "id": "stage1_v8",
-      "description": "SWT-CP v8 rotating audited anchors: MNIST IID, 40% free riders, FR1 through FR4",
+      "description": "SWT-CP v8 rotating audited anchors: MNIST IID, 30% free riders, FR1 through FR4, seed 42",
       "enabled": true,
       "matrix": {
         "dataset": ["mnist"],
         "distribution": ["iid"],
         "attack_type": ["FR1", "FR2", "FR3", "FR4"],
-        "free_rider_pct": [0.4]
+        "free_rider_pct": [0.3]
       }
     }
   ]
