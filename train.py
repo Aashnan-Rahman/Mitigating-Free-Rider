@@ -1273,7 +1273,7 @@ def save_rolling_checkpoint(
     checkpoint_path = run_dir / f"checkpoint_round_{round_idx:04d}.pt"
     temporary_path = run_dir / f".{checkpoint_path.name}.tmp"
     torch.save(checkpoint, temporary_path)
-    temporary_path.replace(checkpoint_path)
+    replace_with_retry(temporary_path, checkpoint_path)
 
     numbered: list[tuple[int, Path]] = []
     for path in run_dir.glob("checkpoint_round_*.pt"):
@@ -1289,7 +1289,24 @@ def save_rolling_checkpoint(
     latest_temporary = run_dir / ".latest_checkpoint.pt.tmp"
     latest_temporary.unlink(missing_ok=True)
     shutil.copy2(checkpoint_path, latest_temporary)
-    latest_temporary.replace(latest_path)
+    replace_with_retry(latest_temporary, latest_path)
+
+
+def replace_with_retry(
+    source: Path,
+    destination: Path,
+    attempts: int = 8,
+    initial_delay_seconds: float = 0.1,
+) -> None:
+    """Replace a file, tolerating short-lived Windows scanner/indexer locks."""
+    for attempt in range(attempts):
+        try:
+            source.replace(destination)
+            return
+        except PermissionError:
+            if attempt == attempts - 1:
+                raise
+            time.sleep(initial_delay_seconds * min(2**attempt, 16))
 
 
 def safe_ratio(numerator: int, denominator: int) -> float:

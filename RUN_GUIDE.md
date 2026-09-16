@@ -205,6 +205,20 @@ results/<batch-id>/<experiment-id>/run_config.json
 
 ## 6. Checkpoints and interruption
 
+To resume an interrupted or failed scheduled batch, pass its existing batch
+directory. The runner skips experiments whose outputs are marked complete,
+resumes the first incomplete experiment from the newest checkpoint consistent
+with its published logs, and then runs the remaining queued experiments:
+
+```powershell
+python run_experiments.py --resume-batch results/batch_20260916_010656 --stop-on-error
+```
+
+The existing batch-level status files are updated during recovery, so
+`python monitor.py --watch` works normally in a second terminal. Recovery uses
+the frozen defaults and experiment matrix in the batch manifest rather than the
+currently editable plan file.
+
 When `save_checkpoints=true`, every completed round creates a recovery
 checkpoint. While a run is active or interrupted, only the five newest numbered
 checkpoints are retained, controlled by `checkpoint_keep_last=5`, and
