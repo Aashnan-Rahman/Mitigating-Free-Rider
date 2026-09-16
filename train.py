@@ -15,6 +15,7 @@ import torch
 from torch import nn
 from torch.utils.data import DataLoader, Subset
 
+from atomic_io import flush_file_to_disk, replace_with_retry
 from clients.attacks import FreeRiderAttacker, flatten_delta
 from config import ExperimentConfig
 from data.loaders import get_datasets, make_eval_loader
@@ -1273,6 +1274,7 @@ def save_rolling_checkpoint(
     checkpoint_path = run_dir / f"checkpoint_round_{round_idx:04d}.pt"
     temporary_path = run_dir / f".{checkpoint_path.name}.tmp"
     torch.save(checkpoint, temporary_path)
+    flush_file_to_disk(temporary_path)
     replace_with_retry(temporary_path, checkpoint_path)
 
     numbered: list[tuple[int, Path]] = []
@@ -1289,24 +1291,8 @@ def save_rolling_checkpoint(
     latest_temporary = run_dir / ".latest_checkpoint.pt.tmp"
     latest_temporary.unlink(missing_ok=True)
     shutil.copy2(checkpoint_path, latest_temporary)
+    flush_file_to_disk(latest_temporary)
     replace_with_retry(latest_temporary, latest_path)
-
-
-def replace_with_retry(
-    source: Path,
-    destination: Path,
-    attempts: int = 8,
-    initial_delay_seconds: float = 0.1,
-) -> None:
-    """Replace a file, tolerating short-lived Windows scanner/indexer locks."""
-    for attempt in range(attempts):
-        try:
-            source.replace(destination)
-            return
-        except PermissionError:
-            if attempt == attempts - 1:
-                raise
-            time.sleep(initial_delay_seconds * min(2**attempt, 16))
 
 
 def safe_ratio(numerator: int, denominator: int) -> float:

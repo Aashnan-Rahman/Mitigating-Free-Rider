@@ -211,13 +211,38 @@ resumes the first incomplete experiment from the newest checkpoint consistent
 with its published logs, and then runs the remaining queued experiments:
 
 ```powershell
-python run_experiments.py --resume-batch results/batch_20260916_010656 --stop-on-error
+$batchId = (Get-Content results/experiment_status.json | ConvertFrom-Json).batch_id
+python run_experiments.py --resume-batch "results/$batchId" --stop-on-error
 ```
 
 The existing batch-level status files are updated during recovery, so
 `python monitor.py --watch` works normally in a second terminal. Recovery uses
 the frozen defaults and experiment matrix in the batch manifest rather than the
 currently editable plan file.
+
+### Automatic recovery after a restart
+
+The scheduled task `Mitigating Free Rider - Resume Experiments` runs after the
+current Windows user logs on. It finds the newest unfinished batch, avoids
+starting a duplicate runner, and resumes the remaining experiments. After all
+earlier unfinished work completes, it starts the fixed MNIST non-IID, 40%
+free-rider seed-43 plan in `configs/stage1_v8_seed43_plan.json`. Its fixed batch
+name prevents the task from launching the seed-43 matrix more than once.
+Install or refresh the task with:
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\install_resume_task.ps1
+```
+
+Run the same recovery launcher immediately without restarting Windows:
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\resume_experiments.ps1
+```
+
+Task output is appended to `results/scheduled_resume.log`. Because the trigger
+uses the user-session Python environment and `E:` drive, Windows login is
+required after a reboot before recovery starts.
 
 When `save_checkpoints=true`, every completed round creates a recovery
 checkpoint. While a run is active or interrupted, only the five newest numbered

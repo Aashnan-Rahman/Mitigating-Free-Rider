@@ -8,8 +8,9 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any
 
+from atomic_io import atomic_write_json
 from config import ExperimentConfig
-from train import replace_with_retry, run_experiment
+from train import run_experiment
 
 
 def main() -> None:
@@ -42,7 +43,10 @@ def main() -> None:
         experiments = list(manifest.get("experiments", []))
         batch_id = str(manifest.get("batch_id") or batch_dir.name)
         results_root = batch_dir.parent
-        status = read_json(batch_status_path)
+        try:
+            status = read_json(batch_status_path)
+        except (json.JSONDecodeError, UnicodeDecodeError):
+            status = reconstruct_status(manifest)
         status_records = {item["id"]: item for item in status.get("experiments", [])}
         status["experiments"] = [
             status_records.get(
@@ -271,6 +275,27 @@ def read_json(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def reconstruct_status(manifest: dict[str, Any]) -> dict[str, Any]:
+    """Rebuild minimal batch state when an outage damaged only the status JSON."""
+    records = []
+    batch_dir_name = str(manifest.get("batch_id", ""))
+    for experiment in manifest.get("experiments", []):
+        record = {"id": experiment["id"], "state": "queued", "config": experiment["config"]}
+        records.append(record)
+    status: dict[str, Any] = {
+        "batch_id": batch_dir_name,
+        "plan": str(manifest.get("source_plan", "")),
+        "state": "interrupted",
+        "started_at": manifest.get("created_at", datetime.now().isoformat()),
+        "updated_at": datetime.now().isoformat(),
+        "current_experiment": None,
+        "experiments": records,
+        "elapsed_seconds": 0.0,
+    }
+    refresh_totals(status, {"defaults": manifest.get("defaults", {})})
+    return status
+
+
 def completed_run_exists(run_dir: Path) -> bool:
     latest_path = run_dir / "latest_results.json"
     if not latest_path.is_file():
@@ -323,10 +348,7 @@ def refresh_totals(status: dict[str, Any], plan: dict[str, Any]) -> None:
 
 
 def write_json(path: Path, value: dict[str, Any]) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    temporary = path.with_suffix(path.suffix + ".tmp")
-    temporary.write_text(json.dumps(value, indent=2, sort_keys=True), encoding="utf-8")
-    replace_with_retry(temporary, path)
+    atomic_write_json(path, value)
 
 
 if __name__ == "__main__":

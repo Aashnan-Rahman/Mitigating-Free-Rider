@@ -1,10 +1,11 @@
 from __future__ import annotations
 
 import csv
-import json
+import os
 from pathlib import Path
 from typing import Any
 
+from atomic_io import atomic_write_json, replace_with_retry
 from config import ExperimentConfig
 
 
@@ -55,8 +56,7 @@ class RunLogger:
         self._write_metric_matrix("delta_norm_matrix.csv", "delta_norm")
         self._write_metric_matrix("flag_matrix.csv", "flagged")
         self._write_metric_matrix("joint_flag_matrix.csv", "joint_flag_count")
-        with (self.run_dir / "run_config.json").open("w", encoding="utf-8") as handle:
-            json.dump(run_config, handle, indent=2, sort_keys=True)
+        atomic_write_json(self.run_dir / "run_config.json", run_config)
 
     def write_progress(self, round_idx: int, run_config: dict[str, Any]) -> None:
         self.write_all({**run_config, "latest_round": round_idx})
@@ -66,8 +66,7 @@ class RunLogger:
             "latest_global_metrics": self.global_rows[-1] if self.global_rows else {},
             "files": sorted(path.name for path in self.run_dir.iterdir()),
         }
-        with (self.run_dir / "latest_results.json").open("w", encoding="utf-8") as handle:
-            json.dump(latest, handle, indent=2, sort_keys=True)
+        atomic_write_json(self.run_dir / "latest_results.json", latest)
 
     def write_completion(
         self, run_config: dict[str, Any], completed_rounds: int
@@ -81,8 +80,7 @@ class RunLogger:
             "latest_global_metrics": self.global_rows[-1] if self.global_rows else {},
             "files": sorted(path.name for path in self.run_dir.iterdir()),
         }
-        with (self.run_dir / "latest_results.json").open("w", encoding="utf-8") as handle:
-            json.dump(latest, handle, indent=2, sort_keys=True)
+        atomic_write_json(self.run_dir / "latest_results.json", latest)
 
     def load_existing(
         self,
@@ -125,13 +123,19 @@ class RunLogger:
     def _write_csv(self, filename: str, rows: list[dict[str, Any]]) -> None:
         path = self.run_dir / filename
         fieldnames = list(rows[0].keys()) if rows else CSV_HEADERS.get(filename, [])
-        with path.open("w", newline="", encoding="utf-8") as handle:
+        temporary = path.with_name(f".{path.name}.{os.getpid()}.tmp")
+        with temporary.open("w", newline="", encoding="utf-8") as handle:
             if not fieldnames:
-                return
-            writer = csv.DictWriter(handle, fieldnames=fieldnames)
-            writer.writeheader()
-            if rows:
-                writer.writerows(rows)
+                handle.flush()
+                os.fsync(handle.fileno())
+            else:
+                writer = csv.DictWriter(handle, fieldnames=fieldnames)
+                writer.writeheader()
+                if rows:
+                    writer.writerows(rows)
+                handle.flush()
+                os.fsync(handle.fileno())
+        replace_with_retry(temporary, path)
 
     def _write_metric_matrix(self, filename: str, value_field: str) -> None:
         """Pivot a client metric to one row per observation round."""
