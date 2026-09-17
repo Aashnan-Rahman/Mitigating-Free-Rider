@@ -1,0 +1,383 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.3 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{nyt/global//global/global/global}
+    \entry{fraboni2021freerider}{inproceedings}{}{}
+      \name{author}{3}{}{%
+        {{hash=e7535f1c181d26e6075b6e9f757b389c}{%
+           family={Fraboni},
+           familyi={F\bibinitperiod},
+           given={Yann},
+           giveni={Y\bibinitperiod}}}%
+        {{hash=fd24254532d20e87eb91ace30724b86d}{%
+           family={Vidal},
+           familyi={V\bibinitperiod},
+           given={Richard},
+           giveni={R\bibinitperiod}}}%
+        {{hash=9307df22f002a0a96fb21a64be13b06b}{%
+           family={Lorenzi},
+           familyi={L\bibinitperiod},
+           given={Marco},
+           giveni={M\bibinitperiod}}}%
+      }
+      \name{editor}{2}{}{%
+        {{hash=4ddb7b9c38d8c15a70bc573ba4e51ea9}{%
+           family={Banerjee},
+           familyi={B\bibinitperiod},
+           given={Arindam},
+           giveni={A\bibinitperiod}}}%
+        {{hash=e9c11e7f6e771dbb75fdfa98f94e91a0}{%
+           family={Fukumizu},
+           familyi={F\bibinitperiod},
+           given={Kenji},
+           giveni={K\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {PMLR}%
+      }
+      \strng{namehash}{461a223b7ba07ac4cac00c55be32feaa}
+      \strng{fullhash}{f6fc70125dc21e206daf361b0fbbb917}
+      \strng{fullhashraw}{f6fc70125dc21e206daf361b0fbbb917}
+      \strng{bibnamehash}{f6fc70125dc21e206daf361b0fbbb917}
+      \strng{authorbibnamehash}{f6fc70125dc21e206daf361b0fbbb917}
+      \strng{authornamehash}{461a223b7ba07ac4cac00c55be32feaa}
+      \strng{authorfullhash}{f6fc70125dc21e206daf361b0fbbb917}
+      \strng{authorfullhashraw}{f6fc70125dc21e206daf361b0fbbb917}
+      \strng{editorbibnamehash}{0fdd1f39e473ea169ca8fe6bb851f6cb}
+      \strng{editornamehash}{0fdd1f39e473ea169ca8fe6bb851f6cb}
+      \strng{editorfullhash}{0fdd1f39e473ea169ca8fe6bb851f6cb}
+      \strng{editorfullhashraw}{0fdd1f39e473ea169ca8fe6bb851f6cb}
+      \field{sortinit}{F}
+      \field{sortinithash}{2638baaa20439f1b5a8f80c6c08a13b4}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Proceedings of The 24th International Conference on Artificial Intelligence and Statistics (AISTATS)}
+      \field{month}{4}
+      \field{series}{Proceedings of Machine Learning Research}
+      \field{title}{Free-rider Attacks on Model Aggregation in Federated Learning}
+      \field{volume}{130}
+      \field{year}{2021}
+      \field{pages}{1846\bibrangedash 1854}
+      \range{pages}{9}
+      \verb{urlraw}
+      \verb https://proceedings.mlr.press/v130/fraboni21a.html
+      \endverb
+      \verb{url}
+      \verb https://proceedings.mlr.press/v130/fraboni21a.html
+      \endverb
+    \endentry
+    \entry{lin2019freeriders}{article}{}{}
+      \name{author}{3}{}{%
+        {{hash=44b591330c16716f119306f0714582aa}{%
+           family={Lin},
+           familyi={L\bibinitperiod},
+           given={Jierui},
+           giveni={J\bibinitperiod}}}%
+        {{hash=6989be56341f6cbc885766e0dd067a4b}{%
+           family={Du},
+           familyi={D\bibinitperiod},
+           given={Min},
+           giveni={M\bibinitperiod}}}%
+        {{hash=fd903bc507de58459375d974764ab4ea}{%
+           family={Liu},
+           familyi={L\bibinitperiod},
+           given={Jian},
+           giveni={J\bibinitperiod}}}%
+      }
+      \strng{namehash}{e30f9fcb1be4d52abe23c38b461da0be}
+      \strng{fullhash}{2a4dfb73abf76644e7a659a4b0caf2f7}
+      \strng{fullhashraw}{2a4dfb73abf76644e7a659a4b0caf2f7}
+      \strng{bibnamehash}{2a4dfb73abf76644e7a659a4b0caf2f7}
+      \strng{authorbibnamehash}{2a4dfb73abf76644e7a659a4b0caf2f7}
+      \strng{authornamehash}{e30f9fcb1be4d52abe23c38b461da0be}
+      \strng{authorfullhash}{2a4dfb73abf76644e7a659a4b0caf2f7}
+      \strng{authorfullhashraw}{2a4dfb73abf76644e7a659a4b0caf2f7}
+      \field{sortinit}{L}
+      \field{sortinithash}{7c47d417cecb1f4bd38d1825c427a61a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{arXiv preprint arXiv:1911.12560}
+      \field{title}{Free-riders in Federated Learning: Attacks and Defenses}
+      \field{year}{2019}
+      \verb{urlraw}
+      \verb https://arxiv.org/abs/1911.12560
+      \endverb
+      \verb{url}
+      \verb https://arxiv.org/abs/1911.12560
+      \endverb
+    \endentry
+    \entry{mcmahan2017communication}{inproceedings}{}{}
+      \name{author}{5}{}{%
+        {{hash=707fa44f08f047ab822f84fe38c69dfb}{%
+           family={McMahan},
+           familyi={M\bibinitperiod},
+           given={H.\bibnamedelimi Brendan},
+           giveni={H\bibinitperiod\bibinitdelim B\bibinitperiod}}}%
+        {{hash=4720b7685b2c38f8a5f238d67aac6c45}{%
+           family={Moore},
+           familyi={M\bibinitperiod},
+           given={Eider},
+           giveni={E\bibinitperiod}}}%
+        {{hash=86066638fba5b4dc33bcee0bcba473cf}{%
+           family={Ramage},
+           familyi={R\bibinitperiod},
+           given={Daniel},
+           giveni={D\bibinitperiod}}}%
+        {{hash=bd7751169aeb03f0e8ce6fd2a06822d3}{%
+           family={Hampson},
+           familyi={H\bibinitperiod},
+           given={Seth},
+           giveni={S\bibinitperiod}}}%
+        {{hash=f055a5e7ef3fad90289ae0061819e058}{%
+           family={Arcas},
+           familyi={A\bibinitperiod},
+           given={Blaise\bibnamedelima Aguera},
+           giveni={B\bibinitperiod\bibinitdelim A\bibinitperiod},
+           prefix={y},
+           prefixi={y\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {PMLR}%
+      }
+      \strng{namehash}{a1451f4ba9f1025b922d26afb2931f2f}
+      \strng{fullhash}{449af7ac65ad112a56f631c280888864}
+      \strng{fullhashraw}{449af7ac65ad112a56f631c280888864}
+      \strng{bibnamehash}{449af7ac65ad112a56f631c280888864}
+      \strng{authorbibnamehash}{449af7ac65ad112a56f631c280888864}
+      \strng{authornamehash}{a1451f4ba9f1025b922d26afb2931f2f}
+      \strng{authorfullhash}{449af7ac65ad112a56f631c280888864}
+      \strng{authorfullhashraw}{449af7ac65ad112a56f631c280888864}
+      \field{sortinit}{M}
+      \field{sortinithash}{4625c616857f13d17ce56f7d4f97d451}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Proceedings of the 20th International Conference on Artificial Intelligence and Statistics (AISTATS)}
+      \field{series}{Proceedings of Machine Learning Research}
+      \field{title}{Communication-Efficient Learning of Deep Networks from Decentralized Data}
+      \field{volume}{54}
+      \field{year}{2017}
+      \field{pages}{1273\bibrangedash 1282}
+      \range{pages}{10}
+      \verb{urlraw}
+      \verb https://proceedings.mlr.press/v54/mcmahan17a.html
+      \endverb
+      \verb{url}
+      \verb https://proceedings.mlr.press/v54/mcmahan17a.html
+      \endverb
+    \endentry
+    \entry{recasens2024frida}{article}{}{}
+      \name{author}{6}{}{%
+        {{hash=4e555def300ca06f45a3ab47f1aee377}{%
+           family={Recasens},
+           familyi={R\bibinitperiod},
+           given={Pol\bibnamedelima G.},
+           giveni={P\bibinitperiod\bibinitdelim G\bibinitperiod}}}%
+        {{hash=d1f07299d8f51f9639ef006a4c8e0fdf}{%
+           family={Horváth},
+           familyi={H\bibinitperiod},
+           given={Ádám},
+           giveni={Á\bibinitperiod}}}%
+        {{hash=63b8979f942224c652bff839a07a969a}{%
+           family={Gutierrez-Torre},
+           familyi={G\bibinithyphendelim T\bibinitperiod},
+           given={Alberto},
+           giveni={A\bibinitperiod}}}%
+        {{hash=adb7c9e4e76fa78166cef16f41929e1c}{%
+           family={Torres},
+           familyi={T\bibinitperiod},
+           given={Jordi},
+           giveni={J\bibinitperiod}}}%
+        {{hash=2673b15af96195371294f77fa43c7d05}{%
+           family={Berral},
+           familyi={B\bibinitperiod},
+           given={Josep\bibnamedelima Ll.},
+           giveni={J\bibinitperiod\bibinitdelim L\bibinitperiod}}}%
+        {{hash=15c8344afbfdd26ff9df53015278e8d3}{%
+           family={Pejó},
+           familyi={P\bibinitperiod},
+           given={Balázs},
+           giveni={B\bibinitperiod}}}%
+      }
+      \strng{namehash}{876add0ab8ab55c5b8eb154d732c1f21}
+      \strng{fullhash}{95a4e3df1611bffa39218eab8f0f8027}
+      \strng{fullhashraw}{95a4e3df1611bffa39218eab8f0f8027}
+      \strng{bibnamehash}{95a4e3df1611bffa39218eab8f0f8027}
+      \strng{authorbibnamehash}{95a4e3df1611bffa39218eab8f0f8027}
+      \strng{authornamehash}{876add0ab8ab55c5b8eb154d732c1f21}
+      \strng{authorfullhash}{95a4e3df1611bffa39218eab8f0f8027}
+      \strng{authorfullhashraw}{95a4e3df1611bffa39218eab8f0f8027}
+      \field{sortinit}{R}
+      \field{sortinithash}{5e1c39a9d46ffb6bebd8f801023a9486}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{arXiv preprint arXiv:2410.05020}
+      \field{title}{{FRIDA}: Free-Rider Detection using Privacy Attacks}
+      \field{year}{2024}
+      \verb{urlraw}
+      \verb https://arxiv.org/abs/2410.05020
+      \endverb
+      \verb{url}
+      \verb https://arxiv.org/abs/2410.05020
+      \endverb
+    \endentry
+    \entry{wang2024frad}{article}{}{}
+      \name{author}{4}{}{%
+        {{hash=77784d4626c386ba6d7ccec1ba164b9d}{%
+           family={Wang},
+           familyi={W\bibinitperiod},
+           given={Bocheng},
+           giveni={B\bibinitperiod}}}%
+        {{hash=2620b9afd37cca5b9b7354f67c036d4d}{%
+           family={Li},
+           familyi={L\bibinitperiod},
+           given={Hao},
+           giveni={H\bibinitperiod}}}%
+        {{hash=4f1e33032cdd17c1c4c17fe05bd0772d}{%
+           family={Liu},
+           familyi={L\bibinitperiod},
+           given={Xin},
+           giveni={X\bibinitperiod}}}%
+        {{hash=40a50d1f2a822563520ec270673e6373}{%
+           family={Guo},
+           familyi={G\bibinitperiod},
+           given={Yingying},
+           giveni={Y\bibinitperiod}}}%
+      }
+      \strng{namehash}{16924be2f288050c1e7a701230011138}
+      \strng{fullhash}{3d4fe78f28f72edf0e099acc455366a4}
+      \strng{fullhashraw}{3d4fe78f28f72edf0e099acc455366a4}
+      \strng{bibnamehash}{3d4fe78f28f72edf0e099acc455366a4}
+      \strng{authorbibnamehash}{3d4fe78f28f72edf0e099acc455366a4}
+      \strng{authornamehash}{16924be2f288050c1e7a701230011138}
+      \strng{authorfullhash}{3d4fe78f28f72edf0e099acc455366a4}
+      \strng{authorfullhashraw}{3d4fe78f28f72edf0e099acc455366a4}
+      \field{extraname}{1}
+      \field{sortinit}{W}
+      \field{sortinithash}{4315d78024d0cea9b57a0c6f0e35ed0d}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{IEEE Internet of Things Journal}
+      \field{number}{3}
+      \field{title}{FRAD: Free-Rider Attacks Detection Mechanism for Federated Learning in AIoT}
+      \field{volume}{11}
+      \field{year}{2024}
+      \field{pages}{4377\bibrangedash 4388}
+      \range{pages}{12}
+      \verb{doi}
+      \verb 10.1109/JIOT.2023.3298606
+      \endverb
+    \endentry
+    \entry{wang2023pass}{article}{}{}
+      \name{author}{5}{}{%
+        {{hash=7b5e35e817f2f1ae70b06c851edbe304}{%
+           family={Wang},
+           familyi={W\bibinitperiod},
+           given={Jianhua},
+           giveni={J\bibinitperiod}}}%
+        {{hash=a2095194fb3b6da008b296abd25453f5}{%
+           family={Chang},
+           familyi={C\bibinitperiod},
+           given={Xiaolin},
+           giveni={X\bibinitperiod}}}%
+        {{hash=68432e90fd0a2891042d7ac6781dd236}{%
+           family={Mišić},
+           familyi={M\bibinitperiod},
+           given={Jelena},
+           giveni={J\bibinitperiod}}}%
+        {{hash=f7f0549a1161658250306ed804d3229d}{%
+           family={Mišić},
+           familyi={M\bibinitperiod},
+           given={Vojislav\bibnamedelima B.},
+           giveni={V\bibinitperiod\bibinitdelim B\bibinitperiod}}}%
+        {{hash=4fa4b2b69b9dc0483966cbf85106a1e4}{%
+           family={Wang},
+           familyi={W\bibinitperiod},
+           given={Yixiang},
+           giveni={Y\bibinitperiod}}}%
+      }
+      \strng{namehash}{a0fbfc645663bee9dc301e09cc59fab1}
+      \strng{fullhash}{718db2c1381afc2ed12af1d506863450}
+      \strng{fullhashraw}{718db2c1381afc2ed12af1d506863450}
+      \strng{bibnamehash}{718db2c1381afc2ed12af1d506863450}
+      \strng{authorbibnamehash}{718db2c1381afc2ed12af1d506863450}
+      \strng{authornamehash}{a0fbfc645663bee9dc301e09cc59fab1}
+      \strng{authorfullhash}{718db2c1381afc2ed12af1d506863450}
+      \strng{authorfullhashraw}{718db2c1381afc2ed12af1d506863450}
+      \field{extraname}{2}
+      \field{sortinit}{W}
+      \field{sortinithash}{4315d78024d0cea9b57a0c6f0e35ed0d}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{IEEE Internet of Things Journal}
+      \field{number}{1}
+      \field{title}{{PASS}: A Parameter Audit-based Secure and Fair Federated Learning Scheme against Free-Rider Attack}
+      \field{volume}{11}
+      \field{year}{2023}
+      \field{pages}{1374\bibrangedash 1384}
+      \range{pages}{11}
+      \verb{doi}
+      \verb 10.1109/JIOT.2023.3298557
+      \endverb
+    \endentry
+    \entry{zhu2023advanced}{inproceedings}{}{}
+      \name{author}{4}{}{%
+        {{hash=5d4d0b224c8381c72dd66bd60adeef6a}{%
+           family={Zhu},
+           familyi={Z\bibinitperiod},
+           given={Zhenqian},
+           giveni={Z\bibinitperiod}}}%
+        {{hash=818a8db15386d77df493e1610fa79d3e}{%
+           family={Shu},
+           familyi={S\bibinitperiod},
+           given={Jiangang},
+           giveni={J\bibinitperiod}}}%
+        {{hash=b754612cd721427a44d58e6c7674eb39}{%
+           family={Zou},
+           familyi={Z\bibinitperiod},
+           given={Xingyu},
+           giveni={X\bibinitperiod}}}%
+        {{hash=2419eb22c35469184209a373ebc3c63e}{%
+           family={Jia},
+           familyi={J\bibinitperiod},
+           given={Xiaohua},
+           giveni={X\bibinitperiod}}}%
+      }
+      \strng{namehash}{510bb0734bdc5fbadd218e9be39cf9c6}
+      \strng{fullhash}{c382ce11e2c160900d100838a6b3dfe7}
+      \strng{fullhashraw}{c382ce11e2c160900d100838a6b3dfe7}
+      \strng{bibnamehash}{c382ce11e2c160900d100838a6b3dfe7}
+      \strng{authorbibnamehash}{c382ce11e2c160900d100838a6b3dfe7}
+      \strng{authornamehash}{510bb0734bdc5fbadd218e9be39cf9c6}
+      \strng{authorfullhash}{c382ce11e2c160900d100838a6b3dfe7}
+      \strng{authorfullhashraw}{c382ce11e2c160900d100838a6b3dfe7}
+      \field{sortinit}{Z}
+      \field{sortinithash}{96892c0b0a36bb8557c40c49813d48b3}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Proceedings of the 1st NeurIPS Workshop on New Frontiers in Federated Learning: Privacy, Fairness, Robustness, Personalization and Data Ownership}
+      \field{title}{Advanced Free-rider Attacks in Federated Learning}
+      \field{year}{2021}
+      \field{pages}{10}
+      \range{pages}{1}
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+

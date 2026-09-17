@@ -1,0 +1,246 @@
+\documentclass{iutmscthesis}
+
+% The iutbscthesis uses biblatex for bibliography management.
+% You can learn the basics of biblatex from:
+% https://www.overleaf.com/learn/latex/Bibliography_management_with_biblatex
+\addbibresource{citations.bib}
+
+% The complete title of your thesis, mandatory
+\title{Mitigating Free-Riding Behavior in Federated Learning Systems}
+
+% Name and Student ID of the author, mandatory
+\author{Aashnan Rahman}{231041006}
+
+% Use the \supervisor command to define the supervisor with name, designation, and department
+% There must be one and only one supervisor, mandatory
+\supervisor{Dr.\ Md.\ Azam Hossain}{Associate Professor}{Department of Computer Science and Engineering}
+
+% Use the \cosupervisor command to add a cosupervisor name, designation, 
+% department, and organization/institution. The cosupervisor can be from
+% an outside university or organization. There can be at max one cosupervisor,
+% optional. If there is no cosupervisor, just remove the \cosupervisor command.
+\cosupervisor{Dr.\ Mike Hunt}{Professor}{Department of Electrical and Computer Engineering}{Imaginary University of Technology, Texas, US}
+
+% Name, designation, and department of the head, as an ex-officio member, mandatory
+\depthead{Dr.\ Justin Case}{Professor}{Department of Computer Science and Engineering}
+
+% Name, designation, and department of the first internal member, mandatory
+\member{Dr.\ Benjamin Dover}{Assistant Professor}{Department of Computer Science and Engineering}
+
+% Name, designation, and department of the second internal member, optional
+% If there is no second internal member, just remove the \membertwo command
+\membertwo{Mr. Noah Pinion}{Assistant Professor}{Department of Computer Science and Engineering}
+
+% Name, designation, department, and organization/institution of the external member, mandatory
+\external{Toby Lerone}{Professor}{Department of Computer Science and Engineering}{Bjork University, UK}
+
+% Specific degree in masters, default is `Master of Science in Computer Science and Engineering`
+\degree{Master of Science in Computer Science and Engineering}
+
+% Complete department name, mandatory
+\department{Department of Computer Science and Engineering}
+
+% Academic year in range separated by endash, mandatory
+\academicyear{2024--25}
+
+% Date (day, month name, and year) when the presentation took place, mandatory
+\defensedate{04}{July}{2026}
+
+\begin{document}
+
+%-------------------------- FRONT MATTER --------------------------%
+
+% Generate cover page of the report to be printed on the hard cover
+\coverpage
+
+% Switch to roman page numbering
+\pagenumbering{roman}
+
+% Generate the title leaf, mandatory
+\titlepage
+
+% Auto generate declaration of candidate based on previous info, mandatory
+\certificateofapproval
+\declarationofcandidate
+
+% Dedicate report to someone. You may add more sentences to it.
+%\dedicatedto{my parents, my wife, and my daughter without whom this degree would have been completed two years earlier}
+
+\dedicatedto{To be added later}
+\tableofcontents
+\listoffigures
+\listoftables
+
+\clearpage
+
+% Add abbreviations within this environment using the \abbr command
+\begin{abbreviations}
+    \abbr{FL}{Federated Learning}
+    \abbr{FR}{Free Rider}
+    \abbr{IID}{Independent and Identically Distributed}
+    \abbr{MAD}{Median Absolute Deviation}
+    \abbr{SWT-CP}{Suspicion-Weighted Trap Detection with Cumulative Penalties}
+    \abbr{FedAvg}{Federated Averaging}
+\end{abbreviations}
+
+% Any acknowledgement that you want to write goes in the following environment
+\begin{acknowledgement}
+
+I am profoundly grateful to my supervisor, Dr.\ Lou Natic, for his endless patience, insightful critiques, and for always knowing just when to say, ``Have you tried turning it off and on again?'' His expertise and encouragement were instrumental in the completion of this thesis.
+
+A special thanks to my co-supervisor, Dr.\ Sue Permann, who provided invaluable support and the occasional pep talk disguised as a lecture on time management. Her unwavering belief in my work kept me going, even when the only thing I believed in was the power of procrastination.
+
+Finally, to my parents, whose love and support have been a constant source of strength. Thank you for always being there, for pretending to understand my research when I rambled on, and for not asking too many questions about why I was still not employed after all these years.
+
+To all of you, I extend my heartfelt appreciation and a promise: next time, I will take fewer detours through the land of streaming services.
+\end{acknowledgement}
+
+% Write your abstract here.
+\begin{abstract}
+Federated learning allows clients to benefit from a shared model without centralizing raw data, but the server cannot directly verify whether a submitted update resulted from genuine local training. This thesis presents Suspicion-Weighted Trap Detection with Cumulative Penalties (SWT-CP), a lightweight server-side mechanism that secretly replaces the global model with a randomized trap model for selected clients and evaluates the response using robust update-norm and layer-profile statistics. SWT-CP combines a two-trap coverage sweep, candidate confirmation, frequent re-probing of suspicious clients, rotating anchor panels, continued surveillance, cumulative penalties, and evidence-based rehabilitation. Detection uses only returned model parameters; client-reported accuracy, loss, training time, and resource use are not trusted inputs.
+
+SWT-CP v8 was evaluated on MNIST with 100 clients and 100 communication rounds under IID and Dirichlet non-IID partitions ($\alpha=0.5$), four free-rider strategies, attacker shares of 30\% and 40\%, and seeds 42 and 43. Across all IID configurations, all 560 free riders were removed, with 15 honest removals; IID with 40\% attackers and seed 43 achieved perfect removal precision and recall. Under non-IID data, FR1--FR3 retained 100\% recall, but false removals increased and adaptive FR4 exposed a contamination limit. FR4 was fully detected at 30\% attackers for both seeds, yet no FR4 client was removed at 40\% for either seed. Undetected attackers entered the nominally clean anchor roster and, in one observed case, formed malicious-majority anchor panels that contributed directly to an honest removal. Final global accuracy remained between 98.82\% and 98.95\%.
+
+The findings show that secret statistical probing is effective and inexpensive for replay, random-update, and historical-average attacks, but that an unflagged client is not necessarily a trustworthy reference and robust statistics alone do not guarantee resistance to concentrated adaptive attackers under heterogeneous data. SWT-CP is therefore reported as a strong lightweight baseline with a clearly identified non-IID, high-contamination failure mode rather than as a universal proof of client computation.
+\end{abstract}
+
+%-------------------------- MAIN BODY --------------------------%
+% Switch to arabic page numbering
+\pagenumbering{arabic}
+
+\include{chapter_1_introduction}
+\include{chapter_2_relatedworks}
+\include{chapter_3_proposed_methodology}
+
+
+
+\begin{comment}
+
+\chapter{Proposed Methodology} \label{chapter:proposed}
+The Proposed Methodology chapter is the core of your thesis, where the approach to solving the research problem is presented in a detailed and structured manner. This chapter aims to provide a clear, step-by-step explanation of how you plan to address the problem outlined in the introduction. Each component of the methodology should be explained in a way that allows readers, even those less familiar with the specific technical details of the project, to understand both the structure and the rationale behind your choices. Clarity is essential, and visual aids should be used to enhance understanding where necessary.
+
+\section{Overview of the Methodology}
+
+To begin, provide a high-level overview of the methodology. This section introduces the key components and offers a broad structure of the overall approach. It is essential to explain why each component was chosen, highlighting its advantages and explaining why it was preferred over other alternatives. The reader should be able to see how these individual components fit together to form a cohesive system aimed at solving the research problem. A comprehensive figure, such as a flowchart or architecture diagram, should be included to visually represent the methodology, serving as a roadmap that helps the reader visualize how the components interact with one another and connect to the broader objectives of the study.
+
+
+\section{Chronological Breakdown of Components}
+
+Next, break down the methodology into its individual components, presented in the order in which they are executed. This section should offer a logical flow from one component to the next, demonstrating how each part builds upon the previous one to create an integrated system. For each component, several sub-sections will be required.
+
+Begin by clearly describing the role of each component. Explain the specific problem it solves and how it contributes to the overall system. Follow this by discussing the method or algorithm chosen for this component. For example, whether it's a machine learning algorithm, a database structure, or a communication protocol, provide enough technical detail for readers to understand how it works. Reference any theoretical foundations or literature that support your choice, and if a standard algorithm is used, explain why this particular approach was selected over others.
+
+Additionally, specify the type of data required as input for the component and what it produces as output. Where applicable, visual aids such as tables or diagrams should be included to clarify the flow of data. You should also explain the key principles or logic underlying the functionality of the component. For technical algorithms, this might involve discussing higher-level concepts such as how a neural network propagates data forward during training, but without delving into code-level specifics.
+
+Lastly, justify your design decisions. Detail why you chose this particular method or approach. Were there alternatives, and if so, why were they not selected? This section should reflect critical thinking, showing that choices were made deliberately, based on a reasoned evaluation of trade-offs. It's important to acknowledge that sometimes an approach is selected because it is the best available, even if it isn't perfect.
+
+\section{Integration and Interconnections}
+
+In this section, discuss how the individual components interact with each other. The reader should understand how data flows between components, and how these interactions contribute to achieving the overall research objective. This is crucial for demonstrating that the methodology is not just a collection of independent modules but a cohesive system where each component plays an interconnected role. For example, if your system involves feedback loops, dependencies, or iteration processes—such as updating a machine learning model during training—these interactions must be clearly described.
+
+Refer back to the architectural diagram introduced at the beginning of the chapter as you discuss these interactions. This ensures that readers can relate each described component to the larger structure, reinforcing their understanding of the entire methodology.
+
+\section{Clarity and Comprehensiveness in Visual Aids}
+
+Effective use of visual aids—such as diagrams, flowcharts, and graphs—is essential for making complex ideas more understandable. Each visual should add clear value to the explanation and should be meticulously labeled and accompanied by detailed captions that can stand alone. For instance, if your method involves multiple steps in data preprocessing, a flowchart can simplify what might otherwise seem like a complex series of operations.
+
+Aim for clarity in every visual. Avoid clutter, and ensure that each element is well-explained in the text. Good visuals should simplify technical concepts and make them accessible to a broad audience, even for particularly intricate methodologies.
+
+\section{Conclude with a Summary of the Methodology}
+
+Conclude this chapter with a summary of the overall methodology, reiterating how the individual components work together to achieve the research objectives. This recap should give readers a clear understanding of the entire system before moving on to the subsequent chapters on Results and Discussion. The summary serves as a final reminder of the methodology's coherence and structure, providing closure to the technical explanation of your approach.
+
+By following this structure, the Proposed Methodology chapter will present your approach in a clear, well-organized manner, making it accessible and engaging to your readers, while maintaining technical rigor.
+\end{comment}
+
+\include{chapter_4_results_discussion}
+\include{chapter_5_conclusion}
+
+\begin{comment}
+    
+\section{Datasets and Experimental Setup}
+
+The chapter begins with a clear description of the datasets used in your research. It's crucial to provide detailed information about the features of the data, including whether it is text-based, numerical, image-based, or of another type. You should also explain the size of the dataset, its sample distribution, and any inherent biases or imbalances that may affect the analysis. For instance, if your dataset has a significant class imbalance or contains noisy or missing data, describe the strategies employed to mitigate these issues, such as data augmentation, imputation methods, or rebalancing techniques. Including sample data or visualizations can further clarify the nature of the dataset, offering a glimpse into the raw materials of your research. This could take the form of snippets of text, feature distributions, or representative images, depending on the context.
+
+Once the dataset has been outlined, provide a thorough description of the experimental setup. Detail the computational environment, including the hardware, software libraries, and any cloud services utilized. Key hyperparameters such as learning rate, batch size, and the number of epochs should be listed, and if possible, their selection should be justified either theoretically or empirically. This justification could involve citing similar studies or explaining any tuning processes you conducted. Offering these insights helps the reader understand why specific choices were made and how they might influence the results.
+
+\section{Presenting the Results}
+
+The results themselves are presented next, starting with a brief summary of what types of outcomes you will report and how they relate to your research objectives. To ensure clarity and precision, results should be presented systematically. For quantitative findings, such as performance metrics (e.g., accuracy, precision, recall, F1 score), tables are an effective medium. Each table should be clearly labeled and referenced in the text, with concise descriptions of the data they present.
+
+Graphical representations such as bar charts, line graphs, and scatter plots should be used to illustrate trends or comparisons, such as how different models perform over time or how various configurations influence results. When appropriate, confusion matrices or ROC curves can be employed to visualize classification performance in more detail. However, at this stage, your focus should be on reporting the data, not interpreting it. If your research involves multiple phases or experiments, presenting each experiment's results separately will make the data easier to follow, especially when the phases involve distinct datasets or algorithms.
+
+\section{Interpreting the Results}
+
+Once the raw data has been presented, the focus shifts to interpreting the findings. This involves analyzing how the results align with or diverge from the hypotheses or research questions posed earlier. If certain findings contradict expectations, possible explanations should be provided, supported by relevant theory or prior research. For instance, unexpected results might be due to limitations in the dataset, overfitting, or other factors.
+
+Strengthen your interpretations by linking the results back to theoretical frameworks or previous studies. If a particular algorithm outperforms others, consider citing earlier work that supports this outcome, explaining why this might be the case. For example, you might discuss how the algorithm generalizes better due to a superior feature extraction process or faster convergence rates. On the other hand, if certain results are disappointing, explore the potential causes and consider whether similar patterns have been observed in related research.
+
+Comparisons with similar studies are important in this section. Highlight similarities and differences between your results and those reported by others, offering possible reasons for these divergences. For instance, you might say, "While Author A's method achieved an accuracy of 85% on a similar dataset, our approach improved this to 90% by employing an additional feature extraction step."
+
+\section{Challenges and Limitations}
+
+Reflecting on the challenges and limitations encountered during your research is an essential part of the discussion. Consider how these challenges may have impacted your results. Were there limitations in the dataset, such as a lack of diversity or imbalance? Did methodological or computational constraints affect the experiments? This reflection not only adds depth to your analysis but also paves the way for future research by acknowledging areas where further improvements could be made. Additionally, recognizing these limitations allows readers to contextualize the results within the scope of your study.
+
+\section{Implications and Significance of Findings}
+
+The broader implications of your findings need to be explored. What new knowledge or insights does your research contribute to the field? Consider how your results may influence future work, whether by suggesting new directions for research, optimizing existing methods, or offering real-world applications. For example, if your findings improve neural network performance in a specific domain, could this optimization be applied to industry settings, such as more efficient data processing or improved cybersecurity measures? By positioning your findings within the wider landscape of the field, you underscore the relevance and potential impact of your work.
+
+\section{Decision to Split or Combine Results and Discussion}
+
+Depending on the nature of your results, you may choose to either combine or split the Results and Discussion sections. If your research has produced a large volume of complex data, it may be beneficial to split these sections. In such cases, the Results chapter would focus solely on presenting the raw data, while the Discussion chapter would handle the analysis and interpretation. This approach can also be helpful if your research involved multiple distinct phases or both quantitative and qualitative data, allowing you to deal with each type or phase independently.
+
+On the other hand, if your results are straightforward or closely tied to their interpretation, combining the two sections can lead to a more concise and cohesive presentation. When results and interpretations are tightly intertwined—where explaining trends or patterns requires immediate analysis—a combined chapter helps maintain a logical flow, making it easier for the reader to follow the narrative.
+
+\section{Conclusion of the Chapter}
+
+Conclude this chapter by summarizing the key takeaways from your results and their significance. This final section should tie everything together, leading naturally into the Conclusion chapter, where you will reflect on the broader contributions of your research and suggest potential directions for future work. The summary serves as a moment of synthesis, reinforcing the most important insights gained from your findings and setting the stage for the overarching conclusions of your thesis.
+
+This structure ensures that the Results and Discussion chapter not only presents data but also thoughtfully interprets it, giving readers a comprehensive understanding of how the research findings relate to the broader field. By organizing the chapter in this manner, you maintain clarity and coherence, making the technical details accessible and engaging.
+
+
+\chapter{Conclusion}
+The Conclusion chapter is a critical reflection on the research conducted, encapsulating the key findings, contributions, and broader implications of the work. This final chapter serves to tie together the insights gained from your study, while also addressing its limitations and proposing potential directions for future research. The tone should be reflective, confident, and forward-looking, emphasizing the significance of the work without overstating its claims.
+
+\section{Restating Research Objectives and Questions}
+
+To begin, it is important to restate the main research objectives and questions that framed your thesis. This serves as a reminder of the foundational focus of the study, bringing the reader back to the core issues you set out to address. You should rephrase these objectives and questions succinctly, demonstrating how they guided the entire research process and structured the work you have accomplished. By revisiting these questions, you provide a clear context for evaluating the outcomes and contributions of your research.
+
+\section{Summary of Key Findings}
+
+Following the restatement of your research objectives, you should offer a concise summary of the most significant findings from your study. Focus on highlighting the key results that directly address your research objectives, ensuring that the discussion remains tightly connected to the goals outlined at the beginning of the thesis. It is essential to present the insights that stand out the most, emphasizing those that contribute the most meaningfully to the research questions posed. This summary should distill the essence of your findings, providing a clear and accessible synthesis of the work.
+
+\section{Discussion of Implications}
+
+Next, reflect on the broader implications of your findings. Consider how your results contribute to the existing body of knowledge within your field and how they answer the research questions you initially posed. This discussion should explore any theoretical, methodological, or empirical contributions made by your study. For example, if your findings offer new insights into a particular phenomenon or propose a novel methodological approach, these contributions should be clearly articulated. Moreover, it is important to relate your findings to the wider academic discourse, connecting them to the works discussed in the Related Works chapter. By positioning your research within the broader field, you highlight its relevance and the value it brings to ongoing scholarly conversations.
+
+\section{Contributions of the Research}
+
+You should provide a clear and structured account of the contributions your research has made. These contributions may take various forms: theoretical insights that challenge or extend existing frameworks, practical applications that could influence real-world scenarios, methodological advancements that provide new tools for future research, or empirical findings that add to the data-driven understanding of your field. Each type of contribution should be acknowledged and clearly articulated, giving readers a sense of the unique value your work brings to the academic and professional landscape.
+
+\section{Acknowledging Limitations}
+
+No research is without limitations, and it is important to be transparent about the constraints that may have influenced your results. Discuss the specific limitations of your study, such as sample size, scope, data quality, or technical challenges that arose during the research process. Acknowledging these limitations not only demonstrates intellectual honesty but also helps contextualize your findings, showing how they fit within the constraints of the study. Moreover, by openly discussing the limitations, you provide a foundation for future researchers.
+
+\section{Suggestions for Future Research}
+
+Based on your findings and the limitations identified, you should offer clear and thoughtful recommendations for future research. This section provides an opportunity to identify specific areas where further investigation is needed, suggesting how future studies might address unanswered questions or overcome the limitations you encountered. Where relevant, you may also propose new research directions or methodologies that could be applied to similar problems, offering a roadmap for how the field can advance in light of your work. By pointing to areas that require further exploration, you not only acknowledge the ongoing nature of academic inquiry but also position your research as a stepping stone for future developments.
+
+\section{Final Reflections}
+
+As you approach the end of the chapter, a final reflection on your research journey is appropriate. This could be a brief statement that encapsulates the significance of your study and its place within the broader research community. You may wish to share personal insights gained from conducting the research, including any unexpected outcomes or challenges that led to deeper learning. This reflection serves to humanize the research process, providing a glimpse into the intellectual and practical growth experienced throughout the thesis. It is also an opportunity to reflect on the broader impact of the study, reinforcing the relevance and potential contributions of your work.
+
+\section{Concluding Remarks}
+
+To close the chapter, end with a strong and definitive statement that encapsulates the contribution of your research and its potential for future impact. This final statement should provide a sense of closure, leaving the reader with a clear understanding of the significance of your work. Whether the research has practical implications, theoretical advancements, or methodological contributions, the concluding remarks should confidently assert the value of the study and its place in the field, while also gesturing toward the future possibilities it opens up.
+
+This approach ensures that the Conclusion chapter not only summarizes the research but also thoughtfully reflects on its significance and future potential, leaving the reader with a clear and compelling understanding of the work's broader impact.
+
+\end{comment}
+
+%-------------------------- BACK MATTER --------------------------%
+
+% Print the references used throughout the document, mandatory
+\printbib
+
+\end{document}

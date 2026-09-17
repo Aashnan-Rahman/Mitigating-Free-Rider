@@ -1,0 +1,132 @@
+\chapter{Proposed Methodology}
+\label{sec:proposed-methodology}
+
+\section{Design Objective and Information Boundary}
+
+Suspicion-Weighted Trap Detection with Cumulative Penalties (SWT-CP) is a server-orchestrated challenge--response mechanism for free-rider mitigation. The server occasionally sends a selected client a randomized model in place of the current global model. This secret model is called a \emph{trap}. An honest client applies the prescribed local optimizer to whichever model it receives, whereas a free rider fabricates a response from its locally visible model history. Because the client is never told whether a received model is a trap, the intervention changes the attacker's input without changing the client API.
+
+The detector trusts neither local accuracy nor loss, reported training time, hardware counters, number of steps, nor any other client-supplied claim. Its decision inputs are derived by the server from the returned model: whether the update is effectively zero, the norm of the flattened update, and the relative distribution of update magnitude across parameter tensors. Ground-truth free-rider labels and the configured attack name are used only to evaluate the simulator; they are not available to the detection rule. Cosine similarity and local metrics are logged for analysis but do not affect flags, penalties, state transitions, anchor selection, or removal.
+
+This boundary makes the method lighter than an auxiliary autoencoder or a client-side proof-of-work mechanism. It does not, however, constitute a cryptographic proof of training. It also assumes that the server can inspect an individual returned model during an audit; ordinary secure aggregation would require a separate auditable channel or a privacy-preserving computation of the required statistics.
+
+\section{System and Threat Model}
+
+Let $N$ be the registered clients and $T$ the communication rounds. Client $i$ receives $w^{\mathrm{send}}_{t,i}$ in round $t$ and returns $w^{\mathrm{ret}}_{t,i}$. The server derives
+\begin{equation}
+\Delta_{t,i}=w^{\mathrm{ret}}_{t,i}-w^{\mathrm{send}}_{t,i},
+\qquad r_{t,i}=\lVert\Delta_{t,i}\rVert_2.
+\end{equation}
+In an ordinary round $w^{\mathrm{send}}_{t,i}=w^g_t$; a trapped client instead receives $w^{\mathrm{trap}}$. Trap-derived updates are never aggregated because they do not share the global starting point.
+
+The implementation evaluates four attack behaviors through the same server rule:
+\begin{itemize}
+    \item \textbf{FR1---replay:} return the last model observed by that client; on first participation, return the current received model.
+    \item \textbf{FR2---bounded random update:} add independent uniform noise in a fixed small range to each floating-point parameter of the received model.
+    \item \textbf{FR3---historical average:} average the latest five models received by that client, including any unlabelled traps.
+    \item \textbf{FR4---trajectory prediction:} estimate an expected update from the latest five differences between consecutively received models and add Gaussian noise equal to 10\% of the estimated norm. Before history exists, use a small random cold-start update.
+\end{itemize}
+The attacker sees its identity, round number, received model, public configuration, its own received-model history, and local randomness. It receives no trap indicator. Collusion, defense-aware adaptation, on--off participation, and partially honest local training are outside the evaluated scope.
+
+\section{Robust Two-Signal Detector}
+
+\subsection{Two-sided magnitude evidence}
+For a reference set of update norms $R$, SWT-CP computes
+\begin{align}
+m_r &= \operatorname{median}(R),\\
+d_r &= \operatorname{median}_{r\in R}|r-m_r|,\\
+z^{\mathrm{norm}}_{t,i} &= \frac{r_{t,i}-m_r}{\max(d_r,0.05)}.
+\end{align}
+The magnitude signal fires when $|z^{\mathrm{norm}}_{t,i}|>3$. The absolute value is essential: replay may create an excessively large response, whereas an adaptive fabricated update may be abnormally small. The MAD floor prevents a nearly identical reference population from turning negligible numerical differences into extreme standardized scores.
+
+\subsection{Scale-free layer profile}
+For each floating parameter tensor $k$, the server forms
+\begin{equation}
+p_{t,i,k}=\frac{\lVert\Delta_{t,i,k}\rVert_2}
+{\sum_j\lVert\Delta_{t,i,j}\rVert_2}.
+\end{equation}
+The vector $p_{t,i}$ records how update energy is distributed across layers independently of total scale. A coordinate-wise median reference profile is constructed from the applicable comparison population. The Euclidean distance from this center is standardized by median and MAD, with a floor of $0.01$; the profile signal fires above 3.
+
+A single magnitude or profile anomaly is sufficient to quarantine an unflagged client for confirmation, but it contributes no magnitude penalty. Only a response that fails both tests on the same probe creates \emph{joint gradient evidence}. This conjunction was introduced because persistent honest clients can occupy the tail of either one-dimensional statistic.
+
+\subsection{Exact send-back evidence}
+If $r_{t,i}<10^{-6}$, the response is treated as an exact or near-exact send-back. It immediately adds five permanent points and sends the client directly to the suspicious state. This check operates in every phase, including warm-up. It is evaluated separately from nonzero magnitude/profile evidence and is never erased by rehabilitation.
+
+\section{Client States and Evidence Accounting}
+
+Each active client occupies one of three operational states:
+\begin{description}
+    \item[Unflagged ($U$)] no unresolved anomaly; the update is normally eligible for aggregation unless trapped in the current round.
+    \item[Candidate ($C$)] at least one nonzero anomaly has occurred and the client awaits fresh-trap confirmation. Candidate updates are quarantined.
+    \item[Suspicious ($S$)] repeated joint evidence or an exact send-back has confirmed elevated suspicion. The client is probed frequently.
+\end{description}
+
+The fixed removal threshold is 15 points. A joint anomaly contributes two points in initial coverage, one point in later surveillance, and three points in candidate/suspicion probing. A magnitude-only or profile-only anomaly contributes zero points. Nonzero evidence cannot remove a client until at least ten relevant episode probes have been observed. Three exact send-backs reach 15 points independently of that gate.
+
+For $C$ and $S$ clients, SWT-CP maintains episode probe and joint-failure counts. After at least ten probes, a client is rehabilitated when its joint-failure rate is at most 10\%. Rehabilitation returns it to $U$, clears the current magnitude episode and resets episode counters, while retaining exact-send-back points. If rehabilitation and nonzero removal become eligible simultaneously, rehabilitation is applied first.
+
+\begin{table}[htbp]
+\centering
+\caption{Principal SWT-CP v8 parameters}
+\label{tab:v8-parameters}
+\begin{tabular}{lll}
+\toprule
+Parameter & Meaning & Value \\
+\midrule
+$n_w$ & warm-up rounds & 10 \\
+$\rho$ & nominal trap group fraction & 0.10 \\
+$k_r,k_p$ & norm/profile thresholds & 3.0, 3.0 \\
+$\epsilon_r,\epsilon_p$ & norm/profile MAD floors & 0.05, 0.01 \\
+$\delta_0$ & exact send-back penalty & 5 \\
+$\delta_{\mathrm{cov}}$ & initial joint penalty & 2 \\
+$\delta_Y$ & surveillance joint penalty & 1 \\
+$\delta_S$ & suspicion joint penalty & 3 \\
+$P_{\max}$ & removal threshold & 15 \\
+$q_{\min}$ & rehabilitation probe minimum & 10 \\
+$\eta_{\max}$ & rehabilitation failure rate & 0.10 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Probing Schedule}
+
+\subsection{Warm-up}
+Rounds 1--10 use standard FedAvg. The exact send-back test remains active, but nonzero magnitude/profile scoring is disabled so early optimization transients do not create candidates.
+
+\subsection{Initial double coverage sweep}
+After warm-up, clients are shuffled into groups of approximately 10\%. The server generates two distinct traps, A and B, from a global base. Each trap is frozen for one complete pass. Two groups are probed per round: a randomized first pass gives every client trap A once, and an independently randomized second pass gives every client trap B once, avoiding repeated group pairs where possible. Thus every client receives two secret probes during ten coverage rounds.
+
+Responses are buffered until a full pass is complete. Statistics are computed separately for A and B, ensuring that responses to different traps do not define one another's baseline. Exact send-backs add five points each; each joint norm/profile failure adds two; a one-signal anomaly creates candidate evidence but no magnitude points. Ambiguous clients enter $C$, while sufficiently repeated evidence enters $S$. The initial double sweep is performed once.
+
+\subsection{Post-coverage surveillance}
+All currently unflagged clients are shuffled into exactly ten $Y$ groups. One group is audited per round using the cycle's frozen surveillance trap and excluded from that round's aggregation. After all groups are visited, a new shuffled cycle begins. Any anomaly sends a client to $C$ and permanently disqualifies it from anchor service; only a joint anomaly adds one point.
+
+\subsection{Candidate and suspicion probing}
+When $S$ is nonempty, the number of suspicion groups is
+\begin{equation}
+G_S=\max\left(1,\left\lfloor\frac{|S|}{10}\right\rfloor\right).
+\end{equation}
+Ten is a target, not a maximum group size. Candidates are distributed across the same groups, or one confirmation group is formed when only candidates exist. The implementation reshuffles suspicious and candidate membership across groups each round. Each group receives a distinct fresh trap.
+
+Each group receives up to three active anchors, subject to a system-wide maximum of ten. Suspect and candidate responses are compared only with anchors that received the same trap. Anchor-relative medians and MADs define both decisions. A joint failure adds three points; a normal candidate response clears $C$ immediately. Two joint failures confirm a candidate as suspicious by default.
+
+\section{Rotating Anchor Roster}
+
+The v8 change replaces fixed panels with a rotation queue. Eligible anchors are active, unflagged clients whose lifetime anomaly count is zero. An anchor is not reused until the eligible queue has been traversed where population size permits. Clients in the current $Y$ group cannot simultaneously anchor. Off-duty roster members receive the ordinary global model and contribute normally; only active anchors receive a trap and are excluded.
+
+Rotation reduces repeated comparison against one unlucky panel, and $Y$ auditing can remove an anomalous client from future eligibility. Nevertheless, eligibility is absence of evidence, not proof of honesty. Chapter~\ref{sec:results-discussion} shows that adaptive attackers can evade surveillance, enter the roster, and contaminate panels.
+
+\section{Aggregation, Removal, and Checkpointing}
+
+Every trap recipient---suspect, candidate, anchor, or $Y$ client---is excluded from aggregation in that round. Candidates remain quarantined through confirmation. Permanent removal occurs when exact-send-back evidence reaches 15, or when total retained points reach 15 after the ten-probe nonzero-evidence gate and rehabilitation does not apply.
+
+The simulator saves a checkpoint after every completed round, retains the newest five while a run is incomplete, and deletes checkpoints after successful completion. Checkpoints include model and attacker-visible history, client states, penalties, episode counters, buffered coverage evidence, and anchor rotation. Logs record model utility, round time, memory, trap assignments, state transitions, removals, rehabilitation, and per-client detection statistics.
+
+\section{Computational Characteristics and Limitations}
+
+For $d$ model parameters, deriving the norm and profile costs $O(d)$ per inspected update. Median/MAD construction over $m$ observations costs $O(m\log m)$ by sorting and $O(m)$ temporary scalar storage. Persistent state is $O(N)$. No detector model is trained and the client performs only its ordinary optimizer on the model received. The main utility cost is lost aggregation capacity from trap recipients and candidates.
+
+SWT-CP observes statistical consequences rather than proving training. Median/MAD has a theoretical 50\% scalar breakdown point, but practical separation can fail earlier when honest non-IID responses are broad or multimodal. Anchor rotation cannot help if undetected attackers qualify as anchors. Per-client inspection conflicts with ordinary secure aggregation. Evaluation is limited to MNIST, two seeds, two attacker shares, full participation, and always-on non-colluding attacks; CIFAR-10, dropout, collusion, on--off behavior, selfish partial training, and defense-aware adaptation remain future work.
+
+\section{Summary}
+
+SWT-CP v8 combines secret two-trap coverage, two-sided norm and layer-profile evidence, candidate confirmation, frequent suspicion probing, rotating anchors, continued surveillance, cumulative penalties, and rehabilitation. Its rules are attack-independent and require no trusted client-reported metric. The next chapter evaluates both its strong IID performance and the limits revealed by heterogeneous data and adaptive FR4 behavior.

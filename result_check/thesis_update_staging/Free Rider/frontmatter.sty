@@ -1,0 +1,221 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{frontmatter}[2023/06/21 v0.1 LaTeX package to work with iutbscthesis class and provide commands for generating front matter texts]
+
+\RequirePackage{array}
+\RequirePackage{ragged2e}
+\RequirePackage{longtable}
+
+% Command for Coverpage
+\newcommand*{\coverpage}{%
+\pagenumbering{gobble}%
+\begin{center}%
+    \textbf{\MakeUppercase{\@degree}}%
+    \vfill%
+    \textbf{\@title}%
+    \vfill%
+    \textbf{\getAuthorName}\\%
+    \textbf{\getAuthorID}\\%
+
+    \vfill%
+
+    \textbf{\@department}\\%
+    Islamic University of Technology\\%
+    \getdatemy%
+\end{center}
+\clearpage
+}
+
+% Command for Titlepage
+\renewcommand*{\titlepage}{%
+\thispagestyle{empty}
+\begin{center}
+    % \textbf{\MakeUppercase{\@program}}
+    % \vfill
+    \textbf{\@title}
+    \vfill
+    % \foreach \authorinfo in \authorlist {
+    %     \textbf{\getauthorname{\authorinfo}}\\
+    %     \textbf{\getauthorid{\authorinfo}}\\
+    % }
+    \textbf{\getAuthorName}\\%
+    \textbf{\getAuthorID}\\%
+    \vfill
+
+    %\textbf{Department of Computer Science and Engineering}\\
+    \textbf{\@department}\\
+    Islamic University of Technology\\
+    \getdatemy
+\end{center}
+\clearpage
+}
+
+% Command for Certificate of Approval.
+\newlength{\certsignheight}
+\setlength{\certsignheight}{2.5ex}
+\newcommand*{\certificateofapproval}{%
+    \begin{center}
+        \Large{\textbf{Certificate of Approval}}
+    \end{center}
+    %
+    \noindent The thesis titled, \emph{\@title} submitted by \getAuthorQName\ of Academic Year \@academicyear\ has been found as satisfactory and accepted as partial fulfillment of the requirement for the degree \@degree\ on \getdatemdy.
+    
+    Board of Examiners:\vspace{6.5ex}
+    
+    \begin{longtable}[c]{p{0.76\textwidth} >{\RaggedLeft\arraybackslash}p{0.19\textwidth}}
+    \endfirsthead\endhead\endfoot\endlastfoot
+    %
+    \rule{4cm}{0.4pt}\newline
+    \textbf{\getSupervisorName}\newline
+    \getSupervisorDesignation\newline
+    \getSupervisorDepartment\newline
+    Islamic University of Technology (IUT), Gazipur, Bangladesh
+    &%
+    {\ }\newline
+    Chairman\newline%
+    (Supervisor)\\
+   % 
+    \ifhascosupervisor{% 
+        \vspace{\certsignheight}{\ }\newline
+        \rule{4cm}{0.4pt}\newline
+        \textbf{\getCoSupervisorName}\newline
+        \getCoSupervisorDesignation\newline
+        \getCoSupervisorDepartment\newline
+        \getCoSupervisorOrganization
+        &
+        \vspace{\certsignheight}{\ }\newline
+        Member\newline
+        (Co-Supervisor)\\
+    }
+    %
+    \vspace{\certsignheight}{\ }\newline
+    \rule{4cm}{0.4pt}\newline
+    \textbf{\getHeadName}\newline
+    \getHeadDesignation\ and Head\newline
+    \getHeadDepartment\newline
+    Islamic University of Technology (IUT), Gazipur, Bangladesh
+    &
+    \vspace{\certsignheight}{\ }\newline
+    Member\newline
+    (Ex-Officio)\\
+    %
+    \vspace{\certsignheight}{\ }\newline
+    \rule{4cm}{0.4pt}\newline
+    \textbf{\getMemberName}\newline
+    \getMemberDesignation\ and Head\newline
+    \getMemberDepartment\newline
+    Islamic University of Technology (IUT), Gazipur, Bangladesh
+    &
+    \vspace{\certsignheight}{\ }\newline
+    Member\\
+    %
+    \ifhasmembertwo{%
+        \vspace{\certsignheight}{\ }\newline
+        \rule{4cm}{0.4pt}\newline
+        \textbf{\getMemberTwoName}\newline
+        \getMemberTwoDesignation\newline
+        \getMemberTwoDepartment\newline
+        Islamic University of Technology (IUT), Gazipur, Bangladesh
+        &
+        \vspace{\certsignheight}{\ }\newline
+        Member\\
+    }%
+    %
+    \vspace{\certsignheight}{\ }\newline
+    \rule{4cm}{0.4pt}\newline
+    \textbf{\getExternalName}\newline
+    \getExternalDesignation\ and Head\newline
+    \getExternalDepartment\newline
+    \getExternalOrganization
+    &
+    \vspace{\certsignheight}{\ }\newline
+    Member\newline
+    (External)\\
+    \end{longtable}
+    \clearpage
+}
+
+% Command for Declaration of Candidate. Optional argument controls the
+% ratio of the columns, where the value is the ratio taken by the supervisor
+% and co-supervisor column
+% (The length is used for auto calculating the width of the author column)
+\newlength{\authcolwidth}
+\newcommand*{\declarationofcandidate}[1][0.65]{%
+    \setlength{\authcolwidth}{\dimexpr\textwidth-#1\textwidth}
+    \begin{center}
+        \Large{\textbf{Declaration of Candidate}}
+    \end{center}
+    %
+    \noindent This is to certify that the work presented in this thesis is the outcome of the analysis and experiments carried out by \getAuthorName\ under the supervision of \getSupervisorQName \ifhascosupervisor{\ and co-supervision of \getCoSupervisorQName}. It is also declared that neither this thesis nor any part of it has been submitted anywhere else for any degree or diploma. Information derived from the published and unpublished work of others have been acknowledged in the text and a list of references is given.
+    %
+    \begin{table}[htbp]
+        \centering
+        \begin{tabular}{>{\RaggedRight\arraybackslash}p{#1\textwidth} >{\RaggedLeft\arraybackslash}p{0.86\authcolwidth}}
+            \vspace{5ex}{\ }\newline
+            \rule{4cm}{0.4pt}\newline
+            \textbf{\getSupervisorName}\newline
+            \getSupervisorDesignation\newline
+            \getSupervisorDepartment\newline
+            Islamic University of Technology (IUT), Gazipur, Bangladesh\newline
+            Date: \getdatemdy
+            \ifhascosupervisor{% 
+                \vspace{10ex}{\ }\newline
+                \rule{4cm}{0.4pt}\newline
+                \textbf{\getCoSupervisorName}\newline
+                \getCoSupervisorDesignation\newline
+                \getCoSupervisorDepartment\newline
+                \getCoSupervisorOrganization\newline
+                Date: \getdatemdy
+            }
+            &
+            \vspace{5ex}{\ }\newline
+            \rule{4cm}{0.4pt}\newline
+            \textbf{\getAuthorName}\newline
+            Student ID: \getAuthorID\newline
+            Date: \getdatemdy
+        \end{tabular}
+    \end{table}
+    \clearpage
+}
+
+% Dedication command
+\newcommand{\dedicatedto}[1]{
+\vspace*{\fill}
+\begin{center}
+    \begin{Large}
+        \textit{Dedicated to #1}
+    \end{Large}
+\end{center}
+\vfill
+\clearpage
+}
+
+% List of Abbreviation Environment and corresponding commands
+\newenvironment{abbreviations}{
+    {\centering\Large \textbf{List of Abbreviations}\\}\vspace{\baselineskip}
+    \begin{center}
+    \begin{tabular}{l l}
+}
+{
+    \end{tabular}
+    \end{center}
+    \clearpage
+}
+
+\newcommand{\abbr}[2]{\textbf{#1} & {#2}\\}
+
+
+% Acknowledgement Environment
+\newenvironment{acknowledgement}{
+    {\centering\Large \textbf{Acknowledgement}\\}\vspace{\baselineskip}
+}
+{
+    \clearpage
+}
+
+% Abstract Environment
+\renewenvironment{abstract}{
+    {\centering\Large \textbf{Abstract}\\}\vspace{\baselineskip}
+}
+{
+    \clearpage
+}

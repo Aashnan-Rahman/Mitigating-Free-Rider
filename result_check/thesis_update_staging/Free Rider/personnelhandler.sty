@@ -1,0 +1,132 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% personnelhandler.sty
+%
+% Author: MIA
+% Email: ishrakabedin@iut-dhaka.edu
+%
+% IUT MSc Thesis Report Template written by MBH and MIA
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{personnelhandler}[2024/09/26 v0.51 LaTeX package for multiple author (student) management for IUT BSc Thesis Template]
+
+% Prerequisite package loading
+\RequirePackage{etoolbox}
+
+%%% AUTHOR %%%
+\renewcommand{\author}[2]{
+    \gdef\@AuthorName{#1}
+    \gdef\@AuthorID{#2}
+}
+
+\newcommand{\getAuthorName}{\@AuthorName}
+\newcommand{\getAuthorID}{\@AuthorID}
+\newcommand{\getAuthorQName}{\getAuthorName\ with student ID \getAuthorID}
+
+%%% SUPERVISOR %%%
+\newcommand{\supervisor}[3]{%
+    \gdef\@SupervisorName{#1}%
+    \gdef\@SupervisorDesignation{#2}%
+    \gdef\@SupervisorDepartment{#3}%
+}
+
+\newcommand{\getSupervisorName}{\@SupervisorName}
+\newcommand{\getSupervisorDesignation}{\@SupervisorDesignation}
+\newcommand{\getSupervisorDepartment}{\@SupervisorDepartment}
+\newcommand{\getSupervisorQName}{\getSupervisorName, \getSupervisorDesignation, \getSupervisorDepartment, Islamic University of Technology (IUT), Dhaka, Bangladesh}
+
+%%% COSUPERVISOR %%%
+\newcommand{\cosupervisor}[4]{%
+    \gdef\@CoSupervisorName{#1}%
+    \gdef\@CoSupervisorDesignation{#2}%
+    \gdef\@CoSupervisorDepartment{#3}%
+    \gdef\@CoSupervisorOrganization{#4}%
+}
+
+\newcommand{\getCoSupervisorName}{\@CoSupervisorName}
+
+\newcommand{\getCoSupervisorDesignation}{\@CoSupervisorDesignation}
+
+\newcommand{\getCoSupervisorDepartment}{\@CoSupervisorDepartment}
+
+\newcommand{\getCoSupervisorOrganization}{\@CoSupervisorOrganization}
+
+\newcommand{\getCoSupervisorQName}{\getCoSupervisorName, \getCoSupervisorDesignation, \getCoSupervisorDepartment, \getCoSupervisorOrganization}
+
+\newcommand{\ifhascosupervisor}[1]{%
+  \if\relax\detokenize\expandafter{\@CoSupervisorName}\relax
+      % If empty, execute the second argument
+  \else
+    #1  % If not empty, execute the first argument
+  \fi
+}
+
+\newcommand{\clearcosupervisor}{%
+    \cosupervisor{}{}{}{}
+}
+
+\clearcosupervisor
+
+%%% HEAD OF THE DEPARTMENT
+\newcommand{\depthead}[3]{%
+    \gdef\@HODName{#1}%
+    \gdef\@HODDesignation{#2}%
+    \gdef\@HODDepartment{#3}%
+}
+
+\newcommand{\getHeadName}{\@HODName}
+\newcommand{\getHeadDesignation}{\@HODDesignation\ and Head}
+\newcommand{\getHeadDepartment}{\@HODDepartment}
+\newcommand{\getHeadQName}{\getHeadName, \getHeadDesignation, \getHeadDepartment, Islamic University of Technology (IUT), Dhaka, Bangladesh}
+
+%%% MEMBER 1
+\newcommand{\member}[3]{%
+    \gdef\@MemberName{#1}%
+    \gdef\@MemberDesignation{#2}%
+    \gdef\@MemberDepartment{#3}%
+}
+
+\newcommand{\getMemberName}{\@MemberName}
+\newcommand{\getMemberDesignation}{\@MemberDesignation}
+\newcommand{\getMemberDepartment}{\@MemberDepartment}
+\newcommand{\getMemberQName}{\getMemberName, \getMemberDesignation, \getMemberDepartment, Islamic University of Technology (IUT), Dhaka, Bangladesh}
+
+%%% MEMBER 2
+\newcommand{\membertwo}[3]{%
+    \gdef\@MemberTwoName{#1}%
+    \gdef\@MemberTwoDesignation{#2}%
+    \gdef\@MemberTwoDepartment{#3}%
+}
+
+\newcommand{\getMemberTwoName}{\@MemberTwoName}
+\newcommand{\getMemberTwoDesignation}{\@MemberTwoDesignation}
+\newcommand{\getMemberTwoDepartment}{\@MemberTwoDepartment}
+\newcommand{\getMemberTwoQName}{\getMemberTwoName, \getMemberTwoDesignation, \getMemberTwoDepartment, Islamic University of Technology (IUT), Dhaka, Bangladesh}
+
+\newcommand{\ifhasmembertwo}[1]{%
+  \if\relax\detokenize\expandafter{\@MemberTwoName}\relax
+      % If empty, execute the second argument
+  \else
+    #1  % If not empty, execute the first argument
+  \fi
+}
+
+\newcommand{\clearmembertwo}{%
+    \membertwo{}{}{}
+}
+
+\clearmembertwo
+
+%%% EXTERNAL %%%
+\newcommand{\external}[4]{%
+    \gdef\@ExternalName{#1}%
+    \gdef\@ExternalDesignation{#2}%
+    \gdef\@ExternalDepartment{#3}%
+    \gdef\@ExternalOrganization{#4}%
+}
+
+\newcommand{\getExternalName}{\@ExternalName}
+\newcommand{\getExternalDesignation}{\@ExternalDesignation}
+\newcommand{\getExternalDepartment}{\@ExternalDepartment}
+\newcommand{\getExternalOrganization}{\@ExternalOrganization}
+\newcommand{\getExternalQName}{\getExternalName, \getExternalDesignation, \getExternalDepartment, \getExternalOrganization}
