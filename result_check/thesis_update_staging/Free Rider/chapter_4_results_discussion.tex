@@ -1,0 +1,111 @@
+\chapter{Results and Discussion}
+\label{sec:results-discussion}
+
+\section{Experimental Questions}
+
+The evaluation addresses four questions. First, can SWT-CP detect replay, random-update, historical-average, and adaptive free riders without knowing which attack is present? Second, how sensitive is detection to the random seed and attacker proportion? Third, does Dirichlet non-IID partitioning increase false positives or create false negatives? Fourth, what model-utility and execution costs accompany the probing schedule?
+
+\section{Experimental Setup}
+
+All reported v8 experiments use MNIST, 100 clients, full participation, 100 communication rounds, three local epochs, batch size 32, SGD with learning rate 0.01 and momentum 0.9, and a convolutional classifier. IID partitions distribute examples uniformly. Non-IID partitions use a Dirichlet label allocation with concentration $\alpha=0.5$. The matrix contains attacker shares of 30\% and 40\%, seeds 42 and 43, and FR1--FR4, yielding 32 completed runs. No result from v4--v7 is pooled with v8.
+
+Precision, recall, and F1 treat permanent removal as the positive decision. Thus $TP$ is a removed free rider, $FP$ a removed honest client, and $FN$ an active free rider at round 100. Final candidates are not counted as false removals. This distinction is important because candidates created in round 100 have no later confirmation round. Global accuracy is evaluated on the MNIST test set. Resource measurements are process-level measurements from the simulator; resumed-run wall-clock totals may describe only the resumed segment, so average round time is used for cross-run comparison.
+
+\begin{table}[htbp]
+\centering
+\caption{Aggregate v8 results across FR1--FR4 for each setting}
+\label{tab:aggregate-results}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{llrrrrrrr}
+\toprule
+Partition & Attackers/seed & TP & FP & FN & Precision & Recall & F1 & Mean accuracy \\
+\midrule
+IID & 30\%/42 & 120 & 8 & 0 & 93.75\% & 100\% & 96.77\% & 98.95\% \\
+IID & 30\%/43 & 120 & 1 & 0 & 99.17\% & 100\% & 99.59\% & 98.92\% \\
+IID & 40\%/42 & 160 & 6 & 0 & 96.39\% & 100\% & 98.16\% & 98.86\% \\
+IID & 40\%/43 & 160 & 0 & 0 & 100\% & 100\% & 100\% & 98.89\% \\
+Non-IID & 30\%/42 & 120 & 10 & 0 & 92.31\% & 100\% & 96.00\% & 98.88\% \\
+Non-IID & 30\%/43 & 120 & 9 & 0 & 93.02\% & 100\% & 96.39\% & 98.88\% \\
+Non-IID & 40\%/42 & 120 & 7 & 40 & 94.49\% & 75\% & 83.62\% & 98.84\% \\
+Non-IID & 40\%/43 & 120 & 8 & 40 & 93.75\% & 75\% & 83.33\% & 98.88\% \\
+\bottomrule
+\end{tabular}}
+\end{table}
+
+\section{IID Results}
+
+All 560 free riders in the four IID configurations were removed. Seed 43 was particularly strong: one honest client was removed across the 30\% experiments and none across the 40\% experiments. Seed 42 produced eight and six honest removals respectively. The gap shows that a single seed would give a misleading estimate of precision even under IID partitioning. Across all IID runs, pooled removal precision was $560/(560+15)=97.39\%$, recall was 100\%, and F1 was 98.68\%.
+
+FR1--FR4 all remained detectable under IID data. Final accuracy varied by only 0.14 percentage points across the aggregate settings. The defense therefore preserved utility in these experiments despite excluding trapped and candidate updates. However, the seed-42 false removals demonstrate that joint evidence and rotation reduce rather than eliminate honest tails.
+
+\section{Non-IID Results}
+
+Table~\ref{tab:noniid-detail} presents each non-IID attack as ``free riders removed / honest clients removed.'' FR1--FR3 achieved complete recall in every setting. FR3 was the least precise, producing three or four false removals per run. FR4 exhibited a qualitatively different transition: it was fully detected at 30\% but completely missed at 40\% under both seeds.
+
+\begin{table}[htbp]
+\centering
+\caption{Detailed non-IID results (free riders removed / honest clients removed)}
+\label{tab:noniid-detail}
+\begin{tabular}{lrrrr}
+\toprule
+Attack & 30\%/seed 42 & 30\%/seed 43 & 40\%/seed 42 & 40\%/seed 43 \\
+\midrule
+FR1 & 30/3 & 30/1 & 40/1 & 40/3 \\
+FR2 & 30/2 & 30/3 & 40/1 & 40/2 \\
+FR3 & 30/3 & 30/3 & 40/4 & 40/3 \\
+FR4 & 30/2 & 30/2 & 0/1 & 0/0 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+At 30\%, all FR4 clients entered the candidate/suspicion pipeline and were removed around rounds 30--32. Joint evidence appeared in 76.01\% of trapped FR4 observations for seed 42 and 81.28\% for seed 43. At 40\%, the corresponding rates fell to 0\% and 2.86\%; no attacker accumulated enough repeated evidence. Seed 42 never flagged any of its 40 FR4 clients. Seed 43 flagged 18 at least once, but none received adequate confirmation. Every one of the 80 attackers across the two 40\% FR4 runs remained active at round 100.
+
+This discontinuity is visible during initial coverage. Median FR4 norm z-scores were $-2.65$ and $-3.10$ at 30\%, but only $-1.55$ and $-1.81$ at 40\%. Increasing contamination changed the median/MAD and layer-profile references enough to make the malicious cluster appear less exceptional, even though its raw update norms remained much smaller. In the seed-42 40\% run, the median trapped norm was 0.0365 for FR4 and 0.4824 for honest clients, a factor of approximately 13. The detector failed not because responses were physically similar, but because the reference and joint-decision mechanism did not convert that separation into evidence under the broad non-IID mixture.
+
+\section{Anchor Contamination Case Study}
+
+The 40\% FR4 failure also invalidated the operational interpretation of an eligible anchor. Because no FR4 client had prior evidence, attackers entered the never-flagged roster. In the seed-42 run, honest client 85 became suspicious and was compared with 33 anchor assignments over its episode; 10 were free riders. At rounds 66, 68, and 73, two of its three anchors were FR4 clients. Those exact three malicious-majority panels produced joint norm/profile failures and added three points each. Combined with six earlier points, client 85 reached 15 and was removed at round 73.
+
+This trace establishes a causal failure rather than a general suspicion: rotating an unverified roster distributes contamination but does not remove it. Three anchors tolerate one bad reference, not two. A client that has never been detected is not necessarily a positively verified honest client.
+
+\section{False Positives and Seed-Specific Clients}
+
+Non-IID false removals were concentrated rather than uniformly random. Under seed 42, client 65 was removed in six non-IID attack/configuration combinations and client 74 in five. Under seed 43, client 81 was removed seven times and client 29 five times. Repetition across FR1--FR4 indicates partition-specific honest update geometry rather than an attack-specific response. The detector repeatedly interprets certain legitimate label distributions as joint norm/profile anomalies.
+
+At round 100 the non-IID settings contained between 17 and 34 candidates and one to four suspects when aggregated across the four attacks. Most final candidates entered in the last round and are boundary artifacts rather than confirmed removals. Final suspects are more important: they show that removal precision alone understates temporary quarantine and future false-removal risk.
+
+\section{Model Utility}
+
+Mean final accuracy remained between 98.84\% and 98.95\% in every aggregate setting. The individual-run range was 98.82--98.95\%. Notably, the non-IID 40\% FR4 runs still achieved 98.84\% and 98.88\% despite detecting no attackers. FR4 returns low-magnitude fabricated updates; with 60 honest clients remaining, these responses mainly dilute learning rather than immediately destroy classification accuracy. Consequently, high test accuracy is not evidence of successful free-rider detection.
+
+\section{Runtime and Resource Use}
+
+\begin{table}[htbp]
+\centering
+\caption{Execution profile aggregated across four attacks}
+\label{tab:resources}
+\begin{tabular}{llrrr}
+\toprule
+Partition & Attackers/seed & Mean s/round & Approx. batch hours & Peak RAM (MB) \\
+\midrule
+IID & 30\%/42 & 50.8 & 5.65 & 1074 \\
+IID & 30\%/43 & 43.4 & 4.82 & 1150 \\
+IID & 40\%/42 & 59.6 & 6.62 & 3172 \\
+IID & 40\%/43 & 54.3 & 6.04 & 3237 \\
+Non-IID & 30\%/42 & 46.9 & 5.21 & 887 \\
+Non-IID & 30\%/43 & 46.0 & 5.11 & 891 \\
+Non-IID & 40\%/42 & 42.4 & 4.72 & 1079 \\
+Non-IID & 40\%/43 & 44.8 & 4.98 & 1022 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The IID 40\% runs recorded CUDA memory, while the other collected batches executed on CPU. GPU execution did not yield proportional speedup because clients are simulated sequentially and much of the workload and orchestration remains serial. FR4 40\% non-IID was relatively costly within its batch because all attackers remained active: the seed-42 run averaged 89 aggregated clients per round and ended with 99 active clients, compared with roughly 55--56 aggregated and 56--59 active clients after successful FR1--FR3 removal. Peak recorded system-memory use approached 95\% in some CPU runs, so host memory was a practical execution constraint.
+
+\section{Threats to Validity}
+
+Only two seeds were evaluated, and their false-positive difference is large. The experiments use one dataset, one model family, one Dirichlet concentration, full participation, and always-on independent attackers. Reported percentages are therefore measurements of this simulation, not confidence intervals for deployment. No external defense was rerun under an identical implementation, so the results do not establish superiority over FRIDA, FRAD, PASS, or STD-DAGMM. Accuracy remains high even in a detection failure, and should not be treated as a proxy for contribution authenticity. Finally, individual-update inspection is incompatible with standard secure aggregation without additional protocol support.
+
+\section{Overall Interpretation}
+
+The central empirical conclusion is conditional. SWT-CP v8 is highly effective against FR1--FR3 across the tested IID and non-IID settings, and against FR4 under IID or 30\% non-IID contamination. It is not robust to FR4 at 40\% non-IID contamination. The repeated two-seed failure indicates a methodological boundary rather than a corrupted run. Future revisions should require positive evidence before anchor admission and exploit paired within-client responses to the two coverage traps, reducing dependence on comparisons among naturally heterogeneous clients.

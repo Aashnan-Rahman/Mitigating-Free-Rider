@@ -1,0 +1,119 @@
+\chapter{Introduction}
+
+
+\section{Introduction to Federated Learning and the Free Rider Problem}
+\label{sec:intro-info}
+
+Federated Learning (FL) has emerged as a transformative paradigm for distributed machine learning that enables multiple clients such as mobile devices, edge servers, or organizational silos to collaboratively train a shared global model without exposing their raw, locally stored data \cite{mcmahan2017communication,kairouz2021advances}. Unlike traditional centralized machine learning, where data must be aggregated on a single server, FL operates on a fundamentally different principle: \emph{the model travels to the data, not the other way around}.
+
+In a typical FL architecture, a central server initializes a global model and distributes it to a set of participating clients. Each client independently trains the model on its local dataset for a fixed number of epochs and computes a local model update (e.g., gradients or updated weights). These updates are transmitted back to the server, which aggregates them—commonly via the Federated Averaging (FedAvg) algorithm—to produce an improved global model \cite{mcmahan2017communication}. This process is repeated over multiple communication rounds until the global model converges to a satisfactory performance level.
+
+This architecture offers several compelling advantages:
+
+\begin{itemize}
+    \item \textbf{Privacy Preservation:} Since raw data never leaves the client device, FL inherently reduces the risk of data leakage and aligns with data protection regulations such as GDPR and HIPAA.
+    \item \textbf{Reduced Communication Overhead:} Only model parameters or gradients are exchanged, rather than entire datasets, which is particularly advantageous in bandwidth-constrained environments.
+    \item \textbf{Decentralized Data Utilization:} FL enables organizations and individuals to benefit from collaborative model training without relinquishing control over sensitive data.
+    \item \textbf{Scalability:} FL systems can, in principle, incorporate thousands to millions of participating clients, as seen in large-scale mobile deployments such as Google's keyboard prediction systems \cite{hard2018federated,bonawitz2019towards}.
+\end{itemize}
+
+Privacy is not merely a desirable feature of FL it is often the primary motivation for its adoption. In domains such as healthcare, finance, and personal mobile applications, the ability to train robust models while keeping sensitive data on-device is a critical enabler of machine learning adoption in regulated and privacy-sensitive contexts.
+
+However, the very decentralization and privacy guarantees that make FL attractive also introduce a unique vulnerability: the server has limited visibility into what each client is actually doing locally. This opacity creates an opportunity for malicious or self-interested clients to exploit the system through what is known as \textbf{Free Rider (FR) behavior}. A free rider is a participant that contributes little or no genuine computational effort toward local model training, yet still submits an update to the server in order to receive the benefits of the collaboratively trained global model—effectively benefiting from the effort of honest participants while incurring minimal cost. Because free riders can fabricate or manipulate updates that superficially resemble legitimate contributions, they are often difficult to distinguish from genuine, well-behaved clients using standard aggregation mechanisms alone.
+
+
+%\section{Introductory Information}
+
+
+
+\section{Scope and Motivation}
+\label{sec:scope-motivation}
+
+To understand why free rider behavior poses a serious threat to FL systems, consider a simple real-world analogy. Suppose a group project involves ten students who are collectively assigned a task, and their final grade depends on the group's combined output. If six students genuinely contribute their effort while the remaining four merely submit superficial or copied work without doing any real analysis, the final result may still appear complete and acceptable to an external evaluator who only inspects the submitted output. Yet the four free-riding students receive the same reward (the grade) as the diligent six, despite having contributed little of value. Over time, this dynamic discourages honest participants, degrades the overall quality of the group's output, and undermines the fairness of the collaborative process.
+
+This scenario maps directly onto FL systems. Free-riding clients can submit updates that are statistically or structurally similar to genuine updates—for instance, by adding small perturbations to the previous global model, reusing outdated updates, or applying minimal or synthetic training—without performing meaningful local training on their own data. Because the FL server typically aggregates updates based on volume or simple heuristics (e.g., number of local samples reported by the client) rather than verifying the training process itself, such free riders can successfully "blend in" with genuine contributors. They benefit from the improved global model at every round while incurring negligible computational, energy, or data costs.
+
+The consequences of unmitigated free-rider behavior in FL systems are significant:
+
+\begin{itemize}
+    \item \textbf{Degraded Model Quality:} A high proportion of free riders can slow convergence or degrade the accuracy of the global model, especially in non-IID data settings where genuine diverse contributions are essential.
+    \item \textbf{Unfair Resource Allocation:} In incentive-based FL systems, free riders may unfairly claim rewards (monetary or otherwise) intended to compensate genuine contributors, discouraging honest participation over time.
+    \item \textbf{Security and Trust Erosion:} Persistent free riding undermines trust in the FL ecosystem, potentially disincentivizing high-quality clients from participating altogether.
+    \item \textbf{Scalability of Malicious Behavior:} As FL systems scale to include thousands of clients, manual or centralized verification of each client's genuine contribution becomes computationally and practically infeasible, making the free rider problem increasingly urgent.
+\end{itemize}
+
+Given the growing deployment of FL in real-world, large-scale, and often adversarial environments, addressing free rider behavior is not merely an academic exercise but a practical necessity for ensuring the long-term viability, fairness, and robustness of federated systems.
+
+
+\section{Problem Statement}
+\label{sec:problem-statement}
+
+The core problem addressed in this thesis can be formally framed as follows:
+
+\begin{quote}
+\textit{In a Federated Learning system involving $N$ clients participating over $T$ communication rounds, a subset of clients $\mathcal{F} \subset \mathcal{N}$ may behave as free riders—submitting model updates that do not reflect genuine training on locally available data, while still appearing statistically and structurally consistent with updates submitted by honest clients. The central server, having no direct access to client-side data or training logs, must identify or mitigate the influence of these free-riding clients using only the information available through the exchanged model updates, aggregation metadata, and system-level observations, without compromising the privacy guarantees that FL is designed to provide.}
+\end{quote}
+
+This problem is inherently challenging because it sits at the intersection of two competing goals: (1) verifying the authenticity and quality of client contributions, and (2) preserving the privacy-preserving nature of the FL paradigm, which explicitly avoids direct inspection of client data or computation. A free rider detection or mitigation mechanism that requires access to raw client data, imposes excessive computational burden, or fails to generalize across dynamic and heterogeneous client populations is, in practice, unsuitable for real-world FL deployments.
+
+\section{Research Challenges}
+\label{sec:research-challenges}
+
+Detecting and mitigating free rider behavior in FL systems presents several interrelated challenges:
+
+\begin{enumerate}
+    \item \textbf{Indistinguishability of Updates:} Free riders can craft updates through techniques such as noise injection, weight perturbation, or reuse of previous global models—that closely mimic the statistical properties of genuine updates, making detection based on superficial inspection unreliable.
+
+    \item \textbf{Absence of Ground Truth:} The server cannot directly observe a client's local training process, dataset, or computational effort, making it difficult to establish a reliable baseline against which suspicious updates can be compared.
+
+    \item \textbf{Non-IID Data Distributions:} In realistic FL settings, client data is often non-independent and non-identically distributed (non-IID), a well-known source of optimization instability and client-update diversity in FL \cite{zhao2018federated,kairouz2021advances}. Legitimate updates from clients with unusual or minority data distributions may appear anomalous, increasing the risk of falsely flagging honest clients as free riders.
+
+    \item \textbf{Privacy Constraints:} Any detection mechanism must operate without requiring access to raw client data or intrusive monitoring, as doing so would violate the fundamental privacy guarantees that motivate the use of FL in the first place. This constraint becomes even stronger in deployments that rely on secure aggregation, where the server is deliberately prevented from inspecting individual client updates \cite{bonawitz2017practical}.
+
+    \item \textbf{Scalability:} FL systems may involve thousands to millions of clients. Detection mechanisms that rely on computationally expensive verification, pairwise comparisons, or centralized auditing do not scale efficiently to such large populations.
+
+    \item \textbf{Dynamic and Adaptive Adversaries:} Free riders may adapt their strategies over time to evade detection (e.g., alternating between genuine and free-riding behavior), requiring mitigation techniques that are robust to adaptive and evolving attack patterns rather than static, one-time detection.
+
+    \item \textbf{Trade-off Between Robustness and Model Utility:} Overly aggressive filtering or penalization of suspicious clients risks excluding legitimate contributions, particularly from clients with limited resources or atypical data, thereby harming overall model utility and fairness.
+\end{enumerate}
+
+Several existing approaches have attempted to address aspects of this problem, but each carries notable limitations:
+
+\begin{itemize}
+    \item \textbf{Hardware-based methods}, such as trusted execution environments (TEEs) or secure hardware attestation, can verify that computation genuinely occurred on a client device. However, these methods require specialized hardware support, are costly to deploy at scale, and are often infeasible for heterogeneous, resource-constrained edge devices.
+
+    \item \textbf{Proof-of-work approaches}, inspired by blockchain consensus mechanisms, require clients to demonstrate computational effort before their updates are accepted. While effective in principle, these methods impose significant computational and energy overhead, which is particularly problematic for battery-constrained mobile or IoT devices, and does not directly guarantee that the effort corresponds to genuine, useful model training.
+
+    \item \textbf{Server-side verification} techniques attempt to validate updates by re-executing or partially replicating client-side computation. These approaches, however, often require access to client data or proxies thereof, directly conflicting with FL's privacy-preserving objectives and with secure-aggregation-style deployments \cite{bonawitz2017practical}, and introduce substantial computational burden on the server.
+
+    \item \textbf{Computation checking} methods analyze metadata such as training time, number of local epochs, or resource usage logs reported by clients. Such self-reported metrics are inherently susceptible to falsification by malicious clients, limiting their reliability as a standalone defense.
+
+\end{itemize}
+
+Collectively, these limitations—high cost, privacy compromise, poor scalability, and susceptibility to adaptive adversaries—highlight the need for a fundamentally different approach: one that is lightweight, privacy-preserving, scalable to large and dynamic client populations, and robust against evolving free-riding strategies.
+
+
+\section{Contributions}
+\label{sec:contributions}
+
+Motivated by the limitations of existing free rider mitigation strategies, this thesis proposes a lightweight, privacy-preserving, and scalable framework for detecting and mitigating free rider behavior in Federated Learning systems. The key contributions of this work are summarized as follows:
+
+\begin{enumerate}
+    \item \textbf{A Privacy-Preserving Detection Mechanism:} We design a detection approach that relies solely on information already available at the server through the standard FL communication protocol—such as update characteristics and aggregation-level statistics—without requiring access to raw client data, specialized hardware, or intrusive auditing procedures.
+
+    \item \textbf{Lightweight Computational Overhead:} Unlike proof-of-work or server-side re-execution methods, the proposed approach introduces minimal additional computational and communication cost, making it practical for deployment in resource-constrained and large-scale FL environments.
+
+    \item \textbf{Robustness to Dynamic and Adaptive Free Riders:} The proposed method is designed to adapt to evolving free-riding strategies over multiple communication rounds, rather than relying on static, one-time verification, thereby improving robustness against adaptive adversarial behavior.
+
+    \item \textbf{Preservation of Model Utility for Honest Clients:} By carefully balancing detection sensitivity against the risk of false positives, particularly in non-IID settings, the proposed approach aims to mitigate free rider influence without unfairly penalizing legitimate clients with atypical but genuine data distributions.
+
+    \item \textbf{Scalability to Large Client Populations:} The proposed framework is designed with computational and communication efficiency in mind, enabling its application to FL systems involving large and dynamically changing sets of participating clients.
+
+    \item \textbf{Empirical Validation and Failure Analysis:} We evaluate four free-rider strategies on MNIST under IID and Dirichlet non-IID partitions, two attacker shares, and two random seeds. Beyond precision, recall, F1, model accuracy, and runtime, the analysis traces false removals to individual clients and identifies a reproducible FR4 failure caused by statistical and anchor-set contamination at 40\% non-IID attackers. No unimplemented comparison with external baselines is claimed.
+\end{enumerate}
+
+Collectively, these contributions aim to advance the practical deployability of Federated Learning systems by addressing one of its most persistent and underexplored vulnerabilities, offering a solution that preserves the core privacy and efficiency benefits that make FL attractive in the first place.
+
+
+\subsection{Organization}
+Chapter~1 introduces the free-rider problem, research challenges, and contributions. Chapter~2 reviews statistical, learned, audit-based, privacy-attack-based, and hardware-assisted defenses. Chapter~3 specifies SWT-CP v8, including its threat model, two-signal detector, probing schedule, client states, penalties, rehabilitation rule, and aggregation policy. Chapter~4 presents the experimental protocol and analyzes IID and non-IID results, model utility, runtime, false positives, and the FR4 contamination failure. Chapter~5 summarizes the findings, limitations, and priorities for future work.

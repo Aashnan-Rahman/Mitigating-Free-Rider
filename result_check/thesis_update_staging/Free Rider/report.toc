@@ -1,0 +1,46 @@
+\contentsline {chapter}{\numberline {1}Introduction}{1}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Introduction to Federated Learning and the Free Rider Problem}{1}{section.1.1}%
+\contentsline {section}{\numberline {1.2}Scope and Motivation}{2}{section.1.2}%
+\contentsline {section}{\numberline {1.3}Problem Statement}{3}{section.1.3}%
+\contentsline {section}{\numberline {1.4}Research Challenges}{4}{section.1.4}%
+\contentsline {section}{\numberline {1.5}Contributions}{6}{section.1.5}%
+\contentsline {subsection}{\numberline {1.5.1}Organization}{7}{subsection.1.5.1}%
+\contentsline {chapter}{\numberline {2}Related Work}{8}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Background}{8}{section.2.1}%
+\contentsline {section}{\numberline {2.2}Foundational Characterization of Free-Rider Attacks}{8}{section.2.2}%
+\contentsline {section}{\numberline {2.3}Advanced and Stealthy Free-Rider Attacks}{9}{section.2.3}%
+\contentsline {section}{\numberline {2.4}Server-Side Detection and Audit-Based Mitigation}{10}{section.2.4}%
+\contentsline {section}{\numberline {2.5}Privacy-Attack-Based Detection}{11}{section.2.5}%
+\contentsline {section}{\numberline {2.6}Hardware-Based and Cryptographic Solutions}{13}{section.2.6}%
+\contentsline {section}{\numberline {2.7}Other Notable Approaches}{13}{section.2.7}%
+\contentsline {section}{\numberline {2.8}Summary and Research Gap}{14}{section.2.8}%
+\contentsline {chapter}{\numberline {3}Proposed Methodology}{16}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Design Objective and Information Boundary}{16}{section.3.1}%
+\contentsline {section}{\numberline {3.2}System and Threat Model}{17}{section.3.2}%
+\contentsline {section}{\numberline {3.3}Robust Two-Signal Detector}{17}{section.3.3}%
+\contentsline {subsection}{\numberline {3.3.1}Two-sided magnitude evidence}{17}{subsection.3.3.1}%
+\contentsline {subsection}{\numberline {3.3.2}Scale-free layer profile}{18}{subsection.3.3.2}%
+\contentsline {subsection}{\numberline {3.3.3}Exact send-back evidence}{18}{subsection.3.3.3}%
+\contentsline {section}{\numberline {3.4}Client States and Evidence Accounting}{18}{section.3.4}%
+\contentsline {section}{\numberline {3.5}Probing Schedule}{19}{section.3.5}%
+\contentsline {subsection}{\numberline {3.5.1}Warm-up}{19}{subsection.3.5.1}%
+\contentsline {subsection}{\numberline {3.5.2}Initial double coverage sweep}{19}{subsection.3.5.2}%
+\contentsline {subsection}{\numberline {3.5.3}Post-coverage surveillance}{20}{subsection.3.5.3}%
+\contentsline {subsection}{\numberline {3.5.4}Candidate and suspicion probing}{20}{subsection.3.5.4}%
+\contentsline {section}{\numberline {3.6}Rotating Anchor Roster}{21}{section.3.6}%
+\contentsline {section}{\numberline {3.7}Aggregation, Removal, and Checkpointing}{21}{section.3.7}%
+\contentsline {section}{\numberline {3.8}Computational Characteristics and Limitations}{21}{section.3.8}%
+\contentsline {section}{\numberline {3.9}Summary}{22}{section.3.9}%
+\contentsline {chapter}{\numberline {4}Results and Discussion}{23}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Experimental Questions}{23}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Experimental Setup}{23}{section.4.2}%
+\contentsline {section}{\numberline {4.3}IID Results}{24}{section.4.3}%
+\contentsline {section}{\numberline {4.4}Non-IID Results}{24}{section.4.4}%
+\contentsline {section}{\numberline {4.5}Anchor Contamination Case Study}{25}{section.4.5}%
+\contentsline {section}{\numberline {4.6}False Positives and Seed-Specific Clients}{25}{section.4.6}%
+\contentsline {section}{\numberline {4.7}Model Utility}{26}{section.4.7}%
+\contentsline {section}{\numberline {4.8}Runtime and Resource Use}{26}{section.4.8}%
+\contentsline {section}{\numberline {4.9}Threats to Validity}{27}{section.4.9}%
+\contentsline {section}{\numberline {4.10}Overall Interpretation}{27}{section.4.10}%
+\contentsline {chapter}{\numberline {5}Conclusion}{28}{chapter.5}%
+\contentsline {chapter}{References}{30}{chapter*.10}%
