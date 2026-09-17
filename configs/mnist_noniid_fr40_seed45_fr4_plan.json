@@ -1,0 +1,29 @@
+{
+  "batch_name": "mnist_noniid_fr40_seed45",
+  "results_root": "./results",
+  "defaults": {
+    "methodology_version": "swtcp_v8",
+    "num_clients": 100,
+    "num_rounds": 100,
+    "free_rider_pct": 0.4,
+    "seed": 45,
+    "device": "auto",
+    "dirichlet_alpha": 0.5,
+    "save_checkpoints": true,
+    "checkpoint_keep_last": 5
+  },
+  "stages": [
+    {
+      "id": "mnist_noniid_fr40_seed45",
+      "id_format": "{attack_type}",
+      "description": "MNIST non-IID, 40% free riders, FR4 only, seed 45",
+      "enabled": true,
+      "matrix": {
+        "dataset": ["mnist"],
+        "distribution": ["noniid"],
+        "attack_type": ["FR4"],
+        "free_rider_pct": [0.4]
+      }
+    }
+  ]
+}

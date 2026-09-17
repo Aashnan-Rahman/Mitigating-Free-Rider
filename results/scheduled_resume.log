@@ -1,0 +1,49 @@
+﻿**********************
+Windows PowerShell transcript start
+Start time: 20260917163610
+Username: DESKTOP-0HUBAH2\CSE
+RunAs User: DESKTOP-0HUBAH2\CSE
+Configuration Name: 
+Machine: DESKTOP-0HUBAH2 (Microsoft Windows NT 10.0.26200.0)
+Host Application: powershell.exe -NoProfile -ExecutionPolicy Bypass -File E:\New Projects\Mitigating-Free-Rider\resume_experiments.ps1
+Process ID: 10112
+PSVersion: 5.1.26100.9444
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.26100.9444
+BuildVersion: 10.0.26100.9444
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Starting scheduled batch: FR4, 40% free riders, seed 44
+E:\New Projects\Mitigating-Free-Rider\.venv\Lib\site-packages\torch\utils\data\dataloader.py:759: U
+serWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned me
+mory won't be used.
+  super().__init__(loader)
+Starting scheduled batch: 30% free riders, seed 42
+**********************
+Windows PowerShell transcript start
+Start time: 20260917202837
+Username: DESKTOP-0HUBAH2\CSE
+RunAs User: DESKTOP-0HUBAH2\CSE
+Configuration Name: 
+Machine: DESKTOP-0HUBAH2 (Microsoft Windows NT 10.0.26200.0)
+Host Application: powershell.exe -NoProfile -ExecutionPolicy Bypass -File E:\New Projects\Mitigating-Free-Rider\resume_experiments.ps1
+Process ID: 3124
+PSVersion: 5.1.26100.9444
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.26100.9444
+BuildVersion: 10.0.26100.9444
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Scheduled batch is complete: FR4, 40% free riders, seed 44
+Starting scheduled batch: FR4, 40% free riders, seed 45
+E:\New Projects\Mitigating-Free-Rider\.venv\Lib\site-packages\torch\utils\data\dataloader.py:759: U
+serWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned me
+mory won't be used.
+  super().__init__(loader)
+Starting scheduled batch: FR4, 40% free riders, seed 46

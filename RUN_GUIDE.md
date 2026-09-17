@@ -225,10 +225,12 @@ currently editable plan file.
 The scheduled task `Mitigating Free Rider - Resume Experiments` runs after the
 current Windows user logs on. It finds the newest unfinished batch, avoids
 starting a duplicate runner, and resumes the remaining experiments. It then
-runs the fixed MNIST non-IID, 30% free-rider plans for seed 42 followed by seed
-43. The fixed result folders `results/mnist_noniid_fr30_seed42` and
-`results/mnist_noniid_fr30_seed43` prevent duplicate batches and contain simple
-`FR1` through `FR4` run directories.
+runs the queued MNIST non-IID experiments. The queue contains only FR4 at 40%
+free riders for seeds 44, 45, and 46.
+The fixed result folders—`results/mnist_noniid_fr40_seed44`,
+`results/mnist_noniid_fr40_seed45`,
+and `results/mnist_noniid_fr40_seed46`—prevent duplicate batches. Each folder
+contains only `FR4`.
 Install or refresh the task with:
 
 ```powershell

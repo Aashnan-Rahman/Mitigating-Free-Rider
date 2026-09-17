@@ -1,5 +1,6 @@
 param(
-    [string]$TaskName = "Mitigating Free Rider - Resume Experiments"
+    [string]$TaskName = "Mitigating Free Rider - Resume Experiments",
+    [switch]$StartNow
 )
 
 $ErrorActionPreference = "Stop"
@@ -51,3 +52,7 @@ Write-Host "Installed startup task: $TaskName"
 Write-Host "Account: $($credential.UserName)"
 Write-Host "The task can now run before Windows is unlocked."
 Write-Host "Output is written to results\scheduled_resume.log."
+if ($StartNow) {
+    Start-ScheduledTask -TaskName $TaskName
+    Write-Host "The task has also been started now."
+}

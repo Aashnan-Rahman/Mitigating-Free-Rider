@@ -7,14 +7,19 @@ $runner = Join-Path $projectRoot "run_experiments.py"
 $log = Join-Path $resultsRoot "scheduled_resume.log"
 $scheduledBatches = @(
     [pscustomobject]@{
-        Label = "30% free riders, seed 42"
-        Plan = Join-Path $projectRoot "configs\mnist_noniid_fr30_seed42_plan.json"
-        Batch = Join-Path $resultsRoot "mnist_noniid_fr30_seed42"
+        Label = "FR4, 40% free riders, seed 44"
+        Plan = Join-Path $projectRoot "configs\mnist_noniid_fr40_seed44_fr4_plan.json"
+        Batch = Join-Path $resultsRoot "mnist_noniid_fr40_seed44"
     },
     [pscustomobject]@{
-        Label = "30% free riders, seed 43"
-        Plan = Join-Path $projectRoot "configs\mnist_noniid_fr30_seed43_plan.json"
-        Batch = Join-Path $resultsRoot "mnist_noniid_fr30_seed43"
+        Label = "FR4, 40% free riders, seed 45"
+        Plan = Join-Path $projectRoot "configs\mnist_noniid_fr40_seed45_fr4_plan.json"
+        Batch = Join-Path $resultsRoot "mnist_noniid_fr40_seed45"
+    },
+    [pscustomobject]@{
+        Label = "FR4, 40% free riders, seed 46"
+        Plan = Join-Path $projectRoot "configs\mnist_noniid_fr40_seed46_fr4_plan.json"
+        Batch = Join-Path $resultsRoot "mnist_noniid_fr40_seed46"
     }
 )
 
@@ -61,10 +66,12 @@ try {
         exit 0
     }
 
+    $scheduledPaths = @($scheduledBatches | ForEach-Object { $_.Batch })
     $batches = Get-ChildItem -LiteralPath $resultsRoot -Directory |
         Where-Object {
             (Test-Path -LiteralPath (Join-Path $_.FullName "experiment_manifest.json")) -and
-            -not (Test-Path -LiteralPath (Join-Path $_.FullName ".resume_disabled"))
+            -not (Test-Path -LiteralPath (Join-Path $_.FullName ".resume_disabled")) -and
+            $_.FullName -notin $scheduledPaths
         } |
         Sort-Object LastWriteTime -Descending
     $batch = $batches | Where-Object { -not (Test-BatchComplete $_) } | Select-Object -First 1
@@ -95,7 +102,7 @@ try {
         }
     }
 
-    Write-Host "All scheduled 30% seed-42 and seed-43 experiments are complete."
+    Write-Host "All scheduled experiments are complete."
     exit 0
 } finally {
     Stop-Transcript -ErrorAction SilentlyContinue | Out-Null
