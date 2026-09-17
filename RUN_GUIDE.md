@@ -224,10 +224,11 @@ currently editable plan file.
 
 The scheduled task `Mitigating Free Rider - Resume Experiments` runs after the
 current Windows user logs on. It finds the newest unfinished batch, avoids
-starting a duplicate runner, and resumes the remaining experiments. After all
-earlier unfinished work completes, it starts the fixed MNIST non-IID, 40%
-free-rider seed-43 plan in `configs/stage1_v8_seed43_plan.json`. Its fixed batch
-name prevents the task from launching the seed-43 matrix more than once.
+starting a duplicate runner, and resumes the remaining experiments. It then
+runs the fixed MNIST non-IID, 30% free-rider plans for seed 42 followed by seed
+43. The fixed result folders `results/mnist_noniid_fr30_seed42` and
+`results/mnist_noniid_fr30_seed43` prevent duplicate batches and contain simple
+`FR1` through `FR4` run directories.
 Install or refresh the task with:
 
 ```powershell
@@ -243,6 +244,18 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\resume_experiments.ps1
 Task output is appended to `results/scheduled_resume.log`. Because the trigger
 uses the user-session Python environment and `E:` drive, Windows login is
 required after a reboot before recovery starts.
+
+To run before Windows is unlocked, open PowerShell as Administrator and install
+the startup variant. Windows prompts for the current account password and stores
+it in Task Scheduler; the password is not written to the project:
+
+```powershell
+cd "E:\New Projects\Mitigating-Free-Rider"
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\install_startup_resume_task.ps1
+```
+
+This replaces the logon trigger with an `At startup` trigger under the same
+task name. Use the account password, not a Windows Hello PIN.
 
 When `save_checkpoints=true`, every completed round creates a recovery
 checkpoint. While a run is active or interrupted, only the five newest numbered

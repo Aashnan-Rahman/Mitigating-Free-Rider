@@ -2,10 +2,27 @@ import json
 
 from run_experiments import (
     completed_run_exists,
+    expand_plan,
     published_latest_round,
     refresh_totals,
     select_resume_checkpoint,
 )
+
+
+def test_plan_can_use_simple_experiment_ids() -> None:
+    plan = {
+        "stages": [
+            {
+                "id": "stage",
+                "id_format": "{attack_type}",
+                "matrix": {"attack_type": ["FR1", "FR2"], "free_rider_pct": [0.3]},
+            }
+        ]
+    }
+
+    experiments = expand_plan(plan, include_disabled=False)
+
+    assert [item["id"] for item in experiments] == ["FR1", "FR2"]
 
 
 def test_selects_newest_checkpoint_not_ahead_of_published_logs(tmp_path) -> None:

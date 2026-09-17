@@ -260,13 +260,20 @@ def expand_plan(plan: dict[str, Any], include_disabled: bool) -> list[dict[str, 
         for values in itertools.product(*(matrix[key] for key in keys)):
             config = dict(zip(keys, values))
             pct = int(round(float(config.get("free_rider_pct", 0)) * 100))
-            experiment_id = "_".join(
-                (
-                    stage["id"], str(config.get("dataset", "data")),
-                    str(config.get("distribution", "dist")),
-                    str(config.get("attack_type", "attack")).lower(), f"fr{pct}",
+            if stage.get("id_format"):
+                experiment_id = str(stage["id_format"]).format(
+                    stage_id=stage["id"], free_rider_percent=pct, **config
                 )
-            )
+            else:
+                experiment_id = "_".join(
+                    (
+                        stage["id"], str(config.get("dataset", "data")),
+                        str(config.get("distribution", "dist")),
+                        str(config.get("attack_type", "attack")).lower(), f"fr{pct}",
+                    )
+                )
+            if Path(experiment_id).name != experiment_id or experiment_id in {"", ".", ".."}:
+                raise ValueError(f"Invalid experiment id: {experiment_id!r}")
             expanded.append({"id": experiment_id, "config": config})
     return expanded
 
