@@ -47,3 +47,12 @@ serWarning: 'pin_memory' argument is set as true but no accelerator is found, th
 mory won't be used.
   super().__init__(loader)
 Starting scheduled batch: FR4, 40% free riders, seed 46
+E:\New Projects\Mitigating-Free-Rider\.venv\Lib\site-packages\torch\utils\data\dataloader.py:759: U
+serWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned me
+mory won't be used.
+  super().__init__(loader)
+All scheduled experiments are complete.
+**********************
+Windows PowerShell transcript end
+End time: 20260917231435
+**********************

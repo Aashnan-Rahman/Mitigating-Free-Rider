@@ -1,10 +1,7 @@
 {
   "batch_id": "mnist_noniid_fr40_seed46",
   "completed_experiments": 1,
-  "completed_rounds": 100,
-  "current_experiment": null,
   "elapsed_seconds": 5724.373287439346,
-  "estimated_remaining_seconds": 0.0,
   "experiments": [
     {
       "completed_rounds": 100,
@@ -63,10 +60,6 @@
   ],
   "failed_experiments": 0,
   "finished_at": "2026-09-17T23:14:31.897658",
-  "plan": "E:\\New Projects\\Mitigating-Free-Rider\\configs\\mnist_noniid_fr40_seed46_fr4_plan.json",
   "started_at": "2026-09-17T21:39:07.524371",
-  "state": "completed",
-  "total_experiments": 1,
-  "total_rounds": 100,
-  "updated_at": "2026-09-17T23:14:31.897658"
+  "state": "completed"
 }
