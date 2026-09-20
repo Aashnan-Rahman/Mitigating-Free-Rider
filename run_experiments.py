@@ -10,7 +10,7 @@ from typing import Any
 
 from atomic_io import atomic_write_json
 from config import ExperimentConfig
-from train import run_experiment
+from experiment_runner import run_experiment
 
 
 def main() -> None:

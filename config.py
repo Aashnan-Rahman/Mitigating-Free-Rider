@@ -65,6 +65,12 @@ class ExperimentConfig:
     max_partition_attempts: int = 50
     save_checkpoints: bool = True
     checkpoint_keep_last: int = 5
+    baseline_canary_size: int = 100
+    frida_canary_epochs: int = 3
+    frida_z_threshold: float = 1.0
+    frad_epochs: int = 25
+    frad_latent_dim: int = 3
+    frad_components: int = 3
 
     @classmethod
     def from_dict(cls, values: dict[str, Any]) -> "ExperimentConfig":
@@ -103,6 +109,7 @@ class ExperimentConfig:
 
     def validate(self) -> None:
         choices = {
+            "methodology_version": {"swtcp_v8", "frida_loss", "frad_reproduction"},
             "dataset": {"mnist", "cifar10"},
             "distribution": {"iid", "noniid"},
             "attack_type": {"FR1", "FR2", "FR3", "FR4"},
@@ -160,3 +167,9 @@ class ExperimentConfig:
             raise ValueError("Attack history windows must be positive.")
         if self.fr4_noise_fraction < 0 or self.fr4_cold_start_scale <= 0:
             raise ValueError("FR4 noise settings are invalid.")
+        if self.baseline_canary_size <= 0 or self.frida_canary_epochs <= 0:
+            raise ValueError("FRIDA canary size and epochs must be positive.")
+        if self.frida_z_threshold <= 0:
+            raise ValueError("FRIDA z threshold must be positive.")
+        if self.frad_epochs <= 0 or self.frad_latent_dim <= 0 or self.frad_components <= 0:
+            raise ValueError("FRAD epochs, latent dimension, and components must be positive.")

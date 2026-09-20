@@ -6,7 +6,7 @@ from pathlib import Path
 from typing import Any
 
 from config import ExperimentConfig
-from train import run_experiment
+from experiment_runner import run_experiment
 
 
 def main() -> None:

@@ -70,12 +70,23 @@ def render(status: dict) -> None:
         print()
         print(f"Current: {current_id}")
         print(f"Round:   {round_idx}/{rounds} ({percent:.1f}%)")
-        print(f"Phase:   {progress.get('phase', '-')}")
+        phase = str(progress.get("phase", "-"))
+        print(f"Phase:   {phase}")
         print(f"Device:  {progress.get('device', '-')}")
         print(f"Active:  {progress.get('active_clients', '-')}")
-        print(f"Candidate: {progress.get('candidate_clients', '-')}")
-        print(f"Suspected: {progress.get('suspected_clients', '-')}")
+        if phase in {"frida_loss", "frad_reproduction"}:
+            flagged = progress.get(
+                "flagged_clients", progress.get("suspected_clients", "-")
+            )
+            print(f"Flagged this round: {flagged}")
+        else:
+            print(f"Candidate: {progress.get('candidate_clients', '-')}")
+            print(f"Suspected: {progress.get('suspected_clients', '-')}")
         print(f"Round time: {format_number(progress.get('round_time_seconds'), 's')}")
+        if progress.get("detector_time_seconds") not in (None, ""):
+            print(
+                f"Detector:   {format_number(progress.get('detector_time_seconds'), 's')}"
+            )
         print(f"Accuracy:   {format_number(progress.get('global_accuracy'), '')}")
         print(f"Loss:       {format_number(progress.get('global_loss'), '')}")
         print(f"RSS:        {format_number(progress.get('process_rss_mb'), ' MB')}")

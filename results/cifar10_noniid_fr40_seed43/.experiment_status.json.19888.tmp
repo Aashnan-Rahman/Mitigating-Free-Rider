@@ -1,0 +1,80 @@
+{
+  "batch_id": "cifar10_noniid_fr40_seed43",
+  "completed_experiments": 0,
+  "completed_rounds": 95,
+  "current_experiment": "FR1",
+  "elapsed_seconds": 7332.0188164711,
+  "estimated_remaining_seconds": 23539.639358144057,
+  "experiments": [
+    {
+      "completed_rounds": 95,
+      "config": {
+        "attack_type": "FR1",
+        "dataset": "cifar10",
+        "distribution": "noniid",
+        "free_rider_pct": 0.4
+      },
+      "id": "FR1",
+      "progress": {
+        "active_clients": 53,
+        "candidate_clients": 0,
+        "cpu_percent": 0.0,
+        "cuda_allocated_mb": "",
+        "cuda_peak_allocated_mb": "",
+        "cuda_reserved_mb": "",
+        "device": "cpu",
+        "global_accuracy": 0.7459,
+        "global_loss": 0.8369295282363891,
+        "new_flags": 1,
+        "new_rehabilitations": 0,
+        "new_removals": 0,
+        "phase": "suspicion",
+        "process_rss_mb": 973.65625,
+        "round": 95,
+        "round_time_seconds": 73.60999340000853,
+        "suspected_clients": 1,
+        "system_memory_percent": 73.2,
+        "total_rounds": 100
+      },
+      "started_at": "2026-09-18T11:53:01.342885",
+      "state": "running"
+    },
+    {
+      "config": {
+        "attack_type": "FR2",
+        "dataset": "cifar10",
+        "distribution": "noniid",
+        "free_rider_pct": 0.4
+      },
+      "id": "FR2",
+      "state": "queued"
+    },
+    {
+      "config": {
+        "attack_type": "FR3",
+        "dataset": "cifar10",
+        "distribution": "noniid",
+        "free_rider_pct": 0.4
+      },
+      "id": "FR3",
+      "state": "queued"
+    },
+    {
+      "config": {
+        "attack_type": "FR4",
+        "dataset": "cifar10",
+        "distribution": "noniid",
+        "free_rider_pct": 0.4
+      },
+      "id": "FR4",
+      "state": "queued"
+    }
+  ],
+  "failed_experiments": 0,
+  "plan": "E:\\New Projects\\Mitigating-Free-Rider\\configs\\cifar10_noniid_fr40_seed43_plan.json",
+  "started_at": "2026-09-18T11:53:01.232839",
+  "state": "running",
+  "total_experiments": 4,
+  "total_rounds": 400,
+  "updated_at": "2026-09-18T13:55:13.251656"
+}

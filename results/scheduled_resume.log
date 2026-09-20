@@ -56,3 +56,326 @@ All scheduled experiments are complete.
 Windows PowerShell transcript end
 End time: 20260917231435
 **********************
+**********************
+Windows PowerShell transcript start
+Start time: 20260917231720
+Username: DESKTOP-0HUBAH2\CSE
+RunAs User: DESKTOP-0HUBAH2\CSE
+Configuration Name: 
+Machine: DESKTOP-0HUBAH2 (Microsoft Windows NT 10.0.26200.0)
+Host Application: powershell.exe -NoProfile -ExecutionPolicy Bypass -File E:\New Projects\Mitigating-Free-Rider\resume_experiments.ps1
+Process ID: 8152
+PSVersion: 5.1.26100.9444
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.26100.9444
+BuildVersion: 10.0.26100.9444
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Scheduled batch is complete: FR4, 40% free riders, seed 44
+Scheduled batch is complete: FR4, 40% free riders, seed 45
+Scheduled batch is complete: FR4, 40% free riders, seed 46
+Starting scheduled batch: CIFAR-10 IID, FR1-FR4, 40% free riders, seed 42
+100.0%
+E:\New Projects\Mitigating-Free-Rider\.venv\Lib\site-packages\torch\utils\data\dataloader.py:759: U
+serWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned me
+mory won't be used.
+  super().__init__(loader)
+All scheduled experiments are complete.
+**********************
+Windows PowerShell transcript end
+End time: 20260918114852
+**********************
+**********************
+Windows PowerShell transcript start
+Start time: 20260918115242
+Username: DESKTOP-0HUBAH2\CSE
+RunAs User: DESKTOP-0HUBAH2\CSE
+Configuration Name: 
+Machine: DESKTOP-0HUBAH2 (Microsoft Windows NT 10.0.26200.0)
+Host Application: powershell.exe -NoProfile -ExecutionPolicy Bypass -File E:\New Projects\Mitigating-Free-Rider\resume_experiments.ps1
+Process ID: 20036
+PSVersion: 5.1.26100.9444
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.26100.9444
+BuildVersion: 10.0.26100.9444
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Scheduled batch is complete: FR4, 40% free riders, seed 44
+Scheduled batch is complete: FR4, 40% free riders, seed 45
+Scheduled batch is complete: FR4, 40% free riders, seed 46
+Scheduled batch is complete: CIFAR-10 IID, FR1-FR4, 40% free riders, seed 42
+Starting scheduled batch: CIFAR-10 non-IID, FR1-FR4, 40% free riders, seed 43
+**********************
+Windows PowerShell transcript start
+Start time: 20260918135546
+Username: DESKTOP-0HUBAH2\CSE
+RunAs User: DESKTOP-0HUBAH2\CSE
+Configuration Name: 
+Machine: DESKTOP-0HUBAH2 (Microsoft Windows NT 10.0.26200.0)
+Host Application: powershell.exe -NoProfile -ExecutionPolicy Bypass -File E:\New Projects\Mitigating-Free-Rider\resume_experiments.ps1
+Process ID: 3296
+PSVersion: 5.1.26100.9444
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.26100.9444
+BuildVersion: 10.0.26100.9444
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Scheduled batch is complete: FR4, 40% free riders, seed 44
+Scheduled batch is complete: FR4, 40% free riders, seed 45
+Scheduled batch is complete: FR4, 40% free riders, seed 46
+Scheduled batch is complete: CIFAR-10 IID, FR1-FR4, 40% free riders, seed 42
+Resuming scheduled batch: CIFAR-10 non-IID, FR1-FR4, 40% free riders, seed 43
+E:\New Projects\Mitigating-Free-Rider\.venv\Lib\site-packages\torch\utils\data\dataloader.py:759: U
+serWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned me
+mory won't be used.
+  super().__init__(loader)
+All scheduled experiments are complete.
+**********************
+Windows PowerShell transcript end
+End time: 20260918213321
+**********************
+**********************
+Windows PowerShell transcript start
+Start time: 20260918215553
+Username: DESKTOP-0HUBAH2\CSE
+RunAs User: DESKTOP-0HUBAH2\CSE
+Configuration Name: 
+Machine: DESKTOP-0HUBAH2 (Microsoft Windows NT 10.0.26200.0)
+Host Application: powershell.exe -NoProfile -ExecutionPolicy Bypass -File E:\New Projects\Mitigating-Free-Rider\resume_experiments.ps1
+Process ID: 8160
+PSVersion: 5.1.26100.9444
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.26100.9444
+BuildVersion: 10.0.26100.9444
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Scheduled batch is complete: FR4, 40% free riders, seed 44
+Scheduled batch is complete: FR4, 40% free riders, seed 45
+Scheduled batch is complete: FR4, 40% free riders, seed 46
+Scheduled batch is complete: CIFAR-10 IID, FR1-FR4, 40% free riders, seed 42
+Scheduled batch is complete: CIFAR-10 non-IID, FR1-FR4, 40% free riders, seed 43
+Starting scheduled batch: CIFAR-10 IID, FR1-FR4, 40% free riders, seed 43
+**********************
+Windows PowerShell transcript start
+Start time: 20260918231036
+Username: DESKTOP-0HUBAH2\CSE
+RunAs User: DESKTOP-0HUBAH2\CSE
+Configuration Name: 
+Machine: DESKTOP-0HUBAH2 (Microsoft Windows NT 10.0.26200.0)
+Host Application: powershell.exe -NoProfile -ExecutionPolicy Bypass -File E:\New Projects\Mitigating-Free-Rider\resume_experiments.ps1
+Process ID: 1836
+PSVersion: 5.1.26100.9444
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.26100.9444
+BuildVersion: 10.0.26100.9444
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Starting scheduled batch: MNIST FRIDA-loss and FRAD, IID/non-IID, FR1-FR4, 40% free riders, seed 42
+**********************
+Windows PowerShell transcript start
+Start time: 20260919013228
+Username: DESKTOP-0HUBAH2\CSE
+RunAs User: DESKTOP-0HUBAH2\CSE
+Configuration Name: 
+Machine: DESKTOP-0HUBAH2 (Microsoft Windows NT 10.0.26200.0)
+Host Application: powershell.exe -NoProfile -ExecutionPolicy Bypass -File E:\New Projects\Mitigating-Free-Rider\resume_experiments.ps1
+Process ID: 3416
+PSVersion: 5.1.26100.9444
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.26100.9444
+BuildVersion: 10.0.26100.9444
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Resuming scheduled batch: MNIST FRIDA-loss and FRAD, IID/non-IID, FR1-FR4, 40% free riders, seed 42
+**********************
+Windows PowerShell transcript start
+Start time: 20260919083901
+Username: DESKTOP-0HUBAH2\CSE
+RunAs User: DESKTOP-0HUBAH2\CSE
+Configuration Name: 
+Machine: DESKTOP-0HUBAH2 (Microsoft Windows NT 10.0.26200.0)
+Host Application: powershell.exe -NoProfile -ExecutionPolicy Bypass -File E:\New Projects\Mitigating-Free-Rider\resume_experiments.ps1
+Process ID: 2532
+PSVersion: 5.1.26100.9444
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.26100.9444
+BuildVersion: 10.0.26100.9444
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Experiment runner is already active as PID 4136.
+**********************
+Windows PowerShell transcript end
+End time: 20260919083901
+**********************
+**********************
+Windows PowerShell transcript start
+Start time: 20260919083924
+Username: DESKTOP-0HUBAH2\CSE
+RunAs User: DESKTOP-0HUBAH2\CSE
+Configuration Name: 
+Machine: DESKTOP-0HUBAH2 (Microsoft Windows NT 10.0.26200.0)
+Host Application: powershell.exe -NoProfile -ExecutionPolicy Bypass -File E:\New Projects\Mitigating-Free-Rider\resume_experiments.ps1
+Process ID: 17764
+PSVersion: 5.1.26100.9444
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.26100.9444
+BuildVersion: 10.0.26100.9444
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Scheduled batch is complete: FR4, 40% free riders, seed 44
+Scheduled batch is complete: FR4, 40% free riders, seed 45
+Scheduled batch is complete: FR4, 40% free riders, seed 46
+Scheduled batch is complete: CIFAR-10 IID, FR1-FR4, 40% free riders, seed 42
+Scheduled batch is complete: CIFAR-10 non-IID, FR1-FR4, 40% free riders, seed 43
+Resuming scheduled batch: CIFAR-10 IID, FR1-FR4, 40% free riders, seed 43
+**********************
+Windows PowerShell transcript start
+Start time: 20260919171754
+Username: DESKTOP-0HUBAH2\CSE
+RunAs User: DESKTOP-0HUBAH2\CSE
+Configuration Name: 
+Machine: DESKTOP-0HUBAH2 (Microsoft Windows NT 10.0.26200.0)
+Host Application: powershell.exe -NoProfile -ExecutionPolicy Bypass -File E:\New Projects\Mitigating-Free-Rider\resume_experiments.ps1
+Process ID: 3244
+PSVersion: 5.1.26100.9444
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.26100.9444
+BuildVersion: 10.0.26100.9444
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Scheduled batch is complete: FR4, 40% free riders, seed 44
+Scheduled batch is complete: FR4, 40% free riders, seed 45
+Scheduled batch is complete: FR4, 40% free riders, seed 46
+Scheduled batch is complete: CIFAR-10 IID, FR1-FR4, 40% free riders, seed 42
+Scheduled batch is complete: CIFAR-10 non-IID, FR1-FR4, 40% free riders, seed 43
+Resuming scheduled batch: CIFAR-10 IID, FR1-FR4, 40% free riders, seed 43
+E:\New Projects\Mitigating-Free-Rider\.venv\Lib\site-packages\torch\utils\data\dataloader.py:759: U
+serWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned me
+mory won't be used.
+  super().__init__(loader)
+Starting scheduled batch: CIFAR-10 non-IID, FR1-FR4, 40% free riders, seed 42
+**********************
+Windows PowerShell transcript start
+Start time: 20260920000543
+Username: DESKTOP-0HUBAH2\CSE
+RunAs User: DESKTOP-0HUBAH2\CSE
+Configuration Name: 
+Machine: DESKTOP-0HUBAH2 (Microsoft Windows NT 10.0.26200.0)
+Host Application: powershell.exe -NoProfile -ExecutionPolicy Bypass -File E:\New Projects\Mitigating-Free-Rider\resume_experiments.ps1
+Process ID: 3308
+PSVersion: 5.1.26100.9444
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.26100.9444
+BuildVersion: 10.0.26100.9444
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Scheduled batch is complete: FR4, 40% free riders, seed 44
+Scheduled batch is complete: FR4, 40% free riders, seed 45
+Scheduled batch is complete: FR4, 40% free riders, seed 46
+Scheduled batch is complete: CIFAR-10 IID, FR1-FR4, 40% free riders, seed 42
+Scheduled batch is complete: CIFAR-10 non-IID, FR1-FR4, 40% free riders, seed 43
+Scheduled batch is complete: CIFAR-10 IID, FR1-FR4, 40% free riders, seed 43
+Resuming scheduled batch: CIFAR-10 non-IID, FR1-FR4, 40% free riders, seed 42
+E:\New Projects\Mitigating-Free-Rider\.venv\Lib\site-packages\torch\utils\data\dataloader.py:759: U
+serWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned me
+mory won't be used.
+  super().__init__(loader)
+Resuming scheduled batch: MNIST FRIDA-loss and FRAD, IID/non-IID, FR1-FR4, 40% free riders, seed 42
+**********************
+Windows PowerShell transcript start
+Start time: 20260920062109
+Username: DESKTOP-0HUBAH2\CSE
+RunAs User: DESKTOP-0HUBAH2\CSE
+Configuration Name: 
+Machine: DESKTOP-0HUBAH2 (Microsoft Windows NT 10.0.26200.0)
+Host Application: powershell.exe -NoProfile -ExecutionPolicy Bypass -File E:\New Projects\Mitigating-Free-Rider\resume_experiments.ps1
+Process ID: 3220
+PSVersion: 5.1.26100.9444
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.26100.9444
+BuildVersion: 10.0.26100.9444
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Scheduled batch is complete: FR4, 40% free riders, seed 44
+Scheduled batch is complete: FR4, 40% free riders, seed 45
+Scheduled batch is complete: FR4, 40% free riders, seed 46
+Scheduled batch is complete: CIFAR-10 IID, FR1-FR4, 40% free riders, seed 42
+Scheduled batch is complete: CIFAR-10 non-IID, FR1-FR4, 40% free riders, seed 43
+Scheduled batch is complete: CIFAR-10 IID, FR1-FR4, 40% free riders, seed 43
+Scheduled batch is complete: CIFAR-10 non-IID, FR1-FR4, 40% free riders, seed 42
+Resuming scheduled batch: MNIST FRIDA-loss and FRAD, IID/non-IID, FR1-FR4, 40% free riders, seed 42
+
+All scheduled experiments are complete.
+**********************
+Windows PowerShell transcript end
+End time: 20260920094355
+**********************
+**********************
+Windows PowerShell transcript start
+Start time: 20260920101623
+Username: DESKTOP-0HUBAH2\CSE
+RunAs User: DESKTOP-0HUBAH2\CSE
+Configuration Name: 
+Machine: DESKTOP-0HUBAH2 (Microsoft Windows NT 10.0.26200.0)
+Host Application: powershell.exe -NoProfile -ExecutionPolicy Bypass -File E:\New Projects\Mitigating-Free-Rider\resume_experiments.ps1
+Process ID: 14404
+PSVersion: 5.1.26100.9444
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.26100.9444
+BuildVersion: 10.0.26100.9444
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Scheduled batch is complete: FR4, 40% free riders, seed 44
+Scheduled batch is complete: FR4, 40% free riders, seed 45
+Scheduled batch is complete: FR4, 40% free riders, seed 46
+Scheduled batch is complete: CIFAR-10 IID, FR1-FR4, 40% free riders, seed 42
+Scheduled batch is complete: CIFAR-10 non-IID, FR1-FR4, 40% free riders, seed 43
+Scheduled batch is complete: CIFAR-10 IID, FR1-FR4, 40% free riders, seed 43
+Scheduled batch is complete: CIFAR-10 non-IID, FR1-FR4, 40% free riders, seed 42
+Scheduled batch is complete: MNIST FRIDA-loss and FRAD, IID/non-IID, FR1-FR4, 40% free riders, seed 42
+Resuming scheduled batch: MNIST non-IID, FR1-FR4, 30% free riders, seed 42 recovery
+E:\New Projects\Mitigating-Free-Rider\.venv\Lib\site-packages\torch\utils\data\dataloader.py:759: U
+serWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned me
+mory won't be used.
+  super().__init__(loader)
+All scheduled experiments are complete.
+**********************
+Windows PowerShell transcript end
+End time: 20260920125038
+**********************

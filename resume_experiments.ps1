@@ -20,6 +20,36 @@ $scheduledBatches = @(
         Label = "FR4, 40% free riders, seed 46"
         Plan = Join-Path $projectRoot "configs\mnist_noniid_fr40_seed46_fr4_plan.json"
         Batch = Join-Path $resultsRoot "mnist_noniid_fr40_seed46"
+    },
+    [pscustomobject]@{
+        Label = "CIFAR-10 IID, FR1-FR4, 40% free riders, seed 42"
+        Plan = Join-Path $projectRoot "configs\cifar10_iid_fr40_seed42_plan.json"
+        Batch = Join-Path $resultsRoot "cifar10_iid_fr40_seed42"
+    },
+    [pscustomobject]@{
+        Label = "CIFAR-10 non-IID, FR1-FR4, 40% free riders, seed 43"
+        Plan = Join-Path $projectRoot "configs\cifar10_noniid_fr40_seed43_plan.json"
+        Batch = Join-Path $resultsRoot "cifar10_noniid_fr40_seed43"
+    },
+    [pscustomobject]@{
+        Label = "CIFAR-10 IID, FR1-FR4, 40% free riders, seed 43"
+        Plan = Join-Path $projectRoot "configs\cifar10_iid_fr40_seed43_plan.json"
+        Batch = Join-Path $resultsRoot "cifar10_iid_fr40_seed43"
+    },
+    [pscustomobject]@{
+        Label = "CIFAR-10 non-IID, FR1-FR4, 40% free riders, seed 42"
+        Plan = Join-Path $projectRoot "configs\cifar10_noniid_fr40_seed42_plan.json"
+        Batch = Join-Path $resultsRoot "cifar10_noniid_fr40_seed42"
+    },
+    [pscustomobject]@{
+        Label = "MNIST FRIDA-loss and FRAD, IID/non-IID, FR1-FR4, 40% free riders, seed 42"
+        Plan = Join-Path $projectRoot "configs\mnist_baselines_fr40_seed42_plan.json"
+        Batch = Join-Path $resultsRoot "mnist_baselines_fr40_seed42"
+    },
+    [pscustomobject]@{
+        Label = "MNIST non-IID, FR1-FR4, 30% free riders, seed 42 recovery"
+        Plan = Join-Path $projectRoot "configs\mnist_noniid_fr30_seed42_plan.json"
+        Batch = Join-Path $resultsRoot "mnist_noniid_fr30_seed42"
     }
 )
 

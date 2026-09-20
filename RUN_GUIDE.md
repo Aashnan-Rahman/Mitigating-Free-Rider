@@ -231,6 +231,19 @@ The fixed result folders—`results/mnist_noniid_fr40_seed44`,
 `results/mnist_noniid_fr40_seed45`,
 and `results/mnist_noniid_fr40_seed46`—prevent duplicate batches. Each folder
 contains only `FR4`.
+
+The queue then runs CIFAR-10 IID at 40% free riders and seed 42 for 100 rounds
+each of FR1, FR2, FR3, and FR4. These outputs use the fixed folder
+`results/cifar10_iid_fr40_seed42`, with one subfolder per attack.
+
+Afterward, it runs CIFAR-10 non-IID (`dirichlet_alpha=0.5`) at 40% free riders
+and seed 43 for 100 rounds each of FR1 through FR4. These outputs use
+`results/cifar10_noniid_fr40_seed43`.
+
+For matched-seed distribution comparisons, the queue also runs CIFAR-10 IID at
+seed 43 and CIFAR-10 non-IID at seed 42, both at 40% free riders for 100 rounds
+of FR1 through FR4. Their result folders are `results/cifar10_iid_fr40_seed43`
+and `results/cifar10_noniid_fr40_seed42`.
 Install or refresh the task with:
 
 ```powershell
@@ -299,3 +312,57 @@ profile_mad_floor=0.01
 ```
 
 Use a different `run_name` for every seed or configuration.
+
+## 8. Compare detector overhead (SWT-CP, FRIDA, and FRAD)
+
+The comparison harness does not modify or reuse any completed experiment folder.
+It times the server-side SWT-CP scoring primitive, the published FRIDA loss-based
+MIA detector, and a clearly labelled paper-guided FRAD reproduction on the same
+model and controlled client states:
+
+```powershell
+python benchmark_detectors.py --dataset cifar10 --clients 100 --free-rider-pct 0.4 --canary-size 100 --repeats 3 --frad-epochs 25 --device auto
+```
+
+Do not run the final benchmark beside another CPU-heavy experiment. For a
+low-impact preliminary measurement only, add `--torch-threads 1` and document
+the concurrent workload with `--note`.
+
+Run a small validation first:
+
+```powershell
+python benchmark_detectors.py --dataset mnist --device auto --smoke
+```
+
+The command writes a new timestamped JSON file under `results/`. Distribution is
+intentionally absent from this microbenchmark because it measures computational
+overhead, not detection quality. FRIDA's client-side canary training is excluded
+and disclosed in the report. FRAD is identified as a reproduction rather than
+official author code because no official implementation was located.
+
+## 9. MNIST FRIDA/FRAD baseline matrix
+
+The scheduled baseline batch contains 16 runs at 40% free riders and seed 42:
+FRIDA loss-based MIA and the paper-guided FRAD reproduction, each under IID and
+Dirichlet non-IID (`alpha=0.5`) data for FR1 through FR4. All runs use 100 clients
+and 100 rounds. Start or resume it directly with:
+
+```powershell
+python run_experiments.py --plan configs/mnist_baselines_fr40_seed42_plan.json --stop-on-error
+```
+
+If its result folder already exists, resume it instead:
+
+```powershell
+python run_experiments.py --resume-batch results/mnist_baselines_fr40_seed42 --stop-on-error
+```
+
+Monitor this batch in another terminal:
+
+```powershell
+python monitor.py --status results/mnist_baselines_fr40_seed42/experiment_status.json --watch
+```
+
+The batch is queued after the scheduled CIFAR-10 matrices in
+`resume_experiments.ps1`. The existing startup task will resume it after those
+CIFAR runs finish, including after a restart without unlocking Windows.

@@ -1,0 +1,2 @@
+summary_semantics,removed_free_riders,removed_honest_clients,missed_free_riders,precision,recall,f1,detection_accuracy,false_positive_removal_rate,per_round_precision,per_round_recall,per_round_f1
+majority per-round classification; no client removal,40,0,0,1.0,1.0,1.0,1.0,0.0,0.948339483394834,0.83525,0.8882094908945899

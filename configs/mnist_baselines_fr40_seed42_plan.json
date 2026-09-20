@@ -1,0 +1,37 @@
+{
+  "batch_name": "mnist_baselines_fr40_seed42",
+  "results_root": "./results",
+  "defaults": {
+    "num_clients": 100,
+    "num_rounds": 100,
+    "local_epochs": 3,
+    "batch_size": 32,
+    "free_rider_pct": 0.4,
+    "seed": 42,
+    "device": "auto",
+    "pin_memory": false,
+    "save_checkpoints": true,
+    "checkpoint_keep_last": 5,
+    "baseline_canary_size": 100,
+    "frida_canary_epochs": 3,
+    "frida_z_threshold": 1.0,
+    "frad_epochs": 25,
+    "frad_latent_dim": 3,
+    "frad_components": 3
+  },
+  "stages": [
+    {
+      "id": "mnist_baselines_fr40_seed42",
+      "id_format": "{methodology_version}_{distribution}_{attack_type}",
+      "description": "MNIST FRIDA-loss and FRAD reproduction, IID/non-IID, FR1-FR4, 40% free riders, seed 42",
+      "enabled": true,
+      "matrix": {
+        "methodology_version": ["frida_loss", "frad_reproduction"],
+        "dataset": ["mnist"],
+        "distribution": ["iid", "noniid"],
+        "dirichlet_alpha": [0.5],
+        "attack_type": ["FR1", "FR2", "FR3", "FR4"]
+      }
+    }
+  ]
+}

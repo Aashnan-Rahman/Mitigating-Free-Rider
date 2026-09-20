@@ -1,0 +1,54 @@
+{
+  "batch_id": "cifar10_noniid_fr40_seed43",
+  "created_at": "2026-09-18T11:53:01.232839",
+  "defaults": {
+    "checkpoint_keep_last": 5,
+    "device": "auto",
+    "dirichlet_alpha": 0.5,
+    "free_rider_pct": 0.4,
+    "methodology_version": "swtcp_v8",
+    "num_clients": 100,
+    "num_rounds": 100,
+    "save_checkpoints": true,
+    "seed": 43
+  },
+  "experiments": [
+    {
+      "config": {
+        "attack_type": "FR1",
+        "dataset": "cifar10",
+        "distribution": "noniid",
+        "free_rider_pct": 0.4
+      },
+      "id": "FR1"
+    },
+    {
+      "config": {
+        "attack_type": "FR2",
+        "dataset": "cifar10",
+        "distribution": "noniid",
+        "free_rider_pct": 0.4
+      },
+      "id": "FR2"
+    },
+    {
+      "config": {
+        "attack_type": "FR3",
+        "dataset": "cifar10",
+        "distribution": "noniid",
+        "free_rider_pct": 0.4
+      },
+      "id": "FR3"
+    },
+    {
+      "config": {
+        "attack_type": "FR4",
+        "dataset": "cifar10",
+        "distribution": "noniid",
+        "free_rider_pct": 0.4
+      },
+      "id": "FR4"
+    }
+  ],
+  "source_plan": "E:\\New Projects\\Mitigating-Free-Rider\\configs\\cifar10_noniid_fr40_seed43_plan.json"
+}
