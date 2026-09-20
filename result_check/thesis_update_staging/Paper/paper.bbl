@@ -35,13 +35,13 @@ K.~Bonawitz, H.~Eichner, W.~Grieskamp \emph{et~al.}, ``Towards federated
 A.~Hard, K.~Rao, R.~Mathews \emph{et~al.}, ``Federated learning for mobile
   keyboard prediction,'' \emph{arXiv preprint arXiv:1811.03604}, 2018.
 
-\bibitem{fraboni2021freerider}
-Y.~Fraboni, R.~Vidal, and M.~Lorenzi, ``Free-rider attacks on model aggregation
-  in federated learning,'' in \emph{Proc. AISTATS}, 2021, pp. 1846--1854.
-
 \bibitem{lin2019freeriders}
 J.~Lin, M.~Du, and J.~Liu, ``Free-riders in federated learning: Attacks and
   defenses,'' \emph{arXiv preprint arXiv:1911.12560}, 2019.
+
+\bibitem{fraboni2021freerider}
+Y.~Fraboni, R.~Vidal, and M.~Lorenzi, ``Free-rider attacks on model aggregation
+  in federated learning,'' in \emph{Proc. AISTATS}, 2021, pp. 1846--1854.
 
 \bibitem{zhu2023advanced}
 Z.~Zhu, J.~Shu, X.~Zou, and X.~Jia, ``Advanced free-rider attacks in federated
@@ -77,5 +77,10 @@ P.~G. Recasens, {\'A}.~Horv{\'a}th, A.~Gutierrez-Torre, J.~Torres, J.~L.
 K.~Bonawitz, V.~Ivanov, B.~Kreuter \emph{et~al.}, ``Practical secure
   aggregation for privacy-preserving machine learning,'' in \emph{Proc. ACM
   CCS}, 2017, pp. 1175--1191.
+
+\bibitem{lecun1998gradient}
+Y.~LeCun, L.~Bottou, Y.~Bengio, and P.~Haffner, ``Gradient-based learning
+  applied to document recognition,'' \emph{Proceedings of the IEEE}, vol.~86,
+  no.~11, pp. 2278--2324, 1998.
 
 \end{thebibliography}
