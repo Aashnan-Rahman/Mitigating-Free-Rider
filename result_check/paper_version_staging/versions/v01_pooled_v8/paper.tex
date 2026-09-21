@@ -1,0 +1,201 @@
+\documentclass[conference]{IEEEtran}
+\usepackage{amsmath,amssymb,booktabs,array,enumitem,algorithm,algpseudocode,microtype}
+\usepackage[hidelinks]{hyperref}
+\newcommand{\method}{SWT-CP}
+
+\title{SWT-CP: Lightweight Trap-Based Free-Rider Mitigation in Federated Learning}
+\author{\IEEEauthorblockN{Aashnan Rahman}
+\IEEEauthorblockA{Department of Computer Science and Engineering\\
+Islamic University of Technology\\Student ID: 231041006}}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Free riders consume a federated model while avoiding genuine local training, but a server normally observes only their submitted parameters. This paper presents Suspicion-Weighted Trap Detection with Cumulative Penalties (SWT-CP), a lightweight server-side challenge--response mechanism. Without announcing a challenge, the server sends selected clients perturbed models and evaluates returned parameter differences using robust update-norm and scale-free layer-profile statistics. A two-trap coverage sweep is followed by candidate confirmation, rotating-anchor comparison, continued surveillance, cumulative penalties, and rehabilitation. SWT-CP requires neither raw client data nor client-reported accuracy, loss, runtime, or hardware information, and it trains no auxiliary detector.
+
+We evaluate four free-rider strategies on MNIST using 100 clients, 100 rounds, IID and Dirichlet non-IID data, and attacker shares of 30\% and 40\%. Results are pooled across repeated executions rather than reported by random seed. SWT-CP attains 100\% recall for both IID settings and for non-IID data with 30\% attackers. Replay, bounded-random, and historical-average attacks retain 100\% recall at non-IID 40\%. The trajectory-based attack is less stable: 80 of 160 attacker instances are removed over four non-IID 40\% repetitions, giving 50\% recall for that attack. The failure is traced to contaminated three-client anchor panels and a nonlinear candidate-confirmation transition. Final test accuracy remains between 98.82\% and 98.99\%. SWT-CP is therefore a computationally simple detector with a clear operating region and an identified high-contamination limitation, rather than a proof that clients performed training.
+\end{abstract}
+
+\begin{IEEEkeywords}
+federated learning, free riding, anomaly detection, robust statistics, client auditing, lightweight defense
+\end{IEEEkeywords}
+
+\section{Introduction}
+Federated learning (FL) trains a shared model without centralizing client data: a server broadcasts a global model, clients optimize locally, and returned parameters are aggregated by algorithms such as FedAvg \cite{mcmahan2017communication}. This architecture supports large deployments \cite{bonawitz2019towards,hard2018federated}, but creates a verification asymmetry. The server sees an update, not the computation that produced it.
+
+A free rider exploits this asymmetry by receiving the collaborative model while contributing little or no genuine training. A fabricated update may replay an old model, add noise, average previously observed models, or imitate the recent model trajectory \cite{lin2019freeriders,fraboni2021freerider,zhu2023advanced}. Detection is harder under non-independent and identically distributed (non-IID) data because honest clients may naturally produce unusual update magnitudes and directions \cite{zhao2018federated,kairouz2021advances}.
+
+SWT-CP creates evidence instead of passively waiting for an anomaly. The server secretly replaces the global model with a randomized trap for selected clients. A genuinely trained response reflects the interaction between the trap and local data, whereas a no-computation response must synthesize an update from model history or random perturbations. The detector is attack-independent: attack labels and ground-truth identities are used only for evaluation.
+
+The contributions are:
+\begin{enumerate}[leftmargin=*]
+ \item a lightweight server-only detector combining secret traps, robust norm statistics, layer-wise update proportions, longitudinal states, and reversible suspicion;
+ \item a schedule with double initial coverage, candidate confirmation, rotating same-trap anchors, continuous surveillance, and cumulative removal evidence;
+ \item an evaluation of four attacks at two attacker shares under IID and non-IID MNIST, pooled across repetitions; and
+ \item a failure analysis showing how 40\% contamination and small anchor panels create an all-or-nothing trajectory for the adaptive attack.
+\end{enumerate}
+
+\section{Related Work}
+\subsection{Free-rider attacks}
+Early work formalized free riding as participation without useful local computation and considered update imitation and noise addition \cite{lin2019freeriders}. Fraboni \emph{et al.} showed that attackers can construct plausible updates from successive global models and scale noise using observable model variation \cite{fraboni2021freerider}. More advanced attacks seek to match benign update geometry or exploit weaknesses in contribution evaluation \cite{zhu2023advanced}. These works motivate evaluating memoryless and history-based fabrication without telling the detector which strategy is active.
+
+\subsection{Detection and verification}
+Statistical defenses compare norms, similarities, coordinates, or temporal behavior. They are inexpensive, but heterogeneous honest updates can overlap fabricated ones. FRAD combines statistical update features with a DAGMM-style anomaly detector and contribution/reputation modeling \cite{wang2024frad}. PASS audits parameters and contribution behavior \cite{wang2023pass}. FRIDA uses membership- and property-inference signals to search for evidence that client data influenced a returned model \cite{recasens2024frida}. These methods offer richer evidence but introduce learned detectors, auxiliary inference, or additional assumptions.
+
+Cryptographic proofs and trusted execution can provide stronger computation guarantees, while secure aggregation hides individual updates from the server \cite{bonawitz2017practical}. SWT-CP occupies a different point in the design space: it assumes attributable models but requires no trusted client telemetry, auxiliary neural detector, public data, or second client model. Its goal is inexpensive behavioral auditing, not cryptographic proof.
+
+\section{Threat Model and Attacks}
+There are $N$ attributable clients and a coordinating server. In round $t$, client $i$ receives $w^{\mathrm{send}}_{t,i}$ and returns $w^{\mathrm{ret}}_{t,i}$. The server derives
+\begin{equation}
+\Delta_{t,i}=w^{\mathrm{ret}}_{t,i}-w^{\mathrm{send}}_{t,i},\qquad
+r_{t,i}=\lVert\Delta_{t,i}\rVert_2.
+\end{equation}
+For an audited client, $w^{\mathrm{send}}_{t,i}$ is a perturbed trap rather than the aggregating global model. Clients receive no trap indicator, and trap-derived updates are excluded from aggregation.
+
+Attackers know only models previously sent to them. They do not know the audit schedule, group membership, anchor identities, thresholds, or ground-truth labels. We evaluate:
+\begin{itemize}[leftmargin=*]
+ \item \textbf{FR1---playback:} return the previously received model, $\widehat w_{t,i}=w^{\mathrm{send}}_{t-1,i}$. At cold start, return the current received model.
+ \item \textbf{FR2---bounded random update:} return $\widehat w_{t,i}=w^{\mathrm{send}}_{t,i}+\epsilon$, with each floating coordinate sampled from $\mathcal U(-10^{-3},10^{-3})$.
+ \item \textbf{FR3---historical averaging:} return the element-wise average of the latest $h=5$ received models. Since trap status is secret, traps enter the same history.
+ \item \textbf{FR4---trajectory imitation:} store differences $d_s=w^{\mathrm{send}}_{s,i}-w^{\mathrm{send}}_{s-1,i}$ and estimate $\bar d=h^{-1}\sum d_s$ over the latest five. Return
+ \begin{equation}
+ \widehat w_{t,i}=w^{\mathrm{send}}_{t,i}+\bar d+\eta,
+ \end{equation}
+ where Gaussian $\eta$ is normalized to 10\% of $\lVert\bar d\rVert_2$. A small Gaussian update is used at cold start. FR4 adapts to every observed model but has no trap oracle.
+\end{itemize}
+Collusion, partial honest training, on--off participation, and defense-aware adaptation are outside the evaluated scope.
+
+\section{SWT-CP Methodology}
+\subsection{Two-signal evidence}
+A trap independently perturbs the floating tensors of the global model. Responses are evaluated only against responses to the same trap. For reference norms $R$, SWT-CP computes median $m_r$, median absolute deviation $d_r$, and
+\begin{equation}
+z^{\mathrm{norm}}_{t,i}=\frac{r_{t,i}-m_r}{\max(d_r,0.05)}.
+\end{equation}
+The magnitude signal fires when $|z^{\mathrm{norm}}_{t,i}|>3$. For floating layer $k$, a scale-free profile is
+\begin{equation}
+p_{t,i,k}=\frac{\lVert\Delta_{t,i,k}\rVert_2}
+{\sum_j\lVert\Delta_{t,i,j}\rVert_2}.
+\end{equation}
+Distance from the coordinate-wise median profile is standardized by median/MAD with floor 0.01; the profile signal fires above 3. Either signal can initiate candidate confirmation, but ordinary statistical penalties require both. A near-zero response below $10^{-6}$ is separate strong evidence.
+
+\subsection{States and schedule}
+Each active client is unflagged ($U$), candidate ($C$), or suspicious ($S$). Rounds 1--10 use normal FedAvg and only near-zero behavior is checked. Initial coverage then creates two different traps and two randomized population passes. Two groups are probed per round; after ten probe rounds every client has received both traps. Each pass is calibrated separately.
+
+After coverage, $U$ clients occupy ten surveillance groups. One group per round receives a common trap. A one-signal anomaly enters $C$ but earns no magnitude-removal points. Candidates are withheld from aggregation and receive fresh-trap confirmation. Two joint failures confirm $S$; a passing confirmation clears the candidate episode.
+
+Suspicious clients are divided into approximately one group per ten suspects. Every group receives a distinct fresh trap each round and is compared with up to three rotating anchors that received the identical trap. An anchor must be active and never previously flagged, while off-duty anchors remain under surveillance. Rotation reduces panel reuse but cannot prove anchor honesty.
+
+\subsection{Penalties and rehabilitation}
+A joint failure adds two points during initial coverage, one during surveillance, and three during candidate/suspicion probing. A near-zero response adds five permanent points in any phase. Removal occurs at 15. Nonzero evidence requires at least ten episode probes before removal. After ten probes, a joint-failure rate no greater than 10\% rehabilitates the client and clears the current magnitude episode; exact-send-back points remain.
+
+\begin{algorithm}[t]
+\caption{SWT-CP server-side auditing}
+\label{alg:swtcp}
+\begin{algorithmic}[1]
+\Require global state $w$, clients $V$, rounds $T$
+\State $U\gets V$; $C,S\gets\varnothing$; penalties $q_i\gets0$
+\For{$t=1$ to $T$}
+ \If{$t\leq10$}
+   \State send $w$; test only near-zero responses
+ \ElsIf{double coverage is incomplete}
+   \State probe the next two groups with the active coverage trap
+   \State evaluate each completed trap pass independently
+ \Else
+   \State probe one rotating surveillance group from $U$
+   \State group $C\cup S$ and attach rotating eligible anchors
+   \State send each such group a distinct fresh trap
+   \State compute robust norm and layer-profile signals
+   \State move one-signal anomalies $U\rightarrow C$
+   \State move two-joint-confirmation clients $C\rightarrow S$
+   \State add phase-weighted joint or near-zero penalties
+   \State rehabilitate low-failure clients after ten probes
+ \EndIf
+ \State remove every eligible $i$ with $q_i\geq15$
+ \State aggregate only non-trapped, non-candidate updates
+\EndFor
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Lightweight properties}
+For a model with $P$ floating parameters and $L$ tensors, processing one returned model requires one parameter pass, $O(P)$ arithmetic, and an $L$-dimensional profile. Medians operate on scalar norms and short profiles; the server neither recomputes gradients nor trains a detector. Client software performs ordinary local training on whichever model it receives and does not train a second model. Apart from model/trap tensors, server state consists mainly of small per-client counters and bounded histories. Cost arises from probe training and temporary exclusion of trap responses, not an auxiliary learning pipeline.
+
+\section{Experimental Design}
+MNIST \cite{lecun1998gradient} is trained with a convolutional model using 100 fully participating clients, 100 rounds, three local epochs, batch size 32, and SGD with learning rate 0.01 and momentum 0.9. Data are IID or allocated by a Dirichlet distribution with concentration $\alpha=0.5$. Free riders constitute 30\% or 40\% of clients.
+
+Every distribution/share/attack combination is repeated independently. The base matrix contains 32 executions; two additional FR4 repetitions cover the difficult non-IID 40\% setting, producing 34 completed runs. Random identifiers are omitted because repetitions are pooled rather than treated as experimental conditions. No completed run is removed from the pooled metrics.
+
+A positive prediction means permanent removal. We report $TP$, $FP$, $FN$, precision, recall, and $F1$. Unresolved candidates are reported separately because they are quarantined but not permanently removed. Accuracy, runtime, memory, state transitions, anchor composition, and trap assignments are also logged.
+
+\section{Results}
+\subsection{Pooled configuration results}
+Table~\ref{tab:aggregate} pools all attacks and repetitions for each distribution and attacker share. All IID and non-IID 30\% attacker instances are removed. False removal is more common under non-IID data. At non-IID 40\%, pooled recall is 80\%, with every false negative belonging to FR4.
+
+\begin{table*}[t]
+\centering
+\caption{Pooled MNIST results. All completed runs are included.}
+\label{tab:aggregate}
+\begin{tabular}{llrrrrrrr}
+\toprule
+Partition & Attackers & Runs & TP & FP & FN & Precision & Recall & F1 \\
+\midrule
+IID & 30\% & 8 & 240 & 9  & 0  & 96.39\% & 100\% & 98.16\% \\
+IID & 40\% & 8 & 320 & 6  & 0  & 98.16\% & 100\% & 99.07\% \\
+Non-IID & 30\% & 8 & 240 & 19 & 0  & 92.66\% & 100\% & 96.19\% \\
+Non-IID & 40\% & 10 & 320 & 15 & 80 & 95.52\% & 80.00\% & 87.07\% \\
+\midrule
+All & --- & 34 & 1120 & 49 & 80 & 95.81\% & 93.33\% & 94.55\% \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+\subsection{Attack-level non-IID behavior}
+Table~\ref{tab:noniid} exposes the source of the difference. FR1--FR3 achieve 100\% recall at both shares. FR4 is fully detected at 30\%, but only half of its attacker instances are removed at 40\%. Pooling four repetitions preserves both successful and failed trajectories without attaching conclusions to a named seed.
+
+\begin{table}[t]
+\centering
+\caption{Pooled non-IID removals by attack (TP/FP/FN).}
+\label{tab:noniid}
+\begin{tabular}{lcc}
+\toprule
+Attack & 30\% (2 runs) & 40\% \\
+\midrule
+FR1 & 60/4/0 & 80/4/0 (2 runs) \\
+FR2 & 60/5/0 & 80/3/0 (2 runs) \\
+FR3 & 60/6/0 & 80/7/0 (2 runs) \\
+FR4 & 60/4/0 & 80/1/80 (4 runs) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The FR4 40\% outcome is bimodal: two repetitions remove all 40 attackers and two remove none. In one failed repetition, attacker absolute norm z-scores remain at most about 1.98 and profile z-scores at most about 2.22 during initial coverage, below the threshold of 3. No attacker enters confirmation and attackers remain anchor-eligible. In another, 18 attackers are temporarily flagged but none is confirmed. Thirteen candidates first produce joint evidence against an honest panel, then encounter panels containing one and subsequently two malicious anchors; the evidence disappears and they are cleared.
+
+In successful trajectories, surveillance profile anomalies create candidate batches that receive enough honest-dominated panels for two joint confirmations. Once moved to $S$, attackers are probed every round and rapidly reach 15 points. Thus a modest early difference is amplified into either no removal or complete removal.
+
+\subsection{Anchor contamination and false positives}
+At 40\% contamination, a random three-client panel is all honest with probability approximately $0.6^3=21.6\%$, while the probability of at least two attackers is approximately 35.2\%. Rotation changes membership but not this trust problem while undetected attackers remain eligible.
+
+In one failed-run trace, an honest client receives 33 anchor-based probes during its suspicious episode, ten involving malicious anchors. Three panels contain two attackers; those rounds add nine points and contribute directly to removal at 15. Conversely, malicious-majority panels can make FR4 candidates resemble their references.
+
+Perfect permanent-removal precision does not imply zero service impact. The two successful FR4 40\% repetitions finish with six and eight unresolved honest candidates. They are not false removals, but their updates are quarantined. Candidate-rounds and excluded honest updates should accompany removal metrics.
+
+\subsection{Utility and execution cost}
+Final global accuracy lies between 98.82\% and 98.99\%. Detection failures can coexist with strong utility because 60 honest clients continue learning while small fabricated updates mostly dilute aggregation. Accuracy is not evidence of successful detection.
+
+Mean round time is approximately 41--60 seconds, estimated four-attack batch time is 4.7--6.6 hours, and peak process memory is approximately 0.8--3.2 GB on the recorded machines. Client simulations are serial, so these values include local training rather than only detector overhead. Detection itself adds differencing, profile construction, robust scalar statistics, counters, and trap generation, but no auxiliary-model training.
+
+\section{Discussion and Limitations}
+SWT-CP is effective for playback, bounded-random, and historical-average attacks throughout the tested conditions. FR4 performance is reliable under IID data and non-IID 30\%, but unstable under non-IID 40\%. The cause is the interaction of broad honest variation, attacker-shaped references, three-anchor panels, hard thresholds, and a gated transition into frequent probing.
+
+Variation is intensified because one experiment seed controls partitioning, attacker identities, initialization, trap generation, attack noise, and scheduling. Under non-IID data, changing attacker identities changes which label-skewed datasets disappear from honest training. Future studies should separate partition, attacker, model, and trap randomness.
+
+The study uses one dataset, architecture, non-IID concentration, full participation, and always-on non-colluding attackers. It does not test partial training, on--off behavior, defense-aware adaptation, dropout, or collusion. No external defense was rerun identically, so no comparative-superiority claim is made. Positive anchor qualification, repeated independent panels before candidate clearing, and paired within-client trap responses are priority extensions.
+
+SWT-CP also requires attributable updates and temporarily spends honest computation on withheld responses. It is not directly compatible with ordinary secure aggregation \cite{bonawitz2017practical}; private deployment would require securely computed audit statistics or a separate challenge protocol.
+
+\section{Conclusion}
+SWT-CP shows that secret server-generated traps and robust statistics can provide useful free-rider evidence without trusted client telemetry or a learned detector. Across pooled MNIST experiments it removes every attacker instance under IID and non-IID 30\%, and retains complete recall for FR1--FR3 at non-IID 40\%. Pooled FR4 40\% recall is 50\%, identifying the current boundary: rotating unverified anchors and hard candidate confirmation can create an all-or-nothing path. Reporting that limitation alongside the strong results yields a credible lightweight baseline and a concrete direction for positively qualified references and within-client differential probing.
+
+\bibliographystyle{IEEEtran}
+\bibliography{refs}
+\end{document}

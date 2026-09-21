@@ -48,15 +48,6 @@ Z.~Zhu, J.~Shu, X.~Zou, and X.~Jia, ``Advanced free-rider attacks in federated
   learning,'' in \emph{NeurIPS Workshop on New Frontiers in Federated
   Learning}, 2021.
 
-\bibitem{zhao2018federated}
-Y.~Zhao, M.~Li, L.~Lai \emph{et~al.}, ``Federated learning with non-{IID}
-  data,'' \emph{arXiv preprint arXiv:1806.00582}, 2018.
-
-\bibitem{kairouz2021advances}
-P.~Kairouz, H.~B. McMahan \emph{et~al.}, ``Advances and open problems in
-  federated learning,'' \emph{Foundations and Trends in Machine Learning},
-  vol.~14, no. 1--2, pp. 1--210, 2021.
-
 \bibitem{wang2024frad}
 B.~Wang, H.~Li, X.~Liu, and Y.~Guo, ``{FRAD}: Free-rider attacks detection
   mechanism for federated learning in {AIoT},'' \emph{IEEE Internet of Things
@@ -82,5 +73,9 @@ K.~Bonawitz, V.~Ivanov, B.~Kreuter \emph{et~al.}, ``Practical secure
 Y.~LeCun, L.~Bottou, Y.~Bengio, and P.~Haffner, ``Gradient-based learning
   applied to document recognition,'' \emph{Proceedings of the IEEE}, vol.~86,
   no.~11, pp. 2278--2324, 1998.
+
+\bibitem{krizhevsky2009learning}
+A.~Krizhevsky, ``Learning multiple layers of features from tiny images,''
+  University of Toronto, Tech. Rep., 2009.
 
 \end{thebibliography}

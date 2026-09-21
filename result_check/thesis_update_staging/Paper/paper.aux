@@ -7,9 +7,6 @@
 \citation{hard2018federated}
 \citation{lin2019freeriders}
 \citation{fraboni2021freerider}
-\citation{zhu2023advanced}
-\citation{zhao2018federated}
-\citation{kairouz2021advances}
 \citation{lin2019freeriders}
 \citation{fraboni2021freerider}
 \citation{zhu2023advanced}
@@ -20,23 +17,28 @@
 \@writefile{toc}{\contentsline {section}{\numberline {I}Introduction}{1}{section.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {II}Related Work}{1}{section.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-A}}Free-rider attacks}{1}{subsection.2.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-B}}Detection and verification}{1}{subsection.2.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-B}}Statistical and Learning-Based Detection}{1}{subsection.2.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-C}}Challenge-Based and Verifiable Computation}{1}{subsection.2.3}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {III}Threat Model and Attacks}{2}{section.3}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {IV}SWT-CP Methodology}{2}{section.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-A}}Two-signal evidence}{2}{subsection.4.1}\protected@file@percent }
-\@writefile{loa}{\contentsline {algorithm}{\numberline {1}{\ignorespaces SWT-CP server-side auditing}}{2}{algorithm.1}\protected@file@percent }
-\newlabel{alg:swtcp}{{1}{2}{Penalties and rehabilitation}{algorithm.1}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-B}}States and schedule}{2}{subsection.4.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-C}}Penalties and rehabilitation}{2}{subsection.4.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-A}}Phase I: Warm-Up}{2}{subsection.4.1}\protected@file@percent }
+\@writefile{loa}{\contentsline {algorithm}{\numberline {1}{\ignorespaces Phase I: warm-up}}{3}{algorithm.1}\protected@file@percent }
+\newlabel{alg:warmup}{{1}{3}{Phase I: Warm-Up}{algorithm.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-B}}Phase II: Double Coverage}{3}{subsection.4.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-C}}Phase III: Surveillance and Candidate Confirmation}{3}{subsection.4.3}\protected@file@percent }
+\@writefile{loa}{\contentsline {algorithm}{\numberline {2}{\ignorespaces Phase II: double coverage sweep}}{3}{algorithm.2}\protected@file@percent }
+\newlabel{alg:coverage}{{2}{3}{Phase II: Double Coverage}{algorithm.2}{}}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {3}{\ignorespaces Phase III: surveillance and confirmation}}{3}{algorithm.3}\protected@file@percent }
+\newlabel{alg:surveillance}{{3}{3}{Phase III: Surveillance and Candidate Confirmation}{algorithm.3}{}}
 \citation{lecun1998gradient}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-D}}Lightweight properties}{3}{subsection.4.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {V}Experimental Design}{3}{section.5}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {VI}Results}{3}{section.6}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-A}}Pooled configuration results}{3}{subsection.6.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-B}}Attack-level non-IID behavior}{3}{subsection.6.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-C}}Anchor contamination and false positives}{3}{subsection.6.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-D}}Utility and execution cost}{3}{subsection.6.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {VII}Discussion and Limitations}{3}{section.7}\protected@file@percent }
+\citation{krizhevsky2009learning}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {4}{\ignorespaces Phase IV: weighted suspicion and decision}}{4}{algorithm.4}\protected@file@percent }
+\newlabel{alg:suspicion}{{4}{4}{Phase IV: Suspicion, Penalties, and Rehabilitation}{algorithm.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-D}}Phase IV: Suspicion, Penalties, and Rehabilitation}{4}{subsection.4.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {V}Experimental Design}{4}{section.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {VI}Results}{4}{section.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-A}}Best-Observed Multi-Seed Performance}{4}{subsection.6.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-B}}Utility and execution cost}{4}{subsection.6.2}\protected@file@percent }
 \citation{bonawitz2017practical}
 \bibstyle{IEEEtran}
 \bibdata{refs}
@@ -46,17 +48,17 @@
 \bibcite{lin2019freeriders}{4}
 \bibcite{fraboni2021freerider}{5}
 \bibcite{zhu2023advanced}{6}
-\bibcite{zhao2018federated}{7}
-\bibcite{kairouz2021advances}{8}
-\bibcite{wang2024frad}{9}
-\bibcite{wang2023pass}{10}
-\bibcite{recasens2024frida}{11}
-\bibcite{bonawitz2017practical}{12}
-\bibcite{lecun1998gradient}{13}
-\@writefile{lot}{\contentsline {table}{\numberline {I}{\ignorespaces Pooled MNIST results. All completed runs are included.}}{4}{table.1}\protected@file@percent }
-\newlabel{tab:aggregate}{{I}{4}{Pooled MNIST results. All completed runs are included}{table.1}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {II}{\ignorespaces Pooled non-IID removals by attack (TP/FP/FN).}}{4}{table.2}\protected@file@percent }
-\newlabel{tab:noniid}{{II}{4}{Pooled non-IID removals by attack (TP/FP/FN)}{table.2}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {VIII}Conclusion}{4}{section.8}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{References}{4}{section*.1}\protected@file@percent }
-\gdef \@abspage@last{4}
+\bibcite{wang2024frad}{7}
+\bibcite{wang2023pass}{8}
+\bibcite{recasens2024frida}{9}
+\bibcite{bonawitz2017practical}{10}
+\bibcite{lecun1998gradient}{11}
+\bibcite{krizhevsky2009learning}{12}
+\@writefile{lot}{\contentsline {table}{\numberline {I}{\ignorespaces Best observed multi-seed performance. Each available setting combines the strongest completed observation for each of FR1--FR4. A dash denotes a setting that was not evaluated.}}{5}{table.1}\protected@file@percent }
+\newlabel{tab:aggregate}{{I}{5}{Best observed multi-seed performance. Each available setting combines the strongest completed observation for each of FR1--FR4. A dash denotes a setting that was not evaluated}{table.1}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {II}{\ignorespaces Recorded execution and aggregation profile. Peak RSS is the mean of per-execution peaks; aggregated updates are out of 100 clients per round.}}{5}{table.2}\protected@file@percent }
+\newlabel{tab:cost}{{II}{5}{Recorded execution and aggregation profile. Peak RSS is the mean of per-execution peaks; aggregated updates are out of 100 clients per round}{table.2}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {VII}Discussion and Limitations}{5}{section.7}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {VIII}Conclusion}{5}{section.8}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{References}{5}{section*.1}\protected@file@percent }
+\gdef \@abspage@last{5}

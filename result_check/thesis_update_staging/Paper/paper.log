@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025) (preloaded format=pdflatex 2025.12.24)  17 SEP 2026 23:30
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025) (preloaded format=pdflatex 2025.12.24)  21 SEP 2026 23:56
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -440,33 +440,33 @@ File: l3backend-pdftex.def 2025-10-09 L3 backend support: PDF output (pdfTeX)
 (./paper.aux)
 \openout1 = `paper.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 11.
-LaTeX Font Info:    ... okay on input line 11.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 11.
-LaTeX Font Info:    ... okay on input line 11.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 11.
-LaTeX Font Info:    ... okay on input line 11.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 11.
-LaTeX Font Info:    ... okay on input line 11.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 11.
-LaTeX Font Info:    ... okay on input line 11.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 11.
-LaTeX Font Info:    ... okay on input line 11.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 11.
-LaTeX Font Info:    ... okay on input line 11.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 11.
-LaTeX Font Info:    ... okay on input line 11.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 11.
-LaTeX Font Info:    ... okay on input line 11.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 12.
+LaTeX Font Info:    ... okay on input line 12.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 12.
+LaTeX Font Info:    ... okay on input line 12.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 12.
+LaTeX Font Info:    ... okay on input line 12.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 12.
+LaTeX Font Info:    ... okay on input line 12.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 12.
+LaTeX Font Info:    ... okay on input line 12.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 12.
+LaTeX Font Info:    ... okay on input line 12.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 12.
+LaTeX Font Info:    ... okay on input line 12.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 12.
+LaTeX Font Info:    ... okay on input line 12.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 12.
+LaTeX Font Info:    ... okay on input line 12.
 
 -- Lines per column: 56 (exact).
-LaTeX Info: Redefining \microtypecontext on input line 11.
-Package microtype Info: Applying patch `item' on input line 11.
-Package microtype Info: Applying patch `toc' on input line 11.
-Package microtype Info: Applying patch `eqnum' on input line 11.
-Package microtype Info: Applying patch `footnote' on input line 11.
-Package microtype Info: Applying patch `verbatim' on input line 11.
-LaTeX Info: Redefining \microtypesetup on input line 11.
+LaTeX Info: Redefining \microtypecontext on input line 12.
+Package microtype Info: Applying patch `item' on input line 12.
+Package microtype Info: Applying patch `toc' on input line 12.
+Package microtype Info: Applying patch `eqnum' on input line 12.
+Package microtype Info: Applying patch `footnote' on input line 12.
+Package microtype Info: Applying patch `verbatim' on input line 12.
+LaTeX Info: Redefining \microtypesetup on input line 12.
 Package microtype Info: Generating PDF output.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using default protrusion set `alltext'.
@@ -480,11 +480,14 @@ Package microtype Info: No adjustment of character kerning.
 (d:/texlive/2025/texmf-dist/tex/latex/microtype/mt-ptm.cfg
 File: mt-ptm.cfg 2006/04/20 v1.7 microtype config. file: Times (RS)
 )
-Package hyperref Info: Link coloring OFF on input line 11.
+Package hyperref Info: Link coloring OFF on input line 12.
  (./paper.out)
 (./paper.out)
 \@outlinefile=\write3
 \openout3 = `paper.out'.
+
+
+Underfull \vbox (badness 1314) has occurred while \output is active []
 
  [1{d:/texlive/2025/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{d:/texlive/20
 25/texmf-dist/fonts/enc/dvips/base/8r.enc}
@@ -495,7 +498,7 @@ Package hyperref Info: Link coloring OFF on input line 11.
 File: mt-cmr.cfg 2013/05/19 v2.2 microtype config. file: Computer Modern Roman 
 (RS)
 )
-LaTeX Font Info:    Trying to load font information for U+msa on input line 49.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 44.
 
 
 (d:/texlive/2025/texmf-dist/tex/latex/amsfonts/umsa.fd
@@ -504,7 +507,7 @@ File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 (d:/texlive/2025/texmf-dist/tex/latex/microtype/mt-msa.cfg
 File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 49.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 44.
 
 
 (d:/texlive/2025/texmf-dist/tex/latex/amsfonts/umsb.fd
@@ -512,14 +515,19 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
 (d:/texlive/2025/texmf-dist/tex/latex/microtype/mt-msb.cfg
 File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
-)
-Underfull \hbox (badness 10000) in paragraph at lines 59--60
-\OT1/ptm/m/n/10 (+20) with each float-ing co-or-di-nate sam-pled from
+) [2]
+Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on in
+put line 106.
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [3]
+Underfull \hbox (badness 1406) in paragraph at lines 196--197
+[] \OT1/ptm/m/n/10 (+20) re-ha-bil-i-tate $\OML/cmm/m/it/10 i$ \OT1/ptm/m/n/10 
+(+20) and clear magnitude-episode
  []
 
-Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on in
-put line 93.
-[2] [3] (./paper.bbl)
+[4] (./paper.bbl)
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -531,37 +539,37 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-[4] (./paper.aux)
+[5] (./paper.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2025-11-14>
  ***********
 Package rerunfilecheck Info: File `paper.out' has not changed.
-(rerunfilecheck)             Checksum: 0BF88EF3AB20AC6426B39F57BCA50F24;3017.
+(rerunfilecheck)             Checksum: F97D61DFF1242AE4C1AB1D1B536C30CA;3220.
  ) 
 Here is how much of TeX's memory you used:
- 13180 strings out of 467538
- 206843 string characters out of 5423724
- 670642 words of memory out of 5000000
- 41631 multiletter control sequences out of 15000+600000
- 677234 words of font info for 282 fonts, out of 8000000 for 9000
+ 13166 strings out of 467538
+ 206576 string characters out of 5423724
+ 672313 words of memory out of 5000000
+ 41624 multiletter control sequences out of 15000+600000
+ 677020 words of font info for 276 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,8n,79p,1002b,454s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,9n,79p,1293b,454s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <d:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb><d:/tex
 live/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb><d:/texlive/2025
-/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb><d:/texlive/2025/texmf-dis
-t/fonts/type1/public/amsfonts/cm/cmr10.pfb><d:/texlive/2025/texmf-dist/fonts/ty
-pe1/public/amsfonts/cm/cmr7.pfb><d:/texlive/2025/texmf-dist/fonts/type1/public/
-amsfonts/cm/cmsy10.pfb><d:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/
-cm/cmsy7.pfb><d:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/symbols/ms
-bm10.pfb><d:/texlive/2025/texmf-dist/fonts/type1/urw/times/utmb8a.pfb><d:/texli
-ve/2025/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb><d:/texlive/2025/texmf-dis
-t/fonts/type1/urw/times/utmr8a.pfb><d:/texlive/2025/texmf-dist/fonts/type1/urw/
-times/utmri8a.pfb>
-Output written on paper.pdf (4 pages, 164271 bytes).
+/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb><d:/texlive/2025/texmf-dis
+t/fonts/type1/public/amsfonts/cm/cmmi7.pfb><d:/texlive/2025/texmf-dist/fonts/ty
+pe1/public/amsfonts/cm/cmr10.pfb><d:/texlive/2025/texmf-dist/fonts/type1/public
+/amsfonts/cm/cmr7.pfb><d:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/c
+m/cmsy10.pfb><d:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.p
+fb><d:/texlive/2025/texmf-dist/fonts/type1/urw/times/utmb8a.pfb><d:/texlive/202
+5/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb><d:/texlive/2025/texmf-dist/font
+s/type1/urw/times/utmr8a.pfb><d:/texlive/2025/texmf-dist/fonts/type1/urw/times/
+utmri8a.pfb>
+Output written on paper.pdf (5 pages, 178563 bytes).
 PDF statistics:
- 217 PDF objects out of 1000 (max. 8388607)
- 185 compressed objects within 2 object streams
- 48 named destinations out of 1000 (max. 500000)
- 47769 words of extra memory for PDF output out of 51595 (max. 10000000)
+ 222 PDF objects out of 1000 (max. 8388607)
+ 189 compressed objects within 2 object streams
+ 50 named destinations out of 1000 (max. 500000)
+ 47761 words of extra memory for PDF output out of 51595 (max. 10000000)
 
