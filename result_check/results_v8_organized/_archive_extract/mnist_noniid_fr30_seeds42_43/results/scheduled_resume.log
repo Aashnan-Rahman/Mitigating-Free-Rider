@@ -1,0 +1,72 @@
+﻿**********************
+Windows PowerShell transcript start
+Start time: 20260916221535
+Username: DESKTOP-0HUBAH2\CSE
+RunAs User: DESKTOP-0HUBAH2\CSE
+Configuration Name: 
+Machine: DESKTOP-0HUBAH2 (Microsoft Windows NT 10.0.26200.0)
+Host Application: powershell.exe -NoProfile -ExecutionPolicy Bypass -File E:\New Projects\Mitigating-Free-Rider\resume_experiments.ps1
+Process ID: 18404
+PSVersion: 5.1.26100.9444
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.26100.9444
+BuildVersion: 10.0.26100.9444
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Starting scheduled batch: 30% free riders, seed 42
+**********************
+Windows PowerShell transcript start
+Start time: 20260917090330
+Username: DESKTOP-0HUBAH2\CSE
+RunAs User: DESKTOP-0HUBAH2\CSE
+Configuration Name: 
+Machine: DESKTOP-0HUBAH2 (Microsoft Windows NT 10.0.26200.0)
+Host Application: powershell.exe -NoProfile -ExecutionPolicy Bypass -File E:\New Projects\Mitigating-Free-Rider\resume_experiments.ps1
+Process ID: 1240
+PSVersion: 5.1.26100.9444
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.26100.9444
+BuildVersion: 10.0.26100.9444
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Resuming batch: E:\New Projects\Mitigating-Free-Rider\results\mnist_noniid_fr30_seed42
+E:\New Projects\Mitigating-Free-Rider\.venv\Lib\site-packages\torch\utils\data\dataloader.py:759: UserWarning: 'pin_memo
+ry' argument is set as true but no accelerator is found, then device pinned memory won't be used.
+  super().__init__(loader)
+Scheduled batch is complete: 30% free riders, seed 42
+Starting scheduled batch: 30% free riders, seed 43
+**********************
+Windows PowerShell transcript start
+Start time: 20260917132912
+Username: DESKTOP-0HUBAH2\CSE
+RunAs User: DESKTOP-0HUBAH2\CSE
+Configuration Name: 
+Machine: DESKTOP-0HUBAH2 (Microsoft Windows NT 10.0.26200.0)
+Host Application: powershell.exe -NoProfile -ExecutionPolicy Bypass -File E:\New Projects\Mitigating-Free-Rider\resume_experiments.ps1
+Process ID: 1692
+PSVersion: 5.1.26100.9444
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.26100.9444
+BuildVersion: 10.0.26100.9444
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Resuming batch: E:\New Projects\Mitigating-Free-Rider\results\mnist_noniid_fr30_seed43
+E:\New Projects\Mitigating-Free-Rider\.venv\Lib\site-packages\torch\utils\data\dataloader.py:759: UserWarning: 'pin_memo
+ry' argument is set as true but no accelerator is found, then device pinned memory won't be used.
+  super().__init__(loader)
+Scheduled batch is complete: 30% free riders, seed 42
+Scheduled batch is complete: 30% free riders, seed 43
+All scheduled 30% seed-42 and seed-43 experiments are complete.
+**********************
+Windows PowerShell transcript end
+End time: 20260917151653
+**********************

@@ -1,0 +1,65 @@
+{
+  "batch_id": "mnist_noniid_fr40_seed45",
+  "completed_experiments": 1,
+  "elapsed_seconds": 4208.685400485992,
+  "experiments": [
+    {
+      "completed_rounds": 100,
+      "config": {
+        "attack_type": "FR4",
+        "dataset": "mnist",
+        "distribution": "noniid",
+        "free_rider_pct": 0.4
+      },
+      "finished_at": "2026-09-17T21:38:55.835960",
+      "id": "FR4",
+      "progress": {
+        "active_clients": 60,
+        "candidate_clients": 6,
+        "cpu_percent": 0.0,
+        "cuda_allocated_mb": "",
+        "cuda_peak_allocated_mb": "",
+        "cuda_reserved_mb": "",
+        "device": "cpu",
+        "global_accuracy": 0.9886,
+        "global_loss": 0.03802536364787702,
+        "new_flags": 7,
+        "new_rehabilitations": 1,
+        "new_removals": 0,
+        "phase": "confirmation",
+        "process_rss_mb": 763.9140625,
+        "round": 100,
+        "round_time_seconds": 38.26497299999755,
+        "suspected_clients": 0,
+        "system_memory_percent": 84.9,
+        "total_rounds": 100
+      },
+      "run_dir": "results\\mnist_noniid_fr40_seed45\\FR4",
+      "started_at": "2026-09-17T20:28:47.333252",
+      "state": "completed",
+      "summary": {
+        "average_round_time_seconds": 40.69569479399998,
+        "best_global_accuracy": 0.9886,
+        "detection_accuracy": 1.0,
+        "f1": 1.0,
+        "false_positive_removal_rate": 0.0,
+        "final_candidate_clients": 6,
+        "final_global_accuracy": 0.9886,
+        "final_global_loss": 0.03802536364787702,
+        "final_suspected_clients": 0,
+        "missed_free_riders": 0,
+        "peak_cuda_allocated_mb": null,
+        "peak_process_rss_mb": 951.69921875,
+        "precision": 1.0,
+        "recall": 1.0,
+        "removed_free_riders": 40,
+        "removed_honest_clients": 0,
+        "total_wall_clock_seconds": 4206.175250699998
+      }
+    }
+  ],
+  "failed_experiments": 0,
+  "finished_at": "2026-09-17T21:38:55.909946",
+  "started_at": "2026-09-17T20:28:47.224546",
+  "state": "completed"
+}

@@ -1,0 +1,65 @@
+{
+  "batch_id": "mnist_noniid_fr40_seed46",
+  "completed_experiments": 1,
+  "elapsed_seconds": 5724.373287439346,
+  "experiments": [
+    {
+      "completed_rounds": 100,
+      "config": {
+        "attack_type": "FR4",
+        "dataset": "mnist",
+        "distribution": "noniid",
+        "free_rider_pct": 0.4
+      },
+      "finished_at": "2026-09-17T23:14:31.816390",
+      "id": "FR4",
+      "progress": {
+        "active_clients": 99,
+        "candidate_clients": 0,
+        "cpu_percent": 0.0,
+        "cuda_allocated_mb": "",
+        "cuda_peak_allocated_mb": "",
+        "cuda_reserved_mb": "",
+        "device": "cpu",
+        "global_accuracy": 0.9876,
+        "global_loss": 0.04027152737292563,
+        "new_flags": 0,
+        "new_rehabilitations": 0,
+        "new_removals": 0,
+        "phase": "surveillance",
+        "process_rss_mb": 904.67578125,
+        "round": 100,
+        "round_time_seconds": 39.939937900002406,
+        "suspected_clients": 0,
+        "system_memory_percent": 69.5,
+        "total_rounds": 100
+      },
+      "run_dir": "results\\mnist_noniid_fr40_seed46\\FR4",
+      "started_at": "2026-09-17T21:39:07.627138",
+      "state": "completed",
+      "summary": {
+        "average_round_time_seconds": 55.94715117999971,
+        "best_global_accuracy": 0.9883,
+        "detection_accuracy": 0.59,
+        "f1": 0.0,
+        "false_positive_removal_rate": 0.016666666666666666,
+        "final_candidate_clients": 0,
+        "final_global_accuracy": 0.9876,
+        "final_global_loss": 0.04027152737292563,
+        "final_suspected_clients": 0,
+        "missed_free_riders": 40,
+        "peak_cuda_allocated_mb": null,
+        "peak_process_rss_mb": 1048.46484375,
+        "precision": 0.0,
+        "recall": 0.0,
+        "removed_free_riders": 0,
+        "removed_honest_clients": 1,
+        "total_wall_clock_seconds": 5721.663837900003
+      }
+    }
+  ],
+  "failed_experiments": 0,
+  "finished_at": "2026-09-17T23:14:31.897658",
+  "started_at": "2026-09-17T21:39:07.524371",
+  "state": "completed"
+}
