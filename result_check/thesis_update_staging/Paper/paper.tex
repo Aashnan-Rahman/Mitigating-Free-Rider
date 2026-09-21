@@ -1,6 +1,8 @@
 \documentclass[conference]{IEEEtran}
-\usepackage{amsmath,amssymb,booktabs,array,enumitem,algorithm,algpseudocode,microtype}
+\usepackage{amsmath,amssymb,booktabs,array,enumitem,algorithm,algpseudocode,microtype,graphicx,pgfplots}
 \usepackage[hidelinks]{hyperref}
+\pgfplotsset{compat=1.18}
+\usepgfplotslibrary{groupplots}
 \providecommand*{\algorithmautorefname}{Algorithm}
 \newcommand{\method}{SWT-CP}
 
@@ -236,28 +238,113 @@ CIFAR-10 & Non-IID & -- & -- & -- & -- & 85.11\% & 100\% & 91.95\% & 74.48\% \\
 \end{tabular}
 \end{table*}
 
+\subsection{Detection Progress}
+Figure~\ref{fig:detection-progress} separates the four attacks and reports cumulative permanent removals rather than temporary flags. The earliest removals occur at round 30, consistent with ten warm-up rounds, the ten-round double-coverage sweep, and the minimum ten suspicion probes required before statistical removal. FR1 and FR3 are completely removed at round 30 in every displayed setting. FR2 completes by round 34, while FR4 creates the long non-IID 40\% tails: complete removal occurs at round 83 on MNIST and round 92 on CIFAR-10. Overlapping curves indicate identical removal trajectories.
+
+\begin{figure*}[t]
+\centering
+\begin{tikzpicture}
+\begin{groupplot}[
+ group style={group size=4 by 2, horizontal sep=0.28cm, vertical sep=0.65cm},
+ width=0.235\textwidth,
+ height=3.2cm,
+ xmin=1, xmax=100,
+ ymin=-2, ymax=103,
+ xtick={1,30,60,90,100},
+ ytick={0,50,100},
+ tick label style={font=\scriptsize},
+ title style={font=\small},
+ label style={font=\scriptsize},
+ grid=both,
+ major grid style={draw=gray!25},
+ no markers,
+ every axis plot/.append style={line width=0.9pt},
+ legend style={font=\scriptsize,legend columns=4,/tikz/every even column/.append style={column sep=0.35cm}},
+ legend cell align={left}
+]
+\nextgroupplot[title={FR1},ylabel={MNIST removed (\%)},legend to name=detlegend]
+ \addplot+[const plot,blue] coordinates {(1,0) (30,100) (100,100)};
+ \addlegendentry{IID, 30\%}
+ \addplot+[const plot,orange,dashed] coordinates {(1,0) (30,100) (100,100)};
+ \addlegendentry{IID, 40\%}
+ \addplot+[const plot,green!60!black,dashdotted] coordinates {(1,0) (30,100) (100,100)};
+ \addlegendentry{Non-IID, 30\%}
+ \addplot+[const plot,red,dotted,line width=1.2pt] coordinates {(1,0) (30,100) (100,100)};
+ \addlegendentry{Non-IID, 40\%}
+ \draw[densely dashed,gray] (axis cs:30,-2) -- (axis cs:30,103);
+
+\nextgroupplot[title={FR2}]
+ \addplot+[const plot,blue] coordinates {(1,0) (30,100) (100,100)};
+ \addplot+[const plot,orange,dashed] coordinates {(1,0) (30,100) (100,100)};
+ \addplot+[const plot,green!60!black,dashdotted] coordinates {(1,0) (32,100) (100,100)};
+ \addplot+[const plot,red,dotted,line width=1.2pt] coordinates {(1,0) (34,100) (100,100)};
+ \draw[densely dashed,gray] (axis cs:30,-2) -- (axis cs:30,103);
+
+\nextgroupplot[title={FR3}]
+ \addplot+[const plot,blue] coordinates {(1,0) (30,100) (100,100)};
+ \addplot+[const plot,orange,dashed] coordinates {(1,0) (30,100) (100,100)};
+ \addplot+[const plot,green!60!black,dashdotted] coordinates {(1,0) (30,100) (100,100)};
+ \addplot+[const plot,red,dotted,line width=1.2pt] coordinates {(1,0) (30,100) (100,100)};
+ \draw[densely dashed,gray] (axis cs:30,-2) -- (axis cs:30,103);
+
+\nextgroupplot[title={FR4}]
+ \addplot+[const plot,blue] coordinates {(1,0) (30,100) (100,100)};
+ \addplot+[const plot,orange,dashed] coordinates {(1,0) (31,32.5) (32,100) (100,100)};
+ \addplot+[const plot,green!60!black,dashdotted] coordinates {(1,0) (30,66.667) (31,86.667) (32,100) (100,100)};
+ \addplot+[const plot,red,dotted,line width=1.2pt] coordinates {(1,0) (42,20) (63,27.5) (73,70) (82,82.5) (83,100) (100,100)};
+ \draw[densely dashed,gray] (axis cs:30,-2) -- (axis cs:30,103);
+
+\nextgroupplot[ylabel={CIFAR-10 removed (\%)},xlabel={Round}]
+ \addplot+[const plot,orange,dashed] coordinates {(1,0) (30,100) (100,100)};
+ \addplot+[const plot,red,dotted,line width=1.2pt] coordinates {(1,0) (30,100) (100,100)};
+ \draw[densely dashed,gray] (axis cs:30,-2) -- (axis cs:30,103);
+
+\nextgroupplot[xlabel={Round}]
+ \addplot+[const plot,orange,dashed] coordinates {(1,0) (30,100) (100,100)};
+ \addplot+[const plot,red,dotted,line width=1.2pt] coordinates {(1,0) (32,100) (100,100)};
+ \draw[densely dashed,gray] (axis cs:30,-2) -- (axis cs:30,103);
+
+\nextgroupplot[xlabel={Round}]
+ \addplot+[const plot,orange,dashed] coordinates {(1,0) (30,100) (100,100)};
+ \addplot+[const plot,red,dotted,line width=1.2pt] coordinates {(1,0) (30,100) (100,100)};
+ \draw[densely dashed,gray] (axis cs:30,-2) -- (axis cs:30,103);
+
+\nextgroupplot[xlabel={Round}]
+ \addplot+[const plot,orange,dashed] coordinates {(1,0) (30,100) (100,100)};
+ \addplot+[const plot,red,dotted,line width=1.2pt] coordinates {(1,0) (44,7.5) (52,22.5) (62,32.5) (72,50) (81,57.5) (82,65) (83,95) (91,97.5) (92,100) (100,100)};
+ \draw[densely dashed,gray] (axis cs:30,-2) -- (axis cs:30,103);
+\end{groupplot}
+\path (group c1r2.south west)--(group c4r2.south east)
+ node[midway,below=0.72cm] {\ref{detlegend}};
+\end{tikzpicture}
+\caption{Attack-specific cumulative permanent removal by communication round. Columns separate FR1--FR4; rows separate MNIST and CIFAR-10. Curves use the same best-observed selections as Table~\ref{tab:aggregate}. CIFAR-10 has only 40\% experiments. The vertical guide marks round 30.}
+\label{fig:detection-progress}
+\end{figure*}
+
 \subsection{Utility and execution cost}
 Best-observed final accuracy is 98.89--98.93\% on MNIST and 74.48--76.80\% on CIFAR-10. Accuracy and detection remain distinct: a strong global model does not by itself establish that free riders were identified correctly.
 
-Table~\ref{tab:cost} summarizes the recorded execution profile. Values first average repeated seeds within each attack and then weight FR1--FR4 equally. The 100-round duration is reconstructed from round logs, avoiding partial wall-clock values from resumed processes. Timings are descriptive rather than a controlled hardware benchmark: most configurations ran on CPU, while MNIST IID 40\% used CUDA. Mean aggregated updates quantify a second practical cost, namely responses withheld by probing, quarantine, and removal.
+Table~\ref{tab:cost} gives a deliberately compact execution profile. Values first average repeated seeds within each attack and then weight FR1--FR4 equally. Timings are descriptive rather than a controlled hardware benchmark: most configurations ran on CPU, while MNIST IID 40\% used CUDA. The device is therefore retained beside time per round, and peak memory is included as a direct lightweight-resource measure.
 
-\begin{table*}[t]
+\begin{table}[t]
 \centering
-\caption{Recorded execution and aggregation profile. Peak RSS is the mean of per-execution peaks; aggregated updates are out of 100 clients per round.}
+\caption{Recorded execution profile. Peak RSS is the mean of per-execution peaks.}
 \label{tab:cost}
-\begin{tabular}{llllrrrr}
+\footnotesize
+\setlength{\tabcolsep}{2.5pt}
+\begin{tabular}{llclrr}
 \toprule
-Dataset & Partition & Attackers & Device & Seconds/round & Hours/100 rounds & Peak RSS (GB) & Mean aggregated \\
+Dataset & Partition & Share & Device & s/round & RSS (GB) \\
 \midrule
-MNIST & IID     & 30\% & CPU  & 47.1 & 1.31 & 0.92 & 64.3 \\
-MNIST & IID     & 40\% & CUDA & 55.6 & 1.54 & 1.40 & 57.8 \\
-MNIST & Non-IID & 30\% & CPU  & 44.8 & 1.24 & 0.72 & 62.4 \\
-MNIST & Non-IID & 40\% & CPU  & 43.6 & 1.21 & 0.84 & 62.1 \\
-CIFAR-10 & IID     & 40\% & CPU & 88.9 & 2.47 & 1.85 & 58.1 \\
-CIFAR-10 & Non-IID & 40\% & CPU & 79.5 & 2.21 & 1.90 & 53.6 \\
+MNIST & IID     & 30\% & CPU  & 47.1 & 0.92 \\
+MNIST & IID     & 40\% & CUDA & 55.6 & 1.40 \\
+MNIST & Non-IID & 30\% & CPU  & 44.8 & 0.72 \\
+MNIST & Non-IID & 40\% & CPU  & 43.6 & 0.84 \\
+CIFAR-10 & IID     & 40\% & CPU & 88.9 & 1.85 \\
+CIFAR-10 & Non-IID & 40\% & CPU & 79.5 & 1.90 \\
 \bottomrule
 \end{tabular}
-\end{table*}
+\end{table}
 
 Client simulations are serial, so these durations include local training rather than only detector overhead. Detection itself adds differencing, profile construction, robust scalar statistics, counters, and trap generation, but no auxiliary-model training.
 

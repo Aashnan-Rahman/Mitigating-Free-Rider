@@ -1,6 +1,8 @@
 \documentclass[conference]{IEEEtran}
-\usepackage{amsmath,amssymb,booktabs,array,enumitem,algorithm,algpseudocode,microtype}
+\usepackage{amsmath,amssymb,booktabs,array,enumitem,algorithm,algpseudocode,microtype,graphicx,pgfplots}
 \usepackage[hidelinks]{hyperref}
+\pgfplotsset{compat=1.18}
+\usepgfplotslibrary{groupplots}
 \providecommand*{\algorithmautorefname}{Algorithm}
 \newcommand{\method}{SWT-CP}
 
@@ -236,28 +238,75 @@ CIFAR-10 & Non-IID & -- & -- & -- & -- & 85.11\% & 100\% & 91.95\% & 74.48\% \\
 \end{tabular}
 \end{table*}
 
+\subsection{Detection Progress}
+Figure~\ref{fig:detection-progress} reports cumulative permanent removals rather than temporary flags. The earliest removals occur at round 30, consistent with ten warm-up rounds, the ten-round double-coverage sweep, and the minimum ten suspicion probes required before statistical removal. In the selected IID results, all free riders are removed by round 30 on CIFAR-10 and by round 32 on MNIST. Non-IID 30\% MNIST also completes by round 32. The non-IID 40\% curves have longer FR4-driven tails: 90\% and 100\% removal occur by rounds 73 and 83 on MNIST, and by rounds 82 and 92 on CIFAR-10.
+
+\begin{figure*}[t]
+\centering
+\begin{tikzpicture}
+\begin{groupplot}[
+ group style={group size=2 by 1, horizontal sep=1.2cm},
+ width=0.46\textwidth,
+ height=4.6cm,
+ xmin=1, xmax=100,
+ ymin=-2, ymax=103,
+ xtick={1,10,30,50,70,90,100},
+ ytick={0,25,50,75,100},
+ xlabel={Communication round},
+ grid=both,
+ major grid style={draw=gray!25},
+ no markers,
+ every axis plot/.append style={line width=0.9pt},
+ legend style={font=\scriptsize,at={(0.98,0.03)},anchor=south east},
+ legend cell align={left}
+]
+\nextgroupplot[title={MNIST},ylabel={Free riders permanently removed (\%)}]
+ \addplot+[const plot] coordinates {(1,0) (30,100) (100,100)};
+ \addlegendentry{IID, 30\%}
+ \addplot+[const plot,dashed] coordinates {(1,0) (30,75) (31,83.125) (32,100) (100,100)};
+ \addlegendentry{IID, 40\%}
+ \addplot+[const plot,dashdotted] coordinates {(1,0) (30,66.67) (31,71.67) (32,100) (100,100)};
+ \addlegendentry{Non-IID, 30\%}
+ \addplot+[const plot,dotted,line width=1.2pt] coordinates {(1,0) (30,50) (34,75) (42,80) (63,81.875) (73,92.5) (82,95.625) (83,100) (100,100)};
+ \addlegendentry{Non-IID, 40\%}
+ \draw[densely dashed,gray] (axis cs:30,-2) -- (axis cs:30,103);
+
+\nextgroupplot[title={CIFAR-10}]
+ \addplot+[const plot,dashed] coordinates {(1,0) (30,100) (100,100)};
+ \addlegendentry{IID, 40\%}
+ \addplot+[const plot,dotted,line width=1.2pt] coordinates {(1,0) (30,50) (32,75) (44,76.875) (52,80.625) (62,83.125) (72,87.5) (81,89.375) (82,91.25) (83,98.75) (91,99.375) (92,100) (100,100)};
+ \addlegendentry{Non-IID, 40\%}
+ \draw[densely dashed,gray] (axis cs:30,-2) -- (axis cs:30,103);
+\end{groupplot}
+\end{tikzpicture}
+\caption{Cumulative permanent removal of free riders by communication round. Curves use the same best-observed per-attack selections as Table~\ref{tab:aggregate}; the vertical guide marks round 30, the earliest statistical-removal point under the configured schedule.}
+\label{fig:detection-progress}
+\end{figure*}
+
 \subsection{Utility and execution cost}
 Best-observed final accuracy is 98.89--98.93\% on MNIST and 74.48--76.80\% on CIFAR-10. Accuracy and detection remain distinct: a strong global model does not by itself establish that free riders were identified correctly.
 
-Table~\ref{tab:cost} summarizes the recorded execution profile. Values first average repeated seeds within each attack and then weight FR1--FR4 equally. The 100-round duration is reconstructed from round logs, avoiding partial wall-clock values from resumed processes. Timings are descriptive rather than a controlled hardware benchmark: most configurations ran on CPU, while MNIST IID 40\% used CUDA. Mean aggregated updates quantify a second practical cost, namely responses withheld by probing, quarantine, and removal.
+Table~\ref{tab:cost} gives a deliberately compact execution profile. Values first average repeated seeds within each attack and then weight FR1--FR4 equally. Timings are descriptive rather than a controlled hardware benchmark: most configurations ran on CPU, while MNIST IID 40\% used CUDA. The device is therefore retained beside time per round, and peak memory is included as a direct lightweight-resource measure.
 
-\begin{table*}[t]
+\begin{table}[t]
 \centering
-\caption{Recorded execution and aggregation profile. Peak RSS is the mean of per-execution peaks; aggregated updates are out of 100 clients per round.}
+\caption{Recorded execution profile. Peak RSS is the mean of per-execution peaks.}
 \label{tab:cost}
-\begin{tabular}{llllrrrr}
+\footnotesize
+\setlength{\tabcolsep}{2.5pt}
+\begin{tabular}{llclrr}
 \toprule
-Dataset & Partition & Attackers & Device & Seconds/round & Hours/100 rounds & Peak RSS (GB) & Mean aggregated \\
+Dataset & Partition & Share & Device & s/round & RSS (GB) \\
 \midrule
-MNIST & IID     & 30\% & CPU  & 47.1 & 1.31 & 0.92 & 64.3 \\
-MNIST & IID     & 40\% & CUDA & 55.6 & 1.54 & 1.40 & 57.8 \\
-MNIST & Non-IID & 30\% & CPU  & 44.8 & 1.24 & 0.72 & 62.4 \\
-MNIST & Non-IID & 40\% & CPU  & 43.6 & 1.21 & 0.84 & 62.1 \\
-CIFAR-10 & IID     & 40\% & CPU & 88.9 & 2.47 & 1.85 & 58.1 \\
-CIFAR-10 & Non-IID & 40\% & CPU & 79.5 & 2.21 & 1.90 & 53.6 \\
+MNIST & IID     & 30\% & CPU  & 47.1 & 0.92 \\
+MNIST & IID     & 40\% & CUDA & 55.6 & 1.40 \\
+MNIST & Non-IID & 30\% & CPU  & 44.8 & 0.72 \\
+MNIST & Non-IID & 40\% & CPU  & 43.6 & 0.84 \\
+CIFAR-10 & IID     & 40\% & CPU & 88.9 & 1.85 \\
+CIFAR-10 & Non-IID & 40\% & CPU & 79.5 & 1.90 \\
 \bottomrule
 \end{tabular}
-\end{table*}
+\end{table}
 
 Client simulations are serial, so these durations include local training rather than only detector overhead. Detection itself adds differencing, profile construction, robust scalar statistics, counters, and trap generation, but no auxiliary-model training.
 
