@@ -3,7 +3,7 @@
 
 \section{Design Objective and Information Boundary}
 
-Suspicion-Weighted Trap Detection with Cumulative Penalties (SWT-CP) is a server-orchestrated challenge--response mechanism for free-rider mitigation. The server occasionally sends a selected client a randomized model in place of the current global model. This secret model is called a \emph{trap}. An honest client applies the prescribed local optimizer to whichever model it receives, whereas a free rider fabricates a response from its locally visible model history. Because the client is never told whether a received model is a trap, the intervention changes the attacker's input without changing the client API.
+The proposed method is a server-orchestrated challenge--response mechanism for free-rider mitigation. The server occasionally sends a selected client a randomized model in place of the current global model. This secret model is called a \emph{trap}. An honest client applies the prescribed local optimizer to whichever model it receives, whereas a free rider fabricates a response from its locally visible model history. Because the client is never told whether a received model is a trap, the intervention changes the attacker's input without changing the client API.
 
 The detector trusts neither local accuracy nor loss, reported training time, hardware counters, number of steps, nor any other client-supplied claim. Its decision inputs are derived by the server from the returned model: whether the update is effectively zero, the norm of the flattened update, and the relative distribution of update magnitude across parameter tensors. Ground-truth free-rider labels and the configured attack name are used only to evaluate the simulator; they are not available to the detection rule. Cosine similarity and local metrics are logged for analysis but do not affect flags, penalties, state transitions, anchor selection, or removal.
 
@@ -30,7 +30,7 @@ The attacker sees its identity, round number, received model, public configurati
 \section{Robust Two-Signal Detector}
 
 \subsection{Two-sided magnitude evidence}
-For a reference set of update norms $R$, SWT-CP computes
+For a reference set of update norms $R$, the server computes
 \begin{align}
 m_r &= \operatorname{median}(R),\\
 d_r &= \operatorname{median}_{r\in R}|r-m_r|,\\
@@ -62,11 +62,11 @@ Each active client occupies one of three operational states:
 
 The fixed removal threshold is 15 points. A joint anomaly contributes two points in initial coverage, one point in later surveillance, and three points in candidate/suspicion probing. A magnitude-only or profile-only anomaly contributes zero points. Nonzero evidence cannot remove a client until at least ten relevant episode probes have been observed. Three exact send-backs reach 15 points independently of that gate.
 
-For $C$ and $S$ clients, SWT-CP maintains episode probe and joint-failure counts. After at least ten probes, a client is rehabilitated when its joint-failure rate is at most 10\%. Rehabilitation returns it to $U$, clears the current magnitude episode and resets episode counters, while retaining exact-send-back points. If rehabilitation and nonzero removal become eligible simultaneously, rehabilitation is applied first.
+For $C$ and $S$ clients, the server maintains episode probe and joint-failure counts. After at least ten probes, a client is rehabilitated when its joint-failure rate is at most 10\%. Rehabilitation returns it to $U$, clears the current magnitude episode and resets episode counters, while retaining exact-send-back points. If rehabilitation and nonzero removal become eligible simultaneously, rehabilitation is applied first.
 
 \begin{table}[htbp]
 \centering
-\caption{Principal SWT-CP v8 parameters}
+\caption{Principal protocol parameters}
 \label{tab:v8-parameters}
 \begin{tabular}{lll}
 \toprule
@@ -125,8 +125,8 @@ The simulator saves a checkpoint after every completed round, retains the newest
 
 For $d$ model parameters, deriving the norm and profile costs $O(d)$ per inspected update. Median/MAD construction over $m$ observations costs $O(m\log m)$ by sorting and $O(m)$ temporary scalar storage. Persistent state is $O(N)$. No detector model is trained and the client performs only its ordinary optimizer on the model received. The main utility cost is lost aggregation capacity from trap recipients and candidates.
 
-SWT-CP observes statistical consequences rather than proving training. Median/MAD has a theoretical 50\% scalar breakdown point, but practical separation can fail earlier when honest non-IID responses are broad or multimodal. Anchor rotation cannot help if undetected attackers qualify as anchors. Per-client inspection conflicts with ordinary secure aggregation. Evaluation is limited to MNIST, two seeds, two attacker shares, full participation, and always-on non-colluding attacks; CIFAR-10, dropout, collusion, on--off behavior, selfish partial training, and defense-aware adaptation remain future work.
+The method observes statistical consequences rather than proving training. Median/MAD has a theoretical 50\% scalar breakdown point, but practical separation can fail earlier when honest non-IID responses are broad or multimodal. Anchor rotation cannot help if undetected attackers qualify as anchors. Per-client inspection conflicts with ordinary secure aggregation. Evaluation is limited to MNIST and CIFAR-10, two primary seeds, two attacker shares, full participation, and always-on non-colluding attacks; dropout, collusion, on--off behavior, selfish partial training, and defense-aware adaptation remain future work.
 
 \section{Summary}
 
-SWT-CP v8 combines secret two-trap coverage, two-sided norm and layer-profile evidence, candidate confirmation, frequent suspicion probing, rotating anchors, continued surveillance, cumulative penalties, and rehabilitation. Its rules are attack-independent and require no trusted client-reported metric. The next chapter evaluates both its strong IID performance and the limits revealed by heterogeneous data and adaptive FR4 behavior.
+The proposed method combines secret two-trap coverage, two-sided norm and layer-profile evidence, candidate confirmation, frequent suspicion probing, rotating anchors, continued surveillance, cumulative penalties, and rehabilitation. Its rules are attack-independent and require no trusted client-reported metric. The next chapter evaluates both its strong IID performance and the limits revealed by heterogeneous data and adaptive FR4 behavior.

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025) (preloaded format=pdflatex 2025.12.24)  23 SEP 2026 21:08
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025) (preloaded format=pdflatex 2025.12.24)  23 SEP 2026 21:47
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1217,7 +1217,7 @@ Overfull \hbox (3.08694pt too wide) in paragraph at lines 65--65
 ] [10
 
 ]
-Overfull \hbox (0.48265pt too wide) in paragraph at lines 93--94
+Overfull \hbox (0.48265pt too wide) in paragraph at lines 92--93
 []\T1/stix2/m/n/12 Finally, to my par-ents, whose love and sup-port have been a
  con-stant source of strength.
  []
@@ -1291,9 +1291,15 @@ Overfull \hbox (6.75488pt too wide) in paragraph at lines 112--113
  []
 
 )
-Overfull \hbox (5.94485pt too wide) in paragraph at lines 119--111
+Overfull \hbox (5.94485pt too wide) in paragraph at lines 119--110
 \T1/stix2/m/n/12 Chap-ter 2 re-views sta-tis-ti-cal, learned, audit-based, priv
 acy-attack-based, and hardware-
+ []
+
+
+Overfull \hbox (1.3394pt too wide) in paragraph at lines 119--110
+\T1/stix2/m/n/12 assisted de-fenses. Chap-ter 3 spec-i-fies the pro-posed metho
+d, in-clud-ing its threat model,
  []
 
 [7]
@@ -1470,6 +1476,12 @@ Overfull \hbox (8.78532pt too wide) in paragraph at lines 60--72
 
  (./chapter_3_proposed_methodology.tex
 Chapter 3.
+
+Overfull \hbox (2.8202pt too wide) in paragraph at lines 6--7
+\T1/stix2/m/n/12 The pro-posed method is a server-orchestrated challenge--respo
+nse mech-a-nism for free-
+ []
+
 [16
 
 
@@ -1512,9 +1524,9 @@ ent states, penal-ties, episode
  []
 
 
-Overfull \hbox (2.24335pt too wide) in paragraph at lines 128--129
-[]\T1/stix2/m/n/12 SWT-CP ob-serves sta-tis-ti-cal con-se-quences rather than p
-rov-ing train-ing. Me-dian/MAD
+Overfull \hbox (19.96828pt too wide) in paragraph at lines 128--129
+[]\T1/stix2/m/n/12 The method ob-serves sta-tis-ti-cal con-se-quences rather th
+an prov-ing train-ing. Me-dian/MAD
  []
 
 [21]) [22] Excluding 'comment' comment.
@@ -1543,20 +1555,14 @@ ive an-chor el-i-gi-bil-ity (``never flagged'')
 
 
 
-])
-Overfull \hbox (4.78735pt too wide) in paragraph at lines 11--157
-[]\T1/stix2/m/n/12 SWT-CP should thus be un-der-stood as a com-pu-ta-tion-ally 
-sim-ple and em-pir-i-cally strong
- []
-
-[30] Excluding 'comment' comment.
+]) [30] Excluding 'comment' comment.
 LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 2
-44.
+43.
 
 (d:/texlive/2025/texmf-dist/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-Overfull \hbox (8.80556pt too wide) in paragraph at lines 244--244
+Overfull \hbox (8.80556pt too wide) in paragraph at lines 243--243
 []\T1/stix2/m/n/12 A. Hard et al., ``Fed-er-ated learn-ing for mo-bile key-boar
 d pre-dic-tion,'' \T1/stix2/m/it/12 arXiv preprint
  []
@@ -1567,13 +1573,13 @@ d pre-dic-tion,'' \T1/stix2/m/it/12 arXiv preprint
 
 {d:/texlive/2025/texmf-dist/fonts/enc/dvips/stix2-type1/stix2-t1sc.enc}{d:/texl
 ive/2025/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}]
-Overfull \hbox (43.87743pt too wide) in paragraph at lines 244--244
+Overfull \hbox (43.87743pt too wide) in paragraph at lines 243--243
 []\T1/stix2/m/n/12 H. B. McMa-han, E. Moore, D. Ra-m-age, S. Hamp-son, and B. A
 . y Ar-cas, ``Communication-
  []
 
 
-Overfull \hbox (27.39343pt too wide) in paragraph at lines 244--244
+Overfull \hbox (27.39343pt too wide) in paragraph at lines 243--243
 \T1/stix2/m/n/12 ``FRIDA: Free-rider de-tec-tion us-ing pri-vacy at-tacks,'' \T
 1/stix2/m/it/12 arXiv preprint arXiv:2410.05020\T1/stix2/m/n/12 ,
  []
@@ -1594,7 +1600,7 @@ Package logreq Info: Writing requests to 'report.run.xml'.
 Here is how much of TeX's memory you used:
  25403 strings out of 467538
  429189 string characters out of 5423724
- 1255247 words of memory out of 5000000
+ 1255265 words of memory out of 5000000
  53820 multiletter control sequences out of 15000+600000
  759471 words of font info for 117 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
@@ -1604,7 +1610,7 @@ texlive/2025/texmf-dist/fonts/type1/public/stix2-type1/STIX2Text-Bold.pfb><d:/t
 exlive/2025/texmf-dist/fonts/type1/public/stix2-type1/STIX2Text-Italic.pfb><d:/
 texlive/2025/texmf-dist/fonts/type1/public/stix2-type1/STIX2Text-Regular.pfb><d
 :/texlive/2025/texmf-dist/fonts/type1/public/lm/lmtt12.pfb>
-Output written on report.pdf (45 pages, 797063 bytes).
+Output written on report.pdf (45 pages, 796810 bytes).
 PDF statistics:
  635 PDF objects out of 1000 (max. 8388607)
  566 compressed objects within 6 object streams

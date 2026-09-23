@@ -6,7 +6,7 @@
 \addbibresource{citations.bib}
 
 % The complete title of your thesis, mandatory
-\title{Mitigating Free-Riding Behavior in Federated Learning Systems}
+\title{Lightweight Trap-Based Free-Rider Detection and Mitigation in Federated Learning}
 
 % Name and Student ID of the author, mandatory
 \author{Aashnan Rahman}{231041006}
@@ -79,7 +79,6 @@
     \abbr{FR}{Free Rider}
     \abbr{IID}{Independent and Identically Distributed}
     \abbr{MAD}{Median Absolute Deviation}
-    \abbr{SWT-CP}{Suspicion-Weighted Trap Detection with Cumulative Penalties}
     \abbr{FedAvg}{Federated Averaging}
 \end{abbreviations}
 
@@ -97,11 +96,11 @@ To all of you, I extend my heartfelt appreciation and a promise: next time, I wi
 
 % Write your abstract here.
 \begin{abstract}
-Federated learning allows clients to benefit from a shared model without centralizing raw data, but the server cannot directly verify whether a submitted update resulted from genuine local training. This thesis presents Suspicion-Weighted Trap Detection with Cumulative Penalties (SWT-CP), a lightweight server-side mechanism that secretly replaces the global model with a randomized trap model for selected clients and evaluates the response using robust update-norm and layer-profile statistics. SWT-CP combines a two-trap coverage sweep, candidate confirmation, frequent re-probing of suspicious clients, rotating anchor panels, continued surveillance, cumulative penalties, and evidence-based rehabilitation. Detection uses only returned model parameters; client-reported accuracy, loss, training time, and resource use are not trusted inputs.
+Federated learning allows clients to benefit from a shared model without centralizing raw data, but the server cannot directly verify whether a submitted update resulted from genuine local training. This thesis presents a lightweight server-side mechanism that secretly replaces the global model with a randomized trap model for selected clients and evaluates the response using robust update-norm and layer-profile statistics. The proposed method combines a two-trap coverage sweep, candidate confirmation, frequent re-probing of suspicious clients, rotating anchor panels, continued surveillance, cumulative penalties, and evidence-based rehabilitation. Detection uses only returned model parameters; client-reported accuracy, loss, training time, and resource use are not trusted inputs.
 
-SWT-CP v8 was evaluated on MNIST and CIFAR-10 with 100 clients and 100 communication rounds under IID and Dirichlet non-IID partitions ($\alpha=0.5$), four free-rider strategies, attacker shares of 30\% and 40\%, and repeated random seeds. The best-observed summaries achieve 100\% recall in every displayed configuration. Precision is 93.75--100\% on MNIST and 98.36--100\% on IID CIFAR-10. The new CIFAR-10 30\% batch removes every free rider in all sixteen runs, but its non-IID executions also remove 7--18 honest clients each; the best-observed non-IID 30\% precision is therefore only 71.43\%. Earlier MNIST repetitions additionally expose an adaptive FR4 contamination limit. Final global accuracy remains 98.82--98.95\% on MNIST and approximately 74.48--77.89\% on CIFAR-10.
+The method was evaluated on MNIST and CIFAR-10 with 100 clients and 100 communication rounds under IID and Dirichlet non-IID partitions ($\alpha=0.5$), four free-rider strategies, attacker shares of 30\% and 40\%, and repeated random seeds. The best-observed summaries achieve 100\% recall in every displayed configuration. Precision is 93.75--100\% on MNIST and 98.36--100\% on IID CIFAR-10. The new CIFAR-10 30\% batch removes every free rider in all sixteen runs, but its non-IID executions also remove 7--18 honest clients each; the best-observed non-IID 30\% precision is therefore only 71.43\%. Earlier MNIST repetitions additionally expose an adaptive FR4 contamination limit. Final global accuracy remains 98.82--98.95\% on MNIST and approximately 74.48--77.89\% on CIFAR-10.
 
-The findings show that secret statistical probing is effective and inexpensive for replay, random-update, and historical-average attacks, but that an unflagged client is not necessarily a trustworthy reference and robust statistics alone do not guarantee low false-positive rates under heterogeneous data. SWT-CP is therefore reported as a strong lightweight baseline with a clearly identified non-IID limitation rather than as a universal proof of client computation.
+The findings show that secret statistical probing is effective and inexpensive for replay, random-update, and historical-average attacks, but that an unflagged client is not necessarily a trustworthy reference and robust statistics alone do not guarantee low false-positive rates under heterogeneous data. The method is therefore reported as a strong lightweight baseline with a clearly identified non-IID limitation rather than as a universal proof of client computation.
 \end{abstract}
 
 %-------------------------- MAIN BODY --------------------------%

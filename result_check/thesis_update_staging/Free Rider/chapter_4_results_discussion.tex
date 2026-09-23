@@ -3,7 +3,7 @@
 
 \section{Experimental Questions}
 
-The evaluation addresses four questions. First, can SWT-CP detect replay, random-update, historical-average, and adaptive free riders without knowing which attack is present? Second, how sensitive is detection to the random seed and attacker proportion? Third, does Dirichlet non-IID partitioning increase false positives or create false negatives? Fourth, what model-utility and execution costs accompany the probing schedule?
+The evaluation addresses four questions. First, can the proposed method detect replay, random-update, historical-average, and adaptive free riders without knowing which attack is present? Second, how sensitive is detection to the random seed and attacker proportion? Third, does Dirichlet non-IID partitioning increase false positives or create false negatives? Fourth, what model-utility and execution costs accompany the probing schedule?
 
 \section{Experimental Setup}
 
@@ -134,4 +134,4 @@ Only two primary seeds were evaluated, and their false-positive difference is la
 
 \section{Overall Interpretation}
 
-The central empirical conclusion is conditional. SWT-CP v8 achieves complete recall in the displayed CIFAR-10 and MNIST configurations and particularly strong precision under IID data. Its main unresolved weakness is false removal under non-IID CIFAR-10, where the best-observed 30\% precision is only 71.43\%. Earlier MNIST repetitions also expose an FR4 contamination boundary. Future revisions should require positive evidence before anchor admission and exploit paired within-client responses to the two coverage traps, reducing dependence on comparisons among naturally heterogeneous clients.
+The central empirical conclusion is conditional. The proposed method achieves complete recall in the displayed CIFAR-10 and MNIST configurations and particularly strong precision under IID data. Its main unresolved weakness is false removal under non-IID CIFAR-10, where the best-observed 30\% precision is only 71.43\%. Earlier MNIST repetitions also expose an FR4 contamination boundary. Future revisions should require positive evidence before anchor admission and exploit paired within-client responses to the two coverage traps, reducing dependence on comparisons among naturally heterogeneous clients.

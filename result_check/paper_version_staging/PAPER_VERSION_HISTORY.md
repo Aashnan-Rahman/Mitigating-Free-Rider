@@ -49,6 +49,18 @@ Date archived: 2026-09-21
 - Enlarged the eight-panel detection-progress figure and its inter-row spacing to improve readability in the two-column layout.
 - Added the completed CIFAR-10 30% IID and non-IID results to the performance table, detection curves, execution-cost table, abstract, and discussion.
 - Reported the strong IID result and the substantially weaker non-IID precision explicitly; the completed non-IID runs are not disguised as unevaluated data.
+- Removed the provisional SWT-CP method name and adopted the descriptive working title ``Lightweight Trap-Based Free-Rider Detection and Mitigation in Federated Learning.''
+- Reworked the introduction's contributions into bold label-and-explanation bullets covering lightweight server-side operation, trap-based challenges, robust detection and mitigation, and evaluation across four attacks, two datasets, and IID/non-IID settings.
+- Removed the visible qquad text caused by missing LaTeX command markers and reformatted the affected threat-model equations as aligned multiline expressions.
+- Restored the paired threat-model expressions to a single line using a valid LaTeX quad separator.
+- Added comparative result analysis by attacker share, dataset, data partition, and attack type.
+- Removed the discussion paragraph emphasizing intentional selection of the best seed observation.
+- Added a dedicated assumptions and future-work section covering a fixed client population and attacker behavior, honest-majority operation, no new or on-off free riders, non-collusion, defense knowledge, dropout, partial training, mixed attacks, and secure aggregation.
+- Simplified the result table and figure captions and added a float barrier so all result visuals appear before the discussion, conclusion, and references.
+- Expanded the explanation of Figure 1, especially the gradual FR4 staircase under 40\% non-IID data, and connected it to trajectory imitation, wider honest-update variation, repeated traps, and cumulative penalties.
+- Revised the abstract for clearer result wording and removed semicolons and dash-based asides from the paper's prose where natural sentences were clearer.
+- Removed the student ID and added ``MSc Thesis'' and ``Last updated on 24 September 2026'' to the author block.
+- Moved the last-updated date from the centered author block to the upper-right corner of the first page.
 
 Archived files: `versions/v02_introduction_draft/paper.tex`, `paper.pdf`, and `refs.bib`.
 
