@@ -1,0 +1,32 @@
+{
+  "batch_name": "cifar10_fr30_seeds42_43",
+  "results_root": "./results",
+  "defaults": {
+    "methodology_version": "swtcp_v8",
+    "num_clients": 100,
+    "num_rounds": 100,
+    "local_epochs": 3,
+    "batch_size": 32,
+    "free_rider_pct": 0.3,
+    "device": "auto",
+    "pin_memory": false,
+    "save_checkpoints": true,
+    "checkpoint_keep_last": 5
+  },
+  "stages": [
+    {
+      "id": "cifar10_fr30_seeds42_43",
+      "id_format": "{distribution}_seed{seed}_{attack_type}",
+      "description": "CIFAR-10 IID/non-IID, FR1-FR4, 30% free riders, seeds 42 and 43",
+      "enabled": true,
+      "matrix": {
+        "dataset": ["cifar10"],
+        "distribution": ["iid", "noniid"],
+        "dirichlet_alpha": [0.5],
+        "seed": [42, 43],
+        "attack_type": ["FR1", "FR2", "FR3", "FR4"],
+        "free_rider_pct": [0.3]
+      }
+    }
+  ]
+}

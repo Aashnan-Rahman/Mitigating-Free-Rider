@@ -50,6 +50,11 @@ $scheduledBatches = @(
         Label = "MNIST non-IID, FR1-FR4, 30% free riders, seed 42 recovery"
         Plan = Join-Path $projectRoot "configs\mnist_noniid_fr30_seed42_plan.json"
         Batch = Join-Path $resultsRoot "mnist_noniid_fr30_seed42"
+    },
+    [pscustomobject]@{
+        Label = "CIFAR-10 IID/non-IID, FR1-FR4, 30% free riders, seeds 42 and 43"
+        Plan = Join-Path $projectRoot "configs\cifar10_fr30_seeds42_43_plan.json"
+        Batch = Join-Path $resultsRoot "cifar10_fr30_seeds42_43"
     }
 )
 

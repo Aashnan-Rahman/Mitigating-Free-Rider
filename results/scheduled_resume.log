@@ -379,3 +379,121 @@ All scheduled experiments are complete.
 Windows PowerShell transcript end
 End time: 20260920125038
 **********************
+**********************
+Windows PowerShell transcript start
+Start time: 20260922003101
+Username: DESKTOP-0HUBAH2\CSE
+RunAs User: DESKTOP-0HUBAH2\CSE
+Configuration Name: 
+Machine: DESKTOP-0HUBAH2 (Microsoft Windows NT 10.0.26200.0)
+Host Application: powershell.exe -NoProfile -ExecutionPolicy Bypass -File E:\New Projects\Mitigating-Free-Rider\resume_experiments.ps1
+Process ID: 27396
+PSVersion: 5.1.26100.9444
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.26100.9444
+BuildVersion: 10.0.26100.9444
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Scheduled batch is complete: FR4, 40% free riders, seed 44
+Scheduled batch is complete: FR4, 40% free riders, seed 45
+Scheduled batch is complete: FR4, 40% free riders, seed 46
+Scheduled batch is complete: CIFAR-10 IID, FR1-FR4, 40% free riders, seed 42
+Scheduled batch is complete: CIFAR-10 non-IID, FR1-FR4, 40% free riders, seed 43
+Scheduled batch is complete: CIFAR-10 IID, FR1-FR4, 40% free riders, seed 43
+Scheduled batch is complete: CIFAR-10 non-IID, FR1-FR4, 40% free riders, seed 42
+Scheduled batch is complete: MNIST FRIDA-loss and FRAD, IID/non-IID, FR1-FR4, 40% free riders, seed 42
+Scheduled batch is complete: MNIST non-IID, FR1-FR4, 30% free riders, seed 42 recovery
+Starting scheduled batch: CIFAR-10 IID/non-IID, FR1-FR4, 30% free riders, seeds 42 and 43
+**********************
+Windows PowerShell transcript start
+Start time: 20260922223246
+Username: DESKTOP-0HUBAH2\CSE
+RunAs User: DESKTOP-0HUBAH2\CSE
+Configuration Name: 
+Machine: DESKTOP-0HUBAH2 (Microsoft Windows NT 10.0.26200.0)
+Host Application: powershell.exe -NoProfile -ExecutionPolicy Bypass -File E:\New Projects\Mitigating-Free-Rider\resume_experiments.ps1
+Process ID: 3480
+PSVersion: 5.1.26100.9444
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.26100.9444
+BuildVersion: 10.0.26100.9444
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Scheduled batch is complete: FR4, 40% free riders, seed 44
+Scheduled batch is complete: FR4, 40% free riders, seed 45
+Scheduled batch is complete: FR4, 40% free riders, seed 46
+Scheduled batch is complete: CIFAR-10 IID, FR1-FR4, 40% free riders, seed 42
+Scheduled batch is complete: CIFAR-10 non-IID, FR1-FR4, 40% free riders, seed 43
+Scheduled batch is complete: CIFAR-10 IID, FR1-FR4, 40% free riders, seed 43
+Scheduled batch is complete: CIFAR-10 non-IID, FR1-FR4, 40% free riders, seed 42
+Scheduled batch is complete: MNIST FRIDA-loss and FRAD, IID/non-IID, FR1-FR4, 40% free riders, seed 42
+Scheduled batch is complete: MNIST non-IID, FR1-FR4, 30% free riders, seed 42 recovery
+Resuming scheduled batch: CIFAR-10 IID/non-IID, FR1-FR4, 30% free riders, seeds 42 and 43
+**********************
+Windows PowerShell transcript start
+Start time: 20260923040134
+Username: DESKTOP-0HUBAH2\CSE
+RunAs User: DESKTOP-0HUBAH2\CSE
+Configuration Name: 
+Machine: DESKTOP-0HUBAH2 (Microsoft Windows NT 10.0.26200.0)
+Host Application: powershell.exe -NoProfile -ExecutionPolicy Bypass -File E:\New Projects\Mitigating-Free-Rider\resume_experiments.ps1
+Process ID: 5768
+PSVersion: 5.1.26100.9549
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.26100.9549
+BuildVersion: 10.0.26100.9549
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Scheduled batch is complete: FR4, 40% free riders, seed 44
+Scheduled batch is complete: FR4, 40% free riders, seed 45
+Scheduled batch is complete: FR4, 40% free riders, seed 46
+Scheduled batch is complete: CIFAR-10 IID, FR1-FR4, 40% free riders, seed 42
+Scheduled batch is complete: CIFAR-10 non-IID, FR1-FR4, 40% free riders, seed 43
+Scheduled batch is complete: CIFAR-10 IID, FR1-FR4, 40% free riders, seed 43
+Scheduled batch is complete: CIFAR-10 non-IID, FR1-FR4, 40% free riders, seed 42
+Scheduled batch is complete: MNIST FRIDA-loss and FRAD, IID/non-IID, FR1-FR4, 40% free riders, seed 42
+Scheduled batch is complete: MNIST non-IID, FR1-FR4, 30% free riders, seed 42 recovery
+Resuming scheduled batch: CIFAR-10 IID/non-IID, FR1-FR4, 30% free riders, seeds 42 and 43
+**********************
+Windows PowerShell transcript start
+Start time: 20260923144959
+Username: DESKTOP-0HUBAH2\CSE
+RunAs User: DESKTOP-0HUBAH2\CSE
+Configuration Name: 
+Machine: DESKTOP-0HUBAH2 (Microsoft Windows NT 10.0.26200.0)
+Host Application: powershell.exe -NoProfile -ExecutionPolicy Bypass -File E:\New Projects\Mitigating-Free-Rider\resume_experiments.ps1
+Process ID: 4080
+PSVersion: 5.1.26100.9549
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.26100.9549
+BuildVersion: 10.0.26100.9549
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Scheduled batch is complete: FR4, 40% free riders, seed 44
+Scheduled batch is complete: FR4, 40% free riders, seed 45
+Scheduled batch is complete: FR4, 40% free riders, seed 46
+Scheduled batch is complete: CIFAR-10 IID, FR1-FR4, 40% free riders, seed 42
+Scheduled batch is complete: CIFAR-10 non-IID, FR1-FR4, 40% free riders, seed 43
+Scheduled batch is complete: CIFAR-10 IID, FR1-FR4, 40% free riders, seed 43
+Scheduled batch is complete: CIFAR-10 non-IID, FR1-FR4, 40% free riders, seed 42
+Scheduled batch is complete: MNIST FRIDA-loss and FRAD, IID/non-IID, FR1-FR4, 40% free riders, seed 42
+Scheduled batch is complete: MNIST non-IID, FR1-FR4, 30% free riders, seed 42 recovery
+Resuming scheduled batch: CIFAR-10 IID/non-IID, FR1-FR4, 30% free riders, seeds 42 and 43
+
+All scheduled experiments are complete.
+**********************
+Windows PowerShell transcript end
+End time: 20260923185216
+**********************
