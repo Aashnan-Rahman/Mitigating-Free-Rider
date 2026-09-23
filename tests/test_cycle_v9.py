@@ -19,6 +19,7 @@ def test_double_cycle_probes_every_client_once_with_each_trap():
     assert all(item.phase == "double_probe" for item in selections)
     assert selections[-1].coverage_complete
     assert all(len(item.trapped_clients) == 20 for item in selections)
+    assert len({frozenset(item.trapped_clients) for item in selections}) == 10
     for client_id in clients:
         trap_ids = [
             item.coverage_trap_id

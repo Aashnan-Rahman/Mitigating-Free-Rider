@@ -91,13 +91,34 @@ class CycleTrapSelector:
         # trap 0 and five more do the same with trap 1. The ten assignments are
         # then mixed, so the two probe rounds are not predictable by position.
         queue: list[tuple[int, list[int]]] = []
+        previous_pairs: set[frozenset[int]] = set()
         for trap_id in (0, 1):
-            order = list(range(group_count))
-            self.rng.shuffle(order)
+            order = self._nonrepeating_pair_order(group_count, previous_pairs)
+            current_pairs: set[frozenset[int]] = set()
             for start in range(0, group_count, 2):
                 clients: list[int] = []
-                for group_index in order[start : start + 2]:
+                paired_groups = order[start : start + 2]
+                current_pairs.add(frozenset(paired_groups))
+                for group_index in paired_groups:
                     clients.extend(groups[group_index])
                 queue.append((trap_id, clients))
+            previous_pairs = current_pairs
         self.rng.shuffle(queue)
         return queue
+
+    def _nonrepeating_pair_order(
+        self, group_count: int, forbidden: set[frozenset[int]]
+    ) -> list[int]:
+        """Return a random order whose adjacent pairs avoid the prior pass."""
+        order = list(range(group_count))
+        for _ in range(100):
+            self.rng.shuffle(order)
+            pairs = {
+                frozenset(order[start : start + 2])
+                for start in range(0, group_count, 2)
+            }
+            if group_count <= 2 or not (pairs & forbidden):
+                return order
+        # A deterministic one-position rotation is a safe fallback for the
+        # normal ten-group case if random retries are exceptionally unlucky.
+        return order[1:] + order[:1]
