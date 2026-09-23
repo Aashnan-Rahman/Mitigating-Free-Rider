@@ -15,7 +15,7 @@ Islamic University of Technology\\Student ID: 231041006}}
 \maketitle
 
 \begin{abstract}
-Federated learning depends on clients performing local optimization, yet free riders may consume the global model while returning replayed or fabricated updates to avoid computation. Existing defenses commonly rely on client-reported metrics, auxiliary anomaly models, public canary data, or trusted execution assumptions. This paper presents \method, a lightweight server-side challenge protocol that sends undisclosed, scale-aware perturbations of the global model to selected clients and evaluates only updates produced from the same challenge. The protocol combines robust update-norm and layer-profile evidence with warm-up, double-coverage, continuing surveillance, candidate confirmation, weighted suspicion, and rehabilitation. It requires only attributable model updates and small per-client counters; clients perform ordinary local training and receive no indication of when they are audited. We evaluate playback, bounded-random, historical-average, and trajectory-imitation free riders on MNIST and CIFAR-10 under IID and Dirichlet non-IID partitions. In the best-observed multi-seed results, \method{} attains 100\% recall in every evaluated configuration, with 93.75--100\% precision on MNIST, 100\% under IID CIFAR-10, and 85.11\% under non-IID CIFAR-10. Attack-specific detection curves show that trajectory imitation causes the longest delay under non-IID data. The results demonstrate the capability of lightweight challenge-based auditing while identifying heterogeneous honest updates and anchor qualification as the principal remaining limitations.
+Federated learning depends on clients performing local optimization, yet free riders may consume the global model while returning replayed or fabricated updates to avoid computation. Existing defenses commonly rely on client-reported metrics, auxiliary anomaly models, public canary data, or trusted execution assumptions. This paper presents \method, a lightweight server-side challenge protocol that sends undisclosed, scale-aware perturbations of the global model to selected clients and evaluates only updates produced from the same challenge. The protocol combines robust update-norm and layer-profile evidence with warm-up, double-coverage, continuing surveillance, candidate confirmation, weighted suspicion, and rehabilitation. It requires only attributable model updates and small per-client counters; clients perform ordinary local training and receive no indication of when they are audited. We evaluate playback, bounded-random, historical-average, and trajectory-imitation free riders on MNIST and CIFAR-10 under IID and Dirichlet non-IID partitions. In the best-observed multi-seed results, \method{} attains 100\% recall in every displayed configuration, with 93.75--100\% precision on MNIST, 98.36--100\% under IID CIFAR-10, and 71.43--85.11\% under non-IID CIFAR-10. Attack-specific detection curves show that trajectory imitation causes the longest delay under non-IID data. The results demonstrate the capability of lightweight challenge-based auditing while identifying heterogeneous honest updates and anchor qualification as the principal remaining limitations.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -216,7 +216,7 @@ Suspicious clients are divided into approximately one group per ten suspects and
 For a model with $P$ floating parameters and $L$ tensors, processing one returned model requires one parameter pass, $O(P)$ arithmetic, and an $L$-dimensional profile. Medians operate on scalar norms and short profiles; the server neither recomputes gradients nor trains a detector. Client software performs ordinary local training on whichever model it receives and does not train a second model. Apart from model/trap tensors, server state consists mainly of small per-client counters and bounded histories. Cost arises from probe training and temporary exclusion of trap responses, not an auxiliary learning pipeline.
 
 \section{Experimental Design}
-MNIST \cite{lecun1998gradient} and CIFAR-10 \cite{krizhevsky2009learning} are trained with convolutional models using 100 fully participating clients, 100 rounds, three local epochs, batch size 32, and SGD with learning rate 0.01 and momentum 0.9. Data are IID or allocated by a Dirichlet distribution with concentration $\alpha=0.5$. MNIST is evaluated with 30\% and 40\% free riders, while the available CIFAR-10 evaluation uses 40\% free riders.
+MNIST \cite{lecun1998gradient} and CIFAR-10 \cite{krizhevsky2009learning} are trained with convolutional models using 100 fully participating clients, 100 rounds, three local epochs, batch size 32, and SGD with learning rate 0.01 and momentum 0.9. Data are IID or allocated by a Dirichlet distribution with concentration $\alpha=0.5$. Both datasets are evaluated with 30\% and 40\% free riders.
 
 Experiments are repeated under multiple random seeds. Seed identifiers and execution counts are omitted from the tables. For this preliminary capability summary, each attack is represented by its best observed completed result across the evaluated seeds; configuration-level metrics then combine the four selected attack results. Consequently, the tables report demonstrated best-observed performance rather than mean or worst-case reliability.
 
@@ -224,11 +224,11 @@ A positive prediction means permanent removal. We report $TP$, $FP$, $FN$, preci
 
 \section{Results}
 \subsection{Best-Observed Multi-Seed Performance}
-Table~\ref{tab:aggregate} places both datasets, both partitions, and both attacker shares in one grouped view. It summarizes the best observed result for each attack across multiple seeds and then combines FR1--FR4 within each available configuration. Recall reaches 100\% in every displayed configuration. MNIST precision ranges from 93.75\% to 100\%, whereas CIFAR-10 non-IID precision falls to 85.11\%, showing that heterogeneous data primarily increases false removal rather than missed detection in the selected results. CIFAR-10 30\% cells are marked as not evaluated because no corresponding experiments are available.
+Table~\ref{tab:aggregate} places both datasets, both partitions, and both attacker shares in one grouped view. It summarizes the best observed result for each attack across multiple seeds and then combines FR1--FR4 within each configuration. Recall reaches 100\% in every displayed configuration. MNIST precision ranges from 93.75\% to 100\%, and CIFAR-10 IID precision remains at least 98.36\%. CIFAR-10 non-IID precision is lower, reaching 71.43\% at 30\% free riders and 85.11\% at 40\%, showing that heterogeneous honest updates primarily increase false removal rather than missed detection in the selected results.
 
 \begin{table*}[t]
 \centering
-\caption{Best observed multi-seed performance. Each available setting combines the strongest completed observation for each of FR1--FR4. A dash denotes a setting that was not evaluated.}
+\caption{Best observed multi-seed performance. Each setting combines the strongest completed observation for each of FR1--FR4.}
 \label{tab:aggregate}
 \setlength{\tabcolsep}{3.5pt}
 \begin{tabular}{llrrrrrrrr}
@@ -239,14 +239,14 @@ Dataset & Partition & Precision & Recall & F1 & Accuracy & Precision & Recall & 
 \midrule
 MNIST & IID     & 99.17\% & 100\% & 99.59\% & 98.93\% & 100\%   & 100\% & 100\%   & 98.89\% \\
 MNIST & Non-IID & 93.75\% & 100\% & 96.77\% & 98.90\% & 96.97\% & 100\% & 98.46\% & 98.89\% \\
-CIFAR-10 & IID     & -- & -- & -- & -- & 100\%   & 100\% & 100\%   & 76.80\% \\
-CIFAR-10 & Non-IID & -- & -- & -- & -- & 85.11\% & 100\% & 91.95\% & 74.48\% \\
+CIFAR-10 & IID     & 98.36\% & 100\% & 99.17\% & 77.89\% & 100\%   & 100\% & 100\%   & 76.80\% \\
+CIFAR-10 & Non-IID & 71.43\% & 100\% & 83.33\% & 75.67\% & 85.11\% & 100\% & 91.95\% & 74.48\% \\
 \bottomrule
 \end{tabular}
 \end{table*}
 
 \subsection{Detection Progress}
-Figure~\ref{fig:detection-progress} separates the four attacks and reports cumulative permanent removals rather than temporary flags. The earliest removals occur at round 30, consistent with ten warm-up rounds, the ten-round double-coverage sweep, and the minimum ten suspicion probes required before statistical removal. FR1 and FR3 are completely removed at round 30 in every displayed setting. FR2 completes by round 34, while FR4 creates the long non-IID 40\% tails: complete removal occurs at round 83 on MNIST and round 92 on CIFAR-10. Overlapping curves indicate identical removal trajectories.
+Figure~\ref{fig:detection-progress} separates the four attacks and reports cumulative permanent removals rather than temporary flags. The earliest removals occur at round 30, consistent with ten warm-up rounds, the ten-round double-coverage sweep, and the minimum ten suspicion probes required before statistical removal. FR1 and FR3 are completely removed at round 30 in every displayed setting. FR2 completes by round 34. CIFAR-10 non-IID 30\% FR4 reaches 53.33\% removal at round 30 and completes at round 32, while FR4 creates the long non-IID 40\% tails: complete removal occurs at round 83 on MNIST and round 92 on CIFAR-10. Overlapping curves indicate identical removal trajectories.
 
 \begin{figure*}[t]
 \centering
@@ -302,34 +302,42 @@ Figure~\ref{fig:detection-progress} separates the four attacks and reports cumul
  \draw[densely dashed,gray] (axis cs:30,-2) -- (axis cs:30,103);
 
 \nextgroupplot[ylabel={CIFAR-10 removed (\%)},xlabel={Round}]
+ \addplot+[const plot,blue] coordinates {(1,0) (30,100) (100,100)};
  \addplot+[const plot,orange,dashed] coordinates {(1,0) (30,100) (100,100)};
+ \addplot+[const plot,green!60!black,dashdotted] coordinates {(1,0) (30,100) (100,100)};
  \addplot+[const plot,red,dotted,line width=1.2pt] coordinates {(1,0) (30,100) (100,100)};
  \draw[densely dashed,gray] (axis cs:30,-2) -- (axis cs:30,103);
 
 \nextgroupplot[xlabel={Round},yticklabels={}]
+ \addplot+[const plot,blue] coordinates {(1,0) (30,100) (100,100)};
  \addplot+[const plot,orange,dashed] coordinates {(1,0) (30,100) (100,100)};
+ \addplot+[const plot,green!60!black,dashdotted] coordinates {(1,0) (32,100) (100,100)};
  \addplot+[const plot,red,dotted,line width=1.2pt] coordinates {(1,0) (32,100) (100,100)};
  \draw[densely dashed,gray] (axis cs:30,-2) -- (axis cs:30,103);
 
 \nextgroupplot[xlabel={Round},yticklabels={}]
+ \addplot+[const plot,blue] coordinates {(1,0) (30,100) (100,100)};
  \addplot+[const plot,orange,dashed] coordinates {(1,0) (30,100) (100,100)};
+ \addplot+[const plot,green!60!black,dashdotted] coordinates {(1,0) (30,100) (100,100)};
  \addplot+[const plot,red,dotted,line width=1.2pt] coordinates {(1,0) (30,100) (100,100)};
  \draw[densely dashed,gray] (axis cs:30,-2) -- (axis cs:30,103);
 
 \nextgroupplot[xlabel={Round},yticklabels={}]
+ \addplot+[const plot,blue] coordinates {(1,0) (30,100) (100,100)};
  \addplot+[const plot,orange,dashed] coordinates {(1,0) (30,100) (100,100)};
+ \addplot+[const plot,green!60!black,dashdotted] coordinates {(1,0) (30,53.333) (31,86.667) (32,100) (100,100)};
  \addplot+[const plot,red,dotted,line width=1.2pt] coordinates {(1,0) (44,7.5) (52,22.5) (62,32.5) (72,50) (81,57.5) (82,65) (83,95) (91,97.5) (92,100) (100,100)};
  \draw[densely dashed,gray] (axis cs:30,-2) -- (axis cs:30,103);
 \end{groupplot}
 \path (group c1r2.south west)--(group c4r2.south east)
  node[midway,below=0.72cm] {\ref{detlegend}};
 \end{tikzpicture}
-\caption{Attack-specific cumulative permanent removal by communication round. Columns separate FR1--FR4; rows separate MNIST and CIFAR-10. Curves use the same best-observed selections as Table~\ref{tab:aggregate}. CIFAR-10 has only 40\% experiments. The vertical guide marks round 30.}
+\caption{Attack-specific cumulative permanent removal by communication round. Columns separate FR1--FR4; rows separate MNIST and CIFAR-10. Curves use the same best-observed selections as Table~\ref{tab:aggregate}. The vertical guide marks round 30.}
 \label{fig:detection-progress}
 \end{figure*}
 
 \subsection{Utility and execution cost}
-Best-observed final accuracy is 98.89--98.93\% on MNIST and 74.48--76.80\% on CIFAR-10. Accuracy and detection remain distinct: a strong global model does not by itself establish that free riders were identified correctly.
+Best-observed final accuracy is 98.89--98.93\% on MNIST and 74.48--77.89\% on CIFAR-10. Accuracy and detection remain distinct: a strong global model does not by itself establish that free riders were identified correctly.
 
 Table~\ref{tab:cost} gives a deliberately compact execution profile. Values first average repeated seeds within each attack and then weight FR1--FR4 equally. Timings are descriptive rather than a controlled hardware benchmark: most configurations ran on CPU, while MNIST IID 40\% used CUDA. The device is therefore retained beside time per round, and peak memory is included as a direct lightweight-resource measure.
 
@@ -347,7 +355,9 @@ MNIST & IID     & 30\% & CPU  & 47.1 & 0.92 \\
 MNIST & IID     & 40\% & CUDA & 55.6 & 1.40 \\
 MNIST & Non-IID & 30\% & CPU  & 44.8 & 0.72 \\
 MNIST & Non-IID & 40\% & CPU  & 43.6 & 0.84 \\
+CIFAR-10 & IID     & 30\% & CPU & 97.8 & 1.78 \\
 CIFAR-10 & IID     & 40\% & CPU & 88.9 & 1.85 \\
+CIFAR-10 & Non-IID & 30\% & CPU & 88.6 & 1.79 \\
 CIFAR-10 & Non-IID & 40\% & CPU & 79.5 & 1.90 \\
 \bottomrule
 \end{tabular}

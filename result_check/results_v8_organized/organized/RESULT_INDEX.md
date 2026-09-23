@@ -29,9 +29,9 @@ General analytics and scheduling logs are stored in `summaries/`.
 | Family | Completed runs |
 |---|---:|
 | SWT-CP MNIST | 35 |
-| SWT-CP CIFAR-10 | 16 |
+| SWT-CP CIFAR-10 | 32 |
 | MNIST baselines | 16 |
-| **Total** | **67** |
+| **Total** | **83** |
 
 Every canonical run contains a `run_config.json` reporting 100 completed rounds.
 
@@ -41,6 +41,7 @@ Every canonical run contains a `run_config.json` reporting 100 completed rounds.
 - The newer completed workspace copy of MNIST non-IID 30%, seed 42 is used. Its earlier archived execution remains recoverable from the original ZIP.
 - MNIST non-IID 40% FR4 repetitions for seeds 44, 45, and 46 are included in addition to the archived seed 42 and 43 runs.
 - All CIFAR-10 and baseline batches currently present in the workspace results directory are included.
+- The completed `cifar10_fr30_seeds42_43` batch supplies the CIFAR-10 IID and non-IID 30% runs for both repeated seeds and all four attacks.
 
 ## Original archive mapping
 
@@ -52,6 +53,7 @@ Every canonical run contains a `run_config.json` reporting 100 completed rounds.
 | `results v8 s43 4.zip` | MNIST IID, 40%, seed 43 |
 | `results v8 non iid 30.zip` | MNIST non-IID, 30%, seeds 42 and 43 |
 | `results v8 non iid 40.zip` | MNIST non-IID, 40%, seeds 42 and 43 |
+| `results/cifar10_fr30_seeds42_43/` | CIFAR-10 IID and non-IID, 30%, two seeds |
 
 ## Integrity notes
 

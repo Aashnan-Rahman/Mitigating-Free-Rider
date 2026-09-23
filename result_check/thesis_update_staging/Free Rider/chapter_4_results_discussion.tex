@@ -7,9 +7,9 @@ The evaluation addresses four questions. First, can SWT-CP detect replay, random
 
 \section{Experimental Setup}
 
-All reported v8 experiments use MNIST, 100 clients, full participation, 100 communication rounds, three local epochs, batch size 32, SGD with learning rate 0.01 and momentum 0.9, and a convolutional classifier. IID partitions distribute examples uniformly. Non-IID partitions use a Dirichlet label allocation with concentration $\alpha=0.5$. The matrix contains attacker shares of 30\% and 40\%, seeds 42 and 43, and FR1--FR4, yielding 32 completed runs. No result from v4--v7 is pooled with v8.
+All reported v8 experiments use MNIST or CIFAR-10, 100 clients, full participation, 100 communication rounds, three local epochs, batch size 32, SGD with learning rate 0.01 and momentum 0.9, and a convolutional classifier. IID partitions distribute examples uniformly. Non-IID partitions use a Dirichlet label allocation with concentration $\alpha=0.5$. The core matrix contains both datasets, attacker shares of 30\% and 40\%, two random seeds, and FR1--FR4, yielding 64 completed runs. No result from v4--v7 is pooled with v8.
 
-Precision, recall, and F1 treat permanent removal as the positive decision. Thus $TP$ is a removed free rider, $FP$ a removed honest client, and $FN$ an active free rider at round 100. Final candidates are not counted as false removals. This distinction is important because candidates created in round 100 have no later confirmation round. Global accuracy is evaluated on the MNIST test set. Resource measurements are process-level measurements from the simulator; resumed-run wall-clock totals may describe only the resumed segment, so average round time is used for cross-run comparison.
+Precision, recall, and F1 treat permanent removal as the positive decision. Thus $TP$ is a removed free rider, $FP$ a removed honest client, and $FN$ an active free rider at round 100. Final candidates are not counted as false removals. This distinction is important because candidates created in round 100 have no later confirmation round. Global accuracy is evaluated on the corresponding MNIST or CIFAR-10 test set. Resource measurements are process-level measurements from the simulator; resumed-run wall-clock totals may describe only the resumed segment, so average round time is used for cross-run comparison.
 
 \begin{table}[htbp]
 \centering
@@ -32,13 +32,13 @@ Non-IID & 40\%/43 & 120 & 8 & 40 & 93.75\% & 75\% & 83.33\% & 98.88\% \\
 \end{tabular}}
 \end{table}
 
-\section{IID Results}
+\section{MNIST IID Results}
 
 All 560 free riders in the four IID configurations were removed. Seed 43 was particularly strong: one honest client was removed across the 30\% experiments and none across the 40\% experiments. Seed 42 produced eight and six honest removals respectively. The gap shows that a single seed would give a misleading estimate of precision even under IID partitioning. Across all IID runs, pooled removal precision was $560/(560+15)=97.39\%$, recall was 100\%, and F1 was 98.68\%.
 
 FR1--FR4 all remained detectable under IID data. Final accuracy varied by only 0.14 percentage points across the aggregate settings. The defense therefore preserved utility in these experiments despite excluding trapped and candidate updates. However, the seed-42 false removals demonstrate that joint evidence and rotation reduce rather than eliminate honest tails.
 
-\section{Non-IID Results}
+\section{MNIST Non-IID Results}
 
 Table~\ref{tab:noniid-detail} presents each non-IID attack as ``free riders removed / honest clients removed.'' FR1--FR3 achieved complete recall in every setting. FR3 was the least precise, producing three or four false removals per run. FR4 exhibited a qualitatively different transition: it was fully detected at 30\% but completely missed at 40\% under both seeds.
 
@@ -62,7 +62,33 @@ At 30\%, all FR4 clients entered the candidate/suspicion pipeline and were remov
 
 This discontinuity is visible during initial coverage. Median FR4 norm z-scores were $-2.65$ and $-3.10$ at 30\%, but only $-1.55$ and $-1.81$ at 40\%. Increasing contamination changed the median/MAD and layer-profile references enough to make the malicious cluster appear less exceptional, even though its raw update norms remained much smaller. In the seed-42 40\% run, the median trapped norm was 0.0365 for FR4 and 0.4824 for honest clients, a factor of approximately 13. The detector failed not because responses were physically similar, but because the reference and joint-decision mechanism did not convert that separation into evidence under the broad non-IID mixture.
 
-\section{Anchor Contamination Case Study}
+\section{CIFAR-10 Results}
+
+The new CIFAR-10 30\% batch completed all sixteen planned executions. Every attack in both partitions reached 100\% recall. Under IID data, each attack removed all 30 free riders and removed at most one honest client in either repeated run. Selecting the stronger completed observation for each attack gives 120 true removals and two false removals, corresponding to 98.36\% precision, 100\% recall, 99.17\% F1, and 77.89\% mean final accuracy. This is consistent with the strong 40\% IID result.
+
+The non-IID outcome is materially weaker and should not be interpreted as a uniformly successful 30\% result. Although all free riders were removed, individual executions removed 7--18 honest clients. The best-observed attack-wise combination contains 120 true and 48 false removals, giving 71.43\% precision, 100\% recall, 83.33\% F1, and 75.67\% mean final accuracy. Thus, reducing the attacker share did not resolve the heterogeneous-client false-positive problem on CIFAR-10.
+
+\begin{table}[htbp]
+\centering
+\caption{CIFAR-10 30\% results (free riders removed / honest clients removed)}
+\label{tab:cifar30-detail}
+\begin{tabular}{lrrrr}
+\toprule
+& \multicolumn{2}{c}{IID} & \multicolumn{2}{c}{Non-IID} \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}
+Attack & Run 1 & Run 2 & Run 1 & Run 2 \\
+\midrule
+FR1 & 30/1 & 30/1 & 30/9 & 30/7 \\
+FR2 & 30/0 & 30/0 & 30/14 & 30/17 \\
+FR3 & 30/1 & 30/1 & 30/13 & 30/12 \\
+FR4 & 30/0 & 30/0 & 30/15 & 30/18 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Removal timing remains fast in the best-observed CIFAR-10 30\% executions. IID FR1--FR4, and non-IID FR1 and FR3, complete at round 30. Non-IID FR2 completes at round 32. Non-IID FR4 removes 53.33\% at round 30, 86.67\% at round 31, and all attackers at round 32. The absence of false negatives therefore coexists with substantial non-IID false removal; detection speed alone is not sufficient evidence of a safe detector.
+
+\section{MNIST Anchor Contamination Case Study}
 
 The 40\% FR4 failure also invalidated the operational interpretation of an eligible anchor. Because no FR4 client had prior evidence, attackers entered the never-flagged roster. In the seed-42 run, honest client 85 became suspicious and was compared with 33 anchor assignments over its episode; 10 were free riders. At rounds 66, 68, and 73, two of its three anchors were FR4 clients. Those exact three malicious-majority panels produced joint norm/profile failures and added three points each. Combined with six earlier points, client 85 reached 15 and was removed at round 73.
 
@@ -76,26 +102,26 @@ At round 100 the non-IID settings contained between 17 and 34 candidates and one
 
 \section{Model Utility}
 
-Mean final accuracy remained between 98.84\% and 98.95\% in every aggregate setting. The individual-run range was 98.82--98.95\%. Notably, the non-IID 40\% FR4 runs still achieved 98.84\% and 98.88\% despite detecting no attackers. FR4 returns low-magnitude fabricated updates; with 60 honest clients remaining, these responses mainly dilute learning rather than immediately destroy classification accuracy. Consequently, high test accuracy is not evidence of successful free-rider detection.
+MNIST mean final accuracy remained between 98.84\% and 98.95\% in every aggregate setting, with an individual-run range of 98.82--98.95\%. CIFAR-10 best-observed configuration accuracy ranges from 74.48\% to 77.89\%; the new 30\% configurations reach 77.89\% under IID and 75.67\% under non-IID data. Notably, high accuracy can coexist with either missed attackers or excessive honest removals. Consequently, test accuracy is not evidence of successful free-rider detection.
 
 \section{Runtime and Resource Use}
 
 \begin{table}[htbp]
 \centering
-\caption{Execution profile aggregated across four attacks}
+\caption{Recorded execution profile aggregated across attacks and repeated runs}
 \label{tab:resources}
-\begin{tabular}{llrrr}
+\begin{tabular}{lllcrr}
 \toprule
-Partition & Attackers/seed & Mean s/round & Approx. batch hours & Peak RAM (MB) \\
+Dataset & Partition & Share & Device & Mean s/round & Peak RAM (GB) \\
 \midrule
-IID & 30\%/42 & 50.8 & 5.65 & 1074 \\
-IID & 30\%/43 & 43.4 & 4.82 & 1150 \\
-IID & 40\%/42 & 59.6 & 6.62 & 3172 \\
-IID & 40\%/43 & 54.3 & 6.04 & 3237 \\
-Non-IID & 30\%/42 & 46.9 & 5.21 & 887 \\
-Non-IID & 30\%/43 & 46.0 & 5.11 & 891 \\
-Non-IID & 40\%/42 & 42.4 & 4.72 & 1079 \\
-Non-IID & 40\%/43 & 44.8 & 4.98 & 1022 \\
+MNIST & IID & 30\% & CPU & 47.1 & 0.92 \\
+MNIST & IID & 40\% & CUDA & 55.6 & 1.40 \\
+MNIST & Non-IID & 30\% & CPU & 44.8 & 0.72 \\
+MNIST & Non-IID & 40\% & CPU & 43.6 & 0.84 \\
+CIFAR-10 & IID & 30\% & CPU & 97.8 & 1.78 \\
+CIFAR-10 & IID & 40\% & CPU & 88.9 & 1.85 \\
+CIFAR-10 & Non-IID & 30\% & CPU & 88.6 & 1.79 \\
+CIFAR-10 & Non-IID & 40\% & CPU & 79.5 & 1.90 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -104,8 +130,8 @@ The IID 40\% runs recorded CUDA memory, while the other collected batches execut
 
 \section{Threats to Validity}
 
-Only two seeds were evaluated, and their false-positive difference is large. The experiments use one dataset, one model family, one Dirichlet concentration, full participation, and always-on independent attackers. Reported percentages are therefore measurements of this simulation, not confidence intervals for deployment. No external defense was rerun under an identical implementation, so the results do not establish superiority over FRIDA, FRAD, PASS, or STD-DAGMM. Accuracy remains high even in a detection failure, and should not be treated as a proxy for contribution authenticity. Finally, individual-update inspection is incompatible with standard secure aggregation without additional protocol support.
+Only two primary seeds were evaluated, and their false-positive difference is large. The experiments use two image datasets, one model family per dataset, one Dirichlet concentration, full participation, and always-on independent attackers. Reported percentages are therefore measurements of this simulation, not confidence intervals for deployment. No external defense was rerun under an identical implementation, so the results do not establish superiority over FRIDA, FRAD, PASS, or STD-DAGMM. Accuracy remains high even in a detection failure, and should not be treated as a proxy for contribution authenticity. Finally, individual-update inspection is incompatible with standard secure aggregation without additional protocol support.
 
 \section{Overall Interpretation}
 
-The central empirical conclusion is conditional. SWT-CP v8 is highly effective against FR1--FR3 across the tested IID and non-IID settings, and against FR4 under IID or 30\% non-IID contamination. It is not robust to FR4 at 40\% non-IID contamination. The repeated two-seed failure indicates a methodological boundary rather than a corrupted run. Future revisions should require positive evidence before anchor admission and exploit paired within-client responses to the two coverage traps, reducing dependence on comparisons among naturally heterogeneous clients.
+The central empirical conclusion is conditional. SWT-CP v8 achieves complete recall in the displayed CIFAR-10 and MNIST configurations and particularly strong precision under IID data. Its main unresolved weakness is false removal under non-IID CIFAR-10, where the best-observed 30\% precision is only 71.43\%. Earlier MNIST repetitions also expose an FR4 contamination boundary. Future revisions should require positive evidence before anchor admission and exploit paired within-client responses to the two coverage traps, reducing dependence on comparisons among naturally heterogeneous clients.

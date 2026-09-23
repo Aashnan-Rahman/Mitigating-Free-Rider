@@ -1,0 +1,195 @@
+{
+  "batch_id": "cifar10_fr30_seeds42_43",
+  "created_at": "2026-09-22T00:31:07.795397",
+  "defaults": {
+    "batch_size": 32,
+    "checkpoint_keep_last": 5,
+    "device": "auto",
+    "free_rider_pct": 0.3,
+    "local_epochs": 3,
+    "methodology_version": "swtcp_v8",
+    "num_clients": 100,
+    "num_rounds": 100,
+    "pin_memory": false,
+    "save_checkpoints": true
+  },
+  "experiments": [
+    {
+      "config": {
+        "attack_type": "FR1",
+        "dataset": "cifar10",
+        "dirichlet_alpha": 0.5,
+        "distribution": "iid",
+        "free_rider_pct": 0.3,
+        "seed": 42
+      },
+      "id": "iid_seed42_FR1"
+    },
+    {
+      "config": {
+        "attack_type": "FR2",
+        "dataset": "cifar10",
+        "dirichlet_alpha": 0.5,
+        "distribution": "iid",
+        "free_rider_pct": 0.3,
+        "seed": 42
+      },
+      "id": "iid_seed42_FR2"
+    },
+    {
+      "config": {
+        "attack_type": "FR3",
+        "dataset": "cifar10",
+        "dirichlet_alpha": 0.5,
+        "distribution": "iid",
+        "free_rider_pct": 0.3,
+        "seed": 42
+      },
+      "id": "iid_seed42_FR3"
+    },
+    {
+      "config": {
+        "attack_type": "FR4",
+        "dataset": "cifar10",
+        "dirichlet_alpha": 0.5,
+        "distribution": "iid",
+        "free_rider_pct": 0.3,
+        "seed": 42
+      },
+      "id": "iid_seed42_FR4"
+    },
+    {
+      "config": {
+        "attack_type": "FR1",
+        "dataset": "cifar10",
+        "dirichlet_alpha": 0.5,
+        "distribution": "iid",
+        "free_rider_pct": 0.3,
+        "seed": 43
+      },
+      "id": "iid_seed43_FR1"
+    },
+    {
+      "config": {
+        "attack_type": "FR2",
+        "dataset": "cifar10",
+        "dirichlet_alpha": 0.5,
+        "distribution": "iid",
+        "free_rider_pct": 0.3,
+        "seed": 43
+      },
+      "id": "iid_seed43_FR2"
+    },
+    {
+      "config": {
+        "attack_type": "FR3",
+        "dataset": "cifar10",
+        "dirichlet_alpha": 0.5,
+        "distribution": "iid",
+        "free_rider_pct": 0.3,
+        "seed": 43
+      },
+      "id": "iid_seed43_FR3"
+    },
+    {
+      "config": {
+        "attack_type": "FR4",
+        "dataset": "cifar10",
+        "dirichlet_alpha": 0.5,
+        "distribution": "iid",
+        "free_rider_pct": 0.3,
+        "seed": 43
+      },
+      "id": "iid_seed43_FR4"
+    },
+    {
+      "config": {
+        "attack_type": "FR1",
+        "dataset": "cifar10",
+        "dirichlet_alpha": 0.5,
+        "distribution": "noniid",
+        "free_rider_pct": 0.3,
+        "seed": 42
+      },
+      "id": "noniid_seed42_FR1"
+    },
+    {
+      "config": {
+        "attack_type": "FR2",
+        "dataset": "cifar10",
+        "dirichlet_alpha": 0.5,
+        "distribution": "noniid",
+        "free_rider_pct": 0.3,
+        "seed": 42
+      },
+      "id": "noniid_seed42_FR2"
+    },
+    {
+      "config": {
+        "attack_type": "FR3",
+        "dataset": "cifar10",
+        "dirichlet_alpha": 0.5,
+        "distribution": "noniid",
+        "free_rider_pct": 0.3,
+        "seed": 42
+      },
+      "id": "noniid_seed42_FR3"
+    },
+    {
+      "config": {
+        "attack_type": "FR4",
+        "dataset": "cifar10",
+        "dirichlet_alpha": 0.5,
+        "distribution": "noniid",
+        "free_rider_pct": 0.3,
+        "seed": 42
+      },
+      "id": "noniid_seed42_FR4"
+    },
+    {
+      "config": {
+        "attack_type": "FR1",
+        "dataset": "cifar10",
+        "dirichlet_alpha": 0.5,
+        "distribution": "noniid",
+        "free_rider_pct": 0.3,
+        "seed": 43
+      },
+      "id": "noniid_seed43_FR1"
+    },
+    {
+      "config": {
+        "attack_type": "FR2",
+        "dataset": "cifar10",
+        "dirichlet_alpha": 0.5,
+        "distribution": "noniid",
+        "free_rider_pct": 0.3,
+        "seed": 43
+      },
+      "id": "noniid_seed43_FR2"
+    },
+    {
+      "config": {
+        "attack_type": "FR3",
+        "dataset": "cifar10",
+        "dirichlet_alpha": 0.5,
+        "distribution": "noniid",
+        "free_rider_pct": 0.3,
+        "seed": 43
+      },
+      "id": "noniid_seed43_FR3"
+    },
+    {
+      "config": {
+        "attack_type": "FR4",
+        "dataset": "cifar10",
+        "dirichlet_alpha": 0.5,
+        "distribution": "noniid",
+        "free_rider_pct": 0.3,
+        "seed": 43
+      },
+      "id": "noniid_seed43_FR4"
+    }
+  ],
+  "source_plan": "E:\\New Projects\\Mitigating-Free-Rider\\configs\\cifar10_fr30_seeds42_43_plan.json"
+}

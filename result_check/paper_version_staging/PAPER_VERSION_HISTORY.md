@@ -47,6 +47,8 @@ Date archived: 2026-09-21
 - Completed the abstract with the problem, server-side method, evaluation scope, best-observed detection results, and principal remaining limitation.
 - Completed the introduction's contribution list, emphasizing lightweight hidden challenges, dual robust evidence, staged confirmation and rehabilitation, the four-attack evaluation, and transparent reporting of heterogeneous-data sensitivity.
 - Enlarged the eight-panel detection-progress figure and its inter-row spacing to improve readability in the two-column layout.
+- Added the completed CIFAR-10 30% IID and non-IID results to the performance table, detection curves, execution-cost table, abstract, and discussion.
+- Reported the strong IID result and the substantially weaker non-IID precision explicitly; the completed non-IID runs are not disguised as unevaluated data.
 
 Archived files: `versions/v02_introduction_draft/paper.tex`, `paper.pdf`, and `refs.bib`.
 
