@@ -41,9 +41,12 @@ Date archived: 2026-09-21
 - Replaced the earlier pooled-run tables with configuration-level precision/recall/F1/accuracy and attack-level F1 summaries.
 - Explicitly labeled the selected figures as best-observed capability results rather than averages or robustness estimates.
 - Consolidated MNIST and CIFAR-10 IID/non-IID performance into one table grouped by 30\% and 40\% free-rider share, marking unavailable CIFAR-10 30\% results with dashes.
-- Added a reproducible two-panel cumulative-detection figure based on permanent-removal rounds, including the round-30 earliest-removal guide and the longer non-IID FR4 tails.
+- Added a reproducible eight-panel cumulative-detection grid: FR1--FR4 by column and MNIST/CIFAR-10 by row, including the round-30 guide and the longer non-IID FR4 tails.
 - Added a compact execution-cost table containing device, mean seconds per round, and peak process memory; omitted redundant derived duration and aggregation-count columns.
 - Compiled successfully as a six-page IEEE-format preprint after adding the detection-progress figure.
+- Completed the abstract with the problem, server-side method, evaluation scope, best-observed detection results, and principal remaining limitation.
+- Completed the introduction's contribution list, emphasizing lightweight hidden challenges, dual robust evidence, staged confirmation and rehabilitation, the four-attack evaluation, and transparent reporting of heterogeneous-data sensitivity.
+- Enlarged the eight-panel detection-progress figure and its inter-row spacing to improve readability in the two-column layout.
 
 Archived files: `versions/v02_introduction_draft/paper.tex`, `paper.pdf`, and `refs.bib`.
 

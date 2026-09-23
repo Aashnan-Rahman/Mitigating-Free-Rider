@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025) (preloaded format=pdflatex 2025.12.24)  22 SEP 2026 00:43
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025) (preloaded format=pdflatex 2025.12.24)  22 SEP 2026 00:51
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -921,18 +921,11 @@ Package hyperref Info: Link coloring OFF on input line 14.
 \openout4 = `paper.out'.
 
 
-Underfull \vbox (badness 1314) has occurred while \output is active []
-
- [1{d:/texlive/2025/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{d:/texlive/20
-25/texmf-dist/fonts/enc/dvips/base/8r.enc}
-
-
-]
 (d:/texlive/2025/texmf-dist/tex/latex/microtype/mt-cmr.cfg
 File: mt-cmr.cfg 2013/05/19 v2.2 microtype config. file: Computer Modern Roman 
 (RS)
 )
-LaTeX Font Info:    Trying to load font information for U+msa on input line 46.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 35.
 
 
 (d:/texlive/2025/texmf-dist/tex/latex/amsfonts/umsa.fd
@@ -941,7 +934,7 @@ File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 (d:/texlive/2025/texmf-dist/tex/latex/microtype/mt-msa.cfg
 File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 46.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 35.
 
 
 (d:/texlive/2025/texmf-dist/tex/latex/amsfonts/umsb.fd
@@ -949,26 +942,20 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
 (d:/texlive/2025/texmf-dist/tex/latex/microtype/mt-msb.cfg
 File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
-) [2]
+) [1{d:/texlive/2025/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{d:/texlive/2
+025/texmf-dist/fonts/enc/dvips/base/8r.enc}
+
+
+] [2]
 Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on in
-put line 108.
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
+put line 115.
  [3]
-Underfull \hbox (badness 1406) in paragraph at lines 198--199
+Underfull \hbox (badness 1406) in paragraph at lines 205--206
 [] \OT1/ptm/m/n/10 (+20) re-ha-bil-i-tate $\OML/cmm/m/it/10 i$ \OT1/ptm/m/n/10 
 (+20) and clear magnitude-episode
  []
 
-[4]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-
-Underfull \vbox (badness 2865) has occurred while \output is active []
-
- [5]
-(./paper.bbl)
+[4] (./paper.bbl [5])
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -991,11 +978,11 @@ Package rerunfilecheck Info: File `paper.out' has not changed.
 (rerunfilecheck)             Checksum: 7C27BF1D5E555D858742AEAADBB4B75C;3371.
  ) 
 Here is how much of TeX's memory you used:
- 35161 strings out of 467538
- 804695 string characters out of 5423724
- 1415517 words of memory out of 5000000
- 63218 multiletter control sequences out of 15000+600000
- 679546 words of font info for 284 fonts, out of 8000000 for 9000
+ 35186 strings out of 467538
+ 805012 string characters out of 5423724
+ 1401797 words of memory out of 5000000
+ 63223 multiletter control sequences out of 15000+600000
+ 680406 words of font info for 298 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  99i,19n,118p,7329b,2320s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <d:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb><d:/tex
@@ -1009,7 +996,7 @@ fb><d:/texlive/2025/texmf-dist/fonts/type1/urw/times/utmb8a.pfb><d:/texlive/202
 5/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb><d:/texlive/2025/texmf-dist/font
 s/type1/urw/times/utmr8a.pfb><d:/texlive/2025/texmf-dist/fonts/type1/urw/times/
 utmri8a.pfb>
-Output written on paper.pdf (6 pages, 183962 bytes).
+Output written on paper.pdf (6 pages, 188992 bytes).
 PDF statistics:
  240 PDF objects out of 1000 (max. 8388607)
  204 compressed objects within 3 object streams
