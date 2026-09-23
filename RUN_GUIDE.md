@@ -366,3 +366,30 @@ python monitor.py --status results/mnist_baselines_fr40_seed42/experiment_status
 The batch is queued after the scheduled CIFAR-10 matrices in
 `resume_experiments.ps1`. The existing startup task will resume it after those
 CIFAR runs finish, including after a restart without unlocking Windows.
+
+## 10. CIFAR-10 30% matrix, seeds 42 and 43
+
+The fixed batch `cifar10_fr30_seeds42_43` contains 16 SWT-CP v8 experiments:
+IID and Dirichlet non-IID (`alpha=0.5`), seeds 42 and 43, and FR1 through FR4.
+Every experiment uses 100 clients, 100 rounds, and 30% free riders.
+
+Start it with:
+
+```powershell
+python run_experiments.py --plan configs/cifar10_fr30_seeds42_43_plan.json --stop-on-error
+```
+
+Resume it after an interruption with:
+
+```powershell
+python run_experiments.py --resume-batch results/cifar10_fr30_seeds42_43 --stop-on-error
+```
+
+Monitor it with:
+
+```powershell
+python monitor.py --status results/cifar10_fr30_seeds42_43/experiment_status.json --watch
+```
+
+It is included in `resume_experiments.ps1`, so the boot-triggered scheduled task
+continues it from its latest completed-round checkpoint after a restart.
