@@ -1,0 +1,28 @@
+{
+  "batch_name": null,
+  "results_root": "./results",
+  "defaults": {
+    "methodology_version": "swtcp_v9",
+    "num_clients": 100,
+    "num_rounds": 100,
+    "free_rider_pct": 0.4,
+    "seed": 46,
+    "dirichlet_alpha": 0.5,
+    "device": "auto",
+    "save_checkpoints": true,
+    "checkpoint_keep_last": 5
+  },
+  "stages": [
+    {
+      "id": "v9_mnist_noniid_fr40_fr4_seed46",
+      "description": "v9 regression run for the previously weak MNIST non-IID, 40% FR4, seed 46 case",
+      "enabled": true,
+      "matrix": {
+        "dataset": ["mnist"],
+        "distribution": ["noniid"],
+        "attack_type": ["FR4"],
+        "free_rider_pct": [0.4]
+      }
+    }
+  ]
+}

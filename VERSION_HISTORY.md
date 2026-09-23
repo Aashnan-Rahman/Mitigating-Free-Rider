@@ -89,3 +89,25 @@ be pooled as if they used the same detector.
   roster size, active-anchor count, rotation cycle, and whether each client was
   an active anchor or received the Y audit.
 - v8 has not yet been experimentally validated.
+
+## v9 — Cycle scoring with adaptive probe intensity
+
+- Replaces the anchor-heavy third phase with repeated population-wide probe
+  cycles after the ten-round warm-up.
+- Double mode divides active clients into ten hidden groups. Over ten rounds,
+  each group receives two distinct secret trap models. The ten two-group probe
+  assignments are randomly ordered. A trapped response is never aggregated.
+- A client that jointly fails both the norm and layer-percentage tests on both
+  probes is classified S and receives -2. One joint failure is C and receives
+  -1. Passing the complete cycle is clear and restores +0.5. Isolated norm or
+  layer-profile deviations remain diagnostic and do not change state or score.
+- S clients are quarantined from aggregation in every round until a later clean
+  complete cycle rehabilitates them. C clients continue contributing except
+  while directly probed.
+- Removal occurs when the cumulative score reaches -4. Exact model send-backs
+  remain a separate, non-forgivable counter: five send-backs remove the client,
+  with removal applied no earlier than the end of warm-up.
+- A clean double cycle switches to a ten-group single-probe surveillance sweep.
+  Any C result switches the following cycle back to double probing.
+- Existing MAD floors and the requirement for joint norm/profile evidence guard
+  against tiny late-training differences becoming removals.

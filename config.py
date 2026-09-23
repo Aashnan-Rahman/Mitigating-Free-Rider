@@ -34,6 +34,11 @@ class ExperimentConfig:
     penalty_normal_flag: int = 1
     penalty_suspicion_flag: int = 3
     removal_threshold_points: int = 15
+    cycle_clear_reward: float = 0.5
+    cycle_candidate_cost: float = 1.0
+    cycle_suspicious_cost: float = 2.0
+    cycle_removal_score: float = -4.0
+    sendback_removal_count: int = 5
     dodge_min_probes: int = 10
     dodge_max_flag_rate: float = 0.10
     zero_update_epsilon: float = 1e-6
@@ -91,8 +96,12 @@ class ExperimentConfig:
         return asdict(self)
 
     @property
-    def removal_threshold(self) -> int:
-        return self.removal_threshold_points
+    def removal_threshold(self) -> float:
+        return (
+            self.cycle_removal_score
+            if self.methodology_version == "swtcp_v9"
+            else self.removal_threshold_points
+        )
 
     def resolved_run_name(self) -> str:
         if self.run_name:
@@ -109,7 +118,7 @@ class ExperimentConfig:
 
     def validate(self) -> None:
         choices = {
-            "methodology_version": {"swtcp_v8", "frida_loss", "frad_reproduction"},
+            "methodology_version": {"swtcp_v8", "swtcp_v9", "frida_loss", "frad_reproduction"},
             "dataset": {"mnist", "cifar10"},
             "distribution": {"iid", "noniid"},
             "attack_type": {"FR1", "FR2", "FR3", "FR4"},
@@ -149,6 +158,14 @@ class ExperimentConfig:
             )
         ):
             raise ValueError("Suspicion penalties and removal threshold must be positive.")
+        if (
+            self.cycle_clear_reward <= 0
+            or self.cycle_candidate_cost <= 0
+            or self.cycle_suspicious_cost <= 0
+            or self.cycle_removal_score >= 0
+            or self.sendback_removal_count <= 0
+        ):
+            raise ValueError("v9 cycle scoring settings are invalid.")
         if self.dodge_min_probes <= 0 or not 0.0 <= self.dodge_max_flag_rate <= 1.0:
             raise ValueError("Dodge-index settings are invalid.")
         if (

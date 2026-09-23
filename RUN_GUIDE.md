@@ -156,6 +156,18 @@ After an experiment finishes, its exact total and average-round times are stored
 in that experiment's `run_config.json` as `total_wall_clock_seconds` and
 `average_round_time_seconds`.
 
+## v9 targeted regression run
+
+The v9 plan schedules the previously weak case: MNIST non-IID, 40% free riders,
+FR4, seed 46. It uses the ten-round warm-up, repeated double-probe cycles, and
+adaptive single-probe surveillance described in `VERSION_HISTORY.md`.
+
+```powershell
+python run_experiments.py --plan configs/v9_mnist_noniid_fr40_fr4_seed46_plan.json --stop-on-error
+```
+
+Monitor it from another PowerShell window with `python monitor.py --watch`.
+
 To estimate the running experiment by itself—elapsed time, average seconds per
 round, remaining time, and estimated total time—use:
 
