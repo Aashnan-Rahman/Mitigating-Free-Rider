@@ -10,8 +10,57 @@ $scheduledBatches = @(
         Label = "v11 validation: MNIST IID FR1, 40% free riders, seed 42"
         Plan = Join-Path $projectRoot "configs\v11_validation_mnist_iid_fr40_seed42_plan.json"
         Batch = Join-Path $resultsRoot "v11_validation_mnist_iid_fr40_seed42"
+        GateBatch = $null
+        GateRun = $null
+    },
+    [pscustomobject]@{
+        Label = "v11 validation: MNIST IID FR2, 40% free riders, seed 42"
+        Plan = Join-Path $projectRoot "configs\v11_validation_mnist_iid_fr2_seed42_plan.json"
+        Batch = Join-Path $resultsRoot "v11_validation_mnist_iid_fr2_seed42"
+        GateBatch = Join-Path $resultsRoot "v11_validation_mnist_iid_fr40_seed42"
+        GateRun = "v11_mnist_iid_fr1_fr40_seed42"
+    },
+    [pscustomobject]@{
+        Label = "v11 validation: MNIST IID FR3, 40% free riders, seed 42"
+        Plan = Join-Path $projectRoot "configs\v11_validation_mnist_iid_fr3_seed42_plan.json"
+        Batch = Join-Path $resultsRoot "v11_validation_mnist_iid_fr3_seed42"
+        GateBatch = Join-Path $resultsRoot "v11_validation_mnist_iid_fr2_seed42"
+        GateRun = "v11_mnist_iid_fr2_fr40_seed42"
+    },
+    [pscustomobject]@{
+        Label = "v11 validation: MNIST IID FR4, 40% free riders, seed 42"
+        Plan = Join-Path $projectRoot "configs\v11_validation_mnist_iid_fr4_seed42_plan.json"
+        Batch = Join-Path $resultsRoot "v11_validation_mnist_iid_fr4_seed42"
+        GateBatch = Join-Path $resultsRoot "v11_validation_mnist_iid_fr3_seed42"
+        GateRun = "v11_mnist_iid_fr3_fr40_seed42"
+    },
+    [pscustomobject]@{
+        Label = "v11 full MNIST IID/non-IID, FR1-FR4, 40% free riders, seed 42"
+        Plan = Join-Path $projectRoot "configs\v11_full_mnist_iid_noniid_fr40_seed42_plan.json"
+        Batch = Join-Path $resultsRoot "v11_full_mnist_iid_noniid_fr40_seed42"
+        GateBatch = Join-Path $resultsRoot "v11_validation_mnist_iid_fr4_seed42"
+        GateRun = "v11_mnist_iid_fr4_fr40_seed42"
     }
 )
+
+function Test-DetectionGate([string]$Batch, [string]$Run) {
+    if (-not $Batch -or -not $Run) {
+        return $true
+    }
+    $latestPath = Join-Path $Batch "$Run\latest_results.json"
+    $summaryPath = Join-Path $Batch "$Run\detection_summary.csv"
+    if (-not (Test-Path -LiteralPath $latestPath) -or
+        -not (Test-Path -LiteralPath $summaryPath)) {
+        return $false
+    }
+    $latest = Get-Content -LiteralPath $latestPath -Raw | ConvertFrom-Json
+    $summary = Import-Csv -LiteralPath $summaryPath | Select-Object -First 1
+    return (
+        $latest.completed -and
+        [int]$summary.removed_free_riders -eq 40 -and
+        [int]$summary.removed_honest_clients -eq 0
+    )
+}
 
 function Test-BatchComplete([System.IO.DirectoryInfo]$Batch) {
     $manifestPath = Join-Path $Batch.FullName "experiment_manifest.json"
@@ -57,6 +106,9 @@ try {
     }
 
     foreach ($scheduled in $scheduledBatches) {
+        if (-not (Test-DetectionGate $scheduled.GateBatch $scheduled.GateRun)) {
+            throw "Validation gate failed or is incomplete before: $($scheduled.Label)"
+        }
         if (Test-Path -LiteralPath $scheduled.Batch) {
             $batchInfo = Get-Item -LiteralPath $scheduled.Batch
             if (Test-BatchComplete $batchInfo) {

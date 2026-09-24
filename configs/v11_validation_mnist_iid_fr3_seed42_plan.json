@@ -1,0 +1,6 @@
+{
+  "batch_name": "v11_validation_mnist_iid_fr3_seed42",
+  "results_root": "./results",
+  "defaults": {"methodology_version":"swtcp_v11","num_clients":100,"num_rounds":40,"free_rider_pct":0.4,"seed":42,"device":"auto","save_checkpoints":true,"checkpoint_keep_last":5},
+  "stages": [{"id":"v11_fr3_gate","id_format":"v11_mnist_iid_fr3_fr40_seed42","enabled":true,"matrix":{"dataset":["mnist"],"distribution":["iid"],"attack_type":["FR3"]}}]
+}
