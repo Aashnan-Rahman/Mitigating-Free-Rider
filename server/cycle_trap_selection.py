@@ -61,7 +61,7 @@ class CycleTrapSelector:
         if round_idx <= self.config.warmup_rounds or not active_clients:
             return TrapSelection("warmup", set(), set())
 
-        if self.config.methodology_version == "swtcp_v10" and self.mode == "dormant":
+        if self.config.methodology_version in {"swtcp_v10", "swtcp_v11"} and self.mode == "dormant":
             if self.dormant_rounds_elapsed < self.config.cycle_dormant_rounds:
                 self.dormant_rounds_elapsed += 1
                 return TrapSelection(
@@ -95,7 +95,7 @@ class CycleTrapSelector:
 
     def finish_cycle(self, anomaly_found: bool) -> None:
         """Advance probing intensity after a completed population sweep."""
-        if self.config.methodology_version != "swtcp_v10":
+        if self.config.methodology_version not in {"swtcp_v10", "swtcp_v11"}:
             self.mode = "double_probe" if anomaly_found else "single_probe"
             self.queue.clear()
             self.cycle_index += 1

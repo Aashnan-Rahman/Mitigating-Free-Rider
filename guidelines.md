@@ -6,11 +6,32 @@ named configuration variable, not a hardcoded value — the code should be built
 that changing any single value in the config does not require touching logic
 elsewhere.
 
-> **Current protocol:** `swtcp_v10`. Sections that describe U/C/S anchor probing
-> are retained as historical v8 documentation. The v10 rules below override those
-> legacy sections whenever `methodology_version="swtcp_v10"`.
+> **Current protocol:** `swtcp_v11`. Historical v8-v10 sections remain for
+> provenance. The v11 rules below override them whenever
+> `methodology_version="swtcp_v11"`.
 
-## Current v10 protocol
+## Current v11 corrections
+
+- Convert MAD to a robust standard-deviation estimate with the mathematical
+  normal-consistency factor `1 / Phi^-1(0.75)` (approximately `1.4826`).
+- Derive the cycle cutoff from `cycle_target_false_alarm_rate` and prior completed
+  R-cycle calibration scores. A client never helps set the cutoff used to judge
+  its current response.
+- Stabilize current scales with recent trusted-reference scales using a
+  sample-size-weighted prior. Absolute MAD floors remain legacy settings and are
+  not v11 detector thresholds.
+- Freeze the reference roster and cutoff at cycle start. Do not remove provisional
+  outliers and recompute a narrower baseline within the current cycle.
+- An OR anomaly is weak screening evidence: it moves R to C but adds no score.
+  Strong evidence requires the same signature (`norm_high`, `norm_low`, or
+  `profile_high`) under both frozen traps.
+- Retain only scalar norms and small layer-profile vectors between probe rounds;
+  do not checkpoint full flattened client deltas.
+- Detector decisions may use only sent/returned models and prior server-side
+  state. Ground-truth labels and `attack_type` are evaluation inputs only and may
+  not select a detector rule.
+
+## Historical v10 protocol
 
 - Rounds 1–10 are warm-up. No statistical traps run. FR1 is checked in exactly
   two ways: an unchanged current model (`delta < zero_update_epsilon`) and an
@@ -75,7 +96,7 @@ elsewhere.
 
 | Variable | Default | Description |
 |---|---|---|
-| `methodology_version` | `"swtcp_v10"` | Rejects checkpoints produced by an incompatible detector protocol |
+| `methodology_version` | `"swtcp_v11"` | Rejects checkpoints produced by an incompatible detector protocol |
 | `dataset` | `"mnist"` | `"mnist"` or `"cifar10"` |
 | `distribution` | `"iid"` | `"iid"` or `"noniid"` |
 | `dirichlet_alpha` | `0.5` | Concentration parameter for Non-IID Dirichlet partitioning. Lower = more skewed. Only used if `distribution == "noniid"` |
@@ -122,6 +143,10 @@ elsewhere.
 | `cycle_single_clean_cycles_before_dormant` | `2` | Clean single cycles required before dormancy |
 | `cycle_dormant_rounds` | `20` | Passive rounds between single-cycle audits in dormancy |
 | `cycle_min_reference_clients` | `10` | Minimum clean R reference population for a statistical decision |
+| `cycle_target_false_alarm_rate` | `0.01` | Per-client complete-cycle false-alarm budget used to derive the v11 cutoff |
+| `cycle_calibration_window_cycles` | `3` | Prior trusted-R cycles used for cutoff and scale calibration |
+| `cycle_scale_prior_strength` | `20.0` | Sample-size prior controlling how quickly robust scale can change |
+| `cycle_scale_epsilon` | `1e-8` | Numerical division safeguard, not a detector threshold |
 | `full_participation` | `true` | All active clients train every round (no dropout simulated) — see Section 3.1 |
 | `seed` | `42` | Global random seed |
 | `output_dir` | `"./results/"` | Where all CSV/log outputs are written |

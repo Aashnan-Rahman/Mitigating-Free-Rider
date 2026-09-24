@@ -28,6 +28,7 @@ def transition_cycle_state(
     initial_cycle: bool,
     trusted_cycle: bool,
     config: ExperimentConfig,
+    coherent_strong: bool | None = None,
 ) -> CycleTransition:
     """Apply one completed v10 probe cycle to a client's detector state."""
     if role not in {"R", "C", "S"}:
@@ -35,7 +36,11 @@ def transition_cycle_state(
     if checks <= 0 or not 0 <= failed_probes <= checks:
         raise ValueError("failed_probes must be between zero and checks")
 
-    strong = checks >= 2 and failed_probes >= 2
+    strong = (
+        checks >= 2 and failed_probes >= 2
+        if coherent_strong is None
+        else coherent_strong
+    )
     rehabilitated = False
 
     if failed_probes == 0:
@@ -66,6 +71,8 @@ def transition_cycle_state(
         cost = (
             config.cycle_suspicious_cost
             if strong
+            else 0.0
+            if config.methodology_version == "swtcp_v11"
             else config.cycle_candidate_cost
         )
         next_score = min(0.0, score - cost)

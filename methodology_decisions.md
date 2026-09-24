@@ -36,10 +36,9 @@ history normally.
 
 For update norms:
 
-> **Current implementation note:** `swtcp_v10` replaces the anchor protocol
-> described later in this file. Its authoritative state, reference, scoring,
-> rehabilitation, and probe-intensity rules are summarized in the “Current v10
-> protocol” section of `guidelines.md` and the v10 entry in `VERSION_HISTORY.md`.
+> **Current implementation note:** `swtcp_v11` replaces the anchor protocol and
+> v10's raw-MAD/current-cycle reference trimming. Its authoritative rules are in
+> `guidelines.md` and the v11 entry in `VERSION_HISTORY.md`.
 
 ```text
 norm_median = median(client update norms)

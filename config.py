@@ -8,7 +8,7 @@ from typing import Any
 
 @dataclass
 class ExperimentConfig:
-    methodology_version: str = "swtcp_v10"
+    methodology_version: str = "swtcp_v11"
     dataset: str = "mnist"
     distribution: str = "iid"
     dirichlet_alpha: float = 0.5
@@ -48,6 +48,10 @@ class ExperimentConfig:
     cycle_single_clean_cycles_before_dormant: int = 2
     cycle_dormant_rounds: int = 20
     cycle_min_reference_clients: int = 10
+    cycle_target_false_alarm_rate: float = 0.01
+    cycle_calibration_window_cycles: int = 3
+    cycle_scale_prior_strength: float = 20.0
+    cycle_scale_epsilon: float = 1e-8
     dodge_min_probes: int = 10
     dodge_max_flag_rate: float = 0.10
     zero_update_epsilon: float = 1e-6
@@ -108,7 +112,7 @@ class ExperimentConfig:
     def removal_threshold(self) -> float:
         return (
             self.cycle_removal_score
-            if self.methodology_version in {"swtcp_v9", "swtcp_v10"}
+            if self.methodology_version in {"swtcp_v9", "swtcp_v10", "swtcp_v11"}
             else self.removal_threshold_points
         )
 
@@ -131,6 +135,7 @@ class ExperimentConfig:
                 "swtcp_v8",
                 "swtcp_v9",
                 "swtcp_v10",
+                "swtcp_v11",
                 "frida_loss",
                 "frad_reproduction",
             },
@@ -188,6 +193,10 @@ class ExperimentConfig:
             or self.cycle_single_clean_cycles_before_dormant <= 0
             or self.cycle_dormant_rounds <= 0
             or self.cycle_min_reference_clients <= 0
+            or not 0.0 < self.cycle_target_false_alarm_rate < 1.0
+            or self.cycle_calibration_window_cycles <= 0
+            or self.cycle_scale_prior_strength <= 0
+            or self.cycle_scale_epsilon <= 0
         ):
             raise ValueError("Cycle scoring settings are invalid.")
         if self.dodge_min_probes <= 0 or not 0.0 <= self.dodge_max_flag_rate <= 1.0:

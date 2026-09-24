@@ -38,6 +38,7 @@ from server.trap_selection import TrapSelector
 from server.cycle_trap_selection import CycleTrapSelector
 from server.cycle_protocol import transition_cycle_state
 from server.model_fingerprint import model_fingerprint
+from server.v11_detection import evaluate_v11_cycle
 from server.cycle_scoring import (
     cycle_classification,
     score_change,
@@ -241,8 +242,9 @@ def run_experiment(
     free_rider_count = math.ceil(config.free_rider_pct * config.num_clients)
     free_riders = set(rng.sample(range(config.num_clients), free_rider_count))
     attacker = FreeRiderAttacker(config, device)
-    is_v10 = config.methodology_version == "swtcp_v10"
-    is_v9 = config.methodology_version in {"swtcp_v9", "swtcp_v10"}
+    is_v11 = config.methodology_version == "swtcp_v11"
+    is_v10 = config.methodology_version in {"swtcp_v10", "swtcp_v11"}
+    is_v9 = config.methodology_version in {"swtcp_v9", "swtcp_v10", "swtcp_v11"}
     selector = CycleTrapSelector(config, rng) if is_v9 else TrapSelector(config, rng)
     logger = RunLogger(config, run_name)
 
@@ -256,6 +258,7 @@ def run_experiment(
     first_removal_round: dict[int, int] = {}
     coverage_trap_states: dict[int, dict[str, torch.Tensor]] = {}
     coverage_deltas: dict[int, list[torch.Tensor]] = {}
+    coverage_norms: dict[int, list[float]] = {}
     coverage_profiles: dict[int, list[torch.Tensor]] = {}
     coverage_trap_ids: dict[int, list[int]] = {}
     coverage_observation_rounds: dict[int, list[int]] = {}
@@ -278,6 +281,10 @@ def run_experiment(
     }
     reference_eligible_clients: set[int] = set()
     reference_probation_counts: dict[int, int] = {}
+    v11_calibration_history: list[list[float]] = []
+    v11_norm_scale_history: list[float] = []
+    v11_profile_scale_history: list[float] = []
+    v11_last_cutoff: float | None = None
     sent_model_fingerprints = {
         client_id: deque(maxlen=config.sendback_history_size)
         for client_id in range(config.num_clients)
@@ -427,12 +434,32 @@ def run_experiment(
                 int(client_id)
                 for client_id in checkpoint.get("reference_eligible_clients", [])
             }
+            coverage_norms = {
+                int(client_id): [float(value) for value in values]
+                for client_id, values in checkpoint.get("coverage_norms", {}).items()
+            }
             reference_probation_counts = {
                 int(key): int(value)
                 for key, value in checkpoint.get(
                     "reference_probation_counts", {}
                 ).items()
             }
+            v11_calibration_history = [
+                [float(value) for value in cycle]
+                for cycle in checkpoint.get("v11_calibration_history", [])
+            ]
+            v11_norm_scale_history = [
+                float(value)
+                for value in checkpoint.get("v11_norm_scale_history", [])
+            ]
+            v11_profile_scale_history = [
+                float(value)
+                for value in checkpoint.get("v11_profile_scale_history", [])
+            ]
+            stored_cutoff = checkpoint.get("v11_last_cutoff")
+            v11_last_cutoff = (
+                float(stored_cutoff) if stored_cutoff is not None else None
+            )
             for client_id, fingerprints in checkpoint.get(
                 "sent_model_fingerprints", {}
             ).items():
@@ -648,14 +675,27 @@ def run_experiment(
         zero_responses_added: dict[int, int] = {}
         cycle_reference_outliers: set[int] = set()
         cycle_reference_valid = True
+        cycle_coherent_strong: dict[int, bool] = {}
+        cycle_scores: dict[int, float] = {}
+        cycle_frozen_reference_ids: set[int] = set()
+        cycle_norm_scales: list[float] = []
+        cycle_profile_scales: list[float] = []
         suspicion_probed: set[int] = set()
         candidate_probed: set[int] = set()
         if selection.phase == "coverage" or is_cycle_probe:
             if selection.coverage_trap_id is None:
                 raise RuntimeError("Coverage evidence is missing its trap-model ID.")
             for client_id in selection.trapped_clients:
-                coverage_deltas.setdefault(client_id, []).append(deltas[client_id])
-                coverage_profiles.setdefault(client_id, []).append(profiles[client_id])
+                if is_v11:
+                    coverage_norms.setdefault(client_id, []).append(
+                        float(deltas[client_id].norm().item())
+                    )
+                    coverage_profiles.setdefault(client_id, []).append(
+                        profiles[client_id].detach().float().cpu()
+                    )
+                else:
+                    coverage_deltas.setdefault(client_id, []).append(deltas[client_id])
+                    coverage_profiles.setdefault(client_id, []).append(profiles[client_id])
                 coverage_trap_ids.setdefault(client_id, []).append(
                     selection.coverage_trap_id
                 )
@@ -664,18 +704,35 @@ def run_experiment(
                 checks_in_cycle = selector.checks_per_client if is_cycle_probe else config.coverage_checks_per_client
                 if is_v10:
                     initial_cycle = selector.cycle_index == 0
-                    evidence = evaluate_completed_cycle(
-                        coverage_deltas=coverage_deltas,
-                        coverage_profiles=coverage_profiles,
-                        coverage_trap_ids=coverage_trap_ids,
-                        coverage_observation_rounds=coverage_observation_rounds,
-                        active_clients=set(active_this_round),
-                        checks=checks_in_cycle,
-                        config=config,
-                        trusted_reference_clients=(
-                            None if initial_cycle else reference_eligible_clients
-                        ),
-                    )
+                    if is_v11:
+                        evidence = evaluate_v11_cycle(
+                            coverage_norms=coverage_norms,
+                            coverage_profiles=coverage_profiles,
+                            coverage_trap_ids=coverage_trap_ids,
+                            coverage_observation_rounds=coverage_observation_rounds,
+                            active_clients=set(active_this_round),
+                            checks=checks_in_cycle,
+                            config=config,
+                            trusted_reference_clients=(
+                                None if initial_cycle else reference_eligible_clients.copy()
+                            ),
+                            calibration_history=v11_calibration_history,
+                            norm_scale_history=v11_norm_scale_history,
+                            profile_scale_history=v11_profile_scale_history,
+                        )
+                    else:
+                        evidence = evaluate_completed_cycle(
+                            coverage_deltas=coverage_deltas,
+                            coverage_profiles=coverage_profiles,
+                            coverage_trap_ids=coverage_trap_ids,
+                            coverage_observation_rounds=coverage_observation_rounds,
+                            active_clients=set(active_this_round),
+                            checks=checks_in_cycle,
+                            config=config,
+                            trusted_reference_clients=(
+                                None if initial_cycle else reference_eligible_clients
+                            ),
+                        )
                     detection_results = evidence["results"]
                     coverage_checks_used = evidence["checks"]
                     coverage_flags_used = evidence["flags"]
@@ -684,6 +741,13 @@ def run_experiment(
                     detection_rounds_used = evidence["decision_rounds"]
                     cycle_reference_outliers = evidence["reference_outliers"]
                     cycle_reference_valid = bool(evidence["reference_valid"])
+                    if is_v11:
+                        cycle_coherent_strong = evidence["coherent_strong"]
+                        cycle_scores = evidence["cycle_scores"]
+                        cycle_frozen_reference_ids = evidence["frozen_reference_ids"]
+                        cycle_norm_scales = evidence["norm_scales"]
+                        cycle_profile_scales = evidence["profile_scales"]
+                        v11_last_cutoff = float(evidence["cutoff"])
                 else:
                     client_probe_ids: dict[int, list[int]] = {}
                     probe_results = {}
@@ -1009,6 +1073,11 @@ def run_experiment(
                             initial_cycle=initial_cycle,
                             trusted_cycle=not initial_cycle,
                             config=config,
+                            coherent_strong=(
+                                cycle_coherent_strong.get(client_id, False)
+                                if is_v11
+                                else None
+                            ),
                         )
                         old_score = penalties[client_id]
                         penalties[client_id] = transition.score
@@ -1097,7 +1166,17 @@ def run_experiment(
                                         if transition.role == "S"
                                         else "entered_candidate_state"
                                     ),
-                                    "reason": f"{failed_probes}_failed_probes_in_{checks}_checks",
+                                    "reason": (
+                                        f"{failed_probes}_failed_probes_in_{checks}_checks"
+                                        + (
+                                            "_coherent"
+                                            if is_v11
+                                            and cycle_coherent_strong.get(client_id, False)
+                                            else "_weak"
+                                            if is_v11
+                                            else ""
+                                        )
+                                    ),
                                     "cumulative_penalty": penalties[client_id],
                                 }
                             )
@@ -1120,6 +1199,31 @@ def run_experiment(
                                     "suspicion_probes": times_trapped[client_id],
                                 }
                             )
+
+                    if is_v11:
+                        calibration_ids = (
+                            reference_eligible_clients.copy()
+                            if initial_cycle
+                            else cycle_frozen_reference_ids
+                        )
+                        calibration_scores = [
+                            cycle_scores[client_id]
+                            for client_id in calibration_ids
+                            if client_id in cycle_scores
+                            and client_id not in removed_after_round
+                        ]
+                        if calibration_scores:
+                            v11_calibration_history.append(calibration_scores)
+                            del v11_calibration_history[
+                                : -config.cycle_calibration_window_cycles
+                            ]
+                        v11_norm_scale_history.extend(cycle_norm_scales)
+                        v11_profile_scale_history.extend(cycle_profile_scales)
+                        scale_history_limit = (
+                            config.cycle_calibration_window_cycles * max(1, checks)
+                        )
+                        del v11_norm_scale_history[:-scale_history_limit]
+                        del v11_profile_scale_history[:-scale_history_limit]
 
                     suspected_clients = next_suspects
                     candidate_clients = next_candidates - next_suspects
@@ -1583,6 +1687,7 @@ def run_experiment(
         if (selection.phase == "coverage" or is_cycle_probe) and selection.coverage_complete:
             coverage_trap_states.clear()
             coverage_deltas.clear()
+            coverage_norms.clear()
             coverage_profiles.clear()
             coverage_trap_ids.clear()
             coverage_observation_rounds.clear()
@@ -1784,6 +1889,7 @@ def run_experiment(
                 "num_candidate_clients": len(candidate_clients),
                 "num_reference_eligible": len(reference_eligible_clients),
                 "num_reference_probation": len(reference_probation_counts),
+                "v11_cycle_cutoff": v11_last_cutoff if is_v11 else "",
                 "num_trapped": len(selection.trapped_clients),
                 "num_anchor_roster": len(selection.anchor_roster),
                 "num_active_anchors": len(selection.anchors),
@@ -1810,6 +1916,7 @@ def run_experiment(
                 "selector_state": selector.state_dict(),
                 "coverage_trap_states": coverage_trap_states,
                 "coverage_deltas": coverage_deltas,
+                "coverage_norms": coverage_norms,
                 "coverage_profiles": coverage_profiles,
                 "coverage_trap_ids": coverage_trap_ids,
                 "coverage_observation_rounds": coverage_observation_rounds,
@@ -1830,6 +1937,10 @@ def run_experiment(
                 "cycle_trusted_strong_counts": cycle_trusted_strong_counts.copy(),
                 "reference_eligible_clients": sorted(reference_eligible_clients),
                 "reference_probation_counts": reference_probation_counts.copy(),
+                "v11_calibration_history": v11_calibration_history,
+                "v11_norm_scale_history": v11_norm_scale_history,
+                "v11_profile_scale_history": v11_profile_scale_history,
+                "v11_last_cutoff": v11_last_cutoff,
                 "sent_model_fingerprints": {
                     client_id: list(fingerprints)
                     for client_id, fingerprints in sent_model_fingerprints.items()

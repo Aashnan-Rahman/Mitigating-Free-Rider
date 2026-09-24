@@ -7,9 +7,9 @@ $runner = Join-Path $projectRoot "run_experiments.py"
 $log = Join-Path $resultsRoot "scheduled_resume.log"
 $scheduledBatches = @(
     [pscustomobject]@{
-        Label = "v10 MNIST IID, FR1-FR4, 40% free riders, seed 42"
-        Plan = Join-Path $projectRoot "configs\v10_mnist_iid_fr40_seed42_plan.json"
-        Batch = Join-Path $resultsRoot "v10_mnist_iid_fr40_seed42"
+        Label = "v11 validation: MNIST IID FR1, 40% free riders, seed 42"
+        Plan = Join-Path $projectRoot "configs\v11_validation_mnist_iid_fr40_seed42_plan.json"
+        Batch = Join-Path $resultsRoot "v11_validation_mnist_iid_fr40_seed42"
     }
 )
 

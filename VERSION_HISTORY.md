@@ -138,3 +138,19 @@ be pooled as if they used the same detector.
   transitions and keeps double mode.
 - v10 checkpoints preserve group queue/mode, frozen traps, accumulated cycle
   evidence, clean/strong counters, reference eligibility, and probation state.
+
+## v11 — Calibrated coherent evidence
+
+- Corrects raw MAD scaling with the normal-consistency factor and replaces the
+  fixed z multiplier with a cutoff derived from a configured cycle false-alarm
+  budget plus prior trusted-R calibration cycles.
+- Freezes each cycle's reference and cutoff before evaluating clients. Current
+  provisional outliers never narrow the baseline used for their peers.
+- OR anomalies are quarantine-only weak evidence with zero score cost. A strong
+  cycle requires the same anomaly signature under both frozen traps.
+- Uses prior-cycle calibration only, stabilizes scale with historical R scales,
+  and checkpoints all calibration state for deterministic recovery.
+- Stores only norms and layer-profile vectors across rounds instead of full
+  flattened client deltas, reducing memory and checkpoint growth.
+- Retains v10 send-back, R/C/S rehabilitation, probing-intensity, privacy, and
+  aggregation boundaries.

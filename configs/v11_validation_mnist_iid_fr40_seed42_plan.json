@@ -1,0 +1,27 @@
+{
+  "batch_name": "v11_validation_mnist_iid_fr40_seed42",
+  "results_root": "./results",
+  "defaults": {
+    "methodology_version": "swtcp_v11",
+    "num_clients": 100,
+    "free_rider_pct": 0.4,
+    "seed": 42,
+    "device": "auto",
+    "save_checkpoints": true,
+    "checkpoint_keep_last": 5
+  },
+  "stages": [
+    {
+      "id": "v11_fr1_gate",
+      "id_format": "v11_mnist_iid_fr1_fr40_seed42",
+      "description": "FR1 false-positive gate through round 40",
+      "enabled": true,
+      "matrix": {
+        "dataset": ["mnist"],
+        "distribution": ["iid"],
+        "attack_type": ["FR1"],
+        "num_rounds": [40]
+      }
+    }
+  ]
+}

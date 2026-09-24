@@ -1,0 +1,20 @@
+{
+  "methodology_version": "swtcp_v11",
+  "dataset": "mnist",
+  "distribution": "iid",
+  "num_clients": 10,
+  "num_rounds": 11,
+  "free_rider_pct": 0.4,
+  "attack_type": "FR2",
+  "local_epochs": 1,
+  "batch_size": 128,
+  "warmup_rounds": 1,
+  "surveillance_groups": 10,
+  "cycle_min_reference_clients": 5,
+  "seed": 42,
+  "device": "auto",
+  "save_checkpoints": true,
+  "checkpoint_keep_last": 2,
+  "output_dir": "./results",
+  "run_name": "v11_demo_mnist_iid_fr2"
+}

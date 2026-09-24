@@ -78,6 +78,23 @@ threat model.
       traps, evidence, roles, counters, reference eligibility, and probation are
       identical after recovery.
 
+## v11 validation gates
+
+- [ ] Confirm the cutoff is derived from the configured false-alarm budget and
+      prior cycles only; current responses cannot change their own cutoff.
+- [ ] Confirm MAD uses the `1.4826` consistency conversion and historical scale
+      stabilization, not the legacy absolute detector floors.
+- [ ] Confirm a cross-signal pair (for example norm on A, profile on B) is weak,
+      enters C, adds zero score, and cannot count as a strong cycle.
+- [ ] Confirm the same anomaly signature under A and B is coherent strong
+      evidence and still requires a later trusted confirmation for removal.
+- [ ] Confirm current-cycle provisional outliers never trigger reference
+      recomputation or removal from the frozen baseline.
+- [ ] Confirm checkpoints store scalar cycle norms/profiles rather than full
+      flattened client deltas.
+- [ ] FR1 gate: 40/40 removed at round 10 and zero honest removals through round
+      40 before enabling FR2-FR4 validation.
+
 ## Stage 0: Pipeline validation
 
 - [ ] Smoke run: 4 clients, 2 rounds, CPU. Verify all CSV/JSON/PT files exist.

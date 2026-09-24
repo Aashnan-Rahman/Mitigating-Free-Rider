@@ -92,3 +92,48 @@ def test_s_requires_two_clean_cycles_to_reach_c_and_two_more_to_reach_r() -> Non
     )
     assert state.role == "R"
     assert state.rehabilitated
+
+
+def test_v11_weak_or_anomaly_quarantines_without_score_or_strong_evidence() -> None:
+    config = ExperimentConfig(methodology_version="swtcp_v11")
+    result = transition_cycle_state(
+        role="R",
+        failed_probes=2,
+        checks=2,
+        score=0.0,
+        clean_cycles=0,
+        strong_cycles=0,
+        trusted_strong_cycles=0,
+        initial_cycle=False,
+        trusted_cycle=True,
+        config=config,
+        coherent_strong=False,
+    )
+
+    assert result.role == "C"
+    assert result.score == 0.0
+    assert result.strong_cycles == 0
+    assert not result.remove
+
+
+def test_v11_coherent_anomaly_retains_strong_confirmation_gate() -> None:
+    config = ExperimentConfig(methodology_version="swtcp_v11")
+    result = transition_cycle_state(
+        role="C",
+        failed_probes=2,
+        checks=2,
+        score=-2.0,
+        clean_cycles=0,
+        strong_cycles=1,
+        trusted_strong_cycles=0,
+        initial_cycle=False,
+        trusted_cycle=True,
+        config=config,
+        coherent_strong=True,
+    )
+
+    assert result.role == "S"
+    assert result.score == -4.0
+    assert result.strong_cycles == 2
+    assert result.trusted_strong_cycles == 1
+    assert result.remove
