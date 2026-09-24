@@ -52,6 +52,37 @@ def test_low_magnitude_only_is_two_sided_but_not_penalized() -> None:
     assert all(results[client_id].penalty == 0 for client_id in range(6, 10))
 
 
+def test_update_statistics_can_use_only_trusted_reference_clients() -> None:
+    config = ExperimentConfig()
+    honest_norms = [0.50, 0.60, 0.65, 0.70, 0.80, 0.85]
+    deltas = {
+        **{
+            client_id: torch.tensor([norm, 0.0])
+            for client_id, norm in enumerate(honest_norms)
+        },
+        **{
+            client_id: torch.tensor([0.26, 0.0])
+            for client_id in range(6, 10)
+        },
+    }
+    profiles = {client_id: torch.tensor([1.0, 0.0]) for client_id in deltas}
+
+    population_results = evaluate_updates(
+        deltas, profiles, torch.ones(2), set(deltas), config
+    )
+    trusted_results = evaluate_updates(
+        deltas,
+        profiles,
+        torch.ones(2),
+        set(deltas),
+        config,
+        reference_ids=set(range(6)),
+    )
+
+    assert not population_results[6].magnitude_flag
+    assert trusted_results[6].magnitude_flag
+
+
 def test_profile_only_is_candidate_evidence_without_penalty() -> None:
     config = ExperimentConfig()
     deltas = {client_id: torch.tensor([1.0, 0.0]) for client_id in range(10)}
@@ -200,7 +231,7 @@ def test_layer_profile_is_scale_invariant() -> None:
 
 
 def test_dodge_rehabilitation_requires_ten_probes_and_at_most_ten_percent() -> None:
-    config = ExperimentConfig()
+    config = ExperimentConfig(methodology_version="swtcp_v8")
 
     assert not should_rehabilitate(9, 0, config)
     assert should_rehabilitate(10, 0, config)

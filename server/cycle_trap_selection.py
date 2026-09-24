@@ -16,6 +16,9 @@ class CycleTrapSelector:
         self.mode = "double_probe"
         self.queue: list[tuple[int, list[int]]] = []
         self.cycle_index = 0
+        self.clean_double_cycles = 0
+        self.clean_single_cycles = 0
+        self.dormant_rounds_elapsed = 0
 
     @property
     def checks_per_client(self) -> int:
@@ -29,6 +32,9 @@ class CycleTrapSelector:
                 for trap_id, clients in self.queue
             ],
             "cycle_index": self.cycle_index,
+            "clean_double_cycles": self.clean_double_cycles,
+            "clean_single_cycles": self.clean_single_cycles,
+            "dormant_rounds_elapsed": self.dormant_rounds_elapsed,
         }
 
     def load_state_dict(self, state: Mapping[str, Any]) -> None:
@@ -38,6 +44,9 @@ class CycleTrapSelector:
             for item in state.get("queue", [])
         ]
         self.cycle_index = int(state.get("cycle_index", 0))
+        self.clean_double_cycles = int(state.get("clean_double_cycles", 0))
+        self.clean_single_cycles = int(state.get("clean_single_cycles", 0))
+        self.dormant_rounds_elapsed = int(state.get("dormant_rounds_elapsed", 0))
 
     def select(
         self,
@@ -48,12 +57,28 @@ class CycleTrapSelector:
         suspected_clients: set[int] | None = None,
         candidate_clients: set[int] | None = None,
     ) -> TrapSelection:
-        del penalties, times_flagged, suspected_clients, candidate_clients
+        del penalties, times_flagged
         if round_idx <= self.config.warmup_rounds or not active_clients:
             return TrapSelection("warmup", set(), set())
 
+        if self.config.methodology_version == "swtcp_v10" and self.mode == "dormant":
+            if self.dormant_rounds_elapsed < self.config.cycle_dormant_rounds:
+                self.dormant_rounds_elapsed += 1
+                return TrapSelection(
+                    "dormant",
+                    set(),
+                    set(),
+                    anchor_rotation_cycle=self.cycle_index,
+                )
+            self.mode = "single_probe"
+            self.dormant_rounds_elapsed = 0
+
         if not self.queue:
-            self.queue = self._build_cycle(active_clients)
+            self.queue = self._build_cycle(
+                active_clients,
+                suspected_clients or set(),
+                candidate_clients or set(),
+            )
         trap_id, scheduled = self.queue.pop(0)
         active = set(active_clients)
         trapped = {client_id for client_id in scheduled if client_id in active}
@@ -69,18 +94,50 @@ class CycleTrapSelector:
         )
 
     def finish_cycle(self, anomaly_found: bool) -> None:
-        """A clean double cycle relaxes to surveillance; any anomaly uses double."""
-        self.mode = "double_probe" if anomaly_found else "single_probe"
+        """Advance probing intensity after a completed population sweep."""
+        if self.config.methodology_version != "swtcp_v10":
+            self.mode = "double_probe" if anomaly_found else "single_probe"
+            self.queue.clear()
+            self.cycle_index += 1
+            return
+
+        if self.mode == "double_probe":
+            if anomaly_found:
+                self.clean_double_cycles = 0
+            else:
+                self.clean_double_cycles += 1
+                if (
+                    self.clean_double_cycles
+                    >= self.config.cycle_double_clean_cycles_before_single
+                ):
+                    self.mode = "single_probe"
+                    self.clean_single_cycles = 0
+        elif self.mode == "single_probe":
+            if anomaly_found:
+                self.mode = "double_probe"
+                self.clean_double_cycles = 0
+                self.clean_single_cycles = 0
+            else:
+                self.clean_single_cycles += 1
+                if (
+                    self.clean_single_cycles
+                    >= self.config.cycle_single_clean_cycles_before_dormant
+                ):
+                    self.mode = "dormant"
+                    self.dormant_rounds_elapsed = 0
         self.queue.clear()
         self.cycle_index += 1
 
-    def _build_cycle(self, active_clients: list[int]) -> list[tuple[int, list[int]]]:
-        shuffled = active_clients[:]
-        self.rng.shuffle(shuffled)
-        group_count = min(self.config.surveillance_groups, len(shuffled))
-        groups = [[] for _ in range(group_count)]
-        for index, client_id in enumerate(shuffled):
-            groups[index % group_count].append(client_id)
+    def _build_cycle(
+        self,
+        active_clients: list[int],
+        suspected_clients: set[int],
+        candidate_clients: set[int],
+    ) -> list[tuple[int, list[int]]]:
+        groups = self._build_state_groups(
+            active_clients, suspected_clients, candidate_clients
+        )
+        group_count = len(groups)
 
         if self.mode == "single_probe":
             order = list(range(group_count))
@@ -105,6 +162,51 @@ class CycleTrapSelector:
             previous_pairs = current_pairs
         self.rng.shuffle(queue)
         return queue
+
+    def _build_state_groups(
+        self,
+        active_clients: list[int],
+        suspected_clients: set[int],
+        candidate_clients: set[int],
+    ) -> list[list[int]]:
+        """Build exactly ten balanced, state-homogeneous groups when possible."""
+        active = set(active_clients)
+        pools = {
+            "R": list(active - suspected_clients - candidate_clients),
+            "C": list(active & candidate_clients - suspected_clients),
+            "S": list(active & suspected_clients),
+        }
+        pools = {name: clients for name, clients in pools.items() if clients}
+        for clients in pools.values():
+            self.rng.shuffle(clients)
+
+        group_count = min(self.config.surveillance_groups, len(active_clients))
+        allocations = {name: 1 for name in pools}
+        remaining = group_count - len(allocations)
+        while remaining > 0:
+            eligible = [
+                name
+                for name, clients in pools.items()
+                if allocations[name] < len(clients)
+            ]
+            if not eligible:
+                break
+            chosen = max(
+                eligible,
+                key=lambda name: len(pools[name]) / allocations[name],
+            )
+            allocations[chosen] += 1
+            remaining -= 1
+
+        groups: list[list[int]] = []
+        for name in ("R", "C", "S"):
+            if name not in pools:
+                continue
+            state_groups = [[] for _ in range(allocations[name])]
+            for index, client_id in enumerate(pools[name]):
+                state_groups[index % len(state_groups)].append(client_id)
+            groups.extend(state_groups)
+        return groups
 
     def _nonrepeating_pair_order(
         self, group_count: int, forbidden: set[frozenset[int]]

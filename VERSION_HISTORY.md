@@ -111,3 +111,30 @@ be pooled as if they used the same detector.
   Any C result switches the following cycle back to double probing.
 - Existing MAD floors and the requirement for joint norm/profile evidence guard
   against tiny late-training differences becoming removals.
+
+## v10 — Trusted-R cycles, staged rehabilitation, and dormancy
+
+- FR1 now returns the exact current received model. The server uses only two FR1
+  checks: zero current delta and an exact fingerprint match with the immediately
+  previous model sent to that client. Five permanent strikes remove, with any
+  warm-up removal deferred until the end of round 10.
+- Every probe cycle uses ten balanced, state-homogeneous groups when at least ten
+  clients remain. The initial ten-round cycle gives every client both frozen trap
+  models once and uses the complete same-trap population as its baseline.
+- A magnitude OR layer-profile anomaly fails a probe. At the first boundary,
+  zero/one/two failures classify R/C/S. Later cycles compare clients only with
+  reference-eligible R responses to the same trap; provisional anomalous R
+  references are removed and the reference is recomputed once.
+- C and S are quarantined for complete later cycles. An R anomaly enters C first.
+  C needs two clean cycles to return to R; S needs two to reach C and two more to
+  reach R. Rehabilitated R clients aggregate but need another clean cycle before
+  serving as references.
+- Clean score recovery is +0.5 only below zero and is capped at zero. One/two
+  failed probes cost -1/-2. Removal at -4 additionally requires two strong cycles
+  and at least one strong confirmation against a trusted reference.
+- Two clean double cycles with empty C/S move to single probing. Two clean single
+  cycles enter 20 passive rounds followed by a single audit. Any audit anomaly
+  restores double probing. An undersized trusted reference defers statistical
+  transitions and keeps double mode.
+- v10 checkpoints preserve group queue/mode, frozen traps, accumulated cycle
+  evidence, clean/strong counters, reference eligibility, and probation state.

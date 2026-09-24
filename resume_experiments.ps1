@@ -7,54 +7,9 @@ $runner = Join-Path $projectRoot "run_experiments.py"
 $log = Join-Path $resultsRoot "scheduled_resume.log"
 $scheduledBatches = @(
     [pscustomobject]@{
-        Label = "FR4, 40% free riders, seed 44"
-        Plan = Join-Path $projectRoot "configs\mnist_noniid_fr40_seed44_fr4_plan.json"
-        Batch = Join-Path $resultsRoot "mnist_noniid_fr40_seed44"
-    },
-    [pscustomobject]@{
-        Label = "FR4, 40% free riders, seed 45"
-        Plan = Join-Path $projectRoot "configs\mnist_noniid_fr40_seed45_fr4_plan.json"
-        Batch = Join-Path $resultsRoot "mnist_noniid_fr40_seed45"
-    },
-    [pscustomobject]@{
-        Label = "FR4, 40% free riders, seed 46"
-        Plan = Join-Path $projectRoot "configs\mnist_noniid_fr40_seed46_fr4_plan.json"
-        Batch = Join-Path $resultsRoot "mnist_noniid_fr40_seed46"
-    },
-    [pscustomobject]@{
-        Label = "CIFAR-10 IID, FR1-FR4, 40% free riders, seed 42"
-        Plan = Join-Path $projectRoot "configs\cifar10_iid_fr40_seed42_plan.json"
-        Batch = Join-Path $resultsRoot "cifar10_iid_fr40_seed42"
-    },
-    [pscustomobject]@{
-        Label = "CIFAR-10 non-IID, FR1-FR4, 40% free riders, seed 43"
-        Plan = Join-Path $projectRoot "configs\cifar10_noniid_fr40_seed43_plan.json"
-        Batch = Join-Path $resultsRoot "cifar10_noniid_fr40_seed43"
-    },
-    [pscustomobject]@{
-        Label = "CIFAR-10 IID, FR1-FR4, 40% free riders, seed 43"
-        Plan = Join-Path $projectRoot "configs\cifar10_iid_fr40_seed43_plan.json"
-        Batch = Join-Path $resultsRoot "cifar10_iid_fr40_seed43"
-    },
-    [pscustomobject]@{
-        Label = "CIFAR-10 non-IID, FR1-FR4, 40% free riders, seed 42"
-        Plan = Join-Path $projectRoot "configs\cifar10_noniid_fr40_seed42_plan.json"
-        Batch = Join-Path $resultsRoot "cifar10_noniid_fr40_seed42"
-    },
-    [pscustomobject]@{
-        Label = "MNIST FRIDA-loss and FRAD, IID/non-IID, FR1-FR4, 40% free riders, seed 42"
-        Plan = Join-Path $projectRoot "configs\mnist_baselines_fr40_seed42_plan.json"
-        Batch = Join-Path $resultsRoot "mnist_baselines_fr40_seed42"
-    },
-    [pscustomobject]@{
-        Label = "MNIST non-IID, FR1-FR4, 30% free riders, seed 42 recovery"
-        Plan = Join-Path $projectRoot "configs\mnist_noniid_fr30_seed42_plan.json"
-        Batch = Join-Path $resultsRoot "mnist_noniid_fr30_seed42"
-    },
-    [pscustomobject]@{
-        Label = "CIFAR-10 IID/non-IID, FR1-FR4, 30% free riders, seeds 42 and 43"
-        Plan = Join-Path $projectRoot "configs\cifar10_fr30_seeds42_43_plan.json"
-        Batch = Join-Path $resultsRoot "cifar10_fr30_seeds42_43"
+        Label = "v10 MNIST IID, FR1-FR4, 40% free riders, seed 42"
+        Plan = Join-Path $projectRoot "configs\v10_mnist_iid_fr40_seed42_plan.json"
+        Batch = Join-Path $resultsRoot "v10_mnist_iid_fr40_seed42"
     }
 )
 
@@ -99,24 +54,6 @@ try {
     if ($alreadyRunning) {
         Write-Host "Experiment runner is already active as PID $($alreadyRunning.ProcessId)."
         exit 0
-    }
-
-    $scheduledPaths = @($scheduledBatches | ForEach-Object { $_.Batch })
-    $batches = Get-ChildItem -LiteralPath $resultsRoot -Directory |
-        Where-Object {
-            (Test-Path -LiteralPath (Join-Path $_.FullName "experiment_manifest.json")) -and
-            -not (Test-Path -LiteralPath (Join-Path $_.FullName ".resume_disabled")) -and
-            $_.FullName -notin $scheduledPaths
-        } |
-        Sort-Object LastWriteTime -Descending
-    $batch = $batches | Where-Object { -not (Test-BatchComplete $_) } | Select-Object -First 1
-
-    if ($batch) {
-        Write-Host "Resuming batch: $($batch.FullName)"
-        & $python $runner --resume-batch $batch.FullName --stop-on-error
-        if ($LASTEXITCODE -ne 0) {
-            exit $LASTEXITCODE
-        }
     }
 
     foreach ($scheduled in $scheduledBatches) {

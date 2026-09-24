@@ -9,9 +9,10 @@ This checklist is ordered so each stage is run only after the previous stage is 
       unless all attack and detector tests pass.
 - [ ] Confirm no attacker method receives trap membership, detector decisions,
       ground-truth labels, other clients' updates, or an unperturbed server model.
-- [ ] Confirm FR1, FR3, and FR4 retain every model sent to that client under the
-      same rule; secret trap models must not be selectively excluded.
-- [ ] Confirm checkpoint/resume preserves attacker-visible FR1/FR3/FR4 history.
+- [ ] Confirm FR1 returns every currently received model unchanged and FR3/FR4
+      retain every model sent to that client under the same rule; secret trap
+      models must not be selectively excluded.
+- [ ] Confirm checkpoint/resume preserves attacker-visible FR3/FR4 history.
 - [ ] Confirm a 100-client, 10% coverage sweep probes 20 clients per round for
       10 rounds, each client receives trap A once and trap B once, each trap has
       its own complete-pass baseline, and no group-pair repeats where avoidable.
@@ -53,6 +54,29 @@ This checklist is ordered so each stage is run only after the previous stage is 
 Results generated before the attack-information-boundary correction must be kept
 for provenance but must not be mixed with or reported as results from the corrected
 threat model.
+
+## v10 protocol checks (required before full experiments)
+
+- [ ] FR1 earns exactly one send-back strike per round and all FR1 clients are
+      removed at the end of warm-up round 10 with no earlier removal.
+- [ ] Initial rounds 11–20 use ten groups, two frozen traps, and give every active
+      client each trap exactly once.
+- [ ] Later groups are state-homogeneous; C/S never aggregate, while nontrapped R
+      and probationary R do.
+- [ ] Later baselines contain only same-trap, reference-eligible R responses;
+      provisional R outliers are removed and the reference is recomputed once.
+- [ ] One failed signal (norm OR profile) fails a probe. Confirm the configured
+      3.0 multipliers remain fixed while median/MAD raw thresholds change by cycle.
+- [ ] Verify R -> C first, C -> R after two clean cycles, S -> C after two clean
+      cycles, and rehabilitated R becomes reference-eligible after one more clean
+      cycle.
+- [ ] Verify score cap at zero, -1/-2 failure costs, and removal only at score <=
+      -4 with two strong cycles including one trusted-reference confirmation.
+- [ ] Verify double -> single -> dormant transitions, 20 passive dormant rounds,
+      the single audit cycle, and immediate return to double after an anomaly.
+- [ ] Interrupt/resume during every phase and confirm the cycle queue, frozen
+      traps, evidence, roles, counters, reference eligibility, and probation are
+      identical after recovery.
 
 ## Stage 0: Pipeline validation
 

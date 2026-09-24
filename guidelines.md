@@ -6,6 +6,54 @@ named configuration variable, not a hardcoded value — the code should be built
 that changing any single value in the config does not require touching logic
 elsewhere.
 
+> **Current protocol:** `swtcp_v10`. Sections that describe U/C/S anchor probing
+> are retained as historical v8 documentation. The v10 rules below override those
+> legacy sections whenever `methodology_version="swtcp_v10"`.
+
+## Current v10 protocol
+
+- Rounds 1–10 are warm-up. No statistical traps run. FR1 is checked in exactly
+  two ways: an unchanged current model (`delta < zero_update_epsilon`) and an
+  exact fingerprint match with the immediately previous model sent to that same
+  client. Either event adds one permanent send-back strike, capped at one strike
+  per client per round. Five strikes remove the client, but warm-up removal is
+  applied only at the end of round 10.
+- The first cycle (rounds 11–20 with 100 active clients) builds exactly ten
+  balanced groups and freezes two trap models. Two groups are probed per round;
+  every client receives each trap exactly once. Only clients trapped in the
+  current round are excluded from aggregation. The initial comparison population
+  contains all responses that received the same trap.
+- A probe fails when either the two-sided robust update-norm test or the
+  layer-profile test fails. The raw norm/profile thresholds are dynamic because
+  their median and MAD are recomputed from the applicable population; the robust
+  z multipliers remain configured at 3.0.
+- At the first cycle boundary, zero failed probes means R, one means C, and two
+  means S. Later cycles retain exactly ten state-homogeneous, balanced groups
+  across R/C/S (or one group per active client when fewer than ten remain).
+- Later comparisons use only reference-eligible R clients that received the same
+  frozen trap. Provisional anomalous R references are removed, the baseline is
+  recomputed once, and those clients enter C. If fewer than
+  `cycle_min_reference_clients` clean references remain, statistical transitions
+  are deferred and double probing continues.
+- From round 21 onward, every C/S client is quarantined throughout the complete
+  cycle. Only nontrapped R clients aggregate. An R anomaly always enters C first,
+  even if both probes fail; independent later confirmation is required.
+- Scores never become positive: a clean cycle adds 0.5 only while the score is
+  negative, one failed probe costs 1, and two failed probes cost 2. Statistical
+  removal requires score <= -4, at least two strong (two-failure) cycles, and at
+  least one such confirmation against a trusted R reference.
+- C returns to R after two consecutive fully clean cycles. S first returns to C
+  after two clean cycles, then needs two more clean C cycles to return to R. Any
+  anomaly resets the clean streak. A rehabilitated R aggregates immediately but
+  completes one additional clean cycle before becoming reference-eligible.
+- Double probing continues until C/S are empty and two consecutive double cycles
+  are clean. The detector then runs single-probe ten-group cycles. An anomaly
+  restores double mode; two clean single cycles enter dormancy. Dormancy performs
+  only passive send-back checks for 20 rounds, then runs one single audit cycle;
+  a clean audit returns to dormancy and an anomaly returns to double mode.
+- State changes occur only at complete cycle boundaries. A clearing response is
+  excluded for its entire clearing cycle and can aggregate starting next cycle.
+
 ---
 
 ## 1. Framework & Environment
@@ -27,7 +75,7 @@ elsewhere.
 
 | Variable | Default | Description |
 |---|---|---|
-| `methodology_version` | `"swtcp_v8"` | Rejects checkpoints produced by an incompatible detector protocol |
+| `methodology_version` | `"swtcp_v10"` | Rejects checkpoints produced by an incompatible detector protocol |
 | `dataset` | `"mnist"` | `"mnist"` or `"cifar10"` |
 | `distribution` | `"iid"` | `"iid"` or `"noniid"` |
 | `dirichlet_alpha` | `0.5` | Concentration parameter for Non-IID Dirichlet partitioning. Lower = more skewed. Only used if `distribution == "noniid"` |
@@ -64,6 +112,16 @@ elsewhere.
 | `fr4_history_size` | `5` | Maximum number of received-model deltas averaged by FR4 |
 | `fr4_noise_fraction` | `0.1` | FR4 noise norm as a fraction of its predicted update norm |
 | `fr4_cold_start_scale` | `1e-4` | FR4 Gaussian update scale before a historical delta exists |
+| `sendback_history_size` | `1` | Per-client immediately previous sent-model fingerprint retained for exact replay detection |
+| `sendback_removal_count` | `5` | Permanent send-back strikes required for removal |
+| `cycle_candidate_clean_cycles` | `2` | Consecutive clean cycles required for C to return to R |
+| `cycle_suspect_clean_cycles` | `2` | Consecutive clean cycles required for S to step down to C |
+| `cycle_reference_probation_cycles` | `1` | Additional clean R cycle required after rehabilitation before reference eligibility |
+| `cycle_strong_cycles_for_removal` | `2` | Strong cycles required for statistical removal |
+| `cycle_double_clean_cycles_before_single` | `2` | Clean double cycles required before single probing |
+| `cycle_single_clean_cycles_before_dormant` | `2` | Clean single cycles required before dormancy |
+| `cycle_dormant_rounds` | `20` | Passive rounds between single-cycle audits in dormancy |
+| `cycle_min_reference_clients` | `10` | Minimum clean R reference population for a statistical decision |
 | `full_participation` | `true` | All active clients train every round (no dropout simulated) — see Section 3.1 |
 | `seed` | `42` | Global random seed |
 | `output_dir` | `"./results/"` | Where all CSV/log outputs are written |
@@ -149,8 +207,9 @@ send-back penalty applies from round one.
 
 ## 4. Free-Rider Attack Types (implement all four, select one per run via `attack_type`)
 
-- **`FR1` (Static Replay):** client returns the last model it received without
-  training. On its first participation it returns the current received model.
+- **`FR1` (Direct Send-Back):** client performs no training and returns the model
+  received in the current participation unchanged. Its update delta is therefore
+  exactly zero on every round, including rounds in which it receives a trap.
 - **`FR2` (Bounded Random Update):** client adds an independently sampled update
   from `Uniform(-fr2_update_range, fr2_update_range)` to every floating-point
   parameter of the currently received model. It is memoryless and uses no
@@ -166,8 +225,9 @@ send-back penalty applies from round one.
 All attackers have only client-observable information: client identity, round,
 the current received model, models previously sent to that same client, public
 configuration, and local randomness. The server never discloses whether a model
-is a trap. Consequently, every received model enters FR1/FR3/FR4 history under
-the same rules, including a secret trap model.
+is a trap. Consequently, every received model enters FR3/FR4 history under the
+same rules, including a secret trap model. FR1 simply returns that current model
+unchanged and does not need historical state to fabricate its response.
 
 Free riders are assigned once at the start of the run: `ceil(free_rider_pct * N)`
 clients are randomly selected and flagged internally as free riders (ground truth,
@@ -177,9 +237,13 @@ used only for evaluation metrics, never exposed to the detection logic).
 
 ## 5. Per-Round Detection Logic (applies to checked clients)
 
-1. **Zero-update check:** if `||delta|| < zero_update_epsilon`, add
-  `penalty_zero_update` to that client's `P_i`. This applies during warm-up as
-  well as coverage and suspicion. Skip the cosine diagnostic.
+1. **Send-back checks:** if `||delta|| < zero_update_epsilon`, record a direct
+  zero-update send-back. For a nonzero response, compare its deterministic model
+  fingerprint with the immediately previous model sent to that same client and
+  record an exact replay when it matches. Either outcome contributes one
+  permanent send-back count, with at most one count per client per round. This
+  applies during warm-up as well as coverage and suspicion. Skip the cosine
+  diagnostic for a zero update.
 2. **Robust norm-z check** (only if step 1 did not trigger): during coverage or
   surveillance, compute the complete sweep's norm median/MAD and apply the
   configured two-sided robust-z boundary. During frequent suspicion probing, use

@@ -88,10 +88,11 @@ class FreeRiderAttacker:
         raise ValueError(f"Unsupported attack type: {attack_type}")
 
     def _fr1(self, client_id: int, received_state: StateDict) -> dict[str, torch.Tensor]:
-        # Replay the last model this client saw. On its first participation it
-        # has no history, so returning the current model is the only possible
-        # no-computation fallback.
-        fabricated = clone_state(self.last_received_state.get(client_id, received_state))
+        # Direct send-back: FR1 performs no training and returns the model from
+        # this participation unchanged. Keep the observation in checkpointed
+        # attacker state for backward compatibility with existing checkpoints,
+        # but never use an older model as the fabricated response.
+        fabricated = clone_state(received_state)
         self.last_received_state[client_id] = clone_state(received_state)
         return fabricated
 

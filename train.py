@@ -6,6 +6,7 @@ import platform
 import random
 import shutil
 import time
+from collections import deque
 from pathlib import Path
 from datetime import datetime
 from typing import Callable
@@ -24,6 +25,7 @@ from logging_utils import RunLogger
 from models.architectures import get_model
 from server.aggregation import clone_state, fedavg_delta, floating_keys, make_trap_state
 from server.detection import (
+    DetectionResult,
     apply_surveillance_penalties,
     combine_coverage_checks,
     evaluate_suspicion_group,
@@ -34,12 +36,179 @@ from server.detection import (
 )
 from server.trap_selection import TrapSelector
 from server.cycle_trap_selection import CycleTrapSelector
+from server.cycle_protocol import transition_cycle_state
+from server.model_fingerprint import model_fingerprint
 from server.cycle_scoring import (
     cycle_classification,
     score_change,
     score_requires_removal,
     sendbacks_require_removal,
 )
+
+
+def evaluate_completed_cycle(
+    *,
+    coverage_deltas: dict[int, list[torch.Tensor]],
+    coverage_profiles: dict[int, list[torch.Tensor]],
+    coverage_trap_ids: dict[int, list[int]],
+    coverage_observation_rounds: dict[int, list[int]],
+    active_clients: set[int],
+    checks: int,
+    config: ExperimentConfig,
+    trusted_reference_clients: set[int] | None,
+) -> dict[str, object]:
+    """Evaluate a complete v10 cycle, optionally against a cleaned R pool."""
+    per_client_results: dict[int, list[DetectionResult]] = {}
+    provisional_outliers: set[int] = set()
+    reference_valid = True
+    trap_payloads: dict[
+        int,
+        tuple[
+            dict[int, torch.Tensor],
+            dict[int, torch.Tensor],
+            set[int],
+            dict[int, DetectionResult],
+        ],
+    ] = {}
+
+    for trap_id in range(checks):
+        trap_deltas: dict[int, torch.Tensor] = {}
+        trap_profiles: dict[int, torch.Tensor] = {}
+        for client_id, client_deltas in coverage_deltas.items():
+            if client_id not in active_clients:
+                continue
+            for index, delta in enumerate(client_deltas):
+                if coverage_trap_ids[client_id][index] != trap_id:
+                    continue
+                trap_deltas[client_id] = delta
+                trap_profiles[client_id] = coverage_profiles[client_id][index]
+
+        if trusted_reference_clients is None:
+            reference_ids = set(trap_deltas)
+            reference = build_reference(
+                "coverage", reference_ids, set(), trap_deltas
+            )
+            trap_results = evaluate_updates(
+                trap_deltas,
+                trap_profiles,
+                reference,
+                set(trap_deltas),
+                config,
+                reference_ids=reference_ids,
+            )
+        else:
+            reference_ids = set(trap_deltas) & trusted_reference_clients
+            if len(reference_ids) < config.cycle_min_reference_clients:
+                reference_valid = False
+                break
+            provisional_reference = build_reference(
+                "coverage", reference_ids, set(), trap_deltas
+            )
+            provisional = evaluate_updates(
+                trap_deltas,
+                trap_profiles,
+                provisional_reference,
+                set(trap_deltas),
+                config,
+                reference_ids=reference_ids,
+            )
+            trap_outliers = {
+                client_id
+                for client_id in reference_ids
+                if provisional[client_id].flagged
+            }
+            provisional_outliers.update(trap_outliers)
+            trap_payloads[trap_id] = (
+                trap_deltas,
+                trap_profiles,
+                reference_ids,
+                provisional,
+            )
+            continue
+
+        for client_id, result in trap_results.items():
+            per_client_results.setdefault(client_id, []).append(result)
+
+    if reference_valid and trusted_reference_clients is not None:
+        # Clean references once at the cycle level. An R client provisionally
+        # anomalous under either frozen trap cannot define the other trap's
+        # recomputed baseline.
+        for trap_id in range(checks):
+            trap_deltas, trap_profiles, reference_ids, provisional = trap_payloads[trap_id]
+            cleaned_reference_ids = reference_ids - provisional_outliers
+            if len(cleaned_reference_ids) < config.cycle_min_reference_clients:
+                reference_valid = False
+                break
+            final_reference = build_reference(
+                "coverage", cleaned_reference_ids, set(), trap_deltas
+            )
+            trap_results = evaluate_updates(
+                trap_deltas,
+                trap_profiles,
+                final_reference,
+                set(trap_deltas),
+                config,
+                reference_ids=cleaned_reference_ids,
+            )
+            # Preserve the actual provisional failure that disqualified an R
+            # reference, even if the recomputed baseline would clear it.
+            for client_id in provisional_outliers:
+                if client_id in provisional and provisional[client_id].flagged:
+                    trap_results[client_id] = provisional[client_id]
+            for client_id, result in trap_results.items():
+                per_client_results.setdefault(client_id, []).append(result)
+
+    checks_used = {
+        client_id: len(coverage_deltas.get(client_id, []))
+        for client_id in active_clients
+        if client_id in coverage_deltas
+    }
+    if not reference_valid:
+        # Preserve exact-zero evidence but defer statistical state changes until
+        # a sufficiently large trusted reference population is available.
+        per_client_results.clear()
+        for client_id in checks_used:
+            zero_results = evaluate_zero_updates_only(
+                {
+                    index: delta
+                    for index, delta in enumerate(coverage_deltas[client_id])
+                },
+                config,
+            )
+            if zero_results:
+                per_client_results[client_id] = list(zero_results.values())
+
+    combined_results = {
+        client_id: combine_coverage_checks(results)
+        for client_id, results in per_client_results.items()
+        if results
+    }
+    flag_counts = {
+        client_id: sum(result.flagged for result in results)
+        for client_id, results in per_client_results.items()
+    }
+    joint_counts = {
+        client_id: sum(result.joint_flag_count for result in results)
+        for client_id, results in per_client_results.items()
+    }
+    zero_counts = {
+        client_id: sum(result.reason == "zero_update" for result in results)
+        for client_id, results in per_client_results.items()
+    }
+    decision_rounds = {
+        client_id: max(coverage_observation_rounds[client_id])
+        for client_id in checks_used
+    }
+    return {
+        "results": combined_results,
+        "checks": checks_used,
+        "flags": flag_counts,
+        "joint_flags": joint_counts,
+        "zero_counts": zero_counts,
+        "decision_rounds": decision_rounds,
+        "reference_outliers": provisional_outliers,
+        "reference_valid": reference_valid,
+    }
 
 
 def run_experiment(
@@ -72,7 +241,8 @@ def run_experiment(
     free_rider_count = math.ceil(config.free_rider_pct * config.num_clients)
     free_riders = set(rng.sample(range(config.num_clients), free_rider_count))
     attacker = FreeRiderAttacker(config, device)
-    is_v9 = config.methodology_version == "swtcp_v9"
+    is_v10 = config.methodology_version == "swtcp_v10"
+    is_v9 = config.methodology_version in {"swtcp_v9", "swtcp_v10"}
     selector = CycleTrapSelector(config, rng) if is_v9 else TrapSelector(config, rng)
     logger = RunLogger(config, run_name)
 
@@ -101,6 +271,17 @@ def run_experiment(
     dodge_flag_counts = {client_id: 0 for client_id in range(config.num_clients)}
     lifetime_trap_flags = {client_id: 0 for client_id in range(config.num_clients)}
     zero_update_counts = {client_id: 0 for client_id in range(config.num_clients)}
+    cycle_clean_counts = {client_id: 0 for client_id in range(config.num_clients)}
+    cycle_strong_counts = {client_id: 0 for client_id in range(config.num_clients)}
+    cycle_trusted_strong_counts = {
+        client_id: 0 for client_id in range(config.num_clients)
+    }
+    reference_eligible_clients: set[int] = set()
+    reference_probation_counts: dict[int, int] = {}
+    sent_model_fingerprints = {
+        client_id: deque(maxlen=config.sendback_history_size)
+        for client_id in range(config.num_clients)
+    }
     start_round = 1
 
     if config.resume_checkpoint:
@@ -222,6 +403,40 @@ def run_experiment(
             zero_update_counts.update(
                 {int(key): int(value) for key, value in checkpoint.get("zero_update_counts", {}).items()}
             )
+            cycle_clean_counts.update(
+                {
+                    int(key): int(value)
+                    for key, value in checkpoint.get("cycle_clean_counts", {}).items()
+                }
+            )
+            cycle_strong_counts.update(
+                {
+                    int(key): int(value)
+                    for key, value in checkpoint.get("cycle_strong_counts", {}).items()
+                }
+            )
+            cycle_trusted_strong_counts.update(
+                {
+                    int(key): int(value)
+                    for key, value in checkpoint.get(
+                        "cycle_trusted_strong_counts", {}
+                    ).items()
+                }
+            )
+            reference_eligible_clients = {
+                int(client_id)
+                for client_id in checkpoint.get("reference_eligible_clients", [])
+            }
+            reference_probation_counts = {
+                int(key): int(value)
+                for key, value in checkpoint.get(
+                    "reference_probation_counts", {}
+                ).items()
+            }
+            for client_id, fingerprints in checkpoint.get(
+                "sent_model_fingerprints", {}
+            ).items():
+                sent_model_fingerprints[int(client_id)].extend(fingerprints)
             first_flag_round.update(
                 {int(key): int(value) for key, value in checkpoint.get("first_flag_round", {}).items()}
             )
@@ -358,6 +573,8 @@ def run_experiment(
         deltas: dict[int, torch.Tensor] = {}
         profiles: dict[int, torch.Tensor] = {}
         local_stats: dict[int, dict[str, float]] = {}
+        exact_replay_clients: set[int] = set()
+        sent_fingerprint_cache: dict[int, str] = {}
 
         for client_id in active_this_round:
             client_start = time.perf_counter()
@@ -370,6 +587,11 @@ def run_experiment(
             if was_trapped:
                 times_trapped[client_id] += 1
 
+            state_identity = id(received_state)
+            sent_fingerprint = sent_fingerprint_cache.get(state_identity)
+            if sent_fingerprint is None:
+                sent_fingerprint = model_fingerprint(received_state)
+                sent_fingerprint_cache[state_identity] = sent_fingerprint
             if client_id in free_riders:
                 returned_state = attacker.fabricate(
                     client_id, received_state, round_idx, generator
@@ -389,6 +611,13 @@ def run_experiment(
 
             returned_states[client_id] = returned_state
             deltas[client_id] = flatten_delta(returned_state, received_state)
+            if (
+                float(deltas[client_id].norm().item()) >= config.zero_update_epsilon
+                and model_fingerprint(returned_state)
+                in sent_model_fingerprints[client_id]
+            ):
+                exact_replay_clients.add(client_id)
+            sent_model_fingerprints[client_id].append(sent_fingerprint)
             profiles[client_id] = build_layer_profile(
                 returned_state, received_state, config.zero_update_epsilon
             )
@@ -417,6 +646,8 @@ def run_experiment(
         decision_joint_counts: dict[int, int] = {}
         trap_flag_counts: dict[int, int] = {}
         zero_responses_added: dict[int, int] = {}
+        cycle_reference_outliers: set[int] = set()
+        cycle_reference_valid = True
         suspicion_probed: set[int] = set()
         candidate_probed: set[int] = set()
         if selection.phase == "coverage" or is_cycle_probe:
@@ -430,85 +661,107 @@ def run_experiment(
                 )
                 coverage_observation_rounds.setdefault(client_id, []).append(round_idx)
             if selection.coverage_complete:
-                client_probe_ids: dict[int, list[int]] = {}
-                probe_results = {}
-                probe_id = 0
                 checks_in_cycle = selector.checks_per_client if is_cycle_probe else config.coverage_checks_per_client
-                for trap_id in range(checks_in_cycle):
-                    trap_deltas: dict[int, torch.Tensor] = {}
-                    trap_profiles: dict[int, torch.Tensor] = {}
-                    for client_id, client_deltas in coverage_deltas.items():
-                        if client_id not in set(active_this_round):
-                            continue
-                        for index, delta in enumerate(client_deltas):
-                            if coverage_trap_ids[client_id][index] != trap_id:
+                if is_v10:
+                    initial_cycle = selector.cycle_index == 0
+                    evidence = evaluate_completed_cycle(
+                        coverage_deltas=coverage_deltas,
+                        coverage_profiles=coverage_profiles,
+                        coverage_trap_ids=coverage_trap_ids,
+                        coverage_observation_rounds=coverage_observation_rounds,
+                        active_clients=set(active_this_round),
+                        checks=checks_in_cycle,
+                        config=config,
+                        trusted_reference_clients=(
+                            None if initial_cycle else reference_eligible_clients
+                        ),
+                    )
+                    detection_results = evidence["results"]
+                    coverage_checks_used = evidence["checks"]
+                    coverage_flags_used = evidence["flags"]
+                    coverage_joint_flags_used = evidence["joint_flags"]
+                    coverage_zero_responses_used = evidence["zero_counts"]
+                    detection_rounds_used = evidence["decision_rounds"]
+                    cycle_reference_outliers = evidence["reference_outliers"]
+                    cycle_reference_valid = bool(evidence["reference_valid"])
+                else:
+                    client_probe_ids: dict[int, list[int]] = {}
+                    probe_results = {}
+                    probe_id = 0
+                    for trap_id in range(checks_in_cycle):
+                        trap_deltas: dict[int, torch.Tensor] = {}
+                        trap_profiles: dict[int, torch.Tensor] = {}
+                        for client_id, client_deltas in coverage_deltas.items():
+                            if client_id not in set(active_this_round):
                                 continue
-                            trap_deltas[probe_id] = delta
-                            trap_profiles[probe_id] = coverage_profiles[client_id][index]
-                            client_probe_ids.setdefault(client_id, []).append(probe_id)
-                            probe_id += 1
-                    coverage_reference = build_reference(
-                        "coverage", set(trap_deltas), set(), trap_deltas
-                    )
-                    probe_results.update(
-                        evaluate_updates(
-                            trap_deltas,
-                            trap_profiles,
-                            coverage_reference,
-                            set(trap_deltas),
-                            config,
+                            for index, delta in enumerate(client_deltas):
+                                if coverage_trap_ids[client_id][index] != trap_id:
+                                    continue
+                                trap_deltas[probe_id] = delta
+                                trap_profiles[probe_id] = coverage_profiles[client_id][index]
+                                client_probe_ids.setdefault(client_id, []).append(probe_id)
+                                probe_id += 1
+                        coverage_reference = build_reference(
+                            "coverage", set(trap_deltas), set(), trap_deltas
                         )
-                    )
-                coverage_checks_used = {
-                    client_id: len(probe_ids)
-                    for client_id, probe_ids in client_probe_ids.items()
-                }
-                coverage_flags_used = {
-                    client_id: sum(probe_results[item].flagged for item in probe_ids)
-                    for client_id, probe_ids in client_probe_ids.items()
-                }
-                coverage_joint_flags_used = {
-                    client_id: sum(
-                        probe_results[item].joint_flag_count for item in probe_ids
-                    )
-                    for client_id, probe_ids in client_probe_ids.items()
-                }
+                        probe_results.update(
+                            evaluate_updates(
+                                trap_deltas,
+                                trap_profiles,
+                                coverage_reference,
+                                set(trap_deltas),
+                                config,
+                            )
+                        )
+                    coverage_checks_used = {
+                        client_id: len(probe_ids)
+                        for client_id, probe_ids in client_probe_ids.items()
+                    }
+                    coverage_flags_used = {
+                        client_id: sum(probe_results[item].flagged for item in probe_ids)
+                        for client_id, probe_ids in client_probe_ids.items()
+                    }
+                    coverage_joint_flags_used = {
+                        client_id: sum(
+                            probe_results[item].joint_flag_count for item in probe_ids
+                        )
+                        for client_id, probe_ids in client_probe_ids.items()
+                    }
+                    coverage_zero_responses_used = {
+                        client_id: sum(
+                            probe_results[item].reason == "zero_update"
+                            for item in probe_ids
+                        )
+                        for client_id, probe_ids in client_probe_ids.items()
+                    }
+                    if is_v9:
+                        coverage_flags_used = {
+                            client_id: int(
+                                coverage_joint_flags_used.get(client_id, 0) > 0
+                                or coverage_zero_responses_used.get(client_id, 0) > 0
+                            )
+                            for client_id in client_probe_ids
+                        }
+                    if checks_in_cycle == 1:
+                        detection_results = {
+                            client_id: probe_results[probe_ids[0]]
+                            for client_id, probe_ids in client_probe_ids.items()
+                        }
+                    else:
+                        detection_results = {
+                            client_id: combine_coverage_checks(
+                                [probe_results[item] for item in probe_ids]
+                            )
+                            for client_id, probe_ids in client_probe_ids.items()
+                        }
+                    detection_rounds_used = {
+                        client_id: max(coverage_observation_rounds[client_id])
+                        for client_id in client_probe_ids
+                    }
                 decision_flag_counts.update(coverage_flags_used)
                 decision_joint_counts.update(coverage_joint_flags_used)
                 trap_flag_counts.update(coverage_flags_used)
-                coverage_zero_responses_used = {
-                    client_id: sum(
-                        probe_results[item].reason == "zero_update"
-                        for item in probe_ids
-                    )
-                    for client_id, probe_ids in client_probe_ids.items()
-                }
                 zero_responses_added.update(coverage_zero_responses_used)
-                if is_v9:
-                    coverage_flags_used = {
-                        client_id: int(
-                            coverage_joint_flags_used.get(client_id, 0) > 0
-                            or coverage_zero_responses_used.get(client_id, 0) > 0
-                        )
-                        for client_id in client_probe_ids
-                    }
-                    decision_flag_counts.update(coverage_flags_used)
-                if checks_in_cycle == 1:
-                    detection_results = {
-                        client_id: probe_results[probe_ids[0]]
-                        for client_id, probe_ids in client_probe_ids.items()
-                    }
-                else:
-                    detection_results = {
-                        client_id: combine_coverage_checks(
-                            [probe_results[item] for item in probe_ids]
-                        )
-                        for client_id, probe_ids in client_probe_ids.items()
-                    }
-                detection_rounds_used = {
-                    client_id: max(coverage_observation_rounds[client_id])
-                    for client_id in client_probe_ids
-                }
             ordinary_clients = set(active_this_round) - selection.trapped_clients
             ordinary_zero_results = evaluate_zero_updates_only(
                 {client_id: deltas[client_id] for client_id in ordinary_clients},
@@ -521,7 +774,7 @@ def run_experiment(
                 decision_flag_counts[client_id] = decision_flag_counts.get(client_id, 0) + 1
                 zero_responses_added[client_id] = zero_responses_added.get(client_id, 0) + 1
                 detection_rounds_used[client_id] = round_idx
-        elif selection.phase == "warmup":
+        elif selection.phase in {"warmup", "dormant"}:
             # Before secret probes begin, only exact send-backs are strong enough
             # to create evidence; nonzero population outliers are ignored.
             detection_results = evaluate_zero_updates_only(deltas, config)
@@ -648,6 +901,34 @@ def run_experiment(
                     }
                 )
 
+        # A nonzero response that exactly matches any of this client's recent
+        # server-sent models is stale replay evidence. Zero deltas retain their
+        # existing path, so a response can earn at most one send-back count.
+        for client_id in exact_replay_clients:
+            replay_result = DetectionResult(
+                True,
+                config.penalty_zero_update,
+                None,
+                float(deltas[client_id].norm().item()),
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                "exact_model_replay",
+            )
+            detection_results[client_id] = merge_detection_results(
+                detection_results.get(client_id), replay_result
+            )
+            decision_flag_counts[client_id] = (
+                decision_flag_counts.get(client_id, 0) + 1
+            )
+            zero_responses_added[client_id] = (
+                zero_responses_added.get(client_id, 0) + 1
+            )
+            detection_rounds_used[client_id] = round_idx
+
         if is_v9:
             # Send-backs are counted on every round and are never offset by a
             # positive cycle score. Classification is performed only after a
@@ -667,7 +948,11 @@ def run_experiment(
                             "client_id": client_id,
                             "is_free_rider": int(client_id in free_riders),
                             "was_trapped": int(client_id in selection.trapped_clients),
-                            "reason": "zero_update",
+                            "reason": (
+                                "exact_model_replay"
+                                if client_id in exact_replay_clients
+                                else "zero_update"
+                            ),
                             "delta_norm": result.delta_norm,
                             "norm_z_score": result.norm_z_score,
                             "magnitude_flag": 0,
@@ -686,7 +971,166 @@ def run_experiment(
                         }
                     )
 
-            if is_cycle_probe and selection.coverage_complete:
+            if is_v10 and is_cycle_probe and selection.coverage_complete:
+                initial_cycle = selector.cycle_index == 0
+                if cycle_reference_valid:
+                    previous_suspects = suspected_clients.copy()
+                    previous_candidates = candidate_clients.copy()
+                    next_suspects: set[int] = set()
+                    next_candidates: set[int] = set()
+                    for client_id, checks in coverage_checks_used.items():
+                        previous_role = (
+                            "S"
+                            if client_id in previous_suspects
+                            else "C"
+                            if client_id in previous_candidates
+                            else "R"
+                        )
+                        if coverage_zero_responses_used.get(client_id, 0):
+                            if previous_role == "S":
+                                next_suspects.add(client_id)
+                            elif previous_role == "C":
+                                next_candidates.add(client_id)
+                            reference_eligible_clients.discard(client_id)
+                            reference_probation_counts.pop(client_id, None)
+                            continue
+
+                        failed_probes = coverage_flags_used.get(client_id, 0)
+                        if client_id in cycle_reference_outliers:
+                            failed_probes = max(1, failed_probes)
+                        transition = transition_cycle_state(
+                            role=previous_role,
+                            failed_probes=min(failed_probes, checks),
+                            checks=checks,
+                            score=penalties[client_id],
+                            clean_cycles=cycle_clean_counts[client_id],
+                            strong_cycles=cycle_strong_counts[client_id],
+                            trusted_strong_cycles=cycle_trusted_strong_counts[client_id],
+                            initial_cycle=initial_cycle,
+                            trusted_cycle=not initial_cycle,
+                            config=config,
+                        )
+                        old_score = penalties[client_id]
+                        penalties[client_id] = transition.score
+                        v9_score_changes[client_id] = transition.score - old_score
+                        cycle_clean_counts[client_id] = transition.clean_cycles
+                        cycle_strong_counts[client_id] = transition.strong_cycles
+                        cycle_trusted_strong_counts[client_id] = (
+                            transition.trusted_strong_cycles
+                        )
+
+                        if transition.role == "S":
+                            next_suspects.add(client_id)
+                        elif transition.role == "C":
+                            next_candidates.add(client_id)
+
+                        if transition.role != "R":
+                            reference_eligible_clients.discard(client_id)
+                            reference_probation_counts.pop(client_id, None)
+                        elif transition.rehabilitated:
+                            reference_eligible_clients.discard(client_id)
+                            reference_probation_counts[client_id] = 0
+                            rehabilitated_after_round.append(client_id)
+                            logger.rehabilitation_rows.append(
+                                {
+                                    "round": round_idx,
+                                    "client_id": client_id,
+                                    "is_free_rider": int(client_id in free_riders),
+                                    "cleared_magnitude_penalty": 0,
+                                    "remaining_penalty": penalties[client_id],
+                                    "probes": checks,
+                                    "flags": 0,
+                                    "dodge_index": 0.0,
+                                }
+                            )
+                        elif initial_cycle:
+                            reference_eligible_clients.add(client_id)
+                        elif client_id in reference_probation_counts:
+                            if failed_probes == 0:
+                                reference_probation_counts[client_id] += 1
+                            if (
+                                reference_probation_counts[client_id]
+                                >= config.cycle_reference_probation_cycles
+                            ):
+                                reference_probation_counts.pop(client_id, None)
+                                reference_eligible_clients.add(client_id)
+
+                        if failed_probes:
+                            times_flagged[client_id] += failed_probes
+                            lifetime_trap_flags[client_id] += failed_probes
+                            first_flag_round.setdefault(client_id, round_idx)
+                            new_flags += failed_probes
+                            detection = detection_results.get(client_id)
+                            if detection is not None:
+                                logger.detection_event_rows.append(
+                                    {
+                                        "decision_round": round_idx,
+                                        "observation_round": detection_rounds_used.get(client_id, round_idx),
+                                        "client_id": client_id,
+                                        "is_free_rider": int(client_id in free_riders),
+                                        "was_trapped": 1,
+                                        "reason": f"cycle_failure_{transition.role}",
+                                        "delta_norm": detection.delta_norm,
+                                        "norm_z_score": detection.norm_z_score,
+                                        "magnitude_flag": int(detection.magnitude_flag),
+                                        "profile_score": detection.profile_score,
+                                        "profile_z_score": detection.profile_z_score,
+                                        "profile_median": detection.profile_median,
+                                        "profile_mad": detection.profile_mad,
+                                        "profile_flag": int(detection.profile_flag),
+                                        "joint_flag_count": coverage_joint_flags_used.get(client_id, 0),
+                                        "loss": "",
+                                        "loss_z_score": "",
+                                        "coverage_checks": checks,
+                                        "coverage_flags": failed_probes,
+                                        "coverage_joint_flags": coverage_joint_flags_used.get(client_id, 0),
+                                        "penalty": v9_score_changes[client_id],
+                                    }
+                                )
+                            logger.candidate_event_rows.append(
+                                {
+                                    "round": round_idx,
+                                    "client_id": client_id,
+                                    "is_free_rider": int(client_id in free_riders),
+                                    "event": (
+                                        "entered_suspicious_state"
+                                        if transition.role == "S"
+                                        else "entered_candidate_state"
+                                    ),
+                                    "reason": f"{failed_probes}_failed_probes_in_{checks}_checks",
+                                    "cumulative_penalty": penalties[client_id],
+                                }
+                            )
+
+                        if transition.remove:
+                            removed_after_round.append(client_id)
+                            next_suspects.discard(client_id)
+                            next_candidates.discard(client_id)
+                            reference_eligible_clients.discard(client_id)
+                            reference_probation_counts.pop(client_id, None)
+                            first_removal_round.setdefault(client_id, round_idx)
+                            logger.removal_rows.append(
+                                {
+                                    "round": round_idx,
+                                    "client_id": client_id,
+                                    "is_free_rider": int(client_id in free_riders),
+                                    "final_penalty": penalties[client_id],
+                                    "removal_basis": "two_strong_cycles_with_trusted_confirmation",
+                                    "zero_update_count": zero_update_counts[client_id],
+                                    "suspicion_probes": times_trapped[client_id],
+                                }
+                            )
+
+                    suspected_clients = next_suspects
+                    candidate_clients = next_candidates - next_suspects
+                    anomaly_found = bool(suspected_clients or candidate_clients)
+                    selector.finish_cycle(anomaly_found)
+                else:
+                    # Never relax probing or change statistical states when the
+                    # trusted R reference is too small for a defensible decision.
+                    selector.finish_cycle(anomaly_found=True)
+
+            if not is_v10 and is_cycle_probe and selection.coverage_complete:
                 previous_suspects = suspected_clients.copy()
                 previous_candidates = candidate_clients.copy()
                 next_suspects: set[int] = set()
@@ -785,8 +1229,11 @@ def run_experiment(
                 selector.finish_cycle(anomaly_found)
 
             for client_id in active_this_round:
-                score_removal = score_requires_removal(
-                    penalties[client_id], config.cycle_removal_score
+                score_removal = (
+                    not is_v10
+                    and score_requires_removal(
+                        penalties[client_id], config.cycle_removal_score
+                    )
                 )
                 sendback_removal = sendbacks_require_removal(
                     zero_update_counts[client_id],
@@ -796,9 +1243,13 @@ def run_experiment(
                 )
                 if not (score_removal or sendback_removal):
                     continue
+                if client_id in removed_after_round:
+                    continue
                 removed_after_round.append(client_id)
                 suspected_clients.discard(client_id)
                 candidate_clients.discard(client_id)
+                reference_eligible_clients.discard(client_id)
+                reference_probation_counts.pop(client_id, None)
                 first_removal_round.setdefault(client_id, round_idx)
                 logger.removal_rows.append(
                     {
@@ -947,7 +1398,8 @@ def run_experiment(
                     )
 
                 zero_removal_ready = (
-                    zero_update_counts[client_id] * config.penalty_zero_update
+                    round_idx >= config.warmup_rounds
+                    and zero_update_counts[client_id] * config.penalty_zero_update
                     >= config.removal_threshold
                 )
                 magnitude_removal_ready = (
@@ -1026,6 +1478,12 @@ def run_experiment(
                     "flagged": (
                         int(
                             zero_responses_added.get(client_id, 0) > 0
+                            or detection.flagged
+                        )
+                        if is_v10 and detection
+                        else
+                        int(
+                            zero_responses_added.get(client_id, 0) > 0
                             or detection.joint_flag_count > 0
                         )
                         if is_v9 and detection
@@ -1048,6 +1506,11 @@ def run_experiment(
                     "zero_update_count": zero_update_counts[client_id],
                     "zero_penalty": zero_penalties[client_id],
                     "magnitude_episode_penalty": magnitude_penalties[client_id],
+                    "reference_eligible": int(client_id in reference_eligible_clients),
+                    "reference_probation_cycles": reference_probation_counts.get(client_id, ""),
+                    "cycle_clean_cycles": cycle_clean_counts[client_id],
+                    "cycle_strong_cycles": cycle_strong_counts[client_id],
+                    "cycle_trusted_strong_cycles": cycle_trusted_strong_counts[client_id],
                 }
             )
 
@@ -1109,6 +1572,11 @@ def run_experiment(
                     "zero_update_count": zero_update_counts[client_id],
                     "zero_penalty": zero_penalties[client_id],
                     "magnitude_episode_penalty": magnitude_penalties[client_id],
+                    "reference_eligible": int(client_id in reference_eligible_clients),
+                    "reference_probation_cycles": reference_probation_counts.get(client_id, ""),
+                    "cycle_clean_cycles": cycle_clean_counts[client_id],
+                    "cycle_strong_cycles": cycle_strong_counts[client_id],
+                    "cycle_trusted_strong_cycles": cycle_trusted_strong_counts[client_id],
                 }
             )
 
@@ -1225,7 +1693,12 @@ def run_experiment(
             client_id
             for client_id, result in detection_results.items()
             if (
-                zero_responses_added.get(client_id, 0) > 0
+                (
+                    zero_responses_added.get(client_id, 0) > 0
+                    or result.flagged
+                )
+                if is_v10
+                else zero_responses_added.get(client_id, 0) > 0
                 or result.joint_flag_count > 0
                 if is_v9
                 else result.flagged
@@ -1265,16 +1738,28 @@ def run_experiment(
             }
         )
 
-        quarantined_clients = (
-            selection.trapped_clients
-            | suspected_clients_at_round_start
-            | suspected_clients
-            | set(removed_after_round)
-            if is_v9
-            else selection.trapped_clients
-            | candidate_clients_at_round_start
-            | candidate_clients
-        )
+        if is_v10:
+            quarantined_clients = (
+                selection.trapped_clients
+                | suspected_clients_at_round_start
+                | suspected_clients
+                | candidate_clients_at_round_start
+                | candidate_clients
+                | set(removed_after_round)
+            )
+        elif is_v9:
+            quarantined_clients = (
+                selection.trapped_clients
+                | suspected_clients_at_round_start
+                | suspected_clients
+                | set(removed_after_round)
+            )
+        else:
+            quarantined_clients = (
+                selection.trapped_clients
+                | candidate_clients_at_round_start
+                | candidate_clients
+            )
         aggregated_clients = [
             client_id
             for client_id in active_this_round
@@ -1297,6 +1782,8 @@ def run_experiment(
                 "num_active_clients": len(active_clients),
                 "num_suspected_clients": len(suspected_clients),
                 "num_candidate_clients": len(candidate_clients),
+                "num_reference_eligible": len(reference_eligible_clients),
+                "num_reference_probation": len(reference_probation_counts),
                 "num_trapped": len(selection.trapped_clients),
                 "num_anchor_roster": len(selection.anchor_roster),
                 "num_active_anchors": len(selection.anchors),
@@ -1338,6 +1825,15 @@ def run_experiment(
                 "dodge_flag_counts": dodge_flag_counts.copy(),
                 "lifetime_trap_flags": lifetime_trap_flags.copy(),
                 "zero_update_counts": zero_update_counts.copy(),
+                "cycle_clean_counts": cycle_clean_counts.copy(),
+                "cycle_strong_counts": cycle_strong_counts.copy(),
+                "cycle_trusted_strong_counts": cycle_trusted_strong_counts.copy(),
+                "reference_eligible_clients": sorted(reference_eligible_clients),
+                "reference_probation_counts": reference_probation_counts.copy(),
+                "sent_model_fingerprints": {
+                    client_id: list(fingerprints)
+                    for client_id, fingerprints in sent_model_fingerprints.items()
+                },
                 "first_flag_round": first_flag_round.copy(),
                 "first_removal_round": first_removal_round.copy(),
                 "free_riders_ground_truth": sorted(free_riders),
@@ -1361,6 +1857,7 @@ def run_experiment(
                 {
                     "round": round_idx,
                     "total_rounds": config.num_rounds,
+                    "methodology_version": config.methodology_version,
                     "phase": selection.phase,
                     "active_clients": len(active_clients),
                     "round_time_seconds": logger.global_rows[-1]["round_time_seconds"],
@@ -1372,6 +1869,8 @@ def run_experiment(
                     "new_rehabilitations": len(rehabilitated_after_round),
                     "suspected_clients": len(suspected_clients),
                     "candidate_clients": len(candidate_clients),
+                    "reference_eligible_clients": len(reference_eligible_clients),
+                    "reference_probation_clients": len(reference_probation_counts),
                     **resource_metrics,
                 }
             )
@@ -1394,6 +1893,11 @@ def run_experiment(
             "final_penalty": penalties[client_id],
             "final_zero_penalty": zero_penalties[client_id],
             "final_magnitude_episode_penalty": magnitude_penalties[client_id],
+            "reference_eligible_at_end": int(client_id in reference_eligible_clients),
+            "reference_probation_cycles": reference_probation_counts.get(client_id, ""),
+            "cycle_clean_cycles": cycle_clean_counts[client_id],
+            "cycle_strong_cycles": cycle_strong_counts[client_id],
+            "cycle_trusted_strong_cycles": cycle_trusted_strong_counts[client_id],
             "suspected_at_end": int(client_id in suspected_clients),
             "candidate_at_end": int(client_id in candidate_clients),
             "lifetime_trap_flags": lifetime_trap_flags[client_id],

@@ -8,7 +8,7 @@ from typing import Any
 
 @dataclass
 class ExperimentConfig:
-    methodology_version: str = "swtcp_v8"
+    methodology_version: str = "swtcp_v10"
     dataset: str = "mnist"
     distribution: str = "iid"
     dirichlet_alpha: float = 0.5
@@ -39,6 +39,15 @@ class ExperimentConfig:
     cycle_suspicious_cost: float = 2.0
     cycle_removal_score: float = -4.0
     sendback_removal_count: int = 5
+    sendback_history_size: int = 1
+    cycle_candidate_clean_cycles: int = 2
+    cycle_suspect_clean_cycles: int = 2
+    cycle_reference_probation_cycles: int = 1
+    cycle_strong_cycles_for_removal: int = 2
+    cycle_double_clean_cycles_before_single: int = 2
+    cycle_single_clean_cycles_before_dormant: int = 2
+    cycle_dormant_rounds: int = 20
+    cycle_min_reference_clients: int = 10
     dodge_min_probes: int = 10
     dodge_max_flag_rate: float = 0.10
     zero_update_epsilon: float = 1e-6
@@ -99,7 +108,7 @@ class ExperimentConfig:
     def removal_threshold(self) -> float:
         return (
             self.cycle_removal_score
-            if self.methodology_version == "swtcp_v9"
+            if self.methodology_version in {"swtcp_v9", "swtcp_v10"}
             else self.removal_threshold_points
         )
 
@@ -118,7 +127,13 @@ class ExperimentConfig:
 
     def validate(self) -> None:
         choices = {
-            "methodology_version": {"swtcp_v8", "swtcp_v9", "frida_loss", "frad_reproduction"},
+            "methodology_version": {
+                "swtcp_v8",
+                "swtcp_v9",
+                "swtcp_v10",
+                "frida_loss",
+                "frad_reproduction",
+            },
             "dataset": {"mnist", "cifar10"},
             "distribution": {"iid", "noniid"},
             "attack_type": {"FR1", "FR2", "FR3", "FR4"},
@@ -164,8 +179,17 @@ class ExperimentConfig:
             or self.cycle_suspicious_cost <= 0
             or self.cycle_removal_score >= 0
             or self.sendback_removal_count <= 0
+            or self.sendback_history_size <= 0
+            or self.cycle_candidate_clean_cycles <= 0
+            or self.cycle_suspect_clean_cycles <= 0
+            or self.cycle_reference_probation_cycles <= 0
+            or self.cycle_strong_cycles_for_removal <= 0
+            or self.cycle_double_clean_cycles_before_single <= 0
+            or self.cycle_single_clean_cycles_before_dormant <= 0
+            or self.cycle_dormant_rounds <= 0
+            or self.cycle_min_reference_clients <= 0
         ):
-            raise ValueError("v9 cycle scoring settings are invalid.")
+            raise ValueError("Cycle scoring settings are invalid.")
         if self.dodge_min_probes <= 0 or not 0.0 <= self.dodge_max_flag_rate <= 1.0:
             raise ValueError("Dodge-index settings are invalid.")
         if (

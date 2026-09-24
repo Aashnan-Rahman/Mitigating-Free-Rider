@@ -28,13 +28,18 @@ interface receives only client-observable information: client identity, round,
 the model sent to that client, public configuration, local received-model
 history, and local randomness. In particular, there is no `was_trapped` input.
 
-FR1 replays the last received model, FR2 adds a bounded memoryless random update,
-FR3 averages its received-model window, and FR4 predicts an update from
+FR1 returns the currently received model unchanged, FR2 adds a bounded
+memoryless random update, FR3 averages its received-model window, and FR4 predicts an update from
 consecutive received-model differences plus calibrated noise. Secret trap models
 are indistinguishable from other received models and therefore enter attack
 history normally.
 
 For update norms:
+
+> **Current implementation note:** `swtcp_v10` replaces the anchor protocol
+> described later in this file. Its authoritative state, reference, scoring,
+> rehabilitation, and probe-intensity rules are summarized in the “Current v10
+> protocol” section of `guidelines.md` and the v10 entry in `VERSION_HISTORY.md`.
 
 ```text
 norm_median = median(client update norms)

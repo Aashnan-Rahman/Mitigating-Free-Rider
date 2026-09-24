@@ -15,14 +15,19 @@ def _attacker(attack_type: str, **overrides) -> tuple[FreeRiderAttacker, torch.G
     return FreeRiderAttacker(config, torch.device("cpu")), generator
 
 
-def test_fr1_replays_only_models_the_client_previously_received() -> None:
+def test_fr1_returns_each_currently_received_model_unchanged() -> None:
     attacker, generator = _attacker("FR1")
 
     first = attacker.fabricate(4, _state(1.0), 1, generator)
-    second = attacker.fabricate(4, _state(3.0), 2, generator)
+    second_received = _state(3.0)
+    second = attacker.fabricate(4, second_received, 2, generator)
 
     assert torch.equal(first["weight"], _state(1.0)["weight"])
-    assert torch.equal(second["weight"], _state(1.0)["weight"])
+    assert torch.equal(second["weight"], _state(3.0)["weight"])
+
+    # The fabricated state must not alias the server's received tensors.
+    second["weight"].add_(10.0)
+    assert torch.equal(second_received["weight"], torch.tensor([3.0, 3.0]))
 
 
 def test_fr2_adds_a_bounded_random_update_instead_of_redrawing_weights() -> None:

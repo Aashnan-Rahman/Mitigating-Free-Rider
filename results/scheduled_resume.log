@@ -1,0 +1,47 @@
+﻿**********************
+Windows PowerShell transcript start
+Start time: 20260924035257
+Username: DESKTOP-0HUBAH2\CSE
+RunAs User: DESKTOP-0HUBAH2\CSE
+Configuration Name: 
+Machine: DESKTOP-0HUBAH2 (Microsoft Windows NT 10.0.26200.0)
+Host Application: powershell.exe -NoProfile -ExecutionPolicy Bypass -File E:\New Projects\Mitigating-Free-Rider\resume_experiments.ps1
+Process ID: 20396
+PSVersion: 5.1.26100.9549
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.26100.9549
+BuildVersion: 10.0.26100.9549
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Starting scheduled batch: v9 MNIST IID/non-IID, FR1-FR4, 40% free riders, seed 42
+**********************
+Windows PowerShell transcript start
+Start time: 20260924133216
+Username: DESKTOP-0HUBAH2\CSE
+RunAs User: DESKTOP-0HUBAH2\CSE
+Configuration Name: 
+Machine: DESKTOP-0HUBAH2 (Microsoft Windows NT 10.0.26200.0)
+Host Application: powershell.exe -NoProfile -ExecutionPolicy Bypass -File E:\New Projects\Mitigating-Free-Rider\resume_experiments.ps1
+Process ID: 9108
+PSVersion: 5.1.26100.9549
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.26100.9549
+BuildVersion: 10.0.26100.9549
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Starting scheduled batch: v10 MNIST IID, FR1-FR4, 40% free riders, seed 42
+E:\New Projects\Mitigating-Free-Rider\.venv\Lib\site-packages\torch\utils\data\dataloader.py:759: U
+serWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned me
+mory won't be used.
+  super().__init__(loader)
+All scheduled experiments are complete.
+**********************
+Windows PowerShell transcript end
+End time: 20260924182410
+**********************

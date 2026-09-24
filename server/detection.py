@@ -220,20 +220,30 @@ def evaluate_updates(
     reference: torch.Tensor,
     trapped_clients: set[int],
     config: ExperimentConfig,
+    reference_ids: set[int] | None = None,
 ) -> dict[int, DetectionResult]:
     """Evaluate updates using only tensors observable by the server."""
     norms = {
         client_id: float(delta.norm().item()) for client_id, delta in deltas.items()
     }
+    if reference_ids is None:
+        reference_ids = set(norms)
+    usable_reference_ids = [
+        client_id
+        for client_id in reference_ids
+        if client_id in norms and norms[client_id] >= config.zero_update_epsilon
+    ]
     norm_median, norm_mad, norm_scale = build_mad_statistics(
-        list(norms.values()), config.mad_floor
+        [norms[client_id] for client_id in usable_reference_ids], config.mad_floor
     )
     norm_z_scores = {
         client_id: (norm - norm_median) / norm_scale
         for client_id, norm in norms.items()
     }
 
-    profile_statistics = build_profile_statistics(profiles, list(deltas), config)
+    profile_statistics = build_profile_statistics(
+        profiles, usable_reference_ids, config
+    )
     results = {
         client_id: evaluate_update(
             delta,

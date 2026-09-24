@@ -1,0 +1,53 @@
+{
+  "batch_id": "v10_mnist_iid_fr40_seed42",
+  "created_at": "2026-09-24T13:32:17.549820",
+  "defaults": {
+    "checkpoint_keep_last": 5,
+    "device": "auto",
+    "free_rider_pct": 0.4,
+    "methodology_version": "swtcp_v10",
+    "num_clients": 100,
+    "num_rounds": 100,
+    "save_checkpoints": true,
+    "seed": 42
+  },
+  "experiments": [
+    {
+      "config": {
+        "attack_type": "FR1",
+        "dataset": "mnist",
+        "distribution": "iid",
+        "free_rider_pct": 0.4
+      },
+      "id": "v10_mnist_iid_fr40_seed42_FR1"
+    },
+    {
+      "config": {
+        "attack_type": "FR2",
+        "dataset": "mnist",
+        "distribution": "iid",
+        "free_rider_pct": 0.4
+      },
+      "id": "v10_mnist_iid_fr40_seed42_FR2"
+    },
+    {
+      "config": {
+        "attack_type": "FR3",
+        "dataset": "mnist",
+        "distribution": "iid",
+        "free_rider_pct": 0.4
+      },
+      "id": "v10_mnist_iid_fr40_seed42_FR3"
+    },
+    {
+      "config": {
+        "attack_type": "FR4",
+        "dataset": "mnist",
+        "distribution": "iid",
+        "free_rider_pct": 0.4
+      },
+      "id": "v10_mnist_iid_fr40_seed42_FR4"
+    }
+  ],
+  "source_plan": "E:\\New Projects\\Mitigating-Free-Rider\\configs\\v10_mnist_iid_fr40_seed42_plan.json"
+}
