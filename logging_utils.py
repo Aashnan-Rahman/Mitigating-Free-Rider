@@ -152,11 +152,15 @@ class RunLogger:
             f"client_{client_id}" for client_id in range(self.config.num_clients)
         ]
         path = self.run_dir / filename
-        with path.open("w", newline="", encoding="utf-8") as handle:
+        temporary = path.with_name(f".{path.name}.{os.getpid()}.tmp")
+        with temporary.open("w", newline="", encoding="utf-8") as handle:
             writer = csv.DictWriter(handle, fieldnames=fieldnames)
             writer.writeheader()
             for matrix_round in sorted(by_round):
                 writer.writerow(by_round[matrix_round])
+            handle.flush()
+            os.fsync(handle.fileno())
+        replace_with_retry(temporary, path)
 
 
 def _coerce_row(row: dict[str, str]) -> dict[str, Any]:
