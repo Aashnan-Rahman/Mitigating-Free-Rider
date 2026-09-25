@@ -39,6 +39,12 @@ from server.cycle_trap_selection import CycleTrapSelector
 from server.cycle_protocol import transition_cycle_state
 from server.model_fingerprint import model_fingerprint
 from server.v11_detection import evaluate_v11_cycle
+from server.v12_detection import (
+    compact_sketch,
+    evaluate_v12_cycle,
+    history_reconstruction_scores,
+    model_state_sketch,
+)
 from server.cycle_scoring import (
     cycle_classification,
     score_change,
@@ -242,9 +248,10 @@ def run_experiment(
     free_rider_count = math.ceil(config.free_rider_pct * config.num_clients)
     free_riders = set(rng.sample(range(config.num_clients), free_rider_count))
     attacker = FreeRiderAttacker(config, device)
-    is_v11 = config.methodology_version == "swtcp_v11"
-    is_v10 = config.methodology_version in {"swtcp_v10", "swtcp_v11"}
-    is_v9 = config.methodology_version in {"swtcp_v9", "swtcp_v10", "swtcp_v11"}
+    is_v12 = config.methodology_version == "swtcp_v12"
+    is_v11 = config.methodology_version in {"swtcp_v11", "swtcp_v12"}
+    is_v10 = config.methodology_version in {"swtcp_v10", "swtcp_v11", "swtcp_v12"}
+    is_v9 = config.methodology_version in {"swtcp_v9", "swtcp_v10", "swtcp_v11", "swtcp_v12"}
     selector = CycleTrapSelector(config, rng) if is_v9 else TrapSelector(config, rng)
     logger = RunLogger(config, run_name)
 
@@ -260,6 +267,7 @@ def run_experiment(
     coverage_deltas: dict[int, list[torch.Tensor]] = {}
     coverage_norms: dict[int, list[float]] = {}
     coverage_profiles: dict[int, list[torch.Tensor]] = {}
+    coverage_history_scores: dict[int, list[dict[str, float]]] = {}
     coverage_trap_ids: dict[int, list[int]] = {}
     coverage_observation_rounds: dict[int, list[int]] = {}
     surveillance_trap_state: dict[str, torch.Tensor] | None = None
@@ -285,6 +293,10 @@ def run_experiment(
     v11_norm_scale_history: list[float] = []
     v11_profile_scale_history: list[float] = []
     v11_last_cutoff: float | None = None
+    sent_model_sketches = {
+        client_id: deque(maxlen=config.v12_history_window + 1)
+        for client_id in range(config.num_clients)
+    }
     sent_model_fingerprints = {
         client_id: deque(maxlen=config.sendback_history_size)
         for client_id in range(config.num_clients)
@@ -434,6 +446,15 @@ def run_experiment(
                 int(client_id)
                 for client_id in checkpoint.get("reference_eligible_clients", [])
             }
+            coverage_history_scores = {
+                int(client_id): [
+                    {str(name): float(value) for name, value in scores.items()}
+                    for scores in observations
+                ]
+                for client_id, observations in checkpoint.get(
+                    "coverage_history_scores", {}
+                ).items()
+            }
             coverage_norms = {
                 int(client_id): [float(value) for value in values]
                 for client_id, values in checkpoint.get("coverage_norms", {}).items()
@@ -464,6 +485,12 @@ def run_experiment(
                 "sent_model_fingerprints", {}
             ).items():
                 sent_model_fingerprints[int(client_id)].extend(fingerprints)
+            for client_id, sketches in checkpoint.get(
+                "sent_model_sketches", {}
+            ).items():
+                sent_model_sketches[int(client_id)].extend(
+                    sketch.detach().float().cpu() for sketch in sketches
+                )
             first_flag_round.update(
                 {int(key): int(value) for key, value in checkpoint.get("first_flag_round", {}).items()}
             )
@@ -602,6 +629,8 @@ def run_experiment(
         local_stats: dict[int, dict[str, float]] = {}
         exact_replay_clients: set[int] = set()
         sent_fingerprint_cache: dict[int, str] = {}
+        sent_sketch_cache: dict[int, torch.Tensor] = {}
+        response_history_scores: dict[int, dict[str, float]] = {}
 
         for client_id in active_this_round:
             client_start = time.perf_counter()
@@ -638,6 +667,27 @@ def run_experiment(
 
             returned_states[client_id] = returned_state
             deltas[client_id] = flatten_delta(returned_state, received_state)
+            if is_v12:
+                sent_sketch = sent_sketch_cache.get(state_identity)
+                if sent_sketch is None:
+                    sent_sketch = model_state_sketch(
+                        received_state,
+                        config.v12_sketch_width,
+                        config.seed,
+                    )
+                    sent_sketch_cache[state_identity] = sent_sketch
+                sent_model_sketches[client_id].append(sent_sketch.detach().clone())
+                update_sketch = compact_sketch(
+                    deltas[client_id],
+                    config.v12_sketch_width,
+                    config.seed,
+                )
+                response_history_scores[client_id] = history_reconstruction_scores(
+                    update_sketch,
+                    list(sent_model_sketches[client_id]),
+                    config.v12_history_window,
+                    config.cycle_scale_epsilon,
+                )
             if (
                 float(deltas[client_id].norm().item()) >= config.zero_update_epsilon
                 and model_fingerprint(returned_state)
@@ -693,6 +743,10 @@ def run_experiment(
                     coverage_profiles.setdefault(client_id, []).append(
                         profiles[client_id].detach().float().cpu()
                     )
+                    if is_v12:
+                        coverage_history_scores.setdefault(client_id, []).append(
+                            dict(response_history_scores.get(client_id, {}))
+                        )
                 else:
                     coverage_deltas.setdefault(client_id, []).append(deltas[client_id])
                     coverage_profiles.setdefault(client_id, []).append(profiles[client_id])
@@ -705,21 +759,25 @@ def run_experiment(
                 if is_v10:
                     initial_cycle = selector.cycle_index == 0
                     if is_v11:
-                        evidence = evaluate_v11_cycle(
-                            coverage_norms=coverage_norms,
-                            coverage_profiles=coverage_profiles,
-                            coverage_trap_ids=coverage_trap_ids,
-                            coverage_observation_rounds=coverage_observation_rounds,
-                            active_clients=set(active_this_round),
-                            checks=checks_in_cycle,
-                            config=config,
-                            trusted_reference_clients=(
+                        evaluator = evaluate_v12_cycle if is_v12 else evaluate_v11_cycle
+                        evaluator_kwargs = {
+                            "coverage_norms": coverage_norms,
+                            "coverage_profiles": coverage_profiles,
+                            "coverage_trap_ids": coverage_trap_ids,
+                            "coverage_observation_rounds": coverage_observation_rounds,
+                            "active_clients": set(active_this_round),
+                            "checks": checks_in_cycle,
+                            "config": config,
+                            "trusted_reference_clients": (
                                 None if initial_cycle else reference_eligible_clients.copy()
                             ),
-                            calibration_history=v11_calibration_history,
-                            norm_scale_history=v11_norm_scale_history,
-                            profile_scale_history=v11_profile_scale_history,
-                        )
+                            "calibration_history": v11_calibration_history,
+                            "norm_scale_history": v11_norm_scale_history,
+                            "profile_scale_history": v11_profile_scale_history,
+                        }
+                        if is_v12:
+                            evaluator_kwargs["coverage_history_scores"] = coverage_history_scores
+                        evidence = evaluator(**evaluator_kwargs)
                     else:
                         evidence = evaluate_completed_cycle(
                             coverage_deltas=coverage_deltas,
@@ -1042,6 +1100,7 @@ def run_experiment(
                     previous_candidates = candidate_clients.copy()
                     next_suspects: set[int] = set()
                     next_candidates: set[int] = set()
+                    v12_new_strong_anomaly = False
                     for client_id, checks in coverage_checks_used.items():
                         previous_role = (
                             "S"
@@ -1079,6 +1138,12 @@ def run_experiment(
                                 else None
                             ),
                         )
+                        if (
+                            is_v12
+                            and failed_probes
+                            and cycle_coherent_strong.get(client_id, False)
+                        ):
+                            v12_new_strong_anomaly = True
                         old_score = penalties[client_id]
                         penalties[client_id] = transition.score
                         v9_score_changes[client_id] = transition.score - old_score
@@ -1227,7 +1292,11 @@ def run_experiment(
 
                     suspected_clients = next_suspects
                     candidate_clients = next_candidates - next_suspects
-                    anomaly_found = bool(suspected_clients or candidate_clients)
+                    anomaly_found = (
+                        v12_new_strong_anomaly
+                        if is_v12
+                        else bool(suspected_clients or candidate_clients)
+                    )
                     selector.finish_cycle(anomaly_found)
                 else:
                     # Never relax probing or change statistical states when the
@@ -1689,6 +1758,7 @@ def run_experiment(
             coverage_deltas.clear()
             coverage_norms.clear()
             coverage_profiles.clear()
+            coverage_history_scores.clear()
             coverage_trap_ids.clear()
             coverage_observation_rounds.clear()
         if selection.surveillance_complete:
@@ -1918,6 +1988,7 @@ def run_experiment(
                 "coverage_deltas": coverage_deltas,
                 "coverage_norms": coverage_norms,
                 "coverage_profiles": coverage_profiles,
+                "coverage_history_scores": coverage_history_scores,
                 "coverage_trap_ids": coverage_trap_ids,
                 "coverage_observation_rounds": coverage_observation_rounds,
                 "surveillance_trap_state": surveillance_trap_state,
@@ -1944,6 +2015,10 @@ def run_experiment(
                 "sent_model_fingerprints": {
                     client_id: list(fingerprints)
                     for client_id, fingerprints in sent_model_fingerprints.items()
+                },
+                "sent_model_sketches": {
+                    client_id: list(sketches)
+                    for client_id, sketches in sent_model_sketches.items()
                 },
                 "first_flag_round": first_flag_round.copy(),
                 "first_removal_round": first_removal_round.copy(),

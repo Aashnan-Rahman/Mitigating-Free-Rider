@@ -72,7 +72,7 @@ def transition_cycle_state(
             config.cycle_suspicious_cost
             if strong
             else 0.0
-            if config.methodology_version == "swtcp_v11"
+            if config.methodology_version in {"swtcp_v11", "swtcp_v12"}
             else config.cycle_candidate_cost
         )
         next_score = min(0.0, score - cost)

@@ -254,6 +254,7 @@ def evaluate_v11_cycle(
         "reference_outliers": set(),
         "reference_valid": reference_valid,
         "coherent_strong": coherent_strong,
+        "signatures": per_client_signatures,
         "cycle_scores": {
             client_id: max(scores)
             for client_id, scores in per_client_component_scores.items()

@@ -40,6 +40,13 @@ $scheduledBatches = @(
         Batch = Join-Path $resultsRoot "v11_full_mnist_iid_noniid_fr40_seed42"
         GateBatch = Join-Path $resultsRoot "v11_validation_mnist_iid_fr4_seed42"
         GateRun = "v11_mnist_iid_fr4_fr40_seed42"
+    },
+    [pscustomobject]@{
+        Label = "v12 full MNIST IID/non-IID, FR1-FR4, 40% free riders, seed 42"
+        Plan = Join-Path $projectRoot "configs\v12_full_mnist_iid_noniid_fr40_seed42_plan.json"
+        Batch = Join-Path $resultsRoot "v12_full_mnist_iid_noniid_fr40_seed42"
+        GateBatch = $null
+        GateRun = $null
     }
 )
 

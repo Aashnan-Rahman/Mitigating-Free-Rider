@@ -8,7 +8,7 @@ from typing import Any
 
 @dataclass
 class ExperimentConfig:
-    methodology_version: str = "swtcp_v11"
+    methodology_version: str = "swtcp_v12"
     dataset: str = "mnist"
     distribution: str = "iid"
     dirichlet_alpha: float = 0.5
@@ -52,6 +52,8 @@ class ExperimentConfig:
     cycle_calibration_window_cycles: int = 3
     cycle_scale_prior_strength: float = 20.0
     cycle_scale_epsilon: float = 1e-8
+    v12_sketch_width: int = 32
+    v12_history_window: int = 5
     dodge_min_probes: int = 10
     dodge_max_flag_rate: float = 0.10
     zero_update_epsilon: float = 1e-6
@@ -112,7 +114,7 @@ class ExperimentConfig:
     def removal_threshold(self) -> float:
         return (
             self.cycle_removal_score
-            if self.methodology_version in {"swtcp_v9", "swtcp_v10", "swtcp_v11"}
+            if self.methodology_version in {"swtcp_v9", "swtcp_v10", "swtcp_v11", "swtcp_v12"}
             else self.removal_threshold_points
         )
 
@@ -136,6 +138,7 @@ class ExperimentConfig:
                 "swtcp_v9",
                 "swtcp_v10",
                 "swtcp_v11",
+                "swtcp_v12",
                 "frida_loss",
                 "frad_reproduction",
             },
@@ -197,6 +200,8 @@ class ExperimentConfig:
             or self.cycle_calibration_window_cycles <= 0
             or self.cycle_scale_prior_strength <= 0
             or self.cycle_scale_epsilon <= 0
+            or self.v12_sketch_width <= 0
+            or self.v12_history_window < 2
         ):
             raise ValueError("Cycle scoring settings are invalid.")
         if self.dodge_min_probes <= 0 or not 0.0 <= self.dodge_max_flag_rate <= 1.0:

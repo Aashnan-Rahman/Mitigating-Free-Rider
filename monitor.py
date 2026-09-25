@@ -105,7 +105,7 @@ def render(status: dict, status_path: Path | None = None) -> None:
         if not methodology:
             batch_identity = f"{status.get('batch_id', '')} {status.get('plan', '')}".lower()
             if "v11" in batch_identity:
-                methodology = "swtcp_v11"
+                methodology = "swtcp_v12"
             elif "v10" in batch_identity:
                 methodology = "swtcp_v10"
             elif "v9" in batch_identity:
@@ -114,7 +114,7 @@ def render(status: dict, status_path: Path | None = None) -> None:
         print(f"Current: {current_id}")
         print(f"Round:   {round_idx}/{rounds} ({percent:.1f}%)")
         phase = str(progress.get("phase", "-"))
-        if methodology in {"swtcp_v9", "swtcp_v10", "swtcp_v11"}:
+        if methodology in {"swtcp_v9", "swtcp_v10", "swtcp_v11", "swtcp_v12"}:
             phase_names = {
                 "warmup": "warmup (no secret probe cycle yet)",
                 "double_probe": "double-probe cycle",
@@ -131,10 +131,10 @@ def render(status: dict, status_path: Path | None = None) -> None:
                 "flagged_clients", progress.get("suspected_clients", "-")
             )
             print(f"Flagged this round: {flagged}")
-        elif methodology in {"swtcp_v9", "swtcp_v10", "swtcp_v11"}:
+        elif methodology in {"swtcp_v9", "swtcp_v10", "swtcp_v11", "swtcp_v12"}:
             print(f"Cycle C:  {progress.get('candidate_clients', '-')}")
             print(f"Cycle S:  {progress.get('suspected_clients', '-')}")
-            if methodology in {"swtcp_v10", "swtcp_v11"}:
+            if methodology in {"swtcp_v10", "swtcp_v11", "swtcp_v12"}:
                 print(f"Reference R: {progress.get('reference_eligible_clients', '-')}")
         else:
             print(f"Candidate: {progress.get('candidate_clients', '-')}")

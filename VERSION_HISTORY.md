@@ -3,6 +3,23 @@
 This file records methodology changes. Results from different versions must not
 be pooled as if they used the same detector.
 
+## v12 — Compact history reconstruction and cohort confirmation
+
+- Adds a 32-value linear sketch of sent models and returned updates. The server
+  tests whether a response is reproducible from sent-model averages or recent
+  server-model trajectory without retaining full deltas.
+- Keeps the detector attack-agnostic: `attack_type` and free-rider identities
+  remain simulation/evaluation inputs and are absent from the detector API.
+- Uses one-sided robust calibration so a high suspicious minority cannot inflate
+  the null scale used to judge itself.
+- Requires a statistically significant coherent cohort before a static profile
+  or history signature can add a strong-cycle penalty. Isolated matches remain
+  weak candidates with zero penalty.
+- Gives exact mean-history reconstruction precedence over the broader trajectory
+  hypothesis and changes probe relaxation to depend on new strong evidence.
+- Real MNIST non-IID gates at 40% free riders detected FR3 4/4 by round 21 and
+  FR4 4/4 by round 31, with zero honest removals in both gates.
+
 ## v4 — Original statistical trap protocol
 
 - Used server-side trap responses, update norms, median/MAD baselines, and

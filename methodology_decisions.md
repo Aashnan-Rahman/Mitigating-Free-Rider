@@ -36,7 +36,7 @@ history normally.
 
 For update norms:
 
-> **Current implementation note:** `swtcp_v11` replaces the anchor protocol and
+> **Current implementation note:** `swtcp_v12` replaces the anchor protocol and
 > v10's raw-MAD/current-cycle reference trimming. Its authoritative rules are in
 > `guidelines.md` and the v11 entry in `VERSION_HISTORY.md`.
 

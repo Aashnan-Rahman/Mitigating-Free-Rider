@@ -6,11 +6,31 @@ named configuration variable, not a hardcoded value — the code should be built
 that changing any single value in the config does not require touching logic
 elsewhere.
 
-> **Current protocol:** `swtcp_v11`. Historical v8-v10 sections remain for
-> provenance. The v11 rules below override them whenever
-> `methodology_version="swtcp_v11"`.
+> **Current protocol:** `swtcp_v12`. Historical v8-v11 sections remain for
+> provenance. The v12 rules below override them whenever
+> `methodology_version="swtcp_v12"`.
 
-## Current v11 corrections
+## Current v12 corrections
+
+- Retain a deterministic 32-value linear sketch of each server-sent model and
+  returned update. Full client deltas are still discarded after the round.
+- Test whether an update can be reconstructed from only models previously sent
+  to that client: an average-of-received-models hypothesis and a recent model-
+  trajectory hypothesis. Neither test receives an attack label.
+- Calibrate reconstruction scores with high-side robust statistics whose scale
+  uses only the lower side of the majority distribution, preventing a high
+  minority from widening its own threshold.
+- A history or static signature is removal-strength evidence only when its
+  coherent cohort exceeds the binomial bound derived from
+  `cycle_target_false_alarm_rate`. Isolated profile or history matches remain
+  weak C evidence and add no penalty.
+- When a cohort has the more specific mean-replay explanation, suppress the
+  less specific trajectory hypothesis for that cycle. This prevents ordinary
+  training aligned with the global trajectory from being promoted.
+- Probe intensity responds to new coherent strong evidence in the completed
+  cycle, not merely to the continued existence of an old weak candidate.
+
+## Historical v11 corrections
 
 - Convert MAD to a robust standard-deviation estimate with the mathematical
   normal-consistency factor `1 / Phi^-1(0.75)` (approximately `1.4826`).
