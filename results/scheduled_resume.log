@@ -45,3 +45,121 @@ All scheduled experiments are complete.
 Windows PowerShell transcript end
 End time: 20260924182410
 **********************
+**********************
+Windows PowerShell transcript start
+Start time: 20260926100103
+Username: DESKTOP-R8JSM2K\USER
+RunAs User: DESKTOP-R8JSM2K\USER
+Configuration Name: 
+Machine: DESKTOP-R8JSM2K (Microsoft Windows NT 10.0.19045.0)
+Host Application: powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:\Users\USER\Documents\GitHub\Mitigating-Free-Rider\resume_experiments.ps1 -Plan configs/v12_cifar10_iid_fr40_seed42_plan.json
+Process ID: 4916
+PSVersion: 5.1.19041.6456
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.19041.6456
+BuildVersion: 10.0.19041.6456
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Starting scheduled batch: v12_cifar10_iid_fr40_seed42
+
+All scheduled experiments are complete.
+**********************
+Windows PowerShell transcript end
+End time: 20260926225022
+**********************
+**********************
+Windows PowerShell transcript start
+Start time: 20260926234320
+Username: DESKTOP-R8JSM2K\USER
+RunAs User: DESKTOP-R8JSM2K\USER
+Configuration Name: 
+Machine: DESKTOP-R8JSM2K (Microsoft Windows NT 10.0.19045.0)
+Host Application: powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:\Users\USER\Documents\GitHub\Mitigating-Free-Rider\resume_experiments.ps1 -Plan configs/v12_cifar10_noniid_fr40_seed42_plan.json
+Process ID: 1068
+PSVersion: 5.1.19041.6456
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.19041.6456
+BuildVersion: 10.0.19041.6456
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Starting scheduled batch: v12_cifar10_noniid_fr40_seed42
+
+All scheduled experiments are complete.
+**********************
+Windows PowerShell transcript end
+End time: 20260927103455
+**********************
+**********************
+Windows PowerShell transcript start
+Start time: 20260927112415
+Username: DESKTOP-R8JSM2K\USER
+RunAs User: DESKTOP-R8JSM2K\USER
+Configuration Name: 
+Machine: DESKTOP-R8JSM2K (Microsoft Windows NT 10.0.19045.0)
+Host Application: powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:\Users\USER\Documents\GitHub\Mitigating-Free-Rider\resume_experiments.ps1 -Plan configs/v12_mnist_noniid_then_iid_fr40_seed42_plan.json
+Process ID: 9096
+PSVersion: 5.1.19041.6456
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.19041.6456
+BuildVersion: 10.0.19041.6456
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Starting scheduled batch: v12_mnist_noniid_then_iid_fr40_seed42
+
+All scheduled experiments are complete.
+**********************
+Windows PowerShell transcript end
+End time: 20260928002238
+**********************
+**********************
+Windows PowerShell transcript start
+Start time: 20260928005315
+Username: DESKTOP-R8JSM2K\USER
+RunAs User: DESKTOP-R8JSM2K\USER
+Configuration Name: 
+Machine: DESKTOP-R8JSM2K (Microsoft Windows NT 10.0.19045.0)
+Host Application: powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:\Users\USER\Documents\GitHub\Mitigating-Free-Rider\resume_experiments.ps1 -Plan configs/v12_cifar10_iid_fr30_seed42_cpu_plan.json
+Process ID: 13052
+PSVersion: 5.1.19041.6456
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.19041.6456
+BuildVersion: 10.0.19041.6456
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Starting scheduled batch: v12_cifar10_iid_fr30_seed42_cpu
+
+**********************
+Windows PowerShell transcript end
+End time: 20260928010138
+**********************
+**********************
+Windows PowerShell transcript start
+Start time: 20260928010350
+Username: DESKTOP-R8JSM2K\USER
+RunAs User: DESKTOP-R8JSM2K\USER
+Configuration Name: 
+Machine: DESKTOP-R8JSM2K (Microsoft Windows NT 10.0.19045.0)
+Host Application: powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:\Users\USER\Documents\GitHub\Mitigating-Free-Rider\resume_experiments.ps1 -Plan configs/v12_cifar10_iid_fr30_seed42_cuda_plan.json
+Process ID: 14872
+PSVersion: 5.1.19041.6456
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.19041.6456
+BuildVersion: 10.0.19041.6456
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Starting scheduled batch: v12_cifar10_iid_fr30_seed42_cuda

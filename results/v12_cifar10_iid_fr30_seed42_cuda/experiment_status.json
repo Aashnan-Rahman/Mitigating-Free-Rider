@@ -1,0 +1,79 @@
+{
+  "batch_id": "v12_cifar10_iid_fr30_seed42_cuda",
+  "completed_experiments": 0,
+  "completed_rounds": 16,
+  "current_experiment": "v12_cifar10_iid_fr30_seed42_cuda_FR1",
+  "elapsed_seconds": 1799.93284034729,
+  "estimated_remaining_seconds": 43198.38714981079,
+  "experiments": [
+    {
+      "completed_rounds": 16,
+      "config": {
+        "attack_type": "FR1",
+        "dataset": "cifar10",
+        "distribution": "iid"
+      },
+      "id": "v12_cifar10_iid_fr30_seed42_cuda_FR1",
+      "progress": {
+        "active_clients": 70,
+        "candidate_clients": 0,
+        "cpu_percent": 0.0,
+        "cuda_allocated_mb": 755.51025390625,
+        "cuda_peak_allocated_mb": 987.88525390625,
+        "cuda_reserved_mb": 1502.0,
+        "device": "cuda",
+        "global_accuracy": 0.6939,
+        "global_loss": 0.9068614538192749,
+        "methodology_version": "swtcp_v12",
+        "new_flags": 0,
+        "new_rehabilitations": 0,
+        "new_removals": 0,
+        "phase": "double_probe",
+        "process_rss_mb": 237.82421875,
+        "reference_eligible_clients": 0,
+        "reference_probation_clients": 0,
+        "round": 16,
+        "round_time_seconds": 123.51017689998844,
+        "suspected_clients": 0,
+        "system_memory_percent": 38.6,
+        "total_rounds": 100
+      },
+      "started_at": "2026-09-28T01:03:50.800409",
+      "state": "running"
+    },
+    {
+      "config": {
+        "attack_type": "FR2",
+        "dataset": "cifar10",
+        "distribution": "iid"
+      },
+      "id": "v12_cifar10_iid_fr30_seed42_cuda_FR2",
+      "state": "queued"
+    },
+    {
+      "config": {
+        "attack_type": "FR3",
+        "dataset": "cifar10",
+        "distribution": "iid"
+      },
+      "id": "v12_cifar10_iid_fr30_seed42_cuda_FR3",
+      "state": "queued"
+    },
+    {
+      "config": {
+        "attack_type": "FR4",
+        "dataset": "cifar10",
+        "distribution": "iid"
+      },
+      "id": "v12_cifar10_iid_fr30_seed42_cuda_FR4",
+      "state": "queued"
+    }
+  ],
+  "failed_experiments": 0,
+  "plan": "C:\\Users\\USER\\Documents\\GitHub\\Mitigating-Free-Rider\\configs\\v12_cifar10_iid_fr30_seed42_cuda_plan.json",
+  "started_at": "2026-09-28T01:03:50.787762",
+  "state": "running",
+  "total_experiments": 4,
+  "total_rounds": 400,
+  "updated_at": "2026-09-28T01:33:50.720581"
+}

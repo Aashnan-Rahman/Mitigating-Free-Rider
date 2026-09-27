@@ -1,6 +1,22 @@
 
 # SWT-CP Experiment Run Guide
 
+## v12 CIFAR-10 IID CPU run, 30% free riders
+
+`configs/v12_cifar10_iid_fr30_seed42_cpu_plan.json` runs FR1–FR4 sequentially
+with `device=cpu`, seed 42, 100 clients, 100 rounds, and 30% free riders.
+Per-round checkpoints support recovery after reboot and Windows sign-in.
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\install_resume_task.ps1 -Plan configs/v12_cifar10_iid_fr30_seed42_cpu_plan.json
+Start-ScheduledTask -TaskName 'Mitigating Free Rider - Resume Experiments'
+.\.venv\Scripts\python.exe monitor.py --status results/v12_cifar10_iid_fr30_seed42_cpu/experiment_status.json --watch
+```
+
+Round timings are saved in each run's `global_metrics.csv`. Comparing this batch
+with the earlier 40% CUDA batch changes both device and free-rider percentage;
+a controlled CPU/CUDA comparison requires matching the 30% configuration.
+
 ## v12 MNIST non-IID followed by IID, seed 42
 
 `configs/v12_mnist_noniid_then_iid_fr40_seed42_plan.json` schedules eight runs:
