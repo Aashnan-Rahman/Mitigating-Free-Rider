@@ -104,8 +104,10 @@ def render(status: dict, status_path: Path | None = None) -> None:
         )
         if not methodology:
             batch_identity = f"{status.get('batch_id', '')} {status.get('plan', '')}".lower()
-            if "v11" in batch_identity:
+            if "v12" in batch_identity:
                 methodology = "swtcp_v12"
+            elif "v11" in batch_identity:
+                methodology = "swtcp_v11"
             elif "v10" in batch_identity:
                 methodology = "swtcp_v10"
             elif "v9" in batch_identity:

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import csv
+import argparse
 import json
 import statistics
 from pathlib import Path
@@ -130,18 +131,23 @@ def markdown_table(rows: list[dict[str, Any]]) -> str:
 
 
 def main() -> None:
+    parser = argparse.ArgumentParser(description="Analyze completed CIFAR-10 batches.")
+    parser.add_argument("--batches", nargs="+", type=Path, default=list(BATCHES))
+    parser.add_argument("--output-dir", type=Path, default=RESULTS_ROOT)
+    args = parser.parse_args()
     rows: list[dict[str, Any]] = []
-    for batch in BATCHES:
+    for batch in args.batches:
         if not batch.is_dir():
-            continue
-        for attack in ("FR1", "FR2", "FR3", "FR4"):
-            run_dir = batch / attack
-            if (run_dir / "run_config.json").is_file():
+            raise FileNotFoundError(batch)
+        for run_dir in sorted(batch.iterdir()):
+            latest_path = run_dir / "latest_results.json"
+            if (run_dir / "run_config.json").is_file() and latest_path.is_file() and json.loads(latest_path.read_text(encoding="utf-8")).get("completed"):
                 rows.append(summarize_run(run_dir))
     if not rows:
         raise FileNotFoundError("No completed CIFAR-10 result directories were found.")
 
-    summary_path = RESULTS_ROOT / "cifar10_analytics_summary.csv"
+    args.output_dir.mkdir(parents=True, exist_ok=True)
+    summary_path = args.output_dir / "cifar10_analytics_summary.csv"
     with summary_path.open("w", newline="", encoding="utf-8") as handle:
         writer = csv.DictWriter(handle, fieldnames=list(rows[0]))
         writer.writeheader()
@@ -165,14 +171,14 @@ def main() -> None:
         }
         for distribution in sorted({row["distribution"] for row in rows})
     }
-    by_key = {(row["distribution"], row["attack"]): row for row in rows}
+    by_key = {(row["distribution"], row["attack"], row["seed"]): row for row in rows}
     comparison_lines = []
-    for attack in ("FR1", "FR2", "FR3", "FR4"):
-        iid = by_key.get(("iid", attack))
-        noniid = by_key.get(("noniid", attack))
+    for attack, seed in sorted({(row['attack'], row['seed']) for row in rows}):
+        iid = by_key.get(("iid", attack, seed))
+        noniid = by_key.get(("noniid", attack, seed))
         if iid and noniid:
             comparison_lines.append(
-                f"- {attack}: non-IID minus IID final accuracy "
+                f"- {attack}, seed {seed}: non-IID minus IID final accuracy "
                 f"{100 * (noniid['final_accuracy'] - iid['final_accuracy']):+.2f} pp; "
                 f"F1 {100 * (noniid['f1'] - iid['f1']):+.2f} pp; "
                 f"honest removals {noniid['removed_honest_clients'] - iid['removed_honest_clients']:+d}."
@@ -180,10 +186,9 @@ def main() -> None:
 
     report = f"""# CIFAR-10 Result Analytics
 
-Analyzed {len(rows)} completed runs: IID seed 42 and non-IID seed 43, each with
-40% free riders, 100 clients, and 100 rounds. Because distribution and seed both
-change between the two batches, IID/non-IID differences are descriptive and
-must not be interpreted as distribution-only causal effects.
+Analyzed {len(rows)} completed runs from {', '.join(str(path) for path in args.batches)}.
+Seeds: {', '.join(str(seed) for seed in sorted({row['seed'] for row in rows}))}.
+Comparisons below match attack and seed. These are descriptive results, not causal estimates.
 
 ## Run summary
 
@@ -193,9 +198,8 @@ must not be interpreted as distribution-only causal effects.
 
 - Highest final global accuracy: {best_accuracy['distribution']} {best_accuracy['attack']} at {fmt_percent(best_accuracy['final_accuracy'])}.
 - Strongest final detection: {best_detection['distribution']} {best_detection['attack']} with F1 {fmt_percent(best_detection['f1'])} and precision {fmt_percent(best_detection['precision'])}.
-- Every run removed all 40 free riders: total false negatives across all runs = {sum(row['missed_free_riders'] for row in rows)}.
-- IID mean final accuracy: {fmt_percent(distribution_means['iid']['final_accuracy'])}; mean detection F1: {fmt_percent(distribution_means['iid']['f1'])}; honest removals across four runs: {distribution_means['iid']['honest_removed']}.
-- Non-IID mean final accuracy: {fmt_percent(distribution_means['noniid']['final_accuracy'])}; mean detection F1: {fmt_percent(distribution_means['noniid']['f1'])}; honest removals across four runs: {distribution_means['noniid']['honest_removed']}.
+- Total free riders removed across runs: {sum(row['removed_free_riders'] for row in rows)}; total missed: {sum(row['missed_free_riders'] for row in rows)}.
+{chr(10).join(f"- {distribution}: mean final accuracy {fmt_percent(values['final_accuracy'])}; mean F1 {fmt_percent(values['f1'])}; total honest removals {values['honest_removed']}." for distribution, values in distribution_means.items())}
 - Runtime is reconstructed from per-round metrics, because a resumed process's `total_wall_clock_seconds` only covers its final process segment.
 
 ## Attack-matched IID vs non-IID differences
@@ -204,11 +208,11 @@ must not be interpreted as distribution-only causal effects.
 
 ## Interpretation limits
 
-- Only one seed exists per distribution, and the seeds differ. More seeds are required for uncertainty estimates or claims about generalization.
+- Results from a single seed do not establish robustness. More seeds are required for uncertainty estimates or claims about generalization.
 - There is no no-attack baseline in these two batches, so accuracy cost cannot be attributed solely to the defense or attack.
 - Detection recall is a final removal metric; early-round flags and transient candidates should be interpreted from the event-level CSV files.
 """
-    report_path = RESULTS_ROOT / "CIFAR10_ANALYTICS.md"
+    report_path = args.output_dir / "CIFAR10_ANALYTICS.md"
     report_path.write_text(report, encoding="utf-8")
     print(f"Wrote {summary_path}")
     print(f"Wrote {report_path}")

@@ -1,5 +1,6 @@
 param(
-    [string]$TaskName = "Mitigating Free Rider - Resume Experiments"
+    [string]$TaskName = "Mitigating Free Rider - Resume Experiments",
+    [string]$Plan
 )
 
 $ErrorActionPreference = "Stop"
@@ -7,9 +8,11 @@ $projectRoot = $PSScriptRoot
 $resumeScript = Join-Path $projectRoot "resume_experiments.ps1"
 $currentUser = [Security.Principal.WindowsIdentity]::GetCurrent().Name
 
+$taskArguments = "-NoProfile -ExecutionPolicy Bypass -File `"$resumeScript`""
+if ($Plan) { $taskArguments += " -Plan `"$Plan`"" }
 $action = New-ScheduledTaskAction `
     -Execute "powershell.exe" `
-    -Argument "-NoProfile -ExecutionPolicy Bypass -File `"$resumeScript`"" `
+    -Argument $taskArguments `
     -WorkingDirectory $projectRoot
 $trigger = New-ScheduledTaskTrigger -AtLogOn -User $currentUser
 $principal = New-ScheduledTaskPrincipal `
@@ -22,6 +25,8 @@ $settings = New-ScheduledTaskSettingsSet `
     -RestartInterval (New-TimeSpan -Minutes 1) `
     -ExecutionTimeLimit ([TimeSpan]::Zero) `
     -MultipleInstances IgnoreNew
+$settings.DisallowStartIfOnBatteries = $false
+$settings.StopIfGoingOnBatteries = $false
 
 Register-ScheduledTask `
     -TaskName $TaskName `

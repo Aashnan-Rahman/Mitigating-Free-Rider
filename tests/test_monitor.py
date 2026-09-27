@@ -1,4 +1,5 @@
 import json
+import pytest
 
 from monitor import render, resolve_status_path
 
@@ -49,3 +50,18 @@ def test_v9_monitor_uses_probe_and_cycle_labels(capsys):
     assert "Cycle C:  3" in output
     assert "Cycle S:  2" in output
     assert "Candidate:" not in output
+
+
+@pytest.mark.parametrize("version", ["v11", "v12"])
+def test_monitor_infers_recent_methodology_from_batch(version, capsys):
+    render({
+        "batch_id": f"{version}_cifar10_iid",
+        "current_experiment": "FR1",
+        "experiments": [{
+            "id": "FR1", "config": {},
+            "progress": {"phase": "double_probe", "reference_eligible_clients": 60},
+        }],
+    })
+    output = capsys.readouterr().out
+    assert "Probe:   double-probe cycle" in output
+    assert "Reference R: 60" in output

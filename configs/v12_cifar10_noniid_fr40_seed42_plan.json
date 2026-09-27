@@ -1,0 +1,26 @@
+{
+  "batch_name": "v12_cifar10_noniid_fr40_seed42",
+  "results_root": "./results",
+  "defaults": {
+    "methodology_version": "swtcp_v12",
+    "dataset": "cifar10",
+    "num_clients": 100,
+    "num_rounds": 100,
+    "free_rider_pct": 0.4,
+    "seed": 42,
+    "dirichlet_alpha": 0.5,
+    "device": "auto",
+    "save_checkpoints": true,
+    "checkpoint_keep_last": 5
+  },
+  "stages": [{
+    "id": "v12_noniid",
+    "id_format": "v12_cifar10_{distribution}_fr40_seed42_{attack_type}",
+    "enabled": true,
+    "matrix": {
+      "dataset": ["cifar10"],
+      "distribution": ["noniid"],
+      "attack_type": ["FR1", "FR2", "FR3", "FR4"]
+    }
+  }]
+}
