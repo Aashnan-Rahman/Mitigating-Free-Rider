@@ -1,5 +1,5 @@
 \documentclass[conference]{IEEEtran}
-\usepackage{amsmath,amssymb,booktabs,array,enumitem,algorithm,algpseudocode,microtype,graphicx,pgfplots,placeins}
+\usepackage{amsmath,amssymb,booktabs,array,multirow,enumitem,algorithm,algpseudocode,microtype,graphicx,pgfplots,placeins,dblfloatfix,balance}
 \usepackage[hidelinks]{hyperref}
 \pgfplotsset{compat=1.18}
 \usepgfplotslibrary{groupplots}
@@ -11,14 +11,15 @@ Islamic University of Technology\\
 MSc Thesis}}
 
 \begin{document}
+\raggedbottom
 \maketitle
 \begin{tikzpicture}[remember picture,overlay]
-\node[anchor=north east,font=\footnotesize] at ([xshift=-0.55in,yshift=-0.32in]current page.north east) {Last updated on 28 September 2026 -- Paper v3};
+\node[anchor=north east,font=\footnotesize] at ([xshift=-0.55in,yshift=-0.32in]current page.north east) {Last updated on 28 September 2026};
 \end{tikzpicture}
 
 
 \begin{abstract}
-Free riders in federated learning receive a shared model while avoiding local optimization. We present version 12 of Suspicion-Weighted Trap Detection with Cumulative Penalties (SWT-CP), a server-side challenge protocol combining undisclosed model perturbations, robust update statistics, compact history reconstruction, and repeated confirmation. The detector operates on attributable returned updates without client-reported training metrics or an auxiliary learned detector. Relative to the earlier protocol, v12 adds 32-dimensional sketches of sent models and updates, coherent history signatures, cohort confirmation, and reference-based state transitions. We report all 16 completed runs at seed 42 with 100 clients, 100 rounds, and 40\% free riders: four attacks on MNIST and CIFAR-10 under IID and Dirichlet non-IID partitions. All 40 attackers are removed in every run, by round 10 for playback and round 30 for the other attacks. Fifteen runs have no honest removals; CIFAR-10 non-IID historical averaging removes one honest client, yielding 97.56\% precision and 98.77\% F1. Mean final model accuracy is 98.85\%/98.83\% for IID/non-IID MNIST and 76.18\%/74.71\% for CIFAR-10. These single-seed results support feasibility under the evaluated threat model, but do not establish robustness to adaptive attacks or eliminate temporary false suspicion.
+Free riders in federated learning receive a shared model while avoiding local optimization. This paper presents a lightweight server-side challenge protocol combining undisclosed model perturbations, robust update statistics, compact history reconstruction, coherent cohort evidence, and repeated confirmation. The detector operates on attributable returned updates without client-reported training metrics, auxiliary learned detectors, public canary data, or specialized hardware. Thirty-two-dimensional sketches test whether returned updates are explainable from models previously sent to each client, while reference probation and reversible suspicion states limit decisions based on isolated anomalies. The method is evaluated in 16 configurations with 100 clients, 100 rounds, and 40\% free riders, covering four attacks on MNIST and CIFAR-10 under IID and Dirichlet non-IID partitions. All 40 attackers are removed in every run, by round 10 for playback and round 30 for the other attacks. Fifteen configurations have no honest removals; CIFAR-10 non-IID historical averaging removes one honest client, yielding 97.56\% precision and 98.77\% F1. Mean final model accuracy is 98.85\%/98.83\% for IID/non-IID MNIST and 76.18\%/74.71\% for CIFAR-10. These results demonstrate feasibility under the evaluated threat model while identifying heterogeneous honest updates and temporary quarantine as remaining limitations.
 \end{abstract}
 \begin{IEEEkeywords}
 federated learning, free riding, challenge-response, robust statistics, history reconstruction
@@ -36,12 +37,11 @@ Accordingly, this work studies a lightweight server-side method for identifying 
 
 The principal contributions are:
 \begin{itemize}[leftmargin=*,nosep]
-\item A server-side audit that compares responses to undisclosed perturbations without trusting client-reported training quality or execution telemetry.
-\item Compact history reconstruction and coherent cohort evidence augmenting robust update-norm and layer-profile tests.
-\item Repeated strong-cycle confirmation, reference probation, and reversible candidate states that separate temporary quarantine from permanent removal.
-\item A complete matched-seed evaluation across 16 dataset, partition, and attack combinations, reporting false removals and transient-state limitations rather than selecting best observed executions.
+\item \textbf{Lightweight server-side detection}: The method uses attributable model updates already available to the server. It requests no client accuracy, loss, resource report, or execution log and trains no auxiliary detector.
+\item \textbf{Secret trap-based auditing}: Selected clients receive undisclosed, scale-aware perturbations. Responses to the same challenge provide controlled evidence without revealing the audit schedule or requiring clients to train an additional model.
+\item \textbf{Compact history and repeated confirmation}: Thirty-two-dimensional sketches test whether returned updates are explainable by previously sent models. Coherent cohort evidence, trusted-reference confirmation, probation, quarantine, and rehabilitation prevent one unusual response from directly causing removal.
+\item \textbf{Evaluation across attacks and data settings}: Four free-rider strategies are evaluated on MNIST and CIFAR-10 under IID and Dirichlet non-IID partitions. The evaluation reports detection, removal timing, model utility, execution cost, and residual candidate states.
 \end{itemize}
-Paper v3 describes detector v12; these are distinct version numbers. Historical v8/v9 results from paper v2 are not pooled with the present evaluation.
 \section{Related Work}
 
 \subsection{Free-rider attacks}
@@ -112,12 +112,31 @@ p_{i,k}=\frac{\|\Delta_{i,k}\|_2}{\max(\sum_j\|\Delta_{i,j}\|_2,\epsilon)}.
 Responses to the same challenge form a comparison group. Update norms are tested on both tails; distance from the componentwise median layer profile is tested on the upper tail. Robust scales use the normal-consistency-corrected MAD, a numerical floor, and historical scale stabilization. A nominal false-alarm budget of 0.01 sets cycle cutoffs, with prior reference-cycle calibration for the static tests. This calibration parameter is not a theorem guaranteeing a 1\% false-removal rate under dependent, heterogeneous observations.
 
 \subsection{Phase I: Warm-Up}
-The first ten rounds provide ordinary training and passive send-back checks. Near-zero updates and exact replay of recorded sent models contribute to the passive evidence stream. Removal under this rule requires at least five accumulated send-back events and cannot occur before the ten-round warm-up boundary. The passive path remains available after warm-up. Attack labels are needed to simulate attacks and score outcomes, not to choose detector decisions.
+The first ten rounds provide ordinary training and passive send-back checks. Near-zero updates and exact replay of recorded sent models contribute to the passive evidence stream. Removal under this rule requires at least five accumulated send-back events and cannot occur before the ten-round warm-up boundary. The passive path remains available after warm-up. Attack labels are needed to simulate attacks and score outcomes, not to choose detector decisions. The procedure is summarized in \autoref{alg:warmup}.
+
+\begin{algorithm}[t]
+\caption{Phase I: warm-up and passive evidence}
+\label{alg:warmup}
+\begin{algorithmic}[1]
+\Require global state $w_t$, active clients $V_t$
+\ForAll{$i\in V_t$}
+ \State send $w_t$ and receive $w^{\mathrm{ret}}_{t,i}$
+ \State compute $\Delta_{t,i}$ and the sent-model fingerprint
+ \If{$\|\Delta_{t,i}\|_2<10^{-6}$ or an exact prior-send replay occurs}
+   \State add one permanent send-back strike, at most once this round
+ \EndIf
+\EndFor
+\If{$t=10$}
+ \State remove every client with at least five send-back strikes
+\EndIf
+\State aggregate the remaining eligible ordinary responses
+\end{algorithmic}
+\end{algorithm}
 
 \subsection{Phase II: Double Coverage}
 After warm-up, the server schedules distinct secret challenges and accumulates paired observations for each client. The initial reference uses the active population; subsequent comparisons use eligible reference clients when available. A trusted comparison requires at least ten reference clients. Here ``trusted'' denotes an operational reference state inferred by the protocol, not known honest ground truth.
 
-Version 12 also stores compact sketches. Let $S$ denote the implementation's deterministic signed linear map of width 32, $s_{t,i}=S(w^{\mathrm{send}}_{t,i})$, and $u_{t,i}=S(\Delta_{t,i})$. Candidate reconstructions use only the client's sent-model history:
+The server also stores compact sketches. Let $S$ denote the implementation's deterministic signed linear map of width 32, $s_{t,i}=S(w^{\mathrm{send}}_{t,i})$, and $u_{t,i}=S(\Delta_{t,i})$. Candidate reconstructions use only the client's sent-model history:
 \begin{align}
 q^{\mathrm{mean}}_{t,i}(m)&=\frac1m\sum_{j=0}^{m-1}s_{t-j,i}-s_{t,i},\\
 q^{\mathrm{traj}}_{t,i}&=\operatorname{mean}_j(s_{j,i}-s_{j-1,i}).
@@ -126,73 +145,125 @@ The history window is five; mean hypotheses consider available lengths from two 
 \begin{equation}
 h(u,q)=-\log\max\left(\frac{\|u-q\|_2}{\max(\|u\|_2+\|q\|_2,\epsilon)},\epsilon\right).
 \end{equation}
-The mean-history score takes the maximum over eligible windows. High scores indicate explainability from server-sent history rather than establish proof of misconduct. History scores use one-sided robust calibration based on the median and lower-side deviations to limit inflation by a high-scoring minority. Sketches reduce retained history size but still require reading model coordinates; they are not a constant-time detector or cryptographic commitment.
+The mean-history score takes the maximum over eligible windows. High scores indicate explainability from server-sent history rather than establish proof of misconduct. History scores use one-sided robust calibration based on the median and lower-side deviations to limit inflation by a high-scoring minority. Sketches reduce retained history size but still require reading model coordinates; they are not a constant-time detector or cryptographic commitment. \autoref{alg:coverage} specifies the double-coverage cycle.
+
+\begin{algorithm}[t]
+\caption{Phase II: double coverage and evidence construction}
+\label{alg:coverage}
+\begin{algorithmic}[1]
+\Require active clients $V$, distinct traps $\tau_A,\tau_B$
+\State partition $V$ into ten hidden, balanced groups
+\State schedule two groups per round over two randomized passes
+\ForAll{$\tau\in\{\tau_A,\tau_B\}$}
+ \ForAll{groups assigned to $\tau$}
+   \State send $\tau$; retain norm, layer profile, and compact sketches
+   \State exclude challenged responses from aggregation
+ \EndFor
+ \State freeze a same-trap reference and robust calibration statistics
+\EndFor
+\ForAll{$i\in V$}
+ \State test norm, layer profile, mean history, and trajectory history
+ \State retain coherent signatures across the paired challenges
+\EndFor
+\State discard completed-cycle response evidence after state updates
+\end{algorithmic}
+\end{algorithm}
 
 \subsection{Phase III: Surveillance and Candidate Confirmation}
 A signature is coherent when it persists across paired challenges. Strong evidence may arise from coherent joint norm/profile anomalies, a coherent static-signature cohort, or a coherent history-signature cohort. The cohort threshold is calculated from the active population and a binomial upper-tail criterion with the configured false-alarm budget. It is not a requested attacker count or a fixed target of 40 removals. When a sufficient mean-replay cohort is present, the broader trajectory signature is suppressed to reduce ambiguous attribution of ordinary training movement.
 
-Clients occupy reference ($R$), candidate ($C$), or suspect ($S$) roles. An isolated weak anomaly can produce a candidate without a score penalty. A previously eligible reference client first enters $C$ when anomalous and must be independently checked again. New strong evidence maintains or restores double probing; sustained clean cycles allow single probing and then dormant intervals. Dormancy retains passive send-back checks and periodically reactivates challenges. The configured relaxation requires two clean cycles at each step and uses a 20-round dormant interval.
-
-\subsection{Phase IV: Suspicion, Penalties, and Rehabilitation}
-Strong cycles decrement the score by two; weak v12 candidate evidence contributes zero. A clean cycle restores 0.5 toward a maximum of zero. Statistical removal requires a score at or below $-4$, at least two strong cycles, and at least one strong trusted-reference confirmation after the initial cycle. The separate passive send-back criterion can also remove a client.
-
-Two clean cycles demote $S$ to $C$ or clear $C$ to $R$, with reference probation before renewed eligibility. Candidate and suspect clients, challenged clients, and clients removed in the current round are excluded as prescribed by the aggregation path. Therefore a client may remain active but contribute less often: active-client count and aggregate-contributor count must not be conflated. The method retains client counters, reference/calibration histories, and compact model-history sketches in addition to ordinary training state.
+Clients occupy reference ($R$), candidate ($C$), or suspect ($S$) roles. An isolated weak anomaly can produce a candidate without a score penalty. A previously eligible reference client first enters $C$ when anomalous and must be independently checked again. New strong evidence maintains or restores double probing; sustained clean cycles allow single probing and then dormant intervals. Dormancy retains passive send-back checks and periodically reactivates challenges. The configured relaxation requires two clean cycles at each step and uses a 20-round dormant interval. The transition logic appears in \autoref{alg:surveillance}.
 
 \begin{algorithm}[t]
-\caption{SWT-CP v12: operational outline}
+\caption{Phase III: surveillance and confirmation}
+\label{alg:surveillance}
 \begin{algorithmic}[1]
-\State Initialize clients, roles, scores, and history sketches
-\For{each communication round}
-\State Select ordinary training or secret challenges
-\State Receive responses; compute passive and update evidence
-\State Update sent-history sketches and reconstruction scores
-\If{a comparison cycle completes}
-\State Calibrate same-challenge norm/profile/history evidence
-\State Identify coherent signatures and qualifying cohorts
-\State Update roles, scores, confirmation, and probation
+\If{a double cycle produces new coherent strong evidence}
+ \State retain double probing and update $R/C/S$ roles
+\ElsIf{two consecutive double cycles are clean}
+ \State enter single-probe surveillance
 \EndIf
-\State Apply statistical and passive removal criteria
-\State Aggregate eligible ordinary responses; evaluate model
-\State Save event logs and a completed-round checkpoint
-\EndFor
+\If{a single cycle produces an anomaly}
+ \State return to double probing
+\ElsIf{two consecutive single cycles are clean}
+ \State enter a 20-round dormant interval
+\EndIf
+\State retain passive send-back checks during dormancy
+\State run one single audit cycle when dormancy expires
 \end{algorithmic}
 \end{algorithm}
+
+\subsection{Phase IV: Suspicion, Penalties, and Rehabilitation}
+Strong cycles decrement the score by two; weak candidate evidence contributes zero. A clean cycle restores 0.5 toward a maximum of zero. Statistical removal requires a score at or below $-4$, at least two strong cycles, and at least one strong trusted-reference confirmation after the initial cycle. The separate passive send-back criterion can also remove a client.
+
+Two clean cycles demote $S$ to $C$ or clear $C$ to $R$, with reference probation before renewed eligibility. Candidate and suspect clients, challenged clients, and clients removed in the current round are excluded as prescribed by the aggregation path. Therefore a client may remain active but contribute less often: active-client count and aggregate-contributor count must not be conflated. The method retains client counters, reference/calibration histories, and compact model-history sketches in addition to ordinary training state. \autoref{alg:decision} summarizes scoring, removal, and rehabilitation.
+
+\begin{algorithm}[t]
+\caption{Phase IV: suspicion, removal, and rehabilitation}
+\label{alg:decision}
+\begin{algorithmic}[1]
+\ForAll{clients evaluated at a completed cycle}
+ \If{coherent strong evidence is present}
+   \State decrement score by two; reset the clean-cycle streak
+ \ElsIf{only weak evidence is present}
+   \State place or retain the client in $C$ without a score cost
+ \Else
+   \State restore 0.5 toward a maximum score of zero
+   \State increment the role-specific clean-cycle streak
+ \EndIf
+ \If{score $\leq-4$, two strong cycles, and trusted confirmation}
+   \State remove the client
+ \ElsIf{the role-specific two-clean-cycle rule is met}
+   \State demote $S\rightarrow C$ or clear $C\rightarrow R$
+   \State apply one clean reference-probation cycle
+ \EndIf
+\EndFor
+\State independently remove clients reaching five send-back strikes
+\State aggregate only eligible ordinary responses
+\end{algorithmic}
+\end{algorithm}
+
+\medskip\noindent\textbf{Lightweight implementation.}
+For a model with $P$ floating parameters and $L$ tensors, the server already reads each attributable response to form the model difference. During that pass it computes a scalar norm, an $L$-dimensional normalized profile, and a fixed 32-value signed sketch. The bounded history window of five therefore stores compact sketches rather than full historical models or gradients for each client. Median/MAD calibration, reconstruction comparisons, cohort counting, and state transitions operate on these small summaries. The server trains no auxiliary detector, and the client performs ordinary local optimization on the model it receives rather than training a second model. The principal operational costs are challenge generation, probe training, server-side parameter scans, and temporary exclusion of challenged or quarantined responses.
 
 \section{Experimental Design}
 MNIST \cite{lecun1998gradient} and CIFAR-10 \cite{krizhevsky2009learning} each use 100 initially participating clients, 100 rounds, three local epochs, batch size 32, and SGD with learning rate 0.01 and momentum 0.9. The MNIST model has two convolutional blocks (16 and 32 channels) and a 128-unit hidden classifier; CIFAR-10 uses three convolutional blocks (32, 64, and 128 channels) with batch normalization and a 256-unit hidden classifier. IID partitions and Dirichlet non-IID partitions with $\alpha=0.5$ are evaluated. Each run contains one attack type and exactly 40 free riders selected at seed 42. All 16 configurations are reported, not best-of-seed selections.
 
-These runs executed with CUDA on the local NVIDIA GeForce GTX 1050 Ti. Per-round timings include training and protocol work and are not isolated detector benchmarks. The source configurations and completed-run markers are retained with the results. The separate 30\% experiments are excluded from this paper's evaluated matrix; the cancelled CPU trial is not used to claim a device speedup.
+The experiments execute with CUDA on an NVIDIA GeForce GTX 1050 Ti. Per-round timings include client training and protocol work rather than isolated detector cost. Source configurations and completed-run markers are retained with the results.
 
 For final removal, $TP$ counts removed free riders, $FP$ removed honest clients, and $FN$ remaining free riders. Precision is $TP/(TP+FP)$, recall is $TP/(TP+FN)$, and $F_1=2PR/(P+R)$. False-positive removal rate is $FP/60$. Model accuracy is test classification accuracy, distinct from detection accuracy. Counts are cross-checked against unique client IDs in removal logs; progress curves are derived from event rounds rather than inferred from final summaries.
 
 \section{Results}
-\subsection{Complete Matched-Seed Performance}
-Table~\ref{tab:results} reports every completed configuration. All runs remove all 40 attackers. Fifteen runs remove no honest client; CIFAR-10 non-IID FR3 removes one honest client, producing 40 true positives, one false positive, and zero false negatives. Its precision is 97.56\%, F1 is 98.77\%, and honest-client removal rate is 1.67\%. Summing across runs gives 640 removed attacker instances, not 640 distinct real-world participants.
+\subsection{Detection Performance}
+Table~\ref{tab:results} reports all evaluated configurations. Every run removes all 40 attackers. Fifteen runs remove no honest client; CIFAR-10 non-IID FR3 removes one honest client, producing 40 true positives, one false positive, and zero false negatives. Its precision is 97.56\%, F1 is 98.77\%, and honest-client removal rate is 1.67\%. Summing across runs gives 640 removed attacker instances, not 640 distinct real-world participants.
 
 \begin{table*}[t]
 \centering\small
-\caption{All v12 results at 40\% free riders and seed 42. Accuracies and detection metrics are percentages. Last FR denotes the round by which all free riders were removed.}
+\caption{Detection and model performance with 40\% free riders. Accuracies and detection metrics are percentages. Last FR is the round by which all free riders were removed.}
 \label{tab:results}
-\begin{tabular}{llcrrrrrrrr}
+\begin{tabular}{llcrrrrrrr}
 \toprule
 Dataset & Partition & Attack & Final acc. & Best acc. & Precision & Recall & F1 & Honest removed & Last FR\\
 \midrule
-MNIST & iid & FR1 & 98.87 & 98.91 & 100.00 & 100.00 & 100.00 & 0 & 10 \\
-MNIST & iid & FR2 & 98.87 & 98.87 & 100.00 & 100.00 & 100.00 & 0 & 30 \\
-MNIST & iid & FR3 & 98.82 & 98.87 & 100.00 & 100.00 & 100.00 & 0 & 30 \\
-MNIST & iid & FR4 & 98.83 & 98.84 & 100.00 & 100.00 & 100.00 & 0 & 30 \\
-MNIST & noniid & FR1 & 98.82 & 98.87 & 100.00 & 100.00 & 100.00 & 0 & 10 \\
-MNIST & noniid & FR2 & 98.85 & 98.88 & 100.00 & 100.00 & 100.00 & 0 & 30 \\
-MNIST & noniid & FR3 & 98.81 & 98.82 & 100.00 & 100.00 & 100.00 & 0 & 30 \\
-MNIST & noniid & FR4 & 98.82 & 98.86 & 100.00 & 100.00 & 100.00 & 0 & 30 \\
-CIFAR10 & iid & FR1 & 74.62 & 75.53 & 100.00 & 100.00 & 100.00 & 0 & 10 \\
-CIFAR10 & iid & FR2 & 76.74 & 77.13 & 100.00 & 100.00 & 100.00 & 0 & 30 \\
-CIFAR10 & iid & FR3 & 76.80 & 76.80 & 100.00 & 100.00 & 100.00 & 0 & 30 \\
-CIFAR10 & iid & FR4 & 76.56 & 77.05 & 100.00 & 100.00 & 100.00 & 0 & 30 \\
-CIFAR10 & noniid & FR1 & 75.02 & 75.12 & 100.00 & 100.00 & 100.00 & 0 & 10 \\
-CIFAR10 & noniid & FR2 & 74.77 & 75.10 & 100.00 & 100.00 & 100.00 & 0 & 30 \\
-CIFAR10 & noniid & FR3 & 74.72 & 74.77 & 97.56 & 100.00 & 98.77 & 1 & 30 \\
-CIFAR10 & noniid & FR4 & 74.32 & 74.87 & 100.00 & 100.00 & 100.00 & 0 & 30 \\
+\multirow{8}{*}{MNIST} & \multirow{4}{*}{IID} & FR1 & 98.87 & 98.91 & 100.00 & 100.00 & 100.00 & 0 & 10 \\
+ & & FR2 & 98.87 & 98.87 & 100.00 & 100.00 & 100.00 & 0 & 30 \\
+ & & FR3 & 98.82 & 98.87 & 100.00 & 100.00 & 100.00 & 0 & 30 \\
+ & & FR4 & 98.83 & 98.84 & 100.00 & 100.00 & 100.00 & 0 & 30 \\
+\cmidrule(lr){2-10}
+ & \multirow{4}{*}{Non-IID} & FR1 & 98.82 & 98.87 & 100.00 & 100.00 & 100.00 & 0 & 10 \\
+ & & FR2 & 98.85 & 98.88 & 100.00 & 100.00 & 100.00 & 0 & 30 \\
+ & & FR3 & 98.81 & 98.82 & 100.00 & 100.00 & 100.00 & 0 & 30 \\
+ & & FR4 & 98.82 & 98.86 & 100.00 & 100.00 & 100.00 & 0 & 30 \\
+\midrule
+\multirow{8}{*}{CIFAR-10} & \multirow{4}{*}{IID} & FR1 & 74.62 & 75.53 & 100.00 & 100.00 & 100.00 & 0 & 10 \\
+ & & FR2 & 76.74 & 77.13 & 100.00 & 100.00 & 100.00 & 0 & 30 \\
+ & & FR3 & 76.80 & 76.80 & 100.00 & 100.00 & 100.00 & 0 & 30 \\
+ & & FR4 & 76.56 & 77.05 & 100.00 & 100.00 & 100.00 & 0 & 30 \\
+\cmidrule(lr){2-10}
+ & \multirow{4}{*}{Non-IID} & FR1 & 75.02 & 75.12 & 100.00 & 100.00 & 100.00 & 0 & 10 \\
+ & & FR2 & 74.77 & 75.10 & 100.00 & 100.00 & 100.00 & 0 & 30 \\
+ & & FR3 & 74.72 & 74.77 & 97.56 & 100.00 & 98.77 & 1 & 30 \\
+ & & FR4 & 74.32 & 74.87 & 100.00 & 100.00 & 100.00 & 0 & 30 \\
 \bottomrule\end{tabular}\end{table*}
 
 \subsection{Detection Progress}
@@ -281,14 +352,39 @@ All 40 FR1 clients are removed at round 10 in each dataset/partition setting. Al
 \caption{Per-round test accuracy for every completed run. Panels use dataset-specific vertical ranges; compare attack curves within a panel.}\label{fig:accuracy}\end{figure*}
 
 \subsection{Comparative Result Analysis}
-MNIST final accuracy is similar across distributions: 98.85\% averaged over the four IID attacks and 98.83\% over non-IID attacks. The attack-matched non-IID changes are $-0.05$, $-0.02$, $-0.01$, and $-0.01$ percentage points for FR1--FR4. No MNIST run removes an honest client.
+\textbf{Effect of dataset:}
+MNIST final accuracy remains tightly grouped around 98.8\%, and no MNIST run removes an honest client. CIFAR-10 is more demanding: mean final accuracy is 76.18\% under IID allocation and 74.71\% under non-IID allocation. The only permanent false removal also occurs on CIFAR-10. This suggests that the larger variation in CIFAR-10 update geometry is more challenging for robust comparison than the MNIST setting, although a matched no-attack baseline is needed to separate protocol cost from ordinary dataset difficulty.
 
-CIFAR-10 mean final accuracy falls from 76.18\% under IID to 74.71\% under non-IID, a 1.47-point descriptive difference. Non-IID minus IID differences for FR1--FR4 are $+0.40$, $-1.97$, $-2.08$, and $-2.24$ points. A common seed improves traceability but supplies neither independent repetitions nor a confidence interval. The old paper's best-observed multi-seed results and different methodology cannot support a controlled claim of improvement over v8/v9.
+\textbf{Effect of data partitioning:}
+MNIST final accuracy is similar across distributions: 98.85\% averaged over the four IID attacks and 98.83\% over non-IID attacks. The attack-matched non-IID changes are $-0.05$, $-0.02$, $-0.01$, and $-0.01$ percentage points for FR1--FR4. CIFAR-10 mean final accuracy falls by 1.47 points under non-IID allocation. Non-IID minus IID differences for FR1--FR4 are $+0.40$, $-1.97$, $-2.08$, and $-2.24$ points. The sole false removal is honest client 32 in CIFAR-10 non-IID FR3 at round 30. Its logged basis is two strong cycles with trusted confirmation, score $-4$, and zero send-back events. Reference confirmation therefore does not eliminate every heterogeneous honest outlier.
 
-The sole false removal is honest client 32 in CIFAR-10 non-IID FR3 at round 30. Its logged basis is two strong cycles with trusted confirmation, with score $-4$ and zero send-back events. Thus reference confirmation reduces neither the observed error to zero nor the need to inspect non-IID honest outliers. Determining which v12 component caused this false positive requires a separate trace-level or ablation analysis.
+\textbf{Effect of attack type:}
+FR1 is removed at the warm-up boundary because playback repeatedly matches a model previously sent by the server. FR2, FR3, and FR4 all complete at round 30 in the present matrix, after two post-warm-up evidence cycles. Identical removal rounds do not imply identical internal evidence: bounded random fabrication, historical averaging, and trajectory imitation are tested by different observable signatures within the same attack-agnostic detector. Trace-level ablation is required before attributing a removal to the static statistics, mean-history reconstruction, trajectory reconstruction, or cohort rule.
+
+The controlled configuration makes the 16 experiments directly comparable, but the evaluation does not provide independent repetitions or confidence intervals. The results therefore establish performance in the stated setting rather than universal reliability.
 
 \subsection{Utility and Execution Cost}
 Figure~\ref{fig:accuracy} shows the learning trajectories. The mean final test accuracies above measure model utility, but no no-attack baseline is available to isolate the loss caused by free riding or by quarantine. Summed round time is 6.37/6.53 hours for the four MNIST IID/non-IID runs and 12.77/10.82 hours for CIFAR-10. These totals exclude setup overhead and are not detector-only costs; they must not be interpreted as a CUDA/CPU comparison.
+
+Table~\ref{tab:cost} gives the corresponding compact execution profile. Seconds per round are averaged across the four attacks in each setting. Peak resident memory is the largest process value observed among those four runs, so it is deliberately conservative rather than an average. All rows use the same CUDA device.
+
+\begin{table}[t]
+\centering
+\caption{Runtime and memory usage for the completed 40\% matrix.}
+\label{tab:cost}
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{llcrrr}
+\toprule
+Dataset & Partition & Device & s/round & Total h & Peak RSS (GB)\\
+\midrule
+MNIST & IID & CUDA & 57.4 & 6.37 & 1.27\\
+MNIST & Non-IID & CUDA & 58.7 & 6.53 & 1.55\\
+CIFAR-10 & IID & CUDA & 114.9 & 12.77 & 2.09\\
+CIFAR-10 & Non-IID & CUDA & 97.4 & 10.82 & 3.13\\
+\bottomrule
+\end{tabular}
+\end{table}
 
 Permanent removal is not the only operational cost. At termination, honest clients can remain in candidate or suspect states and be excluded from some aggregation rounds. Table~\ref{tab:states} exposes these residual states. Remaining counts do not estimate an unseen attacker population, since all simulated attackers have already been removed.
 \begin{table}[t]\centering\small
@@ -301,17 +397,19 @@ CIFAR10 & noniid & 15/0, 19/0, 14/1, 10/0\\
 
 \bottomrule\end{tabular}\end{table}
 \section{Discussion and Limitations}
-The v12 results show complete final removal recall in the fixed 40\% matrix and only one permanent false removal. They do not demonstrate that all honest participation is preserved: quarantine and probe exclusion can reduce useful contributions even with perfect removal precision. The 32-dimensional sketch limits history storage but does not by itself prove low end-to-end overhead, and a reconstruction match is statistical evidence rather than verification of training.
+The results show complete final removal recall in the evaluated matrix and only one permanent false removal. They do not demonstrate that all honest participation is preserved: quarantine and probe exclusion can reduce useful contributions even with perfect removal precision. The 32-dimensional sketch limits history storage but does not by itself prove low end-to-end overhead, and a reconstruction match is statistical evidence rather than verification of training.
 
-The nominal false-alarm and binomial cohort calculations are operational heuristics under shared models and correlated observations. Their independence and calibration assumptions need not hold under heterogeneous data. Ground-truth attacker identities are used for simulation and evaluation; the v12 detector interface does not receive them. This separation does not substitute for a comprehensive implementation audit. Repeated seeds, ablations of history evidence and cohort gating, and matched comparisons with baseline defenses are required before broad comparative claims.
+The nominal false-alarm and binomial cohort calculations are operational heuristics under shared models and correlated observations. Their independence and calibration assumptions need not hold under heterogeneous data. Ground-truth attacker identities are used for simulation and evaluation; the detector interface does not receive them. This separation does not substitute for a comprehensive implementation audit. Repeated seeds, ablations of history evidence and cohort gating, and matched comparisons with baseline defenses are required before broad comparative claims.
 
 \section{Assumptions and Future Work}
 The study assumes an honest server, attributable individual updates, full participation of active clients, fixed attack identities, one attack family per run, and honest execution of prescribed local optimization by nonattackers. The simulated attackers do not adapt to inferred audit state. Unmodified secure aggregation hides the individual responses this protocol needs, so deployment with secure aggregation requires additional protocol design.
 
-Future work should evaluate partial training, intermittent participation, mixed and colluding attacks, defense-aware evasion, additional seeds and heterogeneity levels, and matched no-attack and detector baselines. The first diagnostic priority is the non-IID FR3 false removal and residual honest quarantine. The in-progress 30\% matrix should be reported separately after completion, without selecting only favorable outcomes. A controlled device benchmark must hold attacker fraction, attack, model, seed, and execution conditions fixed.
+Future work should evaluate partial training, intermittent participation, mixed and colluding attacks, defense-aware evasion, additional seeds, attacker proportions, heterogeneity levels, and matched no-attack and detector baselines. The first diagnostic priority is the non-IID FR3 false removal and residual honest quarantine. A controlled device benchmark must hold attacker fraction, attack, model, seed, and execution conditions fixed.
 
 \section{Conclusion}
-SWT-CP v12 combines secret model challenges, robust static evidence, compact history reconstruction, and repeated reference-based confirmation. Across all 16 completed seed-42 runs at 40\% free riders, every attacker is removed, with one honest removal in CIFAR-10 non-IID FR3. MNIST accuracy remains near 98.8\%; CIFAR-10 averages 76.18\% IID and 74.71\% non-IID. The evidence supports feasibility in this controlled setting while retaining explicit uncertainty about generalization, adaptive attackers, transient exclusion, and computational overhead.
+The proposed method combines secret model challenges, robust static evidence, compact history reconstruction, and repeated reference-based confirmation. Across all 16 experiments with 40\% free riders, every attacker is removed, with one honest removal in CIFAR-10 non-IID FR3. MNIST accuracy remains near 98.8\%; CIFAR-10 averages 76.18\% IID and 74.71\% non-IID. The evidence supports feasibility in this controlled setting while retaining explicit uncertainty about generalization, adaptive attackers, transient exclusion, and computational overhead.
+\FloatBarrier
+\balance
 \bibliographystyle{IEEEtran}
 \bibliography{refs}
 \end{document}
