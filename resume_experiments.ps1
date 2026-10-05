@@ -1,4 +1,4 @@
-param([string]$Plan)
+param([string]$Plan = "configs\v13_mnist_priority_fr40_plan.json")
 
 $ErrorActionPreference = "Stop"
 
