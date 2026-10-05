@@ -1,3 +1,5 @@
+param([string]$Plan)
+
 $ErrorActionPreference = "Stop"
 
 $projectRoot = $PSScriptRoot
@@ -56,6 +58,22 @@ $scheduledBatches = @(
         GateRun = $null
     }
 )
+
+if ($Plan) {
+    $planPath = if ([IO.Path]::IsPathRooted($Plan)) { $Plan } else { Join-Path $projectRoot $Plan }
+    $planConfig = Get-Content -LiteralPath $planPath -Raw | ConvertFrom-Json
+    if (-not $planConfig.batch_name) { throw "Recovery requires a fixed batch_name in the plan." }
+    $planResults = if ([IO.Path]::IsPathRooted($planConfig.results_root)) {
+        $planConfig.results_root
+    } else { Join-Path $projectRoot $planConfig.results_root }
+    $scheduledBatches = @([pscustomobject]@{
+        Label = $planConfig.batch_name
+        Plan = $planPath
+        Batch = Join-Path $planResults $planConfig.batch_name
+        GateBatch = $null
+        GateRun = $null
+    })
+}
 
 function Test-DetectionGate([string]$Batch, [string]$Run) {
     if (-not $Batch -or -not $Run) {

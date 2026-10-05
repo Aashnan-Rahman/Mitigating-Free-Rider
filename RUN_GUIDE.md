@@ -1,6 +1,82 @@
 
 # SWT-CP Experiment Run Guide
 
+## v12 CIFAR-10 IID CPU run, 30% free riders
+
+`configs/v12_cifar10_iid_fr30_seed42_cpu_plan.json` runs FR1–FR4 sequentially
+with `device=cpu`, seed 42, 100 clients, 100 rounds, and 30% free riders.
+Per-round checkpoints support recovery after reboot and Windows sign-in.
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\install_resume_task.ps1 -Plan configs/v12_cifar10_iid_fr30_seed42_cpu_plan.json
+Start-ScheduledTask -TaskName 'Mitigating Free Rider - Resume Experiments'
+.\.venv\Scripts\python.exe monitor.py --status results/v12_cifar10_iid_fr30_seed42_cpu/experiment_status.json --watch
+```
+
+Round timings are saved in each run's `global_metrics.csv`. Comparing this batch
+with the earlier 40% CUDA batch changes both device and free-rider percentage;
+a controlled CPU/CUDA comparison requires matching the 30% configuration.
+
+## v12 MNIST non-IID followed by IID, seed 42
+
+`configs/v12_mnist_noniid_then_iid_fr40_seed42_plan.json` schedules eight runs:
+non-IID FR1–FR4 first (Dirichlet alpha 0.5), then IID FR1–FR4. Each uses
+100 clients, 100 rounds, 40% free riders, seed 42, and per-round checkpoints.
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\install_resume_task.ps1 -Plan configs/v12_mnist_noniid_then_iid_fr40_seed42_plan.json
+Start-ScheduledTask -TaskName 'Mitigating Free Rider - Resume Experiments'
+.\.venv\Scripts\python.exe monitor.py --status results/v12_mnist_noniid_then_iid_fr40_seed42/experiment_status.json --watch
+```
+
+The recovery task continues this sequence after reboot and Windows sign-in.
+
+## v12 CIFAR-10 non-IID, seed 42
+
+The plan `configs/v12_cifar10_noniid_fr40_seed42_plan.json` runs FR1 through FR4
+with 100 clients, 100 rounds, 40% free riders, seed 42, and Dirichlet alpha 0.5.
+Start or resume this batch from the repository root:
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\resume_experiments.ps1 -Plan configs/v12_cifar10_noniid_fr40_seed42_plan.json
+```
+
+Point Windows sign-in recovery at this batch:
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\install_resume_task.ps1 -Plan configs/v12_cifar10_noniid_fr40_seed42_plan.json
+```
+
+Monitor progress:
+
+```powershell
+.\.venv\Scripts\python.exe monitor.py --status results/v12_cifar10_noniid_fr40_seed42/experiment_status.json --watch
+```
+
+## v12 CIFAR-10 IID on this PC
+
+The plan `configs/v12_cifar10_iid_fr40_seed42_plan.json` runs FR1 through FR4
+sequentially, using 100 clients, 100 rounds, 40% free riders, and seed 42.
+From the repository root, start or resume only this batch with:
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\resume_experiments.ps1 -Plan configs/v12_cifar10_iid_fr40_seed42_plan.json
+```
+
+Install recovery after Windows sign-in on the current PC:
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\install_resume_task.ps1 -Plan configs/v12_cifar10_iid_fr40_seed42_plan.json
+```
+
+This task resumes the last completed-round checkpoint, skips completed attacks,
+and stops after FR4. Windows sign-in is required after a restart.
+Monitor this batch explicitly to avoid selecting historical batch status files:
+
+```powershell
+.\.venv\Scripts\python.exe monitor.py --status results/v12_cifar10_iid_fr40_seed42/experiment_status.json --watch
+```
+
 Run every command in PowerShell from the repository root:
 
 ```powershell

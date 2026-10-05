@@ -1,0 +1,130 @@
+[
+  {
+    "dataset": "mnist",
+    "distribution": "iid",
+    "attack": "FR1",
+    "source": "results\\v12_mnist_noniid_then_iid_fr40_seed42\\v12_mnist_iid_fr40_seed42_FR1",
+    "device": "cuda",
+    "seed": 42
+  },
+  {
+    "dataset": "mnist",
+    "distribution": "iid",
+    "attack": "FR2",
+    "source": "results\\v12_mnist_noniid_then_iid_fr40_seed42\\v12_mnist_iid_fr40_seed42_FR2",
+    "device": "cuda",
+    "seed": 42
+  },
+  {
+    "dataset": "mnist",
+    "distribution": "iid",
+    "attack": "FR3",
+    "source": "results\\v12_mnist_noniid_then_iid_fr40_seed42\\v12_mnist_iid_fr40_seed42_FR3",
+    "device": "cuda",
+    "seed": 42
+  },
+  {
+    "dataset": "mnist",
+    "distribution": "iid",
+    "attack": "FR4",
+    "source": "results\\v12_mnist_noniid_then_iid_fr40_seed42\\v12_mnist_iid_fr40_seed42_FR4",
+    "device": "cuda",
+    "seed": 42
+  },
+  {
+    "dataset": "mnist",
+    "distribution": "noniid",
+    "attack": "FR1",
+    "source": "results\\v12_mnist_noniid_then_iid_fr40_seed42\\v12_mnist_noniid_fr40_seed42_FR1",
+    "device": "cuda",
+    "seed": 42
+  },
+  {
+    "dataset": "mnist",
+    "distribution": "noniid",
+    "attack": "FR2",
+    "source": "results\\v12_mnist_noniid_then_iid_fr40_seed42\\v12_mnist_noniid_fr40_seed42_FR2",
+    "device": "cuda",
+    "seed": 42
+  },
+  {
+    "dataset": "mnist",
+    "distribution": "noniid",
+    "attack": "FR3",
+    "source": "results\\v12_mnist_noniid_then_iid_fr40_seed42\\v12_mnist_noniid_fr40_seed42_FR3",
+    "device": "cuda",
+    "seed": 42
+  },
+  {
+    "dataset": "mnist",
+    "distribution": "noniid",
+    "attack": "FR4",
+    "source": "results\\v12_mnist_noniid_then_iid_fr40_seed42\\v12_mnist_noniid_fr40_seed42_FR4",
+    "device": "cuda",
+    "seed": 42
+  },
+  {
+    "dataset": "cifar10",
+    "distribution": "iid",
+    "attack": "FR1",
+    "source": "results\\v12_cifar10_iid_fr40_seed42\\v12_cifar10_iid_fr40_seed42_FR1",
+    "device": "cuda",
+    "seed": 42
+  },
+  {
+    "dataset": "cifar10",
+    "distribution": "iid",
+    "attack": "FR2",
+    "source": "results\\v12_cifar10_iid_fr40_seed42\\v12_cifar10_iid_fr40_seed42_FR2",
+    "device": "cuda",
+    "seed": 42
+  },
+  {
+    "dataset": "cifar10",
+    "distribution": "iid",
+    "attack": "FR3",
+    "source": "results\\v12_cifar10_iid_fr40_seed42\\v12_cifar10_iid_fr40_seed42_FR3",
+    "device": "cuda",
+    "seed": 42
+  },
+  {
+    "dataset": "cifar10",
+    "distribution": "iid",
+    "attack": "FR4",
+    "source": "results\\v12_cifar10_iid_fr40_seed42\\v12_cifar10_iid_fr40_seed42_FR4",
+    "device": "cuda",
+    "seed": 42
+  },
+  {
+    "dataset": "cifar10",
+    "distribution": "noniid",
+    "attack": "FR1",
+    "source": "results\\v12_cifar10_noniid_fr40_seed42\\v12_cifar10_noniid_fr40_seed42_FR1",
+    "device": "cuda",
+    "seed": 42
+  },
+  {
+    "dataset": "cifar10",
+    "distribution": "noniid",
+    "attack": "FR2",
+    "source": "results\\v12_cifar10_noniid_fr40_seed42\\v12_cifar10_noniid_fr40_seed42_FR2",
+    "device": "cuda",
+    "seed": 42
+  },
+  {
+    "dataset": "cifar10",
+    "distribution": "noniid",
+    "attack": "FR3",
+    "source": "results\\v12_cifar10_noniid_fr40_seed42\\v12_cifar10_noniid_fr40_seed42_FR3",
+    "device": "cuda",
+    "seed": 42
+  },
+  {
+    "dataset": "cifar10",
+    "distribution": "noniid",
+    "attack": "FR4",
+    "source": "results\\v12_cifar10_noniid_fr40_seed42\\v12_cifar10_noniid_fr40_seed42_FR4",
+    "device": "cuda",
+    "seed": 42
+  }
+]
