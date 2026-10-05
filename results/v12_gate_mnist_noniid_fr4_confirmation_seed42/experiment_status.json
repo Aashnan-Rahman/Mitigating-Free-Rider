@@ -1,0 +1,72 @@
+{
+  "batch_id": "v12_gate_mnist_noniid_fr4_confirmation_seed42",
+  "completed_experiments": 1,
+  "completed_rounds": 31,
+  "current_experiment": null,
+  "elapsed_seconds": 675.3363559246063,
+  "estimated_remaining_seconds": 0.0,
+  "experiments": [
+    {
+      "completed_rounds": 31,
+      "config": {
+        "dataset": "mnist"
+      },
+      "finished_at": "2026-09-25T17:27:30.468655",
+      "id": "v12_gate_mnist_noniid_fr4_confirmation_seed42",
+      "progress": {
+        "active_clients": 6,
+        "candidate_clients": 3,
+        "cpu_percent": 0.0,
+        "cuda_allocated_mb": "",
+        "cuda_peak_allocated_mb": "",
+        "cuda_reserved_mb": "",
+        "device": "cpu",
+        "global_accuracy": 0.9809,
+        "global_loss": 0.05568010298544541,
+        "methodology_version": "swtcp_v12",
+        "new_flags": 9,
+        "new_rehabilitations": 0,
+        "new_removals": 4,
+        "phase": "double_probe",
+        "process_rss_mb": 463.08984375,
+        "reference_eligible_clients": 3,
+        "reference_probation_clients": 0,
+        "round": 31,
+        "round_time_seconds": 17.878588500025216,
+        "suspected_clients": 0,
+        "system_memory_percent": 89.2,
+        "total_rounds": 31
+      },
+      "run_dir": "results\\v12_gate_mnist_noniid_fr4_confirmation_seed42\\v12_gate_mnist_noniid_fr4_confirmation_seed42",
+      "started_at": "2026-09-25T17:16:15.362469",
+      "state": "completed",
+      "summary": {
+        "average_round_time_seconds": 20.605583593545994,
+        "best_global_accuracy": 0.9823,
+        "detection_accuracy": 1.0,
+        "f1": 1.0,
+        "false_positive_removal_rate": 0.0,
+        "final_candidate_clients": 3,
+        "final_global_accuracy": 0.9809,
+        "final_global_loss": 0.05568010298544541,
+        "final_suspected_clients": 0,
+        "missed_free_riders": 0,
+        "peak_cuda_allocated_mb": null,
+        "peak_process_rss_mb": 479.4375,
+        "precision": 1.0,
+        "recall": 1.0,
+        "removed_free_riders": 4,
+        "removed_honest_clients": 0,
+        "total_wall_clock_seconds": 671.5876095000131
+      }
+    }
+  ],
+  "failed_experiments": 0,
+  "finished_at": "2026-09-25T17:27:30.547412",
+  "plan": "configs\\v12_gate_mnist_noniid_fr4_confirmation_seed42_plan.json",
+  "started_at": "2026-09-25T17:16:15.211056",
+  "state": "completed",
+  "total_experiments": 1,
+  "total_rounds": 31,
+  "updated_at": "2026-09-25T17:27:30.547412"
+}

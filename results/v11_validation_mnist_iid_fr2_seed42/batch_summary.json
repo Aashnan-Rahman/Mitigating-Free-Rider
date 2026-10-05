@@ -1,0 +1,67 @@
+{
+  "batch_id": "v11_validation_mnist_iid_fr2_seed42",
+  "completed_experiments": 1,
+  "elapsed_seconds": 1781.6688814163208,
+  "experiments": [
+    {
+      "completed_rounds": 40,
+      "config": {
+        "attack_type": "FR2",
+        "dataset": "mnist",
+        "distribution": "iid"
+      },
+      "finished_at": "2026-09-25T00:58:24.226550",
+      "id": "v11_mnist_iid_fr2_fr40_seed42",
+      "progress": {
+        "active_clients": 60,
+        "candidate_clients": 0,
+        "cpu_percent": 0.0,
+        "cuda_allocated_mb": "",
+        "cuda_peak_allocated_mb": "",
+        "cuda_reserved_mb": "",
+        "device": "cpu",
+        "global_accuracy": 0.9862,
+        "global_loss": 0.04024746260339161,
+        "methodology_version": "swtcp_v11",
+        "new_flags": 0,
+        "new_rehabilitations": 0,
+        "new_removals": 0,
+        "phase": "double_probe",
+        "process_rss_mb": 272.0625,
+        "reference_eligible_clients": 60,
+        "reference_probation_clients": 0,
+        "round": 40,
+        "round_time_seconds": 39.93639629999234,
+        "suspected_clients": 0,
+        "system_memory_percent": 93.2,
+        "total_rounds": 40
+      },
+      "run_dir": "results\\v11_validation_mnist_iid_fr2_seed42\\v11_mnist_iid_fr2_fr40_seed42",
+      "started_at": "2026-09-25T00:28:42.747040",
+      "state": "completed",
+      "summary": {
+        "average_round_time_seconds": 43.46748901000137,
+        "best_global_accuracy": 0.9862,
+        "detection_accuracy": 1.0,
+        "f1": 1.0,
+        "false_positive_removal_rate": 0.0,
+        "final_candidate_clients": 0,
+        "final_global_accuracy": 0.9862,
+        "final_global_loss": 0.04024746260339161,
+        "final_suspected_clients": 0,
+        "missed_free_riders": 0,
+        "peak_cuda_allocated_mb": null,
+        "peak_process_rss_mb": 607.19921875,
+        "precision": 1.0,
+        "recall": 1.0,
+        "removed_free_riders": 40,
+        "removed_honest_clients": 0,
+        "total_wall_clock_seconds": 1774.9691082999925
+      }
+    }
+  ],
+  "failed_experiments": 0,
+  "finished_at": "2026-09-25T00:58:24.293702",
+  "started_at": "2026-09-25T00:28:42.624821",
+  "state": "completed"
+}

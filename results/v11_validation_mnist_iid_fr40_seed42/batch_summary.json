@@ -1,0 +1,69 @@
+{
+  "batch_id": "v11_validation_mnist_iid_fr40_seed42",
+  "completed_experiments": 1,
+  "elapsed_seconds": 1884.7857191562653,
+  "experiments": [
+    {
+      "completed_rounds": 40,
+      "config": {
+        "attack_type": "FR1",
+        "dataset": "mnist",
+        "distribution": "iid",
+        "num_rounds": 40
+      },
+      "finished_at": "2026-09-25T00:28:41.295578",
+      "id": "v11_mnist_iid_fr1_fr40_seed42",
+      "progress": {
+        "active_clients": 60,
+        "candidate_clients": 7,
+        "cpu_percent": 0.0,
+        "cuda_allocated_mb": "",
+        "cuda_peak_allocated_mb": "",
+        "cuda_reserved_mb": "",
+        "device": "cpu",
+        "global_accuracy": 0.9872,
+        "global_loss": 0.038654005835787396,
+        "methodology_version": "swtcp_v11",
+        "new_flags": 1,
+        "new_rehabilitations": 1,
+        "new_removals": 0,
+        "phase": "double_probe",
+        "process_rss_mb": 616.3671875,
+        "reference_eligible_clients": 52,
+        "reference_probation_clients": 1,
+        "round": 40,
+        "round_time_seconds": 40.561983099993085,
+        "suspected_clients": 0,
+        "system_memory_percent": 87.0,
+        "total_rounds": 40
+      },
+      "resumed_from_checkpoint": "E:\\New Projects\\Mitigating-Free-Rider\\results\\v11_validation_mnist_iid_fr40_seed42\\v11_mnist_iid_fr1_fr40_seed42\\checkpoint_round_0037.pt",
+      "run_dir": "E:\\New Projects\\Mitigating-Free-Rider\\results\\v11_validation_mnist_iid_fr40_seed42\\v11_mnist_iid_fr1_fr40_seed42",
+      "started_at": "2026-09-25T00:26:26.373578",
+      "state": "completed",
+      "summary": {
+        "average_round_time_seconds": 45.805301990000224,
+        "best_global_accuracy": 0.9872,
+        "detection_accuracy": 1.0,
+        "f1": 1.0,
+        "false_positive_removal_rate": 0.0,
+        "final_candidate_clients": 7,
+        "final_global_accuracy": 0.9872,
+        "final_global_loss": 0.038654005835787396,
+        "final_suspected_clients": 0,
+        "missed_free_riders": 0,
+        "peak_cuda_allocated_mb": null,
+        "peak_process_rss_mb": 661.37890625,
+        "precision": 1.0,
+        "recall": 1.0,
+        "removed_free_riders": 40,
+        "removed_honest_clients": 0,
+        "total_wall_clock_seconds": 127.93408140000247
+      }
+    }
+  ],
+  "failed_experiments": 0,
+  "finished_at": "2026-09-25T00:28:41.373334",
+  "started_at": "2026-09-24T23:53:56.411618",
+  "state": "completed"
+}

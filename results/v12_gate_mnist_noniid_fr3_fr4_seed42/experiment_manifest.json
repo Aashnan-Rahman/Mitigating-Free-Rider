@@ -1,0 +1,37 @@
+{
+  "batch_id": "v12_gate_mnist_noniid_fr3_fr4_seed42",
+  "created_at": "2026-09-25T15:42:42.841896",
+  "defaults": {
+    "batch_size": 128,
+    "checkpoint_keep_last": 2,
+    "cycle_min_reference_clients": 5,
+    "dataset": "mnist",
+    "device": "auto",
+    "dirichlet_alpha": 0.5,
+    "distribution": "noniid",
+    "free_rider_pct": 0.4,
+    "local_epochs": 1,
+    "methodology_version": "swtcp_v12",
+    "num_clients": 10,
+    "num_rounds": 21,
+    "save_checkpoints": true,
+    "seed": 42,
+    "surveillance_groups": 10,
+    "warmup_rounds": 1
+  },
+  "experiments": [
+    {
+      "config": {
+        "attack_type": "FR3"
+      },
+      "id": "v12_gate_mnist_noniid_FR3_seed42"
+    },
+    {
+      "config": {
+        "attack_type": "FR4"
+      },
+      "id": "v12_gate_mnist_noniid_FR4_seed42"
+    }
+  ],
+  "source_plan": "configs\\v12_gate_mnist_noniid_fr3_fr4_seed42_plan.json"
+}

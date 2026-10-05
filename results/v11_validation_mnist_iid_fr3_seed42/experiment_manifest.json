@@ -1,0 +1,25 @@
+{
+  "batch_id": "v11_validation_mnist_iid_fr3_seed42",
+  "created_at": "2026-09-25T00:58:28.071038",
+  "defaults": {
+    "checkpoint_keep_last": 5,
+    "device": "auto",
+    "free_rider_pct": 0.4,
+    "methodology_version": "swtcp_v11",
+    "num_clients": 100,
+    "num_rounds": 40,
+    "save_checkpoints": true,
+    "seed": 42
+  },
+  "experiments": [
+    {
+      "config": {
+        "attack_type": "FR3",
+        "dataset": "mnist",
+        "distribution": "iid"
+      },
+      "id": "v11_mnist_iid_fr3_fr40_seed42"
+    }
+  ],
+  "source_plan": "E:\\New Projects\\Mitigating-Free-Rider\\configs\\v11_validation_mnist_iid_fr3_seed42_plan.json"
+}

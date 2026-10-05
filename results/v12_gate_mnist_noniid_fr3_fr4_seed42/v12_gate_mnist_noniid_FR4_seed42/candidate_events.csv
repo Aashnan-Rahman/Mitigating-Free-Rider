@@ -1,0 +1,11 @@
+round,client_id,is_free_rider,event,reason,cumulative_penalty
+11,0,1,entered_candidate_state,1_failed_probes_in_2_checks_weak,0.0
+11,1,1,entered_candidate_state,1_failed_probes_in_2_checks_weak,0.0
+11,4,1,entered_candidate_state,1_failed_probes_in_2_checks_weak,0.0
+11,9,1,entered_candidate_state,1_failed_probes_in_2_checks_weak,0.0
+21,0,1,entered_suspicious_state,2_failed_probes_in_2_checks_coherent,-2.0
+21,1,1,entered_suspicious_state,2_failed_probes_in_2_checks_coherent,-2.0
+21,3,0,entered_candidate_state,2_failed_probes_in_2_checks_coherent,-2.0
+21,4,1,entered_suspicious_state,2_failed_probes_in_2_checks_coherent,-2.0
+21,7,0,entered_candidate_state,1_failed_probes_in_2_checks_weak,0.0
+21,9,1,entered_suspicious_state,2_failed_probes_in_2_checks_coherent,-2.0
