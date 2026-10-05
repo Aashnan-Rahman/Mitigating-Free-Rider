@@ -39,6 +39,7 @@ from server.cycle_trap_selection import CycleTrapSelector
 from server.cycle_protocol import transition_cycle_state
 from server.model_fingerprint import model_fingerprint
 from server.v11_detection import evaluate_v11_cycle
+from server.v13_detection import V13Detector, settings_from_config
 from server.v12_detection import (
     compact_sketch,
     evaluate_v12_cycle,
@@ -248,10 +249,12 @@ def run_experiment(
     free_rider_count = math.ceil(config.free_rider_pct * config.num_clients)
     free_riders = set(rng.sample(range(config.num_clients), free_rider_count))
     attacker = FreeRiderAttacker(config, device)
+    is_v13 = config.methodology_version == "swtcp_v13"
     is_v12 = config.methodology_version == "swtcp_v12"
-    is_v11 = config.methodology_version in {"swtcp_v11", "swtcp_v12"}
-    is_v10 = config.methodology_version in {"swtcp_v10", "swtcp_v11", "swtcp_v12"}
-    is_v9 = config.methodology_version in {"swtcp_v9", "swtcp_v10", "swtcp_v11", "swtcp_v12"}
+    is_v11 = config.methodology_version in {"swtcp_v11", "swtcp_v12", "swtcp_v13"}
+    is_v10 = config.methodology_version in {"swtcp_v10", "swtcp_v11", "swtcp_v12", "swtcp_v13"}
+    is_v9 = config.methodology_version in {"swtcp_v9", "swtcp_v10", "swtcp_v11", "swtcp_v12", "swtcp_v13"}
+    v13_detector = V13Detector(settings_from_config(config)) if is_v13 else None
     selector = CycleTrapSelector(config, rng) if is_v9 else TrapSelector(config, rng)
     logger = RunLogger(config, run_name)
 
@@ -346,6 +349,8 @@ def run_experiment(
         }
         free_riders = {int(client_id) for client_id in checkpoint["free_riders_ground_truth"]}
         logger.load_existing(completed_round, checkpoint.get("global_metrics"))
+        if v13_detector is not None:
+            v13_detector.load_state_dict(checkpoint["v13_detector_state"])
         start_round = completed_round + 1
         if "selector_state" in checkpoint:
             selector.load_state_dict(checkpoint["selector_state"])
@@ -510,6 +515,14 @@ def run_experiment(
             generator.set_state(checkpoint["generator_state"])
         if "attacker_state" in checkpoint:
             attacker.load_state_dict(checkpoint["attacker_state"])
+        if is_v13:
+            torch.set_rng_state(checkpoint["torch_rng_state"].cpu())
+            if device.type == "cuda":
+                torch.cuda.set_rng_state_all(checkpoint["cuda_rng_states"])
+            np.random.set_state(checkpoint["numpy_rng_state"])
+            random.setstate(checkpoint["python_rng_state"])
+            for loader, state in zip(client_loaders, checkpoint["client_loader_rng_states"]):
+                loader.generator.set_state(state.cpu())
 
     for round_idx in range(start_round, config.num_rounds + 1):
         round_start = time.perf_counter()
@@ -777,7 +790,15 @@ def run_experiment(
                         }
                         if is_v12:
                             evaluator_kwargs["coverage_history_scores"] = coverage_history_scores
-                        evidence = evaluator(**evaluator_kwargs)
+                        if v13_detector is not None:
+                            evidence = v13_detector.evaluate_cycle(**{
+                                key: evaluator_kwargs[key] for key in (
+                                    "coverage_norms", "coverage_profiles", "coverage_trap_ids",
+                                    "coverage_observation_rounds", "active_clients", "checks",
+                                )
+                            })
+                        else:
+                            evidence = evaluator(**evaluator_kwargs)
                     else:
                         evidence = evaluate_completed_cycle(
                             coverage_deltas=coverage_deltas,
@@ -1145,6 +1166,13 @@ def run_experiment(
                         ):
                             v12_new_strong_anomaly = True
                         old_score = penalties[client_id]
+                        if v13_detector is not None:
+                            transition = v13_detector.transition(
+                                client=client_id, role=previous_role,
+                                failed_probes=failed_probes,
+                                coherent_strong=cycle_coherent_strong.get(client_id, False),
+                                clean_cycles=cycle_clean_counts[client_id],
+                            )
                         penalties[client_id] = transition.score
                         v9_score_changes[client_id] = transition.score - old_score
                         cycle_clean_counts[client_id] = transition.clean_cycles
@@ -1259,7 +1287,10 @@ def run_experiment(
                                     "client_id": client_id,
                                     "is_free_rider": int(client_id in free_riders),
                                     "final_penalty": penalties[client_id],
-                                    "removal_basis": "two_strong_cycles_with_trusted_confirmation",
+                                    "removal_basis": (
+                                        "fresh_joint_cycles_with_expiring_evidence"
+                                        if is_v13 else "two_strong_cycles_with_trusted_confirmation"
+                                    ),
                                     "zero_update_count": zero_update_counts[client_id],
                                     "suspicion_probes": times_trapped[client_id],
                                 }
@@ -1293,7 +1324,8 @@ def run_experiment(
                     suspected_clients = next_suspects
                     candidate_clients = next_candidates - next_suspects
                     anomaly_found = (
-                        v12_new_strong_anomaly
+                        bool(suspected_clients or candidate_clients)
+                        if is_v13 else v12_new_strong_anomaly
                         if is_v12
                         else bool(suspected_clients or candidate_clients)
                     )
@@ -1301,6 +1333,25 @@ def run_experiment(
                 else:
                     # Never relax probing or change statistical states when the
                     # trusted R reference is too small for a defensible decision.
+                    if v13_detector is not None:
+                        # Inconclusive evidence cannot extend quarantine forever.
+                        for client_id in sorted(suspected_clients | candidate_clients):
+                            logger.candidate_event_rows.append({
+                                "round": round_idx, "client_id": client_id,
+                                "is_free_rider": int(client_id in free_riders),
+                                "event": "released_inconclusive_reference",
+                                "reason": "insufficient_same_trap_population",
+                                "cumulative_penalty": 0.0,
+                            })
+                            penalties[client_id] = 0.0
+                            cycle_strong_counts[client_id] = 0
+                            cycle_trusted_strong_counts[client_id] = 0
+                            v13_detector.evidence.pop(client_id, None)
+                            v13_detector.ages.pop(client_id, None)
+                            reference_eligible_clients.discard(client_id)
+                            reference_probation_counts[client_id] = 0
+                        suspected_clients.clear()
+                        candidate_clients.clear()
                     selector.finish_cycle(anomaly_found=True)
 
             if not is_v10 and is_cycle_probe and selection.coverage_complete:
@@ -1941,6 +1992,17 @@ def run_experiment(
             if client_id not in quarantined_clients
         ]
         global_state = fedavg_delta(base_state, [returned_states[client_id] for client_id in aggregated_clients])
+        if is_v13:
+            aggregated_set = set(aggregated_clients)
+            active_set = set(active_this_round)
+            for row in logger.client_rows[-config.num_clients:]:
+                client_id = int(row["client_id"])
+                row["was_active"] = int(client_id in active_set)
+                row["was_quarantined"] = int(
+                    client_id in active_set and client_id in quarantined_clients
+                    and client_id not in selection.trapped_clients
+                )
+                row["was_aggregated"] = int(client_id in aggregated_set)
         model.load_state_dict(global_state)
 
         active_clients = [
@@ -2012,6 +2074,7 @@ def run_experiment(
                 "v11_norm_scale_history": v11_norm_scale_history,
                 "v11_profile_scale_history": v11_profile_scale_history,
                 "v11_last_cutoff": v11_last_cutoff,
+                "v13_detector_state": v13_detector.state_dict() if v13_detector else None,
                 "sent_model_fingerprints": {
                     client_id: list(fingerprints)
                     for client_id, fingerprints in sent_model_fingerprints.items()
@@ -2029,6 +2092,14 @@ def run_experiment(
                 "generator_state": generator.get_state(),
                 "attacker_state": attacker.state_dict(),
             }
+            if is_v13:
+                checkpoint.update({
+                    "torch_rng_state": torch.get_rng_state(),
+                    "cuda_rng_states": torch.cuda.get_rng_state_all() if device.type == "cuda" else [],
+                    "numpy_rng_state": np.random.get_state(),
+                    "python_rng_state": random.getstate(),
+                    "client_loader_rng_states": [loader.generator.get_state() for loader in client_loaders],
+                })
             save_rolling_checkpoint(
                 checkpoint,
                 logger.run_dir,
@@ -2140,6 +2211,20 @@ def run_experiment(
         }
     )
     run_config["checkpoint_cleanup_on_success"] = True
+    if is_v13:
+        honest_rows = [row for row in logger.client_rows if not row["is_free_rider"]]
+        run_config.update({
+            "honest_quarantine_client_rounds": sum(row.get("was_quarantined", 0) for row in honest_rows),
+            "honest_trap_client_rounds": sum(row["was_trapped"] for row in honest_rows),
+            "honest_excluded_active_client_rounds": sum(
+                row.get("was_active", 0) and not row.get("was_aggregated", 0) for row in honest_rows
+            ),
+            "honest_clients_ever_quarantined": len({row["client_id"] for row in honest_rows
+                                                   if row.get("was_quarantined", 0)}),
+            "final_honest_candidate_clients": len(candidate_clients - free_riders),
+            "detector_uses_attack_history": False,
+            "calibration_guarantee": "empirical; no distribution-free false-alarm guarantee",
+        })
     run_config["checkpoints_deleted_on_success"] = []
     logger.write_all(run_config)
     deleted_checkpoints = delete_successful_checkpoints(logger.run_dir)

@@ -8,7 +8,7 @@ from typing import Any
 
 @dataclass
 class ExperimentConfig:
-    methodology_version: str = "swtcp_v12"
+    methodology_version: str = "swtcp_v13"
     dataset: str = "mnist"
     distribution: str = "iid"
     dirichlet_alpha: float = 0.5
@@ -54,6 +54,11 @@ class ExperimentConfig:
     cycle_scale_epsilon: float = 1e-8
     v12_sketch_width: int = 32
     v12_history_window: int = 5
+    v13_personal_window_cycles: int = 5
+    v13_personal_min_cycles: int = 3
+    v13_quarantine_max_cycles: int = 2
+    v13_evidence_window_cycles: int = 3
+    v13_reentry_cooldown_cycles: int = 1
     dodge_min_probes: int = 10
     dodge_max_flag_rate: float = 0.10
     zero_update_epsilon: float = 1e-6
@@ -114,7 +119,7 @@ class ExperimentConfig:
     def removal_threshold(self) -> float:
         return (
             self.cycle_removal_score
-            if self.methodology_version in {"swtcp_v9", "swtcp_v10", "swtcp_v11", "swtcp_v12"}
+            if self.methodology_version in {"swtcp_v9", "swtcp_v10", "swtcp_v11", "swtcp_v12", "swtcp_v13"}
             else self.removal_threshold_points
         )
 
@@ -139,6 +144,7 @@ class ExperimentConfig:
                 "swtcp_v10",
                 "swtcp_v11",
                 "swtcp_v12",
+                "swtcp_v13",
                 "frida_loss",
                 "frad_reproduction",
             },
@@ -206,6 +212,14 @@ class ExperimentConfig:
             raise ValueError("Cycle scoring settings are invalid.")
         if self.dodge_min_probes <= 0 or not 0.0 <= self.dodge_max_flag_rate <= 1.0:
             raise ValueError("Dodge-index settings are invalid.")
+        if (
+            self.v13_personal_min_cycles < 2
+            or self.v13_personal_window_cycles < self.v13_personal_min_cycles
+            or self.v13_quarantine_max_cycles < self.cycle_strong_cycles_for_removal
+            or self.v13_evidence_window_cycles < self.cycle_strong_cycles_for_removal
+            or self.v13_reentry_cooldown_cycles < 1
+        ):
+            raise ValueError("v13 history, quarantine and evidence settings are invalid.")
         if (
             self.zero_update_epsilon <= 0
             or self.magnitude_z_threshold <= 0

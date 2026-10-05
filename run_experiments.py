@@ -195,6 +195,11 @@ def main() -> None:
                                 "final_candidate_clients", "final_suspected_clients",
                                 "precision", "recall", "f1", "detection_accuracy",
                                 "false_positive_removal_rate",
+                                "honest_quarantine_client_rounds",
+                                "honest_trap_client_rounds",
+                                "honest_excluded_active_client_rounds",
+                                "honest_clients_ever_quarantined",
+                                "final_honest_candidate_clients",
                             )
                         },
                     }

@@ -9,6 +9,13 @@ $runner = Join-Path $projectRoot "run_experiments.py"
 $log = Join-Path $resultsRoot "scheduled_resume.log"
 $scheduledBatches = @(
     [pscustomobject]@{
+        Label = "v13 priority MNIST IID/non-IID, 40% free riders; hardest cases first"
+        Plan = Join-Path $projectRoot "configs\v13_mnist_priority_fr40_plan.json"
+        Batch = Join-Path $resultsRoot "v13_mnist_priority_fr40"
+        GateBatch = $null
+        GateRun = $null
+    },
+    [pscustomobject]@{
         Label = "v11 validation: MNIST IID FR1, 40% free riders, seed 42"
         Plan = Join-Path $projectRoot "configs\v11_validation_mnist_iid_fr40_seed42_plan.json"
         Batch = Join-Path $resultsRoot "v11_validation_mnist_iid_fr40_seed42"

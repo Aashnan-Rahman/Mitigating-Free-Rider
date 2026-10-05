@@ -6,9 +6,38 @@ named configuration variable, not a hardcoded value — the code should be built
 that changing any single value in the config does not require touching logic
 elsewhere.
 
-> **Current protocol:** `swtcp_v12`. Historical v8-v11 sections remain for
-> provenance. The v12 rules below override them whenever
-> `methodology_version="swtcp_v12"`.
+> **Current protocol:** `swtcp_v13`. Historical sections remain for provenance.
+> The v13 rules below override them when `methodology_version="swtcp_v13"`.
+
+## Current v13 corrections
+
+- Use only update norm and normalized layer-profile evidence. Do not reconstruct
+  averaging windows or model trajectories, and do not use attack parameters,
+  private data/sample counts, client loss, or client telemetry for decisions.
+- Replace three-client anchors with complete same-trap batches and leave the
+  evaluated client out of its peer reference. A too-small batch cannot support
+  statistical removal. No current outlier trimming/recomputed narrow baseline.
+- Apply log-norm robust statistics, normal-consistent MAD and historical scales.
+  Derive bootstrap cutoffs from a configured false-alarm budget and adapt them
+  using prior nonflagged cycle scores excluding the client's own scores. This
+  is empirical calibration, not a guaranteed false-positive bound.
+- Keep small personal residual histories from non-joint cycles. After sufficient
+  history, consistency with the client's own baseline may veto population flags.
+- Single-signal anomalies create weak C evidence with zero penalty. Strong
+  evidence requires joint norm/profile anomalies with the same norm direction
+  on both distinct traps and confirmation in consecutive fresh cycles.
+- Weak or clean cycles erase strong evidence. Old evidence expires; unconfirmed
+  quarantine is bounded by a configured review deadline. After release, weak
+  evidence has a cooldown; strong evidence can still trigger fresh confirmation.
+- If references are insufficient, release quarantine rather than hold it
+  indefinitely. Continue fresh audits. Reference eligibility is recoverable.
+- Retain passive current/previous exact-sendback checks and their permanent
+  five-strike path. Never combine sendback strikes with statistical penalties.
+- Report honest quarantine and excluded active client-rounds as well as honest
+  permanent removal. Resume must preserve all detector and random-generator state.
+- Schedule all MNIST runs together, with non-IID FR4 seeds 42, 43, 46 first,
+  then other non-IID cases and finally IID, at 40% free riders and 100 rounds.
+- Paired differential challenges are deferred pending separate validation.
 
 ## Current v12 corrections
 

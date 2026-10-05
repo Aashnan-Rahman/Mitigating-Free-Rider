@@ -3,6 +3,34 @@
 This file records methodology changes. Results from different versions must not
 be pooled as if they used the same detector.
 
+## v13 — Generic batch evidence with bounded quarantine
+
+- Returns to v8's norm/layer-profile signals without sent-history averages,
+  trajectory reconstruction, or attack-shaped cohort rules. v12's previous
+  "attack-agnostic" description meant label-free, not assumption-free.
+- Reuses complete two-trap cycle scheduling rather than three-anchor panels.
+  Every client is evaluated against the full same-trap population excluding
+  itself. References are provisional; no unflagged client is assumed honest.
+- Uses log norms, normal-consistent MAD, historical scale stabilization, and a
+  risk-budget bootstrap cutoff raised by prior nonflagged cycle scores. The
+  target's own calibration scores are excluded. Calibration remains empirical,
+  with no distribution-free false-positive guarantee under heterogeneous data.
+- Keeps small client-specific residual histories from previous non-joint cycles.
+  A qualified personal baseline can veto stable population anomalies, while
+  persistently joint-anomalous responses cannot certify their own baseline.
+- Isolated signals screen into C with zero penalty. Statistical removal requires
+  both signals and the same norm direction on both traps in consecutive fresh
+  cycles. Weak/clean cycles reset strong evidence; old evidence expires.
+- Unconfirmed quarantine ends after two cycle reviews by default, with one weak-
+  evidence cooldown cycle. Inconclusive undersized batches release quarantine
+  and continue auditing. Recovered clients can regain reference eligibility.
+- Reports honest quarantine, trap, and excluded active client-rounds separately
+  from permanent removal. Checkpoints include detector and local-loader RNG state.
+- MNIST priority plan: non-IID FR4 seeds 42/43/46 (v8 failures), other non-IID
+  cases, then IID. All ten runs use 100 clients, 40% attackers and 100 rounds.
+- Paired differential challenges remain experimental and are not implemented.
+  No outcome claim is made before the new experiments finish.
+
 ## v12 — Compact history reconstruction and cohort confirmation
 
 - Adds a 32-value linear sketch of sent models and returned updates. The server
