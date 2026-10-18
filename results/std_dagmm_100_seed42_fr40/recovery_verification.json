@@ -1,0 +1,17 @@
+{
+  "verified_at_utc": "2026-10-17T21:29:51.8968948Z",
+  "task_name": "Mitigating Free Rider - Resume Experiments",
+  "logon_type": "Password",
+  "enabled": true,
+  "startup_trigger": true,
+  "startup_delay": "PT1M",
+  "logon_trigger": true,
+  "watchdog_interval": "PT5M",
+  "multiple_instances": "IgnoreNew",
+  "execution_time_limit": "PT0S",
+  "credentials_changed": false,
+  "queue": "configs/std_dagmm_100_queue.json",
+  "recovery_tests_passed": 31,
+  "interruption_test": "Controlled tiny-data mid-round interruption reproduced uninterrupted model tensors and update-matrix hashes after resume; not a physical reboot/power-cut test.",
+  "limits": "Windows must boot and the data volume must be available. Checkpoints protect completed rounds; unfinished work replays. Source/config changes block mixed resume."
+}

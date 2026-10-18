@@ -1,0 +1,286 @@
+\documentclass[conference]{IEEEtran}
+\usepackage{amsmath,amssymb,booktabs,array,algorithm,algpseudocode,microtype,graphicx,pgfplots,placeins}
+\usepackage[hidelinks]{hyperref}
+\pgfplotsset{compat=1.18}
+\usepgfplotslibrary{groupplots}
+\title{Lightweight Trap-Based Free-Rider Screening with Fresh-Certificate Memory in Federated Learning}
+\author{\IEEEauthorblockN{Aashnan Rahman}
+\IEEEauthorblockA{Department of Computer Science and Engineering\\
+Islamic University of Technology\\MSc Thesis}}
+\begin{document}
+\maketitle
+\begin{center}\small
+Paper v5: detector v15.4, created 15 October 2026.\\
+\ifpaperresults\input{generated/banner.tex}\else Blank results template: not an experimental finding\fi
+\end{center}
+
+\begin{abstract}
+Free-rider screening must distinguish fabricated updates from heterogeneous
+honest learning without relying on attacker identities or client-reported work.
+We describe a server-observable challenge protocol combining same-trap robust
+norm and tensor-profile measurements with fresh separation certificates.
+Overlapping low-norm cohorts cannot authorize removal through concentration
+alone. Statistical certificates persist across ambiguous cycles, but confirmation
+requires a fresh certificate of the same component on both traps. Two consecutive
+clean cycles clear memory; exact sendback has a separate consecutive-cycle path.
+This revision provides reproducible templates for sixteen CIFAR-10 executions:
+IID and Dirichlet non-IID partitions, FR1--FR4, 30\% and 40\% free riders, seed 42.
+Numerical results and curves are withheld until every execution completes and
+its logs validate. The protocol is an empirical geometric heuristic, not a
+calibrated false-positive bound or proof of training. A development seed cannot
+establish generalization to new partitions or adaptive adversaries.
+\end{abstract}
+\begin{IEEEkeywords}
+federated learning, free riders, robust statistics, challenge models, non-IID data
+\end{IEEEkeywords}
+
+\section{Introduction and Related Work}
+Federated learning aggregates locally computed contributions while retaining
+training data at clients. Model averaging is a foundational example of this
+approach~\cite{mcmahan2017communication}. Participants that consume the shared
+model without performing expected training create a free-rider problem.
+Constructed updates can be nonzero and history-dependent, making equality
+testing alone insufficient. Prior work studies fabricated contributions and
+defenses~\cite{lin2019freeriders,fraboni2021freerider}.
+
+Heterogeneous honest data complicates attribution: persistent low update norms
+can reflect legitimate learning rather than misconduct. Conversely, a fabricated
+response may be anomalous repeatedly without satisfying adjacent-cycle
+confirmation. We therefore distinguish nomination, fresh separation evidence,
+temporary review, and permanent removal. This revision describes v15.4, not
+the older v8 anchor/penalty method. Its contributions are a strict norm gate,
+component-specific certificate memory, bounded review independent of memory,
+and separate accounting of suspicion, removal, exclusion and utility. All
+scheduled outcomes must be reported, not only successful attacks or seeds.
+
+\section{Threat Model and Simulator Attacks}
+The simulator uses 100 attributable clients and full participation among clients
+not permanently removed. The detector uses received/returned states, public IDs
+and its own schedule. It does not consume attacker labels, attack type, private
+loss, sample count, telemetry or an expected removal count. The simulator knows
+attack configuration to fabricate responses; evaluation labels are appended
+after decisions. This API boundary does not imply that the whole simulation
+application is unaware of ground truth.
+
+Attackers receive no trap-status flag. Their evaluated implementations use only
+their own received-model histories and local randomness. This is not a
+cryptographic unpredictability claim against a seed-aware adversary. Collusion,
+deliberate evasion, partial/on-off training, identity changes, dropouts, secure
+aggregation and populations without an honest majority are outside the study.
+
+The four behaviors are simulator settings, not detection signatures:
+\begin{itemize}
+\item \textbf{FR1: current sendback.} Return the currently received model unchanged,
+not the previous-model playback described in the v8 paper.
+\item \textbf{FR2: bounded random update.} Add independent uniform noise in
+$[-10^{-3},10^{-3}]$ to each floating coordinate of the received model.
+\item \textbf{FR3: received-history averaging.} Return the mean of up to five
+received models including the current one. Traps enter the same history.
+\item \textbf{FR4: received-trajectory imitation.} Average up to five successive
+received-model differences and add Gaussian noise whose norm is 10\% of the
+predicted norm. Cold start uses Gaussian scale $10^{-4}$; implementation norm
+normalization has numerical floor $10^{-6}$.
+\end{itemize}
+The detector does not reconstruct these history windows. Different windows
+remain a required follow-up experiment rather than an established robustness
+claim.
+
+\section{Proposed Methodology}
+\subsection{Warm-Up and Challenge Coverage}
+Rounds 1--10 send the ordinary global model. Sendbacks are observed, but warm-up
+cannot remove clients. At each dense-cycle start, create two independent traps
+around that cycle's frozen global model. For floating state tensor $k$,
+\begin{equation}
+ \tau_{a,k}=w_k+\gamma\max(\operatorname{sd}(w_k),\epsilon_t)\xi_{a,k},
+ \quad\xi_{a,k}\sim\mathcal N(0,I),
+\end{equation}
+where $a\in\{A,B\}$, $\gamma=0.01$, $\epsilon_t=10^{-4}$. Traps A/B are
+independent, not complementary plus/minus perturbations.
+
+Ten shuffled groups give each client one response to each trap during rounds
+11--20. Later cycles form up to ten nonempty groups from monitored and ordinary
+pools separately, with proportional nearest rounding and half ties downward.
+Monitored clients receive alternating traps in all ten rounds; ordinary clients
+receive each trap once. A single response position per client per trap is
+selected before scores are observed. Extra responses cannot become additional
+confirmation strikes in the cycle. Fresh traps and grouping are used each cycle.
+
+Only bounded-review clients automatically receive dense monitoring. A weak C
+label does not impose indefinite probing or quarantine. When review/probation
+are empty, an all-client single-trap audit occurs every ten rounds. It can
+initiate bounded follow-up, but cannot confirm removal or clear certificate
+memory.
+
+\subsection{Same-Trap Norm and Tensor Profile}
+Define $\Delta_i=w_i^{\rm ret}-w_i^{\rm send}$ and $r_i=\|\Delta_i\|_2$ over
+floating tensors. Profile coordinate
+$p_{i,k}=\|\Delta_{i,k}\|_2/\sum_j\|\Delta_{i,j}\|_2$ describes tensor-wise
+norm allocation. A denominator below $10^{-6}$ yields a zero profile; that
+convention is not the exact-sendback criterion.
+
+Each selected response is compared with all other available active responses
+to the same trap, without trusted-R or ground-truth filtering. For peer norm
+median $m_i$ and MAD $d_i$,
+\begin{equation}
+ z_i^n=\frac{r_i-m_i}{d_i/\Phi^{-1}(0.75)}.
+\end{equation}
+Zero MAD produces an undefined score, not an arbitrary MAD floor. Normal
+consistency is not a Gaussian-update assumption. Profile distance is Euclidean
+distance from the peer coordinate-wise median profile. Its robust score uses
+peer distances about that same reference. Cosine is not collected or used.
+
+\subsection{Nomination Is Not Removal Evidence}
+Existing diagnostic screening uses $D_i=z_i^p-z_i^n$, its A/B values and their
+average. Each view uses $\lceil\sqrt N\rceil$ histogram bins, an Otsu
+between-class-variance boundary, and 1,000 whole-client bootstrap resamples with
+a fixed reproducibility seed. All three values above the upper 99\%
+boundary-stability bands nominate suspicion; all below the lower bands are
+unflagged, otherwise C. An unsupported majority split falls back to norm signs
+about same-trap medians. These nominations cannot alone remove clients. The
+99\% band is not a 1\% false-removal guarantee.
+
+\subsection{Fresh Component Certificates}
+Let $C$ be the nominated cohort and $P$ its complement for one trap. Require
+$\lceil N/\lceil\sqrt N\rceil\rceil\leq |C|<|P|$. With cohort spread
+$I_C=Q_{.75}(C)-Q_{.25}(C)$, the strict low-norm gate requires
+\begin{align}
+ Q_{.25}(P)-Q_{.75}(C)&>I_C,\\
+ \min(P)-Q_{.75}(C)&>I_C.
+\end{align}
+An individual must also lie below the peer median. Concentration alone cannot
+authorize norm removal. This separates a robust core, not necessarily every
+member: the upper quartile is not the cohort maximum.
+
+High raw profile distances retain the v15.1 gate. Let $I_P$ be peer IQR and
+$g=Q_{.25}(C)-Q_{.75}(P)$. Require $g>I_C$, $g>0$, and either
+\begin{equation}
+ Q_{.25}(C)-\max(P)>I_C
+ \quad\text{or}\quad
+ \frac{I_C}{|C|-1}<\frac{I_P}{|P|-1}.
+\end{equation}
+The individual must exceed the peer median. The same component must certify
+on both selected traps. Invalid/missing measurements cannot certify. Diagonal
+scores remain diagnostic because they already contain norm evidence.
+
+\subsection{Memory, Clearance and Exact Sendback}
+Retain $M_{i,j}$ separately for norm and profile components. A fresh full A/B
+certificate increments its own count once per distinct completed cycle.
+Ambiguous C cycles pause without incrementing or erasing counts. Two consecutive
+complete R cycles clear them. Statistical removal requires a fresh current
+certificate with $M_{i,j}\geq2$. Components never combine and duplicate/older
+cycles are rejected. There is no round-30/60 switch, removal quota or arbitrary
+certificate age limit. Long retention nevertheless risks accumulating
+correlated false evidence.
+
+Exact current zero delta ($r_i=0$), or a fingerprint match to the immediately
+previous model sent to that client, is a separate sendback observation. Sendback
+on both selected traps in consecutive complete cycles can remove. Near-zero
+norms alone are not exact equality, and warm-up cannot bypass this requirement.
+
+\begin{algorithm}[t]
+\caption{Component-specific fresh-certificate confirmation}
+\begin{algorithmic}[1]
+\Require complete A/B measurements and a distinct cycle
+\State compute unchanged v15.3 nominations and strict certificates
+\ForAll{active clients $i$}
+ \If{fresh statistical certificate for component $j$}
+  \State $M_{i,j}\gets M_{i,j}+1$; interrupt clean streak
+  \If{$M_{i,j}\geq2$} \State remove $i$ \EndIf
+ \ElsIf{complete R cycle}
+  \State advance consecutive clean-cycle streak
+  \If{two clean cycles} \State clear all $M_{i,j}$ \EndIf
+ \Else \State retain counts; interrupt clean streak
+ \EndIf
+ \State apply separate consecutive-cycle exact-sendback rule
+\EndFor
+\State release unconfirmed quarantine when bounded review expires
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Aggregation and Recovery}
+Trap responses never aggregate. Certified S starts a two-cycle bounded review;
+fresh strong evidence can renew it, but stored memory and weak C evidence cannot.
+Expired unconfirmed quarantine is released. Two clean cycles rehabilitate,
+followed by one extra clean probation cycle. Weak candidates can aggregate on
+ordinary rounds. New quarantine/removal also excludes the decision-round update.
+Eligible deltas are averaged equally, not weighted by private sample counts.
+An empty eligible set leaves the global model unchanged.
+
+Independent streams seed partitioning, attacker selection, initialization,
+training, grouping, traps and attack randomness. Checkpoints retain RNG/loaders,
+attacker histories, selected probes, review state and memory. Resume rejects
+changed protocol/source hashes. Recovery does not create detector evidence.
+
+\section{Experimental Design}
+The intended grid is CIFAR-10, IID/non-IID, FR1--FR4, 30\%/40\% free riders:
+sixteen 100-round executions with master seed 42. IID uses shuffled equal-size
+partitions. Non-IID uses class-wise Dirichlet allocation with $\alpha=0.5$,
+retrying to obtain nonempty client datasets. Honest clients use three local SGD
+epochs, batch size 32, learning rate 0.01 and momentum 0.9. Images use fixed
+channel normalization without augmentation. The CNN has three convolution/
+BatchNorm blocks (32, 64, 128 channels), pooling, a 256-unit FC layer and ten logits.
+
+Evaluation reports TP/FP/FN for permanent removal, precision, recall, F1 and
+honest false-removal rate. Precision is undefined when nobody is removed.
+Complete-detection round $t_{\rm all}$ exists only if all free riders are removed;
+otherwise report NR, not the last observed removal. Utility, final honest
+candidates, unique honest clients quarantined, quarantine client-rounds and
+whole-process resources are separate. Reused identities are client-cases, not
+independent statistical samples. A single seed does not support sample-SD or
+cross-seed confidence intervals.
+
+The reporting pipeline requires all sixteen completion markers, 100 rounds per
+run, unique labelled removals, fixed evaluation truth, complete initial A/B
+coverage, consistent active-client logs and confusion/exclusion summaries, and
+matching frozen detector provenance. It neither resumes training nor selects
+favorable runs. Incomplete data stay blank; completed detection failures remain.
+Earlier MNIST/v8/v15.3 outcomes are not substituted.
+
+\section{Results Templates}
+\ifpaperresults
+\input{generated/summary.tex}
+\input{generated/tables.tex}
+\input{generated/figures.tex}
+\else
+\textit{Results pending. No quantitative findings are asserted in this permanent
+blank template.}
+\input{templates/blank_tables.tex}
+\input{templates/blank_figures.tex}
+\fi
+\FloatBarrier
+
+\section{Cost and Limitations}
+Detector features retain $O(NL)$ norm/profile summaries and a few counters per
+client, plus two trap models. This is not total simulator memory: training,
+aggregation and simulated FR3/FR4 histories retain additional state. Extraction
+reads model coordinates; existing leave-one-out peer comparisons are roughly
+quadratic in client count, and bootstrap scratch space is $O(BN)$ for $B=1000$.
+
+Whole-process RSS and round duration cannot isolate detector overhead. A
+dedicated detector-only benchmark, communication accounting and matched
+no-detector controls remain required. ``Lightweight'' denotes compact
+statistics without auxiliary detector training, not a deployment-scale bound.
+
+The policy was developed using earlier seed-42 failures. Changing prevalence
+to 30\% is not held-out-seed validation. Neither zero observed honest removals
+nor a stable bootstrap split guarantees future error rates. Honest clients can
+pass certificates, including the retained profile-density gate. Certificates
+share client data and trajectories and are not statistically independent.
+Minimum cohort support can miss isolated free riders; long-lived evidence can
+eventually remove honest clients unless clearance occurs.
+
+Required follow-up includes new seeds, honest-only controls, longer horizons,
+different history/noise parameters, mixed/adaptive attacks, partial participation
+and other architectures. Matched ablations must distinguish nomination,
+certificate and memory effects. False candidate flags and temporary exclusions
+must remain visible even when permanent-removal precision is high.
+
+\section{Conclusion}
+This revision specifies a strict attack-label-blind gate and component-specific
+memory for intermittent fresh evidence. It supplies blank reproducible templates
+rather than predicting a desired detection count. Populated findings describe
+only the completed grid and require review alongside temporary honest exclusions
+and single-seed limitations.
+\bibliographystyle{IEEEtran}
+\bibliography{refs}
+\end{document}

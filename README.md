@@ -6,6 +6,130 @@ Trap Detection with Cumulative Penalty.
 For complete individual-run, four-attack scheduling, monitoring, timing, CUDA,
 checkpoint, and resume commands, see [`RUN_GUIDE.md`](RUN_GUIDE.md).
 
+The rewritten full-study manuscript is
+[`paper_v6.pdf`](result_check/paper_version_staging/versions/v06_v15_4_full_study/paper_v6.pdf),
+with v2-style sections, all 32 completed v15.4 runs, separate result/security
+analysis, and per-run appendices. Rebuild with `build_paper_v6_full_study.py --compile`.
+
+## Current CIFAR-10 no-detection baselines (18 October 2026)
+
+`configs/fedavg_cifar10_baseline_seed42_fr30_fr40.json` schedules 16 sequential
+100-round cases: IID/non-IID, FR1--FR4, 30%/40%, seed 42, 100 clients, CPU/6
+threads and 3 local SGD epochs. No detection, traps, quarantine, filtering or
+removal executes: every returned response enters ordinary unweighted FedAvg.
+Non-IID runs go first. The existing startup/logon/five-minute recovery task
+prioritizes this queue when its `auto_resume` is enabled, preserving credentials.
+
+Watch with `.\.venv\Scripts\python.exe monitor.py --watch`. Outputs go to
+`results/fedavg_cifar10_baseline_seed42_fr30_fr40/`: all client/round metrics,
+phase timings, partition indices, source/config hashes, logs, final global model,
+and latest/previous recovery states. Full response tensors from every client and
+round are not archived. A batch STOP_REQUESTED marker blocks recovery. Live
+baseline outputs stay out of Git until completion; files remain stored locally.
+
+## Completed native STD-DAGMM timing queue (18 October 2026)
+
+`configs/std_dagmm_100_queue.json` completed two separate actual 100-round runs:
+MNIST, then CIFAR-10; non-IID, 100 clients, 40% FR3, seed 42, CPU/6 threads,
+3 local SGD epochs and 5 fresh detector epochs each round. All clients remain;
+flags do not cause removal. Ten-round samples and existing paper data are kept.
+
+The existing password-based startup/logon/five-minute Windows task dispatches
+this queue while `auto_resume` is true. Credentials/triggers are unchanged.
+Recovery resumes the last completed checkpoint, replays an unfinished round,
+uses a previous-checkpoint fallback, and prevents duplicate parent/worker runs.
+Windows must actually boot and the data volume must be available; the task cannot
+turn a powered-off PC on. Source/config changes intentionally block mixed resume.
+
+```powershell
+.\.venv\Scripts\python.exe monitor.py --watch
+# Or select this queue explicitly:
+.\.venv\Scripts\python.exe monitor.py --status results/std_dagmm_100_seed42_fr40/experiment_status.json --watch
+```
+
+Results, full timing segments, energy flags and per-run logs go into
+`results/std_dagmm_100_seed42_fr40/`. On completion, the queue validates both runs
+and writes `actual_100_round_comparison.csv`. A batch `STOP_REQUESTED` file blocks
+automatic restart; disabling `auto_resume` returns the task to its legacy queue.
+These remain paper-guided reproductions with an explicit fitting budget, not
+verified author-code implementations. CIFAR memory pressure/paging is a caveat.
+The full measured outcomes are in `analysis/std_dagmm_100_round_summary/` and
+now replace the earlier projections in the timing report and manuscript.
+
+## V15.4 completed study recovery
+
+The current persistent recovery queue is
+[`configs/scheduled_experiment_queue.json`](configs/scheduled_experiment_queue.json):
+finish CIFAR-10 30%, then MNIST 40%, then MNIST 30%, all v15.4/seed 42.
+Each MNIST batch contains eight 100-round cases, non-IID FR3/FR4/FR2/FR1 before
+IID FR4/FR3/FR2/FR1. The existing password-based startup/watchdog task reads this
+queue without re-registering its account or credentials. Completed batches are
+skipped; a stopped/failed prerequisite blocks later batches. Use `-Queue ""` on
+the recovery launcher to run a single plan without its queued successors.
+
+The opt-in `swtcp_v15_4` preserves the v15.3 certificate gate and counts fresh
+two-trap norm/profile certificates across ambiguous cycles. The same component
+must certify twice; two consecutive clean cycles clear its memory. Stored
+evidence alone cannot renew quarantine. Exact sendback remains consecutive,
+and no attack-specific threshold or removal quota is used. This is empirical
+screening, not a guarantee of zero misses or false removals.
+
+Run all eight CIFAR-10 seed-42 cases (40% free riders, 100 rounds), non-IID first,
+with `configs/v15_4_cifar10_seed42_fr40_plan.json`. Completed v15.3 runs remain
+preserved; its unfinished run/queue was discarded during the 2026-10-15 cleanup
+and is blocked from automatic restart by its STOP_REQUESTED marker.
+
+Historical incomplete-run cleanup is recorded in
+[`result_check/cleanup_2026_10_15.json`](result_check/cleanup_2026_10_15.json).
+Completed evidence, previous paper versions, and the active 30% CIFAR-10 batch
+are preserved. Removed partial runs are locally recoverable under the ignored
+`.local_cleanup/2026-10-15/` directory. Caches, recovery checkpoints, live monitor
+files, paper compilation scratch, and the active batch are excluded from Git;
+the active batch should be explicitly added after successful completion.
+Install/reinstall recovery using:
+
+```powershell
+.\install_resume_task.ps1 -Plan configs\v15_4_cifar10_seed42_fr40_plan.json
+```
+
+Recovery runs at logon and every five minutes while logged on, skips completed
+runs, resumes the latest published checkpoint and prevents duplicate runners.
+It honours intentional stop markers. Start the task immediately with
+`Start-ScheduledTask -TaskName "Mitigating Free Rider - Resume Experiments"`.
+
+For recovery before Windows login, open PowerShell as Administrator, run the
+following locally, and enter your Windows account password only into its secure
+credential prompt (not chat):
+
+```powershell
+.\install_startup_resume_task.ps1 -Plan configs\v15_4_cifar10_seed42_fr40_plan.json
+```
+
+This verifies password-based unattended recovery one minute after startup,
+at logon, and every five minutes. A successful setup verifies the saved task
+settings; it does not reboot the PC or interrupt a running experiment.
+Later calls to `install_resume_task.ps1` preserve an existing unattended account
+and its Windows-managed credentials instead of changing it to interactive mode.
+The PC must be awake and the project drive available; powered-off/sleeping PCs
+cannot execute training. Interactive-only mode still requires a logged-in user.
+
+## V15.3 strict norm experiment
+
+The opt-in `swtcp_v15_3` backend removes concentration-only norm certificates:
+the measured gap to the full peer population must exceed the cohort's own IQR
+on both traps in consecutive cycles. Overlapping low-norm groups remain
+candidates; diagonal scores cannot authorize removal. Profile certificates,
+exact-sendback confirmation, bounded review and training settings retain v15.1
+behavior. This applies in every cycle, not just after round 30, and can reduce
+recall; it provides no guaranteed false-positive bound.
+
+The seed-42 MNIST IID/non-IID FR1-FR4 plan is
+`configs/v15_3_mnist_seed42_fr40_plan.json` (40% free riders, 100 rounds).
+`queued_experiments.ps1` waits for the entire v15.1 seed-42 batch to complete
+before launching it and resumes the prerequisite first after an interruption.
+Previous result directories and source-hashed v15.1 engine files are preserved.
+See `guidelines.md` for the full policy and its known detection trade-off.
+
 ## Run
 
 ```powershell

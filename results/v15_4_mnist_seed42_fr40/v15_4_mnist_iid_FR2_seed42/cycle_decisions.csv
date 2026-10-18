@@ -1,0 +1,201 @@
+round,client_id,D_A,D_B,D_average,state,reason,provisional,enforced,screen_state,strong_channels,evidence_strength,diagnostic_certified_channels,category_after,strong_cycles,clean_cycles,reference_eligible,removed,quarantined,review_cycles_remaining,fresh_certificate_counts,certificate_clean_cycles,confirmed_statistical_components,cycle,is_free_rider
+20,0,-0.11197958203971017,-0.25197077782433674,-0.18197517993202345,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},1,,0,0
+20,1,10.796150436019978,8.679829598422334,9.737990017221156,S,certified_norm_low_and_profile_high,0,1,S,"norm_low,profile_high",strong,"norm_low,profile_high,diagonal_high",S,1,0,0,0,1,2,"{""norm_low"": 1, ""profile_high"": 1}",0,,0,1
+20,2,10.801948115027011,8.538131350961194,9.670039732994102,S,certified_norm_low_and_profile_high,0,1,S,"norm_low,profile_high",strong,"norm_low,profile_high,diagonal_high",S,1,0,0,0,1,2,"{""norm_low"": 1, ""profile_high"": 1}",0,,0,1
+20,3,0.05352049164587369,-0.15627546655080343,-0.05137748745246487,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},1,,0,0
+20,4,10.946775348214727,8.611332017721503,9.779053682968115,S,certified_norm_low_and_profile_high,0,1,S,"norm_low,profile_high",strong,"norm_low,profile_high,diagonal_high",S,1,0,0,0,1,2,"{""norm_low"": 1, ""profile_high"": 1}",0,,0,1
+20,5,10.88568512664037,8.603395167424004,9.744540147032186,S,certified_norm_low_and_profile_high,0,1,S,"norm_low,profile_high",strong,"norm_low,profile_high,diagonal_high",S,1,0,0,0,1,2,"{""norm_low"": 1, ""profile_high"": 1}",0,,0,1
+20,6,10.7941729300913,8.581880982035308,9.688026956063304,S,certified_norm_low_and_profile_high,0,1,S,"norm_low,profile_high",strong,"norm_low,profile_high,diagonal_high",S,1,0,0,0,1,2,"{""norm_low"": 1, ""profile_high"": 1}",0,,0,1
+20,7,10.754951125550427,8.614555414756554,9.68475327015349,S,certified_norm_low_and_profile_high,0,1,S,"norm_low,profile_high",strong,"norm_low,profile_high,diagonal_high",S,1,0,0,0,1,2,"{""norm_low"": 1, ""profile_high"": 1}",0,,0,1
+20,8,0.9357392516319595,1.036848268234607,0.9862937599332833,C,weak_screening_no_removal,0,1,C,,weak,,C,0,0,0,0,0,0,{},0,,0,0
+20,9,10.746728946778713,8.553720561665642,9.650224754222178,S,certified_norm_low_and_profile_high,0,1,S,"norm_low,profile_high",strong,"norm_low,profile_high,diagonal_high",S,1,0,0,0,1,2,"{""norm_low"": 1, ""profile_high"": 1}",0,,0,1
+20,10,-0.7939483886950105,-0.9936101683718446,-0.8937792785334275,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},1,,0,0
+20,11,10.887288646631387,8.62131564642558,9.754302146528484,S,certified_norm_low_and_profile_high,0,1,S,"norm_low,profile_high",strong,"norm_low,profile_high,diagonal_high",S,1,0,0,0,1,2,"{""norm_low"": 1, ""profile_high"": 1}",0,,0,1
+20,12,-1.3494416095935617,-1.5819617631038607,-1.4657016863487113,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},1,,0,0
+20,13,-0.7416895750982995,-0.627982151396995,-0.6848358632476472,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},1,,0,0
+20,14,10.835367312946225,8.633887189582794,9.73462725126451,S,certified_norm_low_and_profile_high,0,1,S,"norm_low,profile_high",strong,"norm_low,profile_high,diagonal_high",S,1,0,0,0,1,2,"{""norm_low"": 1, ""profile_high"": 1}",0,,0,1
+20,15,-0.7748506579500524,-0.4881132431894047,-0.6314819505697286,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},1,,0,0
+20,16,0.3177254450025697,0.11841427560934559,0.21806986030595765,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},1,,0,0
+20,17,-0.8309654270679568,-0.35312921562526767,-0.5920473213466122,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},1,,0,0
+20,18,10.779487274625824,8.542212026208048,9.660849650416935,S,certified_norm_low_and_profile_high,0,1,S,"norm_low,profile_high",strong,"norm_low,profile_high,diagonal_high",S,1,0,0,0,1,2,"{""norm_low"": 1, ""profile_high"": 1}",0,,0,1
+20,19,10.780972472858407,8.630404945701383,9.705688709279894,S,certified_norm_low_and_profile_high,0,1,S,"norm_low,profile_high",strong,"norm_low,profile_high,diagonal_high",S,1,0,0,0,1,2,"{""norm_low"": 1, ""profile_high"": 1}",0,,0,1
+20,20,10.806884026930998,8.551295963010086,9.679089994970543,S,certified_norm_low_and_profile_high,0,1,S,"norm_low,profile_high",strong,"norm_low,profile_high,diagonal_high",S,1,0,0,0,1,2,"{""norm_low"": 1, ""profile_high"": 1}",0,,0,1
+20,21,-1.255421522458117,-1.2075529522047825,-1.2314872373314496,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},1,,0,0
+20,22,10.748013549700811,8.637699827201043,9.692856688450927,S,certified_norm_low_and_profile_high,0,1,S,"norm_low,profile_high",strong,"norm_low,profile_high,diagonal_high",S,1,0,0,0,1,2,"{""norm_low"": 1, ""profile_high"": 1}",0,,0,1
+20,23,-1.3233507759881382,-0.9190811298481043,-1.1212159529181212,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},1,,0,0
+20,24,-1.3010391227477056,-1.2953596149347386,-1.2981993688412221,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},1,,0,0
+20,25,0.34505803610734054,0.47717108589444684,0.4111145610008937,C,weak_screening_no_removal,0,1,C,,weak,,C,0,0,0,0,0,0,{},0,,0,0
+20,26,-0.9939689779548746,-1.131135460645838,-1.0625522193003563,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},1,,0,0
+20,27,-1.1575622460856159,-0.9666462069552226,-1.0621042265204192,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},1,,0,0
+20,28,-1.44579462376909,-1.6054555144604965,-1.5256250691147932,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},1,,0,0
+20,29,10.733790007002064,8.663173131862251,9.698481569432158,S,certified_norm_low_and_profile_high,0,1,S,"norm_low,profile_high",strong,"norm_low,profile_high,diagonal_high",S,1,0,0,0,1,2,"{""norm_low"": 1, ""profile_high"": 1}",0,,0,1
+20,30,-1.250228314235645,-0.7440950444900879,-0.9971616793628664,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},1,,0,0
+20,31,-0.6363268123171887,-0.2331984661605204,-0.43476263923885455,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},1,,0,0
+20,32,10.673285797309397,8.620828819037424,9.64705730817341,S,certified_norm_low_and_profile_high,0,1,S,"norm_low,profile_high",strong,"norm_low,profile_high,diagonal_high",S,1,0,0,0,1,2,"{""norm_low"": 1, ""profile_high"": 1}",0,,0,1
+20,33,-1.419695270550021,-1.4074628298623062,-1.4135790502061636,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},1,,0,0
+20,34,0.02849546144427101,-0.3875886182493819,-0.17954657840255545,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},1,,0,0
+20,35,10.888569100351976,8.575926304136399,9.732247702244187,S,certified_norm_low_and_profile_high,0,1,S,"norm_low,profile_high",strong,"norm_low,profile_high,diagonal_high",S,1,0,0,0,1,2,"{""norm_low"": 1, ""profile_high"": 1}",0,,0,1
+20,36,-0.2794795384967361,0.1985573582091077,-0.040461090143814216,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},1,,0,0
+20,37,-0.7299518798150552,-0.7853526690168963,-0.7576522744159757,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},1,,0,0
+20,38,10.785691784218072,8.610066625761418,9.697879204989745,S,certified_norm_low_and_profile_high,0,1,S,"norm_low,profile_high",strong,"norm_low,profile_high,diagonal_high",S,1,0,0,0,1,2,"{""norm_low"": 1, ""profile_high"": 1}",0,,0,1
+20,39,10.78940001670733,8.512892638381935,9.651146327544632,S,certified_norm_low_and_profile_high,0,1,S,"norm_low,profile_high",strong,"norm_low,profile_high,diagonal_high",S,1,0,0,0,1,2,"{""norm_low"": 1, ""profile_high"": 1}",0,,0,1
+20,40,-1.0608071242007626,-0.8231163922805945,-0.9419617582406785,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},1,,0,0
+20,41,-0.9364552500922785,-0.4362100132348321,-0.6863326316635553,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},1,,0,0
+20,42,-0.48975198137279263,-0.23726047624004243,-0.36350622880641753,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},1,,0,0
+20,43,10.817671486576007,8.626510576566758,9.722091031571383,S,certified_norm_low_and_profile_high,0,1,S,"norm_low,profile_high",strong,"norm_low,profile_high,diagonal_high",S,1,0,0,0,1,2,"{""norm_low"": 1, ""profile_high"": 1}",0,,0,1
+20,44,-0.4283980329353577,-0.7911597579067846,-0.6097788954210712,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},1,,0,0
+20,45,-0.5396450286277327,-0.47369740279682127,-0.506671215712277,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},1,,0,0
+20,46,10.78841963961234,8.52874452784286,9.6585820837276,S,certified_norm_low_and_profile_high,0,1,S,"norm_low,profile_high",strong,"norm_low,profile_high,diagonal_high",S,1,0,0,0,1,2,"{""norm_low"": 1, ""profile_high"": 1}",0,,0,1
+20,47,-0.9010227811365286,-0.9783382116449225,-0.9396804963907255,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},1,,0,0
+20,48,-0.6784079138670119,-0.3014728175999027,-0.48994036573345734,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},1,,0,0
+20,49,10.750457798853283,8.543724489084054,9.64709114396867,S,certified_norm_low_and_profile_high,0,1,S,"norm_low,profile_high",strong,"norm_low,profile_high,diagonal_high",S,1,0,0,0,1,2,"{""norm_low"": 1, ""profile_high"": 1}",0,,0,1
+20,50,10.872338656349662,8.598556371265381,9.735447513807522,S,certified_norm_low_and_profile_high,0,1,S,"norm_low,profile_high",strong,"norm_low,profile_high,diagonal_high",S,1,0,0,0,1,2,"{""norm_low"": 1, ""profile_high"": 1}",0,,0,1
+20,51,-0.7128634525921174,-0.7470879352619215,-0.7299756939270194,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},1,,0,0
+20,52,-1.2443586521383287,-1.1495874986184687,-1.1969730753783987,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},1,,0,0
+20,53,0.4721580882804808,0.37407134087632843,0.4231147145784046,C,weak_screening_no_removal,0,1,C,,weak,,C,0,0,0,0,0,0,{},0,,0,0
+20,54,10.902098816122813,8.63386262182641,9.767980718974611,S,certified_norm_low_and_profile_high,0,1,S,"norm_low,profile_high",strong,"norm_low,profile_high,diagonal_high",S,1,0,0,0,1,2,"{""norm_low"": 1, ""profile_high"": 1}",0,,0,1
+20,55,10.706293226638513,8.612736890646145,9.659515058642329,S,certified_norm_low_and_profile_high,0,1,S,"norm_low,profile_high",strong,"norm_low,profile_high,diagonal_high",S,1,0,0,0,1,2,"{""norm_low"": 1, ""profile_high"": 1}",0,,0,1
+20,56,-0.7663615417394269,-0.7906885838840197,-0.7785250628117233,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},1,,0,0
+20,57,10.807395732634237,8.629677034105057,9.718536383369647,S,certified_norm_low_and_profile_high,0,1,S,"norm_low,profile_high",strong,"norm_low,profile_high,diagonal_high",S,1,0,0,0,1,2,"{""norm_low"": 1, ""profile_high"": 1}",0,,0,1
+20,58,-0.9493732433891557,0.1569720688410328,-0.3962005872740615,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},1,,0,0
+20,59,-1.0675179228600258,-0.9539798847931643,-1.010748903826595,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},1,,0,0
+20,60,10.85547208153583,8.663279278061996,9.759375679798913,S,certified_norm_low_and_profile_high,0,1,S,"norm_low,profile_high",strong,"norm_low,profile_high,diagonal_high",S,1,0,0,0,1,2,"{""norm_low"": 1, ""profile_high"": 1}",0,,0,1
+20,61,-0.3951248767873299,-0.33805230694979227,-0.3665885918685611,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},1,,0,0
+20,62,-1.009841463138973,-0.8080141740323395,-0.9089278185856562,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},1,,0,0
+20,63,-0.882166809635144,-0.9924160391866317,-0.9372914244108879,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},1,,0,0
+20,64,-1.3586492524806604,-1.583694798072525,-1.4711720252765925,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},1,,0,0
+20,65,10.872362639787168,8.60727200866542,9.739817324226294,S,certified_norm_low_and_profile_high,0,1,S,"norm_low,profile_high",strong,"norm_low,profile_high,diagonal_high",S,1,0,0,0,1,2,"{""norm_low"": 1, ""profile_high"": 1}",0,,0,1
+20,66,-0.09479511430421825,-0.07997661134510138,-0.08738586282465982,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},1,,0,0
+20,67,-0.3982292571674114,-1.0382446190600876,-0.7182369381137494,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},1,,0,0
+20,68,-1.1087843419694714,-1.3378158199322607,-1.223300080950866,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},1,,0,0
+20,69,10.834257744418696,8.557444253045615,9.695850998732155,S,certified_norm_low_and_profile_high,0,1,S,"norm_low,profile_high",strong,"norm_low,profile_high,diagonal_high",S,1,0,0,0,1,2,"{""norm_low"": 1, ""profile_high"": 1}",0,,0,1
+20,70,10.79613367156052,8.659729169948026,9.727931420754274,S,certified_norm_low_and_profile_high,0,1,S,"norm_low,profile_high",strong,"norm_low,profile_high,diagonal_high",S,1,0,0,0,1,2,"{""norm_low"": 1, ""profile_high"": 1}",0,,0,1
+20,71,-0.5707851111128873,0.27788912828608464,-0.14644799141340134,C,weak_screening_no_removal,0,1,C,,weak,,C,0,0,0,0,0,0,{},0,,0,0
+20,72,-1.1347808804194033,-0.7579719055226648,-0.946376392971034,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},1,,0,0
+20,73,10.814922050183775,8.684365117917066,9.749643584050421,S,certified_norm_low_and_profile_high,0,1,S,"norm_low,profile_high",strong,"norm_low,profile_high,diagonal_high",S,1,0,0,0,1,2,"{""norm_low"": 1, ""profile_high"": 1}",0,,0,1
+20,74,-0.5646632845956487,-0.1902166478676818,-0.37743996623166526,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},1,,0,0
+20,75,-0.47683287848928096,-0.2626852829317807,-0.3697590807105308,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},1,,0,0
+20,76,10.94900681691838,8.560586561361754,9.754796689140068,S,certified_norm_low_and_profile_high,0,1,S,"norm_low,profile_high",strong,"norm_low,profile_high,diagonal_high",S,1,0,0,0,1,2,"{""norm_low"": 1, ""profile_high"": 1}",0,,0,1
+20,77,-0.8843894446077721,-0.5760674098465293,-0.7302284272271506,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},1,,0,0
+20,78,10.842200891023946,8.575425035081317,9.708812963052631,S,certified_norm_low_and_profile_high,0,1,S,"norm_low,profile_high",strong,"norm_low,profile_high,diagonal_high",S,1,0,0,0,1,2,"{""norm_low"": 1, ""profile_high"": 1}",0,,0,1
+20,79,0.36377215141534697,-0.4118081130925646,-0.024017980838608816,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},1,,0,0
+20,80,10.71994913321064,8.632188343661555,9.676068738436097,S,certified_norm_low_and_profile_high,0,1,S,"norm_low,profile_high",strong,"norm_low,profile_high,diagonal_high",S,1,0,0,0,1,2,"{""norm_low"": 1, ""profile_high"": 1}",0,,0,1
+20,81,-0.32675169815059657,-0.2695881299763642,-0.29816991406348037,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},1,,0,0
+20,82,-0.2748989946164164,-0.550822400857048,-0.41286069773673223,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},1,,0,0
+20,83,-0.5342399334916932,-0.34080388439465076,-0.437521908943172,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},1,,0,0
+20,84,-0.8580019842643966,-0.5782599842086553,-0.718130984236526,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},1,,0,0
+20,85,10.750177960144997,8.644970652847439,9.697574306496218,S,certified_norm_low_and_profile_high,0,1,S,"norm_low,profile_high",strong,"norm_low,profile_high,diagonal_high",S,1,0,0,0,1,2,"{""norm_low"": 1, ""profile_high"": 1}",0,,0,1
+20,86,10.853643500811417,8.609245540407018,9.731444520609218,S,certified_norm_low_and_profile_high,0,1,S,"norm_low,profile_high",strong,"norm_low,profile_high,diagonal_high",S,1,0,0,0,1,2,"{""norm_low"": 1, ""profile_high"": 1}",0,,0,1
+20,87,-1.0079355312921283,-0.8052355912789666,-0.9065855612855475,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},1,,0,0
+20,88,-0.3033057660930858,-0.02807546874795948,-0.16569061742052263,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},1,,0,0
+20,89,-1.618790874058929,-1.9114115929674576,-1.7651012335131933,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},1,,0,0
+20,90,10.813797932058645,8.631928196946614,9.72286306450263,S,certified_norm_low_and_profile_high,0,1,S,"norm_low,profile_high",strong,"norm_low,profile_high,diagonal_high",S,1,0,0,0,1,2,"{""norm_low"": 1, ""profile_high"": 1}",0,,0,1
+20,91,10.821117820067492,8.608829609704273,9.714973714885883,S,certified_norm_low_and_profile_high,0,1,S,"norm_low,profile_high",strong,"norm_low,profile_high,diagonal_high",S,1,0,0,0,1,2,"{""norm_low"": 1, ""profile_high"": 1}",0,,0,1
+20,92,-0.9006054371090958,-1.120413974476373,-1.0105097057927344,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},1,,0,0
+20,93,-0.7959422861356327,-0.0722761363698485,-0.4341092112527406,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},1,,0,0
+20,94,0.16052230941418064,-0.6556556538110625,-0.24756667219844092,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},1,,0,0
+20,95,-1.4539503459956868,-1.1037558415252295,-1.2788530937604583,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},1,,0,0
+20,96,10.722295376123881,8.63931353176873,9.680804453946305,S,certified_norm_low_and_profile_high,0,1,S,"norm_low,profile_high",strong,"norm_low,profile_high,diagonal_high",S,1,0,0,0,1,2,"{""norm_low"": 1, ""profile_high"": 1}",0,,0,1
+20,97,-1.3413308076980384,-1.079630958741126,-1.2104808832195821,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},1,,0,0
+20,98,10.8265815080499,8.596304211285243,9.71144285966757,S,certified_norm_low_and_profile_high,0,1,S,"norm_low,profile_high",strong,"norm_low,profile_high,diagonal_high",S,1,0,0,0,1,2,"{""norm_low"": 1, ""profile_high"": 1}",0,,0,1
+20,99,10.793938230387052,8.64124829637321,9.717593263380131,S,certified_norm_low_and_profile_high,0,1,S,"norm_low,profile_high",strong,"norm_low,profile_high,diagonal_high",S,1,0,0,0,1,2,"{""norm_low"": 1, ""profile_high"": 1}",0,,0,1
+30,0,-0.5418050488590952,-1.0566454423721,-0.7992252456155975,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},2,,1,0
+30,1,8.274716028451632,8.352212052267378,8.313464040359506,S,certified_norm_low_and_profile_high,0,1,S,"norm_low,profile_high",strong,"norm_low,profile_high,diagonal_high",X,2,0,0,1,0,0,"{""norm_low"": 2, ""profile_high"": 2}",0,"norm_low,profile_high",1,1
+30,2,8.362444549574342,8.2730677070681,8.317756128321221,S,certified_norm_low_and_profile_high,0,1,S,"norm_low,profile_high",strong,"norm_low,profile_high,diagonal_high",X,2,0,0,1,0,0,"{""norm_low"": 2, ""profile_high"": 2}",0,"norm_low,profile_high",1,1
+30,3,-0.49756267499167617,-0.13969902338545037,-0.31863084918856327,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},2,,1,0
+30,4,8.299082134330177,8.390898906795634,8.344990520562906,S,certified_norm_low_and_profile_high,0,1,S,"norm_low,profile_high",strong,"norm_low,profile_high,diagonal_high",X,2,0,0,1,0,0,"{""norm_low"": 2, ""profile_high"": 2}",0,"norm_low,profile_high",1,1
+30,5,8.294520883122676,8.407511960979676,8.351016422051176,S,certified_norm_low_and_profile_high,0,1,S,"norm_low,profile_high",strong,"norm_low,profile_high,diagonal_high",X,2,0,0,1,0,0,"{""norm_low"": 2, ""profile_high"": 2}",0,"norm_low,profile_high",1,1
+30,6,8.331266411046395,8.33231076581332,8.331788588429857,S,certified_norm_low_and_profile_high,0,1,S,"norm_low,profile_high",strong,"norm_low,profile_high,diagonal_high",X,2,0,0,1,0,0,"{""norm_low"": 2, ""profile_high"": 2}",0,"norm_low,profile_high",1,1
+30,7,8.391449299424117,8.368413715687579,8.379931507555849,S,certified_norm_low_and_profile_high,0,1,S,"norm_low,profile_high",strong,"norm_low,profile_high,diagonal_high",X,2,0,0,1,0,0,"{""norm_low"": 2, ""profile_high"": 2}",0,"norm_low,profile_high",1,1
+30,8,2.1706582776428673,2.0041712561282736,2.0874147668855705,C,weak_screening_no_removal,0,1,C,,weak,,C,0,0,0,0,0,0,{},0,,1,0
+30,9,8.368998819457296,8.340853221054962,8.35492602025613,S,certified_norm_low_and_profile_high,0,1,S,"norm_low,profile_high",strong,"norm_low,profile_high,diagonal_high",X,2,0,0,1,0,0,"{""norm_low"": 2, ""profile_high"": 2}",0,"norm_low,profile_high",1,1
+30,10,-0.8903836182095437,-0.9754274972875319,-0.9329055577485378,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},2,,1,0
+30,11,8.326759436219083,8.440203026209252,8.383481231214168,S,certified_norm_low_and_profile_high,0,1,S,"norm_low,profile_high",strong,"norm_low,profile_high,diagonal_high",X,2,0,0,1,0,0,"{""norm_low"": 2, ""profile_high"": 2}",0,"norm_low,profile_high",1,1
+30,12,-1.1779049549783442,-1.3611111856511147,-1.2695080703147295,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},2,,1,0
+30,13,-0.4108087729614096,-0.3332653547116995,-0.37203706383655455,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},2,,1,0
+30,14,8.338041123296652,8.334119760348496,8.336080441822574,S,certified_norm_low_and_profile_high,0,1,S,"norm_low,profile_high",strong,"norm_low,profile_high,diagonal_high",X,2,0,0,1,0,0,"{""norm_low"": 2, ""profile_high"": 2}",0,"norm_low,profile_high",1,1
+30,15,-0.990166536867888,-0.6910737976692123,-0.8406201672685502,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},2,,1,0
+30,16,0.36056892723650347,1.103208424551034,0.7318886758937688,C,weak_screening_no_removal,0,1,C,,weak,,C,0,0,0,0,0,0,{},0,,1,0
+30,17,0.3423247229971044,-0.17259896453452556,0.08486287923128943,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},2,,1,0
+30,18,8.356207351439444,8.378484024205273,8.367345687822358,S,certified_norm_low_and_profile_high,0,1,S,"norm_low,profile_high",strong,"norm_low,profile_high,diagonal_high",X,2,0,0,1,0,0,"{""norm_low"": 2, ""profile_high"": 2}",0,"norm_low,profile_high",1,1
+30,19,8.310949818371114,8.381057095704058,8.346003457037586,S,certified_norm_low_and_profile_high,0,1,S,"norm_low,profile_high",strong,"norm_low,profile_high,diagonal_high",X,2,0,0,1,0,0,"{""norm_low"": 2, ""profile_high"": 2}",0,"norm_low,profile_high",1,1
+30,20,8.3644262101648,8.382707878399712,8.373567044282256,S,certified_norm_low_and_profile_high,0,1,S,"norm_low,profile_high",strong,"norm_low,profile_high,diagonal_high",X,2,0,0,1,0,0,"{""norm_low"": 2, ""profile_high"": 2}",0,"norm_low,profile_high",1,1
+30,21,-0.8109033401894448,-1.2978952063948928,-1.0543992732921688,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},2,,1,0
+30,22,8.31788573811873,8.321796335949825,8.319841037034276,S,certified_norm_low_and_profile_high,0,1,S,"norm_low,profile_high",strong,"norm_low,profile_high,diagonal_high",X,2,0,0,1,0,0,"{""norm_low"": 2, ""profile_high"": 2}",0,"norm_low,profile_high",1,1
+30,23,-1.2462722645285604,-1.1944603905120368,-1.2203663275202987,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},2,,1,0
+30,24,-1.2555701250079951,-0.9319685923335199,-1.0937693586707575,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},2,,1,0
+30,25,0.8363123477985548,0.12224605476280265,0.4792792012806787,C,weak_screening_no_removal,0,1,C,,weak,,C,0,0,0,0,0,0,{},0,,1,0
+30,26,-0.8679788656046615,-1.1000883056039252,-0.9840335856042934,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},2,,1,0
+30,27,-0.9054728154442004,-1.377353956777237,-1.1414133861107187,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},2,,1,0
+30,28,-1.3991139528285395,-1.6655619054117428,-1.532337929120141,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},2,,1,0
+30,29,8.411140253366321,8.443411587854142,8.427275920610231,S,certified_norm_low_and_profile_high,0,1,S,"norm_low,profile_high",strong,"norm_low,profile_high,diagonal_high",X,2,0,0,1,0,0,"{""norm_low"": 2, ""profile_high"": 2}",0,"norm_low,profile_high",1,1
+30,30,-0.7461424741985029,-0.6182095795383219,-0.6821760268684124,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},2,,1,0
+30,31,-0.6941323547566097,-0.9825195874306611,-0.8383259710936355,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},2,,1,0
+30,32,8.325337519708864,8.367929861946422,8.346633690827643,S,certified_norm_low_and_profile_high,0,1,S,"norm_low,profile_high",strong,"norm_low,profile_high,diagonal_high",X,2,0,0,1,0,0,"{""norm_low"": 2, ""profile_high"": 2}",0,"norm_low,profile_high",1,1
+30,33,-1.063792153278242,-1.1724715822895821,-1.118131867783912,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},2,,1,0
+30,34,-0.8416649197092385,-1.0391876601296697,-0.9404262899194541,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},2,,1,0
+30,35,8.3728300486703,8.293497926258734,8.333163987464516,S,certified_norm_low_and_profile_high,0,1,S,"norm_low,profile_high",strong,"norm_low,profile_high,diagonal_high",X,2,0,0,1,0,0,"{""norm_low"": 2, ""profile_high"": 2}",0,"norm_low,profile_high",1,1
+30,36,-0.23671295752129812,0.1422903456338482,-0.047211305943724954,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},2,,1,0
+30,37,-1.1791457044859475,-0.9814778928352453,-1.0803117986605963,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},2,,1,0
+30,38,8.408384599048208,8.346737702325939,8.377561150687074,S,certified_norm_low_and_profile_high,0,1,S,"norm_low,profile_high",strong,"norm_low,profile_high,diagonal_high",X,2,0,0,1,0,0,"{""norm_low"": 2, ""profile_high"": 2}",0,"norm_low,profile_high",1,1
+30,39,8.3849675002937,8.333596403516573,8.359281951905135,S,certified_norm_low_and_profile_high,0,1,S,"norm_low,profile_high",strong,"norm_low,profile_high,diagonal_high",X,2,0,0,1,0,0,"{""norm_low"": 2, ""profile_high"": 2}",0,"norm_low,profile_high",1,1
+30,40,-0.5170645365773583,-1.3446863699792475,-0.9308754532783029,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},2,,1,0
+30,41,-0.5811934852016207,-0.10485660426065038,-0.34302504473113554,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},2,,1,0
+30,42,0.05656526021846948,-0.3505889503467617,-0.1470118450641461,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},2,,1,0
+30,43,8.332897083395492,8.396930592124484,8.364913837759989,S,certified_norm_low_and_profile_high,0,1,S,"norm_low,profile_high",strong,"norm_low,profile_high,diagonal_high",X,2,0,0,1,0,0,"{""norm_low"": 2, ""profile_high"": 2}",0,"norm_low,profile_high",1,1
+30,44,-0.49072202856740726,-1.0328052659124145,-0.7617636472399109,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},2,,1,0
+30,45,-0.5229027409476725,-0.4994849195663024,-0.5111938302569875,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},2,,1,0
+30,46,8.40277913046287,8.34562725901673,8.374203194739799,S,certified_norm_low_and_profile_high,0,1,S,"norm_low,profile_high",strong,"norm_low,profile_high,diagonal_high",X,2,0,0,1,0,0,"{""norm_low"": 2, ""profile_high"": 2}",0,"norm_low,profile_high",1,1
+30,47,-0.9734419836115382,-0.8279427095991112,-0.9006923466053247,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},2,,1,0
+30,48,-0.5403127753606327,0.04337428066814869,-0.248469247346242,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},2,,1,0
+30,49,8.267986118092365,8.40292168639904,8.335453902245703,S,certified_norm_low_and_profile_high,0,1,S,"norm_low,profile_high",strong,"norm_low,profile_high,diagonal_high",X,2,0,0,1,0,0,"{""norm_low"": 2, ""profile_high"": 2}",0,"norm_low,profile_high",1,1
+30,50,8.426578002250197,8.304346104732598,8.365462053491399,S,certified_norm_low_and_profile_high,0,1,S,"norm_low,profile_high",strong,"norm_low,profile_high,diagonal_high",X,2,0,0,1,0,0,"{""norm_low"": 2, ""profile_high"": 2}",0,"norm_low,profile_high",1,1
+30,51,-1.1470111886750867,-0.9047511111105515,-1.025881149892819,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},2,,1,0
+30,52,-0.7459244483866799,-0.4683100629199361,-0.607117255653308,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},2,,1,0
+30,53,0.18313614804879524,-0.07490959867910152,0.05411327468484686,R,unflagged_no_strong_evidence,0,1,R,,none,,C,0,1,0,0,0,0,{},1,,1,0
+30,54,8.388435924763312,8.397286508748586,8.39286121675595,S,certified_norm_low_and_profile_high,0,1,S,"norm_low,profile_high",strong,"norm_low,profile_high,diagonal_high",X,2,0,0,1,0,0,"{""norm_low"": 2, ""profile_high"": 2}",0,"norm_low,profile_high",1,1
+30,55,8.27338927016116,8.310550636526443,8.291969953343802,S,certified_norm_low_and_profile_high,0,1,S,"norm_low,profile_high",strong,"norm_low,profile_high,diagonal_high",X,2,0,0,1,0,0,"{""norm_low"": 2, ""profile_high"": 2}",0,"norm_low,profile_high",1,1
+30,56,-0.8730465504687522,-0.9764126984294543,-0.9247296244491032,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},2,,1,0
+30,57,8.34751205217499,8.282707377575683,8.315109714875337,S,certified_norm_low_and_profile_high,0,1,S,"norm_low,profile_high",strong,"norm_low,profile_high,diagonal_high",X,2,0,0,1,0,0,"{""norm_low"": 2, ""profile_high"": 2}",0,"norm_low,profile_high",1,1
+30,58,-0.6486035227038274,-1.2343869098321139,-0.9414952162679706,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},2,,1,0
+30,59,-0.9051532926937657,-1.1665122324943218,-1.0358327625940438,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},2,,1,0
+30,60,8.34341920675062,8.30659601672414,8.32500761173738,S,certified_norm_low_and_profile_high,0,1,S,"norm_low,profile_high",strong,"norm_low,profile_high,diagonal_high",X,2,0,0,1,0,0,"{""norm_low"": 2, ""profile_high"": 2}",0,"norm_low,profile_high",1,1
+30,61,-0.4097454015749527,-0.12406610634766023,-0.26690575396130645,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},2,,1,0
+30,62,-1.525649881796148,-1.4077844335482368,-1.4667171576721922,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},2,,1,0
+30,63,-0.49451782530860755,-0.8901421832809688,-0.6923300042947882,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},2,,1,0
+30,64,-0.5958473465689565,-1.0683188395708068,-0.8320830930698817,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},2,,1,0
+30,65,8.264780288652362,8.402350401650097,8.333565345151229,S,certified_norm_low_and_profile_high,0,1,S,"norm_low,profile_high",strong,"norm_low,profile_high,diagonal_high",X,2,0,0,1,0,0,"{""norm_low"": 2, ""profile_high"": 2}",0,"norm_low,profile_high",1,1
+30,66,-0.009522115612555171,-0.5491716776693556,-0.27934689664095536,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},2,,1,0
+30,67,-1.020747046316349,-0.6788293321778766,-0.8497881892471129,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},2,,1,0
+30,68,-0.7802645229349762,-1.164481281792955,-0.9723729023639656,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},2,,1,0
+30,69,8.280487106027536,8.320496912725007,8.30049200937627,S,certified_norm_low_and_profile_high,0,1,S,"norm_low,profile_high",strong,"norm_low,profile_high,diagonal_high",X,2,0,0,1,0,0,"{""norm_low"": 2, ""profile_high"": 2}",0,"norm_low,profile_high",1,1
+30,70,8.39142404774765,8.31305278935018,8.352238418548914,S,certified_norm_low_and_profile_high,0,1,S,"norm_low,profile_high",strong,"norm_low,profile_high,diagonal_high",X,2,0,0,1,0,0,"{""norm_low"": 2, ""profile_high"": 2}",0,"norm_low,profile_high",1,1
+30,71,-0.9072105874241013,-0.3809971670668302,-0.6441038772454657,R,unflagged_no_strong_evidence,0,1,R,,none,,C,0,1,0,0,0,0,{},1,,1,0
+30,72,0.38721559065364364,-0.08333921092932367,0.15193818986215998,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},2,,1,0
+30,73,8.395827594013134,8.374630941523423,8.385229267768278,S,certified_norm_low_and_profile_high,0,1,S,"norm_low,profile_high",strong,"norm_low,profile_high,diagonal_high",X,2,0,0,1,0,0,"{""norm_low"": 2, ""profile_high"": 2}",0,"norm_low,profile_high",1,1
+30,74,-0.6240355399347196,-0.882125623668869,-0.7530805818017943,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},2,,1,0
+30,75,0.1346266113699716,0.12089881827107896,0.12776271482052526,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},2,,1,0
+30,76,8.33005770986094,8.270095948316282,8.30007682908861,S,certified_norm_low_and_profile_high,0,1,S,"norm_low,profile_high",strong,"norm_low,profile_high,diagonal_high",X,2,0,0,1,0,0,"{""norm_low"": 2, ""profile_high"": 2}",0,"norm_low,profile_high",1,1
+30,77,-0.5328490474608433,-1.145104273428617,-0.8389766604447302,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},2,,1,0
+30,78,8.308267387255869,8.370646232749888,8.33945681000288,S,certified_norm_low_and_profile_high,0,1,S,"norm_low,profile_high",strong,"norm_low,profile_high,diagonal_high",X,2,0,0,1,0,0,"{""norm_low"": 2, ""profile_high"": 2}",0,"norm_low,profile_high",1,1
+30,79,-0.6476037138967766,-0.5522073261364547,-0.5999055200166157,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},2,,1,0
+30,80,8.36964952537759,8.353626708942002,8.361638117159796,S,certified_norm_low_and_profile_high,0,1,S,"norm_low,profile_high",strong,"norm_low,profile_high,diagonal_high",X,2,0,0,1,0,0,"{""norm_low"": 2, ""profile_high"": 2}",0,"norm_low,profile_high",1,1
+30,81,0.13114811647762945,-0.596656113718349,-0.23275399862035978,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},2,,1,0
+30,82,-0.2647582754843212,-0.8329351741182504,-0.5488467248012858,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},2,,1,0
+30,83,-0.20022563570611618,-0.380440477575727,-0.29033305664092157,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},2,,1,0
+30,84,-0.05688992331960115,-0.5519412796801664,-0.3044156014998838,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},2,,1,0
+30,85,8.440507586631627,8.308801862904748,8.374654724768188,S,certified_norm_low_and_profile_high,0,1,S,"norm_low,profile_high",strong,"norm_low,profile_high,diagonal_high",X,2,0,0,1,0,0,"{""norm_low"": 2, ""profile_high"": 2}",0,"norm_low,profile_high",1,1
+30,86,8.345267292477073,8.378114735823218,8.361691014150146,S,certified_norm_low_and_profile_high,0,1,S,"norm_low,profile_high",strong,"norm_low,profile_high,diagonal_high",X,2,0,0,1,0,0,"{""norm_low"": 2, ""profile_high"": 2}",0,"norm_low,profile_high",1,1
+30,87,-1.0512577291649747,-0.7761322879844152,-0.913695008574695,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},2,,1,0
+30,88,-0.640822690884413,-0.03999055342072114,-0.34040662215256706,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},2,,1,0
+30,89,-1.5365025653523887,-2.0468353887132222,-1.7916689770328054,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},2,,1,0
+30,90,8.302911200600327,8.418703496137594,8.360807348368962,S,certified_norm_low_and_profile_high,0,1,S,"norm_low,profile_high",strong,"norm_low,profile_high,diagonal_high",X,2,0,0,1,0,0,"{""norm_low"": 2, ""profile_high"": 2}",0,"norm_low,profile_high",1,1
+30,91,8.37023708753636,8.39931445507287,8.384775771304614,S,certified_norm_low_and_profile_high,0,1,S,"norm_low,profile_high",strong,"norm_low,profile_high,diagonal_high",X,2,0,0,1,0,0,"{""norm_low"": 2, ""profile_high"": 2}",0,"norm_low,profile_high",1,1
+30,92,-0.14794429412681565,-0.3781146142261672,-0.26302945417649143,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},2,,1,0
+30,93,-0.8035148448857812,-0.9627492878973587,-0.8831320663915699,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},2,,1,0
+30,94,-0.9756002259613287,-0.3525714852977251,-0.6640858556295268,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},2,,1,0
+30,95,-1.2852766157892714,-1.2409546735732357,-1.2631156446812537,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},2,,1,0
+30,96,8.314245136063992,8.30141658330582,8.307830859684906,S,certified_norm_low_and_profile_high,0,1,S,"norm_low,profile_high",strong,"norm_low,profile_high,diagonal_high",X,2,0,0,1,0,0,"{""norm_low"": 2, ""profile_high"": 2}",0,"norm_low,profile_high",1,1
+30,97,-0.6564098847612926,-0.9732172934951777,-0.8148135891282351,R,unflagged_no_strong_evidence,0,1,R,,none,,R,0,0,1,0,0,0,{},2,,1,0
+30,98,8.389092761228401,8.349877385203387,8.369485073215895,S,certified_norm_low_and_profile_high,0,1,S,"norm_low,profile_high",strong,"norm_low,profile_high,diagonal_high",X,2,0,0,1,0,0,"{""norm_low"": 2, ""profile_high"": 2}",0,"norm_low,profile_high",1,1
+30,99,8.432457028129484,8.407639287782082,8.420048157955783,S,certified_norm_low_and_profile_high,0,1,S,"norm_low,profile_high",strong,"norm_low,profile_high,diagonal_high",X,2,0,0,1,0,0,"{""norm_low"": 2, ""profile_high"": 2}",0,"norm_low,profile_high",1,1

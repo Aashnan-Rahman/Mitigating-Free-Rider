@@ -1,0 +1,15 @@
+{
+  "compiled": true,
+  "generated_at_utc": "2026-10-18T03:31:48.648435+00:00",
+  "state": "ready",
+  "totals": {
+    "final_honest_candidates": 296,
+    "fn": 0,
+    "fp": 0,
+    "honest": 2080,
+    "honest_ever_quarantined": 11,
+    "honest_quarantine_rounds": 220,
+    "tp": 1120
+  },
+  "validated_runs": 32
+}

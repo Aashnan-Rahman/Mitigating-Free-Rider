@@ -28,6 +28,16 @@ class RunLogger:
         self.detection_round_rows: list[dict[str, Any]] = []
         self.detection_event_rows: list[dict[str, Any]] = []
         self.client_summary_rows: list[dict[str, Any]] = []
+        self.paired_response_rows: list[dict[str, Any]] = []
+        self.paired_shadow_rows: list[dict[str, Any]] = []
+        self.preliminary_rows: list[dict[str, Any]] = []
+        self.preliminary_decision_rows: list[dict[str, Any]] = []
+        self.diagonal_metadata: dict[str, Any] = {}
+        self.cycle_signal_rows: list[dict[str, Any]] = []
+        self.cycle_probe_rows: list[dict[str, Any]] = []
+        self.cycle_decision_rows: list[dict[str, Any]] = []
+        self.cycle_policy_rows: list[dict[str, Any]] = []
+        self.cycle_group_rows: list[dict[str, Any]] = []
 
     def log_trap_matrix_row(
         self, round_idx: int, phase: str, trapped: set[int], num_clients: int
@@ -37,6 +47,37 @@ class RunLogger:
         self.trap_rows.append(row)
 
     def write_all(self, run_config: dict[str, Any]) -> None:
+        if self.config.methodology_version in {"swtcp_v15", "swtcp_v15_1", "swtcp_v15_2", "swtcp_v15_3", "swtcp_v15_4"}:
+            for filename, rows in (("cycle_signals.csv", self.cycle_signal_rows),
+                                   ("cycle_probes.csv", self.cycle_probe_rows),
+                                   ("cycle_decisions.csv", self.cycle_decision_rows),
+                                   ("cycle_policy.csv", self.cycle_policy_rows),
+                                   ("cycle_groups.csv", self.cycle_group_rows)):
+                self._write_csv(filename, rows)
+            summaries = []
+            for index in sorted({r["round"] for r in self.cycle_decision_rows}):
+                for flag, population in ((1, "free_rider"), (0, "honest")):
+                    rows = [r for r in self.cycle_decision_rows if r["round"] == index and r["is_free_rider"] == flag]
+                    summaries.append(dict(round=index, population=population, evaluated=len(rows),
+                        suspected=sum(r["state"] == "S" for r in rows), candidate=sum(r["state"] == "C" for r in rows),
+                        safe=sum(r["state"] == "R" for r in rows), newly_removed=sum(r["removed"] for r in rows)))
+            self._write_csv("cycle_decision_summary.csv", summaries)
+        if self.config.methodology_version == "v14_1_preli":
+            if self.config.preliminary_diagonal_decisions:
+                from server.diagonal_decision import evaluation_summary
+                self._write_csv("preliminary_decisions.csv", self.preliminary_decision_rows)
+                self._write_csv("preliminary_decision_summary.csv",
+                                evaluation_summary(self.preliminary_decision_rows) if self.preliminary_decision_rows else [])
+                if self.diagonal_metadata:
+                    atomic_write_json(self.run_dir / "preliminary_decision_policy.json", self.diagonal_metadata)
+            self._write_csv("preliminary_signals.csv", self.preliminary_rows)
+            if self.preliminary_rows:
+                from preliminary_analytics import compare_rows
+                self._write_csv("preliminary_comparison.csv", compare_rows(self.preliminary_rows))
+        if self.config.paired_measurement_only:
+            self._write_csv("paired_responses.csv", self.paired_response_rows)
+        if self.config.paired_shadow_calibration:
+            self._write_csv("paired_shadow_decisions.csv", self.paired_shadow_rows)
         self._write_csv("trap_matrix.csv", self.trap_rows)
         self._write_csv("trap_assignments.csv", self.trap_assignment_rows)
         self._write_csv("global_metrics.csv", self.global_rows)
@@ -89,6 +130,15 @@ class RunLogger:
     ) -> None:
         """Restore round logs when continuing a checkpointed run."""
         loaders = (
+            ("cycle_signals.csv", "cycle_signal_rows"),
+            ("cycle_probes.csv", "cycle_probe_rows"),
+            ("cycle_decisions.csv", "cycle_decision_rows"),
+            ("cycle_policy.csv", "cycle_policy_rows"),
+            ("cycle_groups.csv", "cycle_group_rows"),
+            ("paired_responses.csv", "paired_response_rows"),
+            ("paired_shadow_decisions.csv", "paired_shadow_rows"),
+            ("preliminary_signals.csv", "preliminary_rows"),
+            ("preliminary_decisions.csv", "preliminary_decision_rows"),
             ("trap_matrix.csv", "trap_rows"),
             ("trap_assignments.csv", "trap_assignment_rows"),
             ("global_metrics.csv", "global_rows"),
@@ -123,6 +173,15 @@ class RunLogger:
     def _write_csv(self, filename: str, rows: list[dict[str, Any]]) -> None:
         path = self.run_dir / filename
         fieldnames = list(rows[0].keys()) if rows else CSV_HEADERS.get(filename, [])
+        if filename == "paired_responses.csv" and not fieldnames:
+            fieldnames = ["round", "cycle", "client_id", "is_free_rider", "plus_round",
+                          "minus_round", "first_sign", "round_gap", "directional_gain",
+                          "layer_gains", "perturbation_energy", "plus_update_norm",
+                          "minus_update_norm", "profile_difference", "statistical_decisions_enabled"]
+        if filename == "paired_shadow_decisions.csv" and not fieldnames:
+            fieldnames = ["round", "client_id", "cycle", "score", "cutoff", "proposed_remove",
+                          "reason", "alpha", "calibration_windows", "calibration_fingerprint",
+                          "enforced", "is_free_rider"]
         temporary = path.with_name(f".{path.name}.{os.getpid()}.tmp")
         with temporary.open("w", newline="", encoding="utf-8") as handle:
             if not fieldnames:
@@ -181,6 +240,21 @@ def _coerce_row(row: dict[str, str]) -> dict[str, Any]:
     return converted
 
 CSV_HEADERS: dict[str, list[str]] = {
+    "cycle_signals.csv": ["round", "client_id", "trap_id", "observation_round", "reference_clients",
+                          "delta_norm", "norm_z", "norm_median", "norm_mad", "profile_distance",
+                          "profile_z", "profile_median", "profile_mad", "exact_zero_delta", "exact_sendback",
+                          "enforced", "is_free_rider"],
+    "cycle_probes.csv": ["round", "cycle", "client_id", "trap_id", "group_id", "selected_for_decision",
+                         "delta_norm", "layer_profile", "exact_sendback", "is_free_rider"],
+    "cycle_decisions.csv": ["round", "client_id", "D_A", "D_B", "D_average", "state", "reason",
+                            "provisional", "enforced", "category_after", "strong_cycles", "clean_cycles",
+                            "reference_eligible", "removed", "cycle", "is_free_rider"],
+    "cycle_policy.csv": ["round", "cycle", "policy"],
+    "cycle_groups.csv": ["round", "cycle", "client_id", "group_id", "role", "pool_size"],
+    "cycle_decision_summary.csv": ["round", "population", "evaluated", "suspected", "candidate", "safe", "newly_removed"],
+    "preliminary_decisions.csv": ["round", "client_id", "D_A", "D_B", "D_average", "state", "reason",
+                                 "provisional", "enforced", "is_free_rider"],
+    "preliminary_decision_summary.csv": ["round", "population", "suspected", "candidate", "safe", "enforced"],
     "trap_assignments.csv": ["round", "client_id", "phase", "role", "group_id"],
     "removals.csv": [
         "round", "client_id", "is_free_rider", "final_penalty",

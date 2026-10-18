@@ -1,0 +1,31 @@
+{
+  "batch_name": "v15_1_mnist_seed73_fr40",
+  "results_root": "./results",
+  "defaults": {
+    "methodology_version": "swtcp_v15_1",
+    "dataset": "mnist",
+    "num_clients": 100,
+    "num_rounds": 100,
+    "warmup_rounds": 10,
+    "surveillance_groups": 10,
+    "v15_cycle_rounds": 10,
+    "v15_audit_interval_rounds": 10,
+    "v15_candidate_review_cycles": 2,
+    "v15_candidate_cooldown_audits": 2,
+    "cycle_strong_cycles_for_removal": 2,
+    "cycle_suspect_clean_cycles": 2,
+    "cycle_candidate_clean_cycles": 2,
+    "cycle_reference_probation_cycles": 1,
+    "free_rider_pct": 0.4,
+    "seed": 73,
+    "device": "auto",
+    "save_checkpoints": true,
+    "checkpoint_keep_last": 2
+  },
+  "stages": [
+    {"id": "noniid_first", "id_format": "v15_1_mnist_{distribution}_{attack_type}_seed{seed}",
+     "matrix": {"distribution": ["noniid"], "attack_type": ["FR4", "FR3", "FR2", "FR1"], "seed": [73]}},
+    {"id": "iid", "id_format": "v15_1_mnist_{distribution}_{attack_type}_seed{seed}",
+     "matrix": {"distribution": ["iid"], "attack_type": ["FR4", "FR3", "FR2", "FR1"], "seed": [73]}}
+  ]
+}

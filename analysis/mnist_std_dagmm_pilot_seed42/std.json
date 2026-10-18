@@ -1,0 +1,219 @@
+{
+  "architecture": "P-128-64-32-64-128-P; latent32 + relative-L2 + cosine + input-STD; estimation35-10-3",
+  "batch_size": 20,
+  "caveat": "paper-guided computational reproduction, NOT original author code or verified training-to-convergence recipe",
+  "clients": 100,
+  "components": 3,
+  "covariance_dtype": "float64; full-update autoencoder float32",
+  "covariance_ridge": 1e-06,
+  "covariance_weight": 0.005,
+  "dimensions": 206922,
+  "energy_weight": 0.1,
+  "epochs": 5,
+  "inference_warmup_per_fit": 1,
+  "input_batches": 2,
+  "input_payload_mib": 157.86895751953125,
+  "input_sha256": "d4b478a109646fe79ecb37f314f755a9e2d3380ed4704e136b6f9ae36fb9e91c",
+  "learning_rate": 0.001,
+  "memory": {
+    "baseline_rss_mib": 356.6171875,
+    "incremental_sampled_peak_mib": 1273.37109375,
+    "minimum_available_ram_mib": 1530.3828125,
+    "peak_sampled_rss_mib": 1629.98828125,
+    "sample_interval_seconds": 0.02
+  },
+  "method": "std",
+  "official_implementation": false,
+  "optimizer": "Adam",
+  "training_schedule": "fresh detector per independent 100-client batch; no assumed deployment refit frequency",
+  "trials": [
+    {
+      "details": {
+        "epoch_seconds": [
+          3.165575599996373,
+          2.8919396999990568,
+          2.8713092999969376,
+          2.686731599998893,
+          2.9146706000028644
+        ],
+        "mixture_finalization_seconds": 0.40211970001109876,
+        "model_parameters": 53200243,
+        "parameter_bytes": 212800972,
+        "training_loss": [
+          5889.042641158789,
+          203.84861630812324,
+          19.262362790110043,
+          1.4004229212858652,
+          -2.217611255084454
+        ]
+      },
+      "fit_seconds": 18.662587300001178,
+      "inference_samples_seconds": [
+        0.3316508999996586,
+        0.33155980000447016,
+        0.3097162999911234
+      ],
+      "inference_seconds": 0.33155980000447016,
+      "input_batch": 0,
+      "preparation_seconds": 0.06042939999315422,
+      "trial": 0
+    },
+    {
+      "details": {
+        "epoch_seconds": [
+          2.7850187000003643,
+          2.45586890001141,
+          2.6479783999966457,
+          2.4483456000016304,
+          2.4500299999926938
+        ],
+        "mixture_finalization_seconds": 0.41360590000113007,
+        "model_parameters": 53200243,
+        "parameter_bytes": 212800972,
+        "training_loss": [
+          4462.481159188632,
+          86.62771257478192,
+          10.722230311874453,
+          -0.6879180385419502,
+          -3.6036763228216926
+        ]
+      },
+      "fit_seconds": 13.644457400005194,
+      "inference_samples_seconds": [
+        0.2958026999986032,
+        0.3059907000133535,
+        0.2982126999995671
+      ],
+      "inference_seconds": 0.2982126999995671,
+      "input_batch": 1,
+      "preparation_seconds": 0.07179699999687728,
+      "trial": 0
+    },
+    {
+      "details": {
+        "epoch_seconds": [
+          2.6233329999959096,
+          2.3365004999941448,
+          2.3415338000049815,
+          2.284620599995833,
+          2.7096004000050016
+        ],
+        "mixture_finalization_seconds": 0.3875450999912573,
+        "model_parameters": 53200243,
+        "parameter_bytes": 212800972,
+        "training_loss": [
+          5314.399918378815,
+          152.8545500229639,
+          14.046733738848488,
+          1.6613991211165864,
+          -2.7591739917726636
+        ]
+      },
+      "fit_seconds": 13.082227000006242,
+      "inference_samples_seconds": [
+        0.28850470000179484,
+        0.30968510000093374,
+        0.3414792999974452
+      ],
+      "inference_seconds": 0.30968510000093374,
+      "input_batch": 0,
+      "preparation_seconds": 0.07054070000594947,
+      "trial": 1
+    },
+    {
+      "details": {
+        "epoch_seconds": [
+          2.5775201999931596,
+          2.297946899998351,
+          2.5304436000005808,
+          2.463523400001577,
+          2.3750404000020353
+        ],
+        "mixture_finalization_seconds": 0.3613681999995606,
+        "model_parameters": 53200243,
+        "parameter_bytes": 212800972,
+        "training_loss": [
+          4692.125945612862,
+          279.77524127890007,
+          29.35928324734457,
+          0.7342449170571907,
+          -3.0958547287011142
+        ]
+      },
+      "fit_seconds": 12.993424599990249,
+      "inference_samples_seconds": [
+        0.2952573999937158,
+        0.2873749999998836,
+        0.27692499999830034
+      ],
+      "inference_seconds": 0.2873749999998836,
+      "input_batch": 1,
+      "preparation_seconds": 0.07243200000084471,
+      "trial": 1
+    },
+    {
+      "details": {
+        "epoch_seconds": [
+          2.572159200004535,
+          2.4293465000082506,
+          2.399304399994435,
+          2.449371399998199,
+          2.4214152000058675
+        ],
+        "mixture_finalization_seconds": 0.36566929999389686,
+        "model_parameters": 53200243,
+        "parameter_bytes": 212800972,
+        "training_loss": [
+          5368.2968048234925,
+          143.17634649263948,
+          13.614680942843533,
+          -0.5893607604569004,
+          -3.486343285629755
+        ]
+      },
+      "fit_seconds": 13.009846200002357,
+      "inference_samples_seconds": [
+        0.26756329998897854,
+        0.28627559999586083,
+        0.27140030000009574
+      ],
+      "inference_seconds": 0.27140030000009574,
+      "input_batch": 0,
+      "preparation_seconds": 0.10311480000382289,
+      "trial": 2
+    },
+    {
+      "details": {
+        "epoch_seconds": [
+          2.490422300004866,
+          2.477684400000726,
+          2.437860800011549,
+          2.6238994999876013,
+          2.6939742999966256
+        ],
+        "mixture_finalization_seconds": 0.3762217000039527,
+        "model_parameters": 53200243,
+        "parameter_bytes": 212800972,
+        "training_loss": [
+          4614.769117993012,
+          119.9914075795328,
+          9.752475865022854,
+          -1.414177971157127,
+          -3.5180477924077227
+        ]
+      },
+      "fit_seconds": 13.501364800002193,
+      "inference_samples_seconds": [
+        0.26987560000270605,
+        0.2779530999978306,
+        0.2941203999944264
+      ],
+      "inference_seconds": 0.2779530999978306,
+      "input_batch": 1,
+      "preparation_seconds": 0.06881779999821447,
+      "trial": 2
+    }
+  ],
+  "worker_cpu_seconds": 525.625,
+  "worker_wall_seconds": 92.95099739999569
+}

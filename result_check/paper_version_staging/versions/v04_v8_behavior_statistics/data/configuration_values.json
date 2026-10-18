@@ -1,0 +1,80 @@
+{
+  "num_clients": [
+    "100"
+  ],
+  "num_rounds": [
+    "100"
+  ],
+  "local_epochs": [
+    "3"
+  ],
+  "batch_size": [
+    "32"
+  ],
+  "learning_rate": [
+    "0.01"
+  ],
+  "momentum": [
+    "0.9"
+  ],
+  "warmup_rounds": [
+    "10"
+  ],
+  "magnitude_z_threshold": [
+    "3.0"
+  ],
+  "profile_z_threshold": [
+    "3.0"
+  ],
+  "mad_floor": [
+    "0.05"
+  ],
+  "profile_mad_floor": [
+    "0.01"
+  ],
+  "coverage_checks_per_client": [
+    "2"
+  ],
+  "anchors_per_suspicion_group": [
+    "3"
+  ],
+  "removal_threshold_points": [
+    "15"
+  ],
+  "dodge_min_probes": [
+    "10"
+  ],
+  "fr3_window": [
+    "5"
+  ],
+  "fr4_history_size": [
+    "5"
+  ],
+  "fr4_noise_fraction": [
+    "0.1"
+  ],
+  "fr2_update_range": [
+    "0.001"
+  ],
+  "trap_noise_scale": [
+    "0.01"
+  ],
+  "trap_noise_floor": [
+    "0.0001"
+  ],
+  "dirichlet_alpha": [
+    "0.5"
+  ],
+  "optimizer": [
+    "sgd"
+  ],
+  "penalty_zero_update": [
+    "5"
+  ],
+  "penalty_trap_flag": [
+    "2"
+  ],
+  "penalty_suspicion_flag": [
+    "3"
+  ]
+}

@@ -139,6 +139,22 @@ class CycleTrapSelector:
         )
         group_count = len(groups)
 
+        if self.config.paired_measurement_only:
+            if self.mode != "double_probe":
+                raise RuntimeError("Measurement-only paired audits cannot use single probing")
+            order = list(range(group_count))
+            self.rng.shuffle(order)
+            assignments = []
+            first_signs = [(index + self.cycle_index) % 2
+                           for index in range((group_count + 1) // 2)]
+            self.rng.shuffle(first_signs)
+            for start in range(0, group_count, 2):
+                clients = [client for index in order[start:start + 2] for client in groups[index]]
+                assignments.append((first_signs[start // 2], clients))
+            # Complementary second half: equal inter-probe gaps, randomized sign
+            # order, and full pair coverage even when the active set shrinks.
+            return assignments + [(1 - sign, clients[:]) for sign, clients in assignments]
+
         if self.mode == "single_probe":
             order = list(range(group_count))
             self.rng.shuffle(order)

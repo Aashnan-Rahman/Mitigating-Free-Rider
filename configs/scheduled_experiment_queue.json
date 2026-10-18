@@ -1,0 +1,8 @@
+{
+  "description": "Finish current CIFAR-10 batch, then MNIST 40%, then MNIST 30%; v15.4, seed 42. Never skip a stopped/failed prerequisite.",
+  "plans": [
+    "configs/v15_4_cifar10_seed42_fr30_plan.json",
+    "configs/v15_4_mnist_seed42_fr40_plan.json",
+    "configs/v15_4_mnist_seed42_fr30_plan.json"
+  ]
+}

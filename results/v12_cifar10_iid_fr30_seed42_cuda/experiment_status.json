@@ -2,9 +2,9 @@
   "batch_id": "v12_cifar10_iid_fr30_seed42_cuda",
   "completed_experiments": 0,
   "completed_rounds": 16,
-  "current_experiment": "v12_cifar10_iid_fr30_seed42_cuda_FR1",
+  "current_experiment": null,
   "elapsed_seconds": 1799.93284034729,
-  "estimated_remaining_seconds": 43198.38714981079,
+  "estimated_remaining_seconds": 0,
   "experiments": [
     {
       "completed_rounds": 16,
@@ -39,7 +39,8 @@
         "total_rounds": 100
       },
       "started_at": "2026-09-28T01:03:50.800409",
-      "state": "running"
+      "state": "discarded",
+      "discard_reason": "Historical incomplete work discarded at user request on 2026-10-15. Do not auto-resume; see result_check/cleanup_2026_10_15.json."
     },
     {
       "config": {
@@ -48,7 +49,8 @@
         "distribution": "iid"
       },
       "id": "v12_cifar10_iid_fr30_seed42_cuda_FR2",
-      "state": "queued"
+      "state": "discarded",
+      "discard_reason": "Historical incomplete work discarded at user request on 2026-10-15. Do not auto-resume; see result_check/cleanup_2026_10_15.json."
     },
     {
       "config": {
@@ -57,7 +59,8 @@
         "distribution": "iid"
       },
       "id": "v12_cifar10_iid_fr30_seed42_cuda_FR3",
-      "state": "queued"
+      "state": "discarded",
+      "discard_reason": "Historical incomplete work discarded at user request on 2026-10-15. Do not auto-resume; see result_check/cleanup_2026_10_15.json."
     },
     {
       "config": {
@@ -66,14 +69,17 @@
         "distribution": "iid"
       },
       "id": "v12_cifar10_iid_fr30_seed42_cuda_FR4",
-      "state": "queued"
+      "state": "discarded",
+      "discard_reason": "Historical incomplete work discarded at user request on 2026-10-15. Do not auto-resume; see result_check/cleanup_2026_10_15.json."
     }
   ],
   "failed_experiments": 0,
   "plan": "C:\\Users\\USER\\Documents\\GitHub\\Mitigating-Free-Rider\\configs\\v12_cifar10_iid_fr30_seed42_cuda_plan.json",
   "started_at": "2026-09-28T01:03:50.787762",
-  "state": "running",
+  "state": "discarded_partial",
   "total_experiments": 4,
   "total_rounds": 400,
-  "updated_at": "2026-09-28T01:33:50.720581"
+  "updated_at": "2026-09-28T01:33:50.720581",
+  "discarded_at": "2026-10-15",
+  "discard_reason": "Historical incomplete work discarded at user request on 2026-10-15. Do not auto-resume; see result_check/cleanup_2026_10_15.json."
 }

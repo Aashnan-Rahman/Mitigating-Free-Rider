@@ -50,9 +50,24 @@ def settings_from_config(config) -> V13Settings:
     )
 
 
+PROTOCOL_REVISION = "empirical_combined_v2"
+
+
 def upper_quantile(values: list[float], alpha: float) -> float:
+    """Finite-sample upper order statistic, with strict > rejection.
+
+    The n+1 correction has rank-test coverage under exchangeable null scores.
+    Insufficient resolution returns infinity, not a fitted Gaussian cutoff.
+    FL residuals are not known exchangeable, so this is an empirical calibration
+    rule in deployment, not a claim of conformal or lifetime error guarantees.
+    """
+    if not 0 < alpha < 1:
+        raise ValueError("alpha must lie in (0, 1)")
+    if any(not math.isfinite(value) for value in values):
+        raise ValueError("Calibration scores must be finite")
     ordered = sorted(values)
-    return ordered[min(len(ordered) - 1, max(0, math.ceil((1 - alpha) * len(ordered)) - 1))]
+    rank = math.ceil((len(ordered) + 1) * (1 - alpha))
+    return ordered[rank - 1] if rank <= len(ordered) else float("inf")
 
 
 class V13Detector:
@@ -60,40 +75,41 @@ class V13Detector:
         self.settings = settings
         self.cycle = 0
         self.calibration: list[dict[int, float]] = []
+        self.calibration_checks: list[int] = []
         self.scales: list[tuple[float, float]] = []
         # Residual summaries, not full updates, retained separately by client.
         self.personal: dict[int, list[tuple[float, float]]] = {}
         self.evidence: dict[int, list[tuple[int, str]]] = {}
+        self.pending: dict[int, list[tuple[int, str]]] = {}
         self.ages: dict[int, int] = {}
         self.cooldowns: dict[int, int] = {}
         self.last_reasons: dict[int, str] = {}
         self.last_cutoffs: dict[int, float] = {}
 
     def state_dict(self) -> dict:
-        return {"settings": asdict(self.settings), **{
+        return {"revision": PROTOCOL_REVISION, "settings": asdict(self.settings), **{
             name: getattr(self, name) for name in (
                 "cycle", "calibration", "scales", "personal", "evidence",
                 "ages", "cooldowns", "last_reasons", "last_cutoffs",
+                "calibration_checks", "pending",
             )
         }}
 
     def load_state_dict(self, state: dict) -> None:
-        if state.get("settings") != asdict(self.settings):
-            raise ValueError("v13 checkpoint detector settings do not match")
+        if state.get("revision") != PROTOCOL_REVISION or state.get("settings") != asdict(self.settings):
+            raise ValueError("v13 checkpoint revision/settings do not match; start a fresh run")
         for name in ("cycle", "calibration", "scales", "personal", "evidence",
-                     "ages", "cooldowns", "last_reasons", "last_cutoffs"):
+                     "ages", "cooldowns", "last_reasons", "last_cutoffs",
+                     "calibration_checks", "pending"):
             setattr(self, name, state[name])
 
     def cutoff(self, client: int, checks: int) -> float:
         s = self.settings
-        # Normal reference is only a bootstrap; observed previous cycle maxima
-        # may raise it. Client's own scores never set its current cutoff.
-        base = NormalDist().inv_cdf(1 - s.false_alarm_rate / (3 * checks))
-        prior = [upper_quantile([value for item, value in batch.items() if item != client],
-                                s.false_alarm_rate)
-                 for batch in self.calibration
-                 if any(item != client for item in batch)]
-        return max(base, median(prior)) if prior else base
+        # Score maxima already cover both components and all probes in a cycle.
+        # Match probe counts, exclude the target, and use only previous cycles.
+        prior = [value for batch, batch_checks in zip(self.calibration, self.calibration_checks)
+                 if batch_checks == checks for item, value in batch.items() if item != client]
+        return upper_quantile(prior, s.false_alarm_rate)
 
     def scale(self, values: list[float], component: int) -> tuple[float, float, float]:
         s = self.settings
@@ -112,8 +128,8 @@ class V13Detector:
         prior = self.personal.get(client, [])
         if len(prior) < self.settings.personal_min_cycles:
             return False
-        # Only earlier non-joint cycles qualify this baseline. A persistently
-        # joint-anomalous attacker cannot certify itself by repetition.
+        # Only earlier fully clear, calibrated cycles qualify this baseline.
+        # Stability can weaken confirmation, never erase the population screen.
         for component in (0, 1):
             values = [item[component] for item in prior]
             center = median(values)
@@ -151,10 +167,11 @@ class V13Detector:
         )
         results: dict[int, list[DetectionResult]] = {}
         residuals: dict[int, list[tuple[float, float]]] = {}
-        signatures: dict[int, list[str]] = {}
+        signatures: dict[int, list[set[str]]] = {}
         scores: dict[int, float] = {}
         current_scales: list[tuple[float, float]] = []
         self.last_cutoffs = {client: self.cutoff(client, checks) for client in active_clients}
+        calibrated = all(math.isfinite(value) for value in self.last_cutoffs.values())
         for trap, batch in by_trap.items():
             for client, index in batch.items():
                 norm = coverage_norms[client][index]
@@ -183,11 +200,15 @@ class V13Detector:
                 cutoff = self.last_cutoffs[client]
                 nf, pf = abs(norm_z) > cutoff, profile_z > cutoff
                 joint = nf and pf
-                signature = ("norm_high" if norm_z > 0 else "norm_low") if joint else ""
+                signature = set()
+                if nf:
+                    signature.add("norm_high" if norm_z > 0 else "norm_low")
+                if pf:
+                    signature.add("profile_high")
                 signatures.setdefault(client, []).append(signature)
                 residuals.setdefault(client, []).append((norm_z, profile_z))
                 scores[client] = max(scores.get(client, 0), abs(norm_z), profile_z)
-                reason = "joint_population_screen" if joint else "weak_population_screen" if nf or pf else None
+                reason = "combined_population_screen" if nf or pf else None
                 result = DetectionResult(nf or pf, 0, None, norm, norm_z,
                                          math.exp(center), mad, None, None, None, reason,
                                          magnitude_flag=nf, profile_flag=pf,
@@ -202,28 +223,33 @@ class V13Detector:
         self.last_reasons = {}
         for client, items in results.items():
             pair = signatures.get(client, [])
-            coherent = checks >= 2 and len(pair) == checks and bool(pair[0]) and len(set(pair)) == 1
+            shared = set.intersection(*pair) if checks >= 2 and len(pair) == checks else set()
+            coherent = bool(shared)
             personal_ok = valid and self.consistent_with_self(
                 client, residuals.get(client, []), self.last_cutoffs[client])
             if personal_ok:
-                items = [replace(item, flagged=False, joint_flag_count=0,
-                                 reason="within_personal_baseline")
+                items = [replace(item, reason="personal_consistent_population_screen")
                          if item.reason != "zero_update" else item for item in items]
                 results[client] = items
                 combined[client] = combine_coverage_checks(items)
             strong[client] = coherent and not personal_ok
             flags[client] = sum(item.flagged and item.reason != "zero_update" for item in items)
-            self.last_reasons[client] = pair[0] if strong[client] else ""
-            if valid and residuals.get(client) and not any(pair) and not any(item.reason == "zero_update" for item in items):
+            self.last_reasons[client] = "|".join(sorted(shared if strong[client] else set().union(*pair)))
+            if (valid and calibrated and residuals.get(client) and not any(pair)
+                    and not any(item.reason == "zero_update" for item in items)):
                 history = self.personal.setdefault(client, [])
                 history.append(tuple(median(item[k] for item in residuals[client]) for k in (0, 1)))
                 del history[:-s.personal_window]
-            if valid and flags[client] == 0 and scores.get(client) is not None:
+            # Keep unscreened/flagged peer scores alike for calibration. Keeping
+            # only passing scores truncates the null tail and biases thresholds.
+            if valid and scores.get(client) is not None:
                 eligible_calibration[client] = scores[client]
         if valid:
             # Commit only after all clients have been judged against prior state.
             self.calibration.append(eligible_calibration)
+            self.calibration_checks.append(checks)
             del self.calibration[:-s.calibration_cycles]
+            del self.calibration_checks[:-s.calibration_cycles]
             if current_scales:
                 self.scales.append(tuple(median(item[k] for item in current_scales) for k in (0, 1)))
                 del self.scales[:-s.calibration_cycles]
@@ -235,7 +261,7 @@ class V13Detector:
             "zero_counts": {client: sum(item.reason == "zero_update" for item in items)
                             for client, items in results.items()},
             "decision_rounds": {client: max(coverage_observation_rounds[client]) for client in results},
-            "reference_outliers": set(), "reference_valid": valid,
+            "reference_outliers": set(), "reference_valid": valid and calibrated,
             "coherent_strong": strong, "cycle_scores": scores,
             "frozen_reference_ids": set(active_clients), "norm_scales": [], "profile_scales": [],
             "cutoff": max(self.last_cutoffs.values(), default=0),
@@ -246,16 +272,25 @@ class V13Detector:
         s = self.settings
         recent = [item for item in self.evidence.get(client, [])
                   if item[0] > self.cycle - s.evidence_window]
+        pending = [item for item in self.pending.get(client, [])
+                   if item[0] > self.cycle - s.evidence_window]
+        if failed_probes:
+            pending.append((self.cycle, self.last_reasons.get(client, "screen")))
+        self.pending[client] = pending
         if coherent_strong:
             signature = self.last_reasons.get(client, "")
-            # A clean/weak intervening cycle invalidates consecutive confirmation.
-            if not recent or recent[-1] != (self.cycle - 1, signature):
-                recent = []
             recent.append((self.cycle, signature))
-        else:
-            recent = []
         self.evidence[client] = recent
-        count = len(recent)
+        # Retain suspicion for follow-up, but only a consecutive suffix sharing
+        # one direction/component can confirm removal. No alpha-squared claim.
+        shared = set(self.last_reasons.get(client, "").split("|")) - {""}
+        count = 0
+        if coherent_strong:
+            for expected, (cycle, signature) in enumerate(reversed(recent)):
+                shared &= set(signature.split("|"))
+                if cycle != self.cycle - expected or not shared:
+                    break
+                count += 1
         remove = (coherent_strong and count >= s.strong_cycles_for_removal
                   and -s.strong_cost * count <= s.removal_score)
         next_clean = clean_cycles + 1 if failed_probes == 0 else 0
@@ -276,10 +311,14 @@ class V13Detector:
                 self.cooldowns[client] = s.cooldown_cycles
             elif cooldown:
                 self.cooldowns[client] = cooldown - 1
-            # Unconfirmed evidence cannot survive a release deadline.
-            recent = []
-            self.evidence[client] = []
+            # Participation release does not certify innocence. Retained records
+            # expire by age and trigger follow-up; they cannot confirm across gaps.
             count = 0
         self.ages[client] = age
         return CycleTransition(next_role, -s.strong_cost * count, next_clean, count,
                                max(0, count - 1), rehabilitated, remove)
+
+    def has_pending_evidence(self, active_clients: set[int]) -> bool:
+        return any(cycle > self.cycle - self.settings.evidence_window
+                   for client, records in self.pending.items() if client in active_clients
+                   for cycle, _ in records)

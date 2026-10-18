@@ -1,0 +1,36 @@
+\begin{figure*}[tp]\centering\begin{tikzpicture}
+\begin{groupplot}[group style={group size=2 by 1,horizontal sep=1.6cm},
+width=0.43\textwidth,height=6.2cm,
+grid=major,grid style={black!8},axis line style={black!35},
+tick label style={font=\scriptsize},label style={font=\small},title style={font=\small},
+legend style={font=\scriptsize,draw=none},scaled y ticks=false]
+\nextgroupplot[title={MNIST},ybar stacked,bar width=19pt,ymin=0,ylabel={Seconds per round},xtick={1,2,3,4},xticklabels={Ours 1--10,STD 1--10,Ours 1--100,STD 1--100},xticklabel style={rotate=23,anchor=east},enlarge x limits=0.16,legend to name=timing-segments-legend,legend columns=3]
+\addplot[fill=blue!65!black,draw=white] table[x=x,y=honest_training_seconds] {\TimingDataDir/segments_mnist.dat};
+\addlegendentry{Client training}
+\addplot[fill=cyan!65!black,draw=white] table[x=x,y=fabrication_seconds] {\TimingDataDir/segments_mnist.dat};
+\addlegendentry{Simulated FR response}
+\addplot[fill=teal!75!black,draw=white] table[x=x,y=aggregation_seconds] {\TimingDataDir/segments_mnist.dat};
+\addlegendentry{Server aggregation}
+\addplot[fill=yellow!70!orange,draw=white] table[x=x,y=evaluation_seconds] {\TimingDataDir/segments_mnist.dat};
+\addlegendentry{Global evaluation}
+\addplot[fill=violet!70,draw=white] table[x=x,y=preparation_seconds] {\TimingDataDir/segments_mnist.dat};
+\addlegendentry{Update preparation}
+\addplot[fill=riderorange,draw=white] table[x=x,y=fit_seconds] {\TimingDataDir/segments_mnist.dat};
+\addlegendentry{Detector fitting}
+\addplot[fill=red!70!black,draw=white] table[x=x,y=score_decision_seconds] {\TimingDataDir/segments_mnist.dat};
+\addlegendentry{Scoring + flag decision}
+\addplot[fill=black!45,draw=white] table[x=x,y=unsegmented_seconds] {\TimingDataDir/segments_mnist.dat};
+\addlegendentry{Ours: undivided round total}
+\nextgroupplot[title={CIFAR-10},ybar stacked,bar width=19pt,ymin=0,ylabel={Seconds per round},xtick={1,2,3,4},xticklabels={Ours 1--10,STD 1--10,Ours 1--100,STD 1--100},xticklabel style={rotate=23,anchor=east},enlarge x limits=0.16]
+\addplot[fill=blue!65!black,draw=white] table[x=x,y=honest_training_seconds] {\TimingDataDir/segments_cifar10.dat};
+\addplot[fill=cyan!65!black,draw=white] table[x=x,y=fabrication_seconds] {\TimingDataDir/segments_cifar10.dat};
+\addplot[fill=teal!75!black,draw=white] table[x=x,y=aggregation_seconds] {\TimingDataDir/segments_cifar10.dat};
+\addplot[fill=yellow!70!orange,draw=white] table[x=x,y=evaluation_seconds] {\TimingDataDir/segments_cifar10.dat};
+\addplot[fill=violet!70,draw=white] table[x=x,y=preparation_seconds] {\TimingDataDir/segments_cifar10.dat};
+\addplot[fill=riderorange,draw=white] table[x=x,y=fit_seconds] {\TimingDataDir/segments_cifar10.dat};
+\addplot[fill=red!70!black,draw=white] table[x=x,y=score_decision_seconds] {\TimingDataDir/segments_cifar10.dat};
+\addplot[fill=black!45,draw=white] table[x=x,y=unsegmented_seconds] {\TimingDataDir/segments_cifar10.dat};
+\end{groupplot}\end{tikzpicture}
+\par\ref{timing-segments-legend}
+\caption{Timing breakdown: non-IID FR3, seed 42, 100 initial clients, 40\% free riders. STD-DAGMM segments are measured; our gray bars are UNDIVIDED totals, not zero-cost detection. Ours 1--10 is warm-up only; ours 1--100 includes probing and removal. STD 1--100 is the mean of 100 actually executed rounds; first-ten-round bars use the first ten observations of these full runs, not the older pilot. Different trajectories, timer coverage and host load prevent a causal speedup claim.}\label{fig:timing-segments}
+\end{figure*}

@@ -1,0 +1,150 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=1.8cm]{geometry}
+\usepackage{booktabs,pgfplots,placeins}
+\usepackage[hidelinks]{hyperref}
+\usepgfplotslibrary{groupplots}
+\pgfplotsset{compat=1.18}
+\definecolor{riderorange}{HTML}{D66B27}
+\title{MNIST and CIFAR-10: native-workflow timing comparison}
+\author{}\date{18 October 2026}
+\makeatletter\setlength{\@fptop}{0pt}\makeatother
+\newcommand{\TimingDataDir}{../../result_check/paper_version_staging/versions/v06_v15_4_full_study/generated/timing}
+\begin{document}\maketitle
+Non-IID, seed 42, 100 initial clients, 40\% FR3. Our v15.4 data: 100 completed rounds per dataset. STD-DAGMM: 100 completed rounds per dataset, five fresh fitting epochs each, no removals. These totals are measured, not projected. Components absent from historical logs are not estimated. Network communication was not measured. Different native trajectories, hardware load, local attacker evaluation and timer boundaries preclude a causal speedup comparison. The CIFAR detector encountered near-zero available RAM, so paging may affect its timings; paging was not measured.
+\begin{table}[!ht]\centering\footnotesize
+\caption{Measured STD-DAGMM component times (seconds per round, mean $\pm$ sample SD, 100 rounds per dataset).}\label{tab:std-segments}
+\begin{tabular}{lrr}\toprule Component & MNIST & CIFAR-10 \\ \midrule
+Client training & 33.986 $\pm$ 1.539 & 76.208 $\pm$ 4.164 \\
+Simulated FR response & 0.062 $\pm$ 0.006 & 0.255 $\pm$ 0.055 \\
+Server aggregation & 0.042 $\pm$ 0.004 & 0.189 $\pm$ 0.043 \\
+Global evaluation & 2.144 $\pm$ 0.073 & 4.547 $\pm$ 0.227 \\
+Update preparation & 0.045 $\pm$ 0.004 & 0.127 $\pm$ 0.015 \\
+Detector fitting & 13.629 $\pm$ 0.467 & 45.029 $\pm$ 1.671 \\
+Detector scoring & 0.278 $\pm$ 0.011 & 0.856 $\pm$ 0.035 \\
+Flag decision & 0.000 $\pm$ 0.000 & 0.027 $\pm$ 0.024 \\
+All detector work & 13.952 $\pm$ 0.476 & 46.040 $\pm$ 1.695 \\
+Combined compute & 50.186 $\pm$ 1.943 & 127.239 $\pm$ 5.478 \\
+\bottomrule\end{tabular}
+\par\smallskip\begin{minipage}{0.96\textwidth}\scriptsize Our historical training, aggregation, detection and trap-generation components: not separately recorded. Network transmission: not measured in either local simulator. STD has no traps. All detector work includes preparation, fitting, scoring and decisions; it overlaps those table rows and must not be added a second time.\end{minipage}\end{table}
+\begin{table}[!ht]\centering\footnotesize
+\caption{Native-workflow elapsed compute, not a controlled speedup experiment. ``Projected'' rows are estimates.}\label{tab:timing-horizons}
+\begin{tabular}{llrrr}\toprule Dataset & Workflow / horizon & Rounds & Mean s/round & Sum (min) \\ \midrule
+MNIST & Ours, measured warm-up & 10 & 37.00 & 6.17 \\
+MNIST & STD, measured & 10 & 53.22 & 8.87 \\
+MNIST & Ours, measured full horizon & 100 & 34.41 & 57.35 \\
+MNIST & STD, measured full horizon & 100 & 50.19 & 83.64 \\
+CIFAR-10 & Ours, measured warm-up & 10 & 117.76 & 19.63 \\
+CIFAR-10 & STD, measured & 10 & 125.23 & 20.87 \\
+CIFAR-10 & Ours, measured full horizon & 100 & 84.85 & 141.41 \\
+CIFAR-10 & STD, measured full horizon & 100 & 127.24 & 212.06 \\
+\bottomrule\end{tabular}\end{table}
+\begin{table}[!ht]\centering\footnotesize
+\caption{Our 100 measured rounds grouped by events. Within-category mean is not detector-only overhead; amortized contribution is category sum / 100.}\label{tab:timing-phases}
+\begin{tabular}{llrrr}\toprule Dataset & Round category & Count & Within-category mean (s) & Contribution (s/round) \\ \midrule
+MNIST & Warm-up & 10 & 37.00 & 3.70 \\
+MNIST & Probe without cycle decision & 27 & 34.29 & 9.26 \\
+MNIST & Full-cycle decision & 3 & 34.45 & 1.03 \\
+MNIST & Single audit & 6 & 33.95 & 2.04 \\
+MNIST & Ordinary & 54 & 34.04 & 18.38 \\
+CIFAR-10 & Warm-up & 10 & 117.76 & 11.78 \\
+CIFAR-10 & Probe without cycle decision & 63 & 82.04 & 51.68 \\
+CIFAR-10 & Full-cycle decision & 7 & 84.26 & 5.90 \\
+CIFAR-10 & Single audit & 2 & 76.76 & 1.54 \\
+CIFAR-10 & Ordinary & 18 & 77.51 & 13.95 \\
+\bottomrule\end{tabular}\end{table}
+
+\FloatBarrier
+\clearpage
+\begin{figure}[!ht]\centering\begin{tikzpicture}
+\begin{groupplot}[group style={group size=2 by 1,horizontal sep=1.6cm},
+width=0.43\textwidth,height=6.2cm,
+grid=major,grid style={black!8},axis line style={black!35},
+tick label style={font=\scriptsize},label style={font=\small},title style={font=\small},
+legend style={font=\scriptsize,draw=none},scaled y ticks=false]
+\nextgroupplot[title={MNIST},ybar stacked,bar width=19pt,ymin=0,ylabel={Seconds per round},xtick={1,2,3,4},xticklabels={Ours 1--10,STD 1--10,Ours 1--100,STD 1--100},xticklabel style={rotate=23,anchor=east},enlarge x limits=0.16,legend to name=timing-segments-legend,legend columns=3]
+\addplot[fill=blue!65!black,draw=white] table[x=x,y=honest_training_seconds] {\TimingDataDir/segments_mnist.dat};
+\addlegendentry{Client training}
+\addplot[fill=cyan!65!black,draw=white] table[x=x,y=fabrication_seconds] {\TimingDataDir/segments_mnist.dat};
+\addlegendentry{Simulated FR response}
+\addplot[fill=teal!75!black,draw=white] table[x=x,y=aggregation_seconds] {\TimingDataDir/segments_mnist.dat};
+\addlegendentry{Server aggregation}
+\addplot[fill=yellow!70!orange,draw=white] table[x=x,y=evaluation_seconds] {\TimingDataDir/segments_mnist.dat};
+\addlegendentry{Global evaluation}
+\addplot[fill=violet!70,draw=white] table[x=x,y=preparation_seconds] {\TimingDataDir/segments_mnist.dat};
+\addlegendentry{Update preparation}
+\addplot[fill=riderorange,draw=white] table[x=x,y=fit_seconds] {\TimingDataDir/segments_mnist.dat};
+\addlegendentry{Detector fitting}
+\addplot[fill=red!70!black,draw=white] table[x=x,y=score_decision_seconds] {\TimingDataDir/segments_mnist.dat};
+\addlegendentry{Scoring + flag decision}
+\addplot[fill=black!45,draw=white] table[x=x,y=unsegmented_seconds] {\TimingDataDir/segments_mnist.dat};
+\addlegendentry{Ours: undivided round total}
+\nextgroupplot[title={CIFAR-10},ybar stacked,bar width=19pt,ymin=0,ylabel={Seconds per round},xtick={1,2,3,4},xticklabels={Ours 1--10,STD 1--10,Ours 1--100,STD 1--100},xticklabel style={rotate=23,anchor=east},enlarge x limits=0.16]
+\addplot[fill=blue!65!black,draw=white] table[x=x,y=honest_training_seconds] {\TimingDataDir/segments_cifar10.dat};
+\addplot[fill=cyan!65!black,draw=white] table[x=x,y=fabrication_seconds] {\TimingDataDir/segments_cifar10.dat};
+\addplot[fill=teal!75!black,draw=white] table[x=x,y=aggregation_seconds] {\TimingDataDir/segments_cifar10.dat};
+\addplot[fill=yellow!70!orange,draw=white] table[x=x,y=evaluation_seconds] {\TimingDataDir/segments_cifar10.dat};
+\addplot[fill=violet!70,draw=white] table[x=x,y=preparation_seconds] {\TimingDataDir/segments_cifar10.dat};
+\addplot[fill=riderorange,draw=white] table[x=x,y=fit_seconds] {\TimingDataDir/segments_cifar10.dat};
+\addplot[fill=red!70!black,draw=white] table[x=x,y=score_decision_seconds] {\TimingDataDir/segments_cifar10.dat};
+\addplot[fill=black!45,draw=white] table[x=x,y=unsegmented_seconds] {\TimingDataDir/segments_cifar10.dat};
+\end{groupplot}\end{tikzpicture}
+\par\ref{timing-segments-legend}
+\caption{Timing breakdown: non-IID FR3, seed 42, 100 initial clients, 40\% free riders. STD-DAGMM segments are measured; our gray bars are UNDIVIDED totals, not zero-cost detection. Ours 1--10 is warm-up only; ours 1--100 includes probing and removal. STD 1--100 is the mean of 100 actually executed rounds; first-ten-round bars use the first ten observations of these full runs, not the older pilot. Different trajectories, timer coverage and host load prevent a causal speedup claim.}\label{fig:timing-segments}
+\end{figure}
+
+\FloatBarrier
+\clearpage
+\begin{figure}[!ht]\centering\begin{tikzpicture}
+\begin{groupplot}[group style={group size=2 by 1,horizontal sep=1.6cm},
+width=0.43\textwidth,height=5.8cm,
+grid=major,grid style={black!8},axis line style={black!35},
+tick label style={font=\scriptsize},label style={font=\small},title style={font=\small},
+legend style={font=\scriptsize,draw=none},scaled y ticks=false]
+\nextgroupplot[title={MNIST: ours, 100 measured rounds},ybar stacked,bar width=45pt,ymin=0,ylabel={Amortized seconds per round},xtick={1},xticklabels={Sum / 100},xmin=0.3,xmax=1.7,legend to name=timing-phase-legend,legend columns=3]
+\addplot[fill=black!35,draw=white] table[x=x,y=warmup] {\TimingDataDir/phases_mnist.dat};
+\addlegendentry{Warm-up}
+\addplot[fill=blue!60,draw=white] table[x=x,y=probe] {\TimingDataDir/phases_mnist.dat};
+\addlegendentry{Probe without cycle decision}
+\addplot[fill=riderorange,draw=white] table[x=x,y=full_cycle] {\TimingDataDir/phases_mnist.dat};
+\addlegendentry{Full-cycle decision}
+\addplot[fill=violet!65,draw=white] table[x=x,y=single_audit] {\TimingDataDir/phases_mnist.dat};
+\addlegendentry{Single audit}
+\addplot[fill=teal!65,draw=white] table[x=x,y=ordinary] {\TimingDataDir/phases_mnist.dat};
+\addlegendentry{Ordinary}
+\nextgroupplot[title={CIFAR-10: ours, 100 measured rounds},ybar stacked,bar width=45pt,ymin=0,ylabel={Amortized seconds per round},xtick={1},xticklabels={Sum / 100},xmin=0.3,xmax=1.7]
+\addplot[fill=black!35,draw=white] table[x=x,y=warmup] {\TimingDataDir/phases_cifar10.dat};
+\addplot[fill=blue!60,draw=white] table[x=x,y=probe] {\TimingDataDir/phases_cifar10.dat};
+\addplot[fill=riderorange,draw=white] table[x=x,y=full_cycle] {\TimingDataDir/phases_cifar10.dat};
+\addplot[fill=violet!65,draw=white] table[x=x,y=single_audit] {\TimingDataDir/phases_cifar10.dat};
+\addplot[fill=teal!65,draw=white] table[x=x,y=ordinary] {\TimingDataDir/phases_cifar10.dat};
+\end{groupplot}\end{tikzpicture}
+\par\ref{timing-phase-legend}
+\caption{Amortizing our actual 100-round cost: each segment is the TOTAL time of one round category divided by 100. These are event categories, NOT isolated training/detection/trap CPU costs. Full-cycle rounds include training as well as decisions; collection/features can occur in other rounds.}\label{fig:timing-phases}
+\end{figure}
+
+\FloatBarrier
+\clearpage
+\begin{figure}[!ht]\centering\begin{tikzpicture}
+\begin{groupplot}[group style={group size=2 by 1,horizontal sep=1.6cm},
+width=0.43\textwidth,height=6.4cm,
+grid=major,grid style={black!8},axis line style={black!35},
+tick label style={font=\scriptsize},label style={font=\small},title style={font=\small},
+legend style={font=\scriptsize,draw=none},scaled y ticks=false]
+\nextgroupplot[title={MNIST},xmin=0,xmax=101,ymin=0,xlabel={Round},ylabel={Measured seconds},xtick={1,20,40,60,80,100},legend to name=timing-trace-legend,legend columns=3]
+\addplot[black!65,thick] table[x=round,y=seconds] {\TimingDataDir/timeline_mnist.dat};
+\addlegendentry{Ours: actual 100 rounds}
+\addplot[only marks,mark=*,mark size=2pt,color=riderorange] table[x=round,y=seconds] {\TimingDataDir/cycle_rounds_mnist.dat};
+\addlegendentry{Full-cycle decision rounds}
+\addplot[blue!70!black,thick] table[x=round,y=seconds] {\TimingDataDir/std_rounds_mnist.dat};
+\addlegendentry{STD: actual rounds 1--100}
+\nextgroupplot[title={CIFAR-10},xmin=0,xmax=101,ymin=0,xlabel={Round},ylabel={Measured seconds},xtick={1,20,40,60,80,100}]
+\addplot[black!65,thick] table[x=round,y=seconds] {\TimingDataDir/timeline_cifar10.dat};
+\addplot[only marks,mark=*,mark size=2pt,color=riderorange] table[x=round,y=seconds] {\TimingDataDir/cycle_rounds_cifar10.dat};
+\addplot[blue!70!black,thick] table[x=round,y=seconds] {\TimingDataDir/std_rounds_cifar10.dat};
+\end{groupplot}\end{tikzpicture}
+\par\ref{timing-trace-legend}
+\caption{Actual per-round durations. Our 100-round trajectories include changing active-client counts and probing schedules. STD-DAGMM also has 100 measured rounds; neither trace is extrapolated. Markers indicate full-cycle decisions, not their isolated computational cost. Axis scales differ by dataset.}\label{fig:timing-traces}
+\end{figure}
+
+\FloatBarrier
+\end{document}

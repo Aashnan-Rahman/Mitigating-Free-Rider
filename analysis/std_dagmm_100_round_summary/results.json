@@ -1,0 +1,36 @@
+{
+  "measured": true,
+  "rounds_per_dataset": 100,
+  "runs": [
+    {
+      "actual_compute_minutes": 83.64298069833919,
+      "dataset": "mnist",
+      "detector_peak_rss_mib": 1482.33984375,
+      "ever_flagged_free_riders": 0,
+      "ever_flagged_honest": 60,
+      "final_accuracy": 0.9844,
+      "mean_detector_s": 13.952452686999605,
+      "mean_fit_s": 13.629329961000039,
+      "mean_round_compute_s": 50.18578841900351,
+      "mean_scoring_s": 0.27823004999998374,
+      "minimum_system_available_mib": 2329.3046875,
+      "permanent_removals": 0,
+      "rounds": 100
+    },
+    {
+      "actual_compute_minutes": 212.0643647850091,
+      "dataset": "cifar10",
+      "detector_peak_rss_mib": 3749.078125,
+      "ever_flagged_free_riders": 0,
+      "ever_flagged_honest": 60,
+      "final_accuracy": 0.7255,
+      "mean_detector_s": 46.04007650300191,
+      "mean_fit_s": 45.02932439800032,
+      "mean_round_compute_s": 127.23861887100546,
+      "mean_scoring_s": 0.8560371490001853,
+      "minimum_system_available_mib": 0.140625,
+      "permanent_removals": 0,
+      "rounds": 100
+    }
+  ]
+}

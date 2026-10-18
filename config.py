@@ -68,6 +68,21 @@ class ExperimentConfig:
     profile_mad_floor: float = 0.01
     full_participation: bool = True
     seed: int = 42
+    paired_measurement_only: bool = False
+    preliminary_diagonal_decisions: bool = False
+    v15_cycle_rounds: int = 10
+    v15_audit_interval_rounds: int = 10
+    v15_candidate_review_cycles: int = 2
+    v15_candidate_cooldown_audits: int = 2
+    paired_shadow_calibration: str | None = None
+    paired_shadow_calibration_sha256: str | None = None
+    partition_seed: int | None = None
+    attacker_selection_seed: int | None = None
+    model_seed: int | None = None
+    training_seed: int | None = None
+    schedule_seed: int | None = None
+    trap_seed: int | None = None
+    attack_seed: int | None = None
     output_dir: str = "./results/"
     run_name: str | None = None
     resume_checkpoint: str | None = None
@@ -137,6 +152,35 @@ class ExperimentConfig:
         return Path(self.output_dir) / self.resolved_run_name()
 
     def validate(self) -> None:
+        if self.methodology_version in {"swtcp_v15", "swtcp_v15_1", "swtcp_v15_2", "swtcp_v15_3", "swtcp_v15_4"}:
+            if (self.warmup_rounds != 10 or self.surveillance_groups != 10
+                    or self.v15_cycle_rounds != 10 or self.num_rounds < 30
+                    or self.paired_measurement_only or self.paired_shadow_calibration
+                    or self.v15_audit_interval_rounds < 1
+                    or self.v15_candidate_review_cycles < 1
+                    or self.v15_candidate_cooldown_audits < 0
+                    or self.cycle_strong_cycles_for_removal < 2
+                    or self.cycle_suspect_clean_cycles < 2
+                    or self.cycle_candidate_clean_cycles < 2):
+                raise ValueError("v15 requires 10 warmup, 10-round cycles, 10 groups, >=30 rounds, >=2-cycle confirmation/clearance, no measurement-only/shadow mode.")
+        if self.preliminary_diagonal_decisions and self.methodology_version != "v14_1_preli":
+            raise ValueError("Diagonal screening requires the non-enforcing v14.1 preliminary protocol.")
+        if self.methodology_version == "v14_1_preli" and (
+            self.num_rounds != 20 or self.warmup_rounds != 10 or self.surveillance_groups != 10
+            or not self.paired_measurement_only or self.paired_shadow_calibration or self.num_clients < 10
+        ):
+            raise ValueError("v14.1 preli requires 20 rounds, 10 warmup, 10 groups, measurement-only, no shadow rule.")
+        if self.paired_measurement_only and self.methodology_version not in {"swtcp_v13", "v14_1_preli"}:
+            raise ValueError("Paired measurement requires swtcp_v13.")
+        if self.paired_shadow_calibration and not self.paired_measurement_only:
+            raise ValueError("Shadow scoring requires non-enforcing paired measurement mode.")
+        if self.paired_shadow_calibration_sha256 and not self.paired_shadow_calibration:
+            raise ValueError("A calibration fingerprint requires an artifact path.")
+        for name in ("seed", "partition_seed", "attacker_selection_seed", "model_seed",
+                     "training_seed", "schedule_seed", "trap_seed", "attack_seed"):
+            value = getattr(self, name)
+            if value is not None and (not isinstance(value, int) or value < 0):
+                raise ValueError(f"{name} must be a nonnegative integer.")
         choices = {
             "methodology_version": {
                 "swtcp_v8",
@@ -145,6 +189,12 @@ class ExperimentConfig:
                 "swtcp_v11",
                 "swtcp_v12",
                 "swtcp_v13",
+                "swtcp_v15",
+                "swtcp_v15_1",
+                "swtcp_v15_2",
+                "swtcp_v15_3",
+                "swtcp_v15_4",
+                "v14_1_preli",
                 "frida_loss",
                 "frad_reproduction",
             },

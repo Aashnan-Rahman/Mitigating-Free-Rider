@@ -1,12 +1,39 @@
-param([string]$Plan = "configs\v13_mnist_priority_fr40_plan.json")
+param(
+    [string]$Plan = "configs\v15_4_cifar10_seed42_fr30_plan.json",
+    [string]$Queue = "configs\scheduled_experiment_queue.json"
+)
 
 $ErrorActionPreference = "Stop"
+
+# Native timing queue explicitly enabled by the user takes priority. Keep the
+# existing Task Scheduler principal/credentials/triggers unchanged. Setting
+# auto_resume=false returns this launcher to its legacy plan/queue behavior.
+foreach ($nativeQueueRelative in @('configs\fedavg_cifar10_baseline_seed42_fr30_fr40.json', 'configs\std_dagmm_100_queue.json')) {
+    $nativeQueuePath = Join-Path $PSScriptRoot $nativeQueueRelative
+if (Test-Path -LiteralPath $nativeQueuePath) {
+    $nativeQueueConfig = Get-Content -LiteralPath $nativeQueuePath -Raw | ConvertFrom-Json
+    if ($nativeQueueConfig.auto_resume) {
+        $nativePython = Join-Path $PSScriptRoot '.venv\Scripts\python.exe'
+        Set-Location -LiteralPath $PSScriptRoot
+        New-Item -ItemType Directory -Force -Path (Join-Path $PSScriptRoot 'results') | Out-Null
+        Start-Transcript -Path (Join-Path $PSScriptRoot 'results\std_dagmm_recovery.log') -Append | Out-Null
+        try {
+            & $nativePython (Join-Path $PSScriptRoot 'run_std_dagmm_batch.py') --plan $nativeQueuePath
+            $nativeExitCode = $LASTEXITCODE
+        } finally {
+            Stop-Transcript -ErrorAction SilentlyContinue | Out-Null
+        }
+        exit $nativeExitCode
+    }
+}
+}
 
 $projectRoot = $PSScriptRoot
 $resultsRoot = Join-Path $projectRoot "results"
 $python = Join-Path $projectRoot ".venv\Scripts\python.exe"
 $runner = Join-Path $projectRoot "run_experiments.py"
 $log = Join-Path $resultsRoot "scheduled_resume.log"
+$queuedSequence = $false
 $scheduledBatches = @(
     [pscustomobject]@{
         Label = "v13 priority MNIST IID/non-IID, 40% free riders; hardest cases first"
@@ -67,19 +94,44 @@ $scheduledBatches = @(
 )
 
 if ($Plan) {
-    $planPath = if ([IO.Path]::IsPathRooted($Plan)) { $Plan } else { Join-Path $projectRoot $Plan }
-    $planConfig = Get-Content -LiteralPath $planPath -Raw | ConvertFrom-Json
-    if (-not $planConfig.batch_name) { throw "Recovery requires a fixed batch_name in the plan." }
-    $planResults = if ([IO.Path]::IsPathRooted($planConfig.results_root)) {
-        $planConfig.results_root
-    } else { Join-Path $projectRoot $planConfig.results_root }
-    $scheduledBatches = @([pscustomobject]@{
-        Label = $planConfig.batch_name
-        Plan = $planPath
-        Batch = Join-Path $planResults $planConfig.batch_name
-        GateBatch = $null
-        GateRun = $null
+    $planPath = [IO.Path]::GetFullPath($(if ([IO.Path]::IsPathRooted($Plan)) { $Plan } else { Join-Path $projectRoot $Plan }))
+    $planPaths = @($planPath)
+    if ($Queue) {
+        $queuePath = if ([IO.Path]::IsPathRooted($Queue)) { $Queue } else { Join-Path $projectRoot $Queue }
+        if (Test-Path -LiteralPath $queuePath) {
+            $queueConfig = Get-Content -LiteralPath $queuePath -Raw | ConvertFrom-Json
+            $queuePlans = @($queueConfig.plans | ForEach-Object {
+                [IO.Path]::GetFullPath($(if ([IO.Path]::IsPathRooted($_)) { $_ } else { Join-Path $projectRoot $_ }))
+            })
+            if ($queuePlans.Count -eq 0 -or @($queuePlans | Select-Object -Unique).Count -ne $queuePlans.Count) {
+                throw "Recovery queue must contain nonempty, unique plan paths."
+            }
+            for ($index = 0; $index -lt $queuePlans.Count; $index++) {
+                if ($queuePlans[$index] -eq $planPath) {
+                    $planPaths = @($queuePlans[$index..($queuePlans.Count - 1)])
+                    $queuedSequence = $true
+                    break
+                }
+            }
+        }
+    }
+    $scheduledBatches = @($planPaths | ForEach-Object {
+        $planConfig = Get-Content -LiteralPath $_ -Raw | ConvertFrom-Json
+        if (-not $planConfig.batch_name) { throw "Recovery requires a fixed batch_name in each plan." }
+        $planResults = if ([IO.Path]::IsPathRooted($planConfig.results_root)) {
+            $planConfig.results_root
+        } else { Join-Path $projectRoot $planConfig.results_root }
+        [pscustomobject]@{
+            Label = $planConfig.batch_name
+            Plan = $_
+            Batch = Join-Path $planResults $planConfig.batch_name
+            GateBatch = $null
+            GateRun = $null
+        }
     })
+    if (@($scheduledBatches.Batch | Select-Object -Unique).Count -ne $scheduledBatches.Count) {
+        throw "Recovery queue plans must have distinct batch directories."
+    }
 }
 
 function Test-DetectionGate([string]$Batch, [string]$Run) {
@@ -108,6 +160,11 @@ function Test-BatchComplete([System.IO.DirectoryInfo]$Batch) {
     }
     try {
         $manifest = Get-Content -LiteralPath $manifestPath -Raw | ConvertFrom-Json
+        $statusPath = Join-Path $Batch.FullName "experiment_status.json"
+        if (-not (Test-Path -LiteralPath $statusPath)) { return $false }
+        $status = Get-Content -LiteralPath $statusPath -Raw | ConvertFrom-Json
+        if ($status.state -ne "completed" -or $status.failed_experiments -ne 0 -or
+            @($manifest.experiments).Count -eq 0) { return $false }
         foreach ($experiment in $manifest.experiments) {
             $latestPath = Join-Path $Batch.FullName "$($experiment.id)\latest_results.json"
             if (-not (Test-Path -LiteralPath $latestPath)) {
@@ -124,11 +181,32 @@ function Test-BatchComplete([System.IO.DirectoryInfo]$Batch) {
     }
 }
 
+function Update-PaperWhenReady {
+    # CIFAR publication must not wait for the newly queued MNIST executions.
+    $paperBuilder = Join-Path $projectRoot "build_paper_v5_v15_4.py"
+    if (Test-Path -LiteralPath $paperBuilder) {
+        & $python $paperBuilder --update-if-ready --compile
+        if ($LASTEXITCODE -ne 0) {
+            throw "Paper v5 validation/build failed; recovery will retry without rerunning completed training."
+        }
+    }
+}
+
 Set-Location -LiteralPath $projectRoot
 New-Item -ItemType Directory -Path $resultsRoot -Force | Out-Null
-Start-Transcript -Path $log -Append | Out-Null
+$runnerMutex = [System.Threading.Mutex]::new($false, "Local\MitigatingFreeRiderBatchRunner")
+$ownsRunnerMutex = $false
+$transcriptStarted = $false
 
 try {
+    try { $ownsRunnerMutex = $runnerMutex.WaitOne(0) }
+    catch [System.Threading.AbandonedMutexException] { $ownsRunnerMutex = $true }
+    if (-not $ownsRunnerMutex) {
+        Write-Host "Another scheduled launcher owns the batch-runner lock."
+        exit 0
+    }
+    Start-Transcript -Path $log -Append | Out-Null
+    $transcriptStarted = $true
     if (-not (Test-Path -LiteralPath $python)) {
         throw "Virtual-environment Python was not found: $python"
     }
@@ -145,6 +223,11 @@ try {
     }
 
     foreach ($scheduled in $scheduledBatches) {
+        if (Test-Path -LiteralPath (Join-Path $scheduled.Batch "STOP_REQUESTED")) {
+            Write-Host "Batch stopped by user; automatic resume is blocked: $($scheduled.Label)"
+            if ($queuedSequence) { exit 0 }
+            continue
+        }
         if (-not (Test-DetectionGate $scheduled.GateBatch $scheduled.GateRun)) {
             throw "Validation gate failed or is incomplete before: $($scheduled.Label)"
         }
@@ -152,6 +235,7 @@ try {
             $batchInfo = Get-Item -LiteralPath $scheduled.Batch
             if (Test-BatchComplete $batchInfo) {
                 Write-Host "Scheduled batch is complete: $($scheduled.Label)"
+                Update-PaperWhenReady
                 continue
             }
             Write-Host "Resuming scheduled batch: $($scheduled.Label)"
@@ -163,10 +247,17 @@ try {
         if ($LASTEXITCODE -ne 0) {
             exit $LASTEXITCODE
         }
+        if ($queuedSequence -and -not (Test-BatchComplete (Get-Item -LiteralPath $scheduled.Batch))) {
+            throw "Prerequisite did not complete; later queued batches will not start: $($scheduled.Label)"
+        }
+        Update-PaperWhenReady
     }
 
+    Update-PaperWhenReady
     Write-Host "All scheduled experiments are complete."
     exit 0
 } finally {
-    Stop-Transcript -ErrorAction SilentlyContinue | Out-Null
+    if ($transcriptStarted) { Stop-Transcript -ErrorAction SilentlyContinue | Out-Null }
+    if ($ownsRunnerMutex) { $runnerMutex.ReleaseMutex() }
+    $runnerMutex.Dispose()
 }

@@ -1,0 +1,81 @@
+{
+  "batch_id": "std_dagmm_100_seed42_fr40",
+  "completed_experiments": 2,
+  "completed_rounds": 200,
+  "current_experiment": null,
+  "elapsed_basis": "sum of recorded round wall timers, excluding downtime and checkpoint publication",
+  "elapsed_seconds": 18940.773385099965,
+  "estimated_remaining_seconds": 0,
+  "experiments": [
+    {
+      "completed_rounds": 100,
+      "config": {
+        "attack_type": "FR3",
+        "dataset": "mnist",
+        "distribution": "noniid",
+        "free_rider_pct": 0.4,
+        "methodology_version": "std_dagmm_native_observational",
+        "num_clients": 100,
+        "num_rounds": 100,
+        "seed": 42
+      },
+      "id": "std_dagmm_mnist_noniid_FR3_seed42",
+      "progress": {
+        "active_clients": 100,
+        "completed_clients": 0,
+        "detector_time_seconds": "14.00637740001548",
+        "device": "cpu",
+        "fit_seconds": "13.685831700000563",
+        "flagged_clients": 22,
+        "global_accuracy": "0.9844",
+        "inference_seconds": "0.2767661000107182",
+        "methodology_version": "std_dagmm_native_observational",
+        "phase": "completed",
+        "process_rss_mb": "759.625",
+        "round": 100,
+        "round_time_seconds": "49.64970090004499",
+        "total_rounds": 100,
+        "working_round": 100
+      },
+      "state": "completed"
+    },
+    {
+      "completed_rounds": 100,
+      "config": {
+        "attack_type": "FR3",
+        "dataset": "cifar10",
+        "distribution": "noniid",
+        "free_rider_pct": 0.4,
+        "methodology_version": "std_dagmm_native_observational",
+        "num_clients": 100,
+        "num_rounds": 100,
+        "seed": 42
+      },
+      "id": "std_dagmm_cifar10_noniid_FR3_seed42",
+      "progress": {
+        "active_clients": 100,
+        "completed_clients": 0,
+        "detector_time_seconds": "47.106383099991945",
+        "device": "cpu",
+        "fit_seconds": "46.102486599993426",
+        "flagged_clients": 20,
+        "global_accuracy": "0.7255",
+        "inference_seconds": "0.8524746000039158",
+        "methodology_version": "std_dagmm_native_observational",
+        "phase": "completed",
+        "process_rss_mb": "1813.4921875",
+        "round": 100,
+        "round_time_seconds": "129.63643009998486",
+        "total_rounds": 100,
+        "working_round": 100
+      },
+      "state": "completed"
+    }
+  ],
+  "failed_experiments": 0,
+  "started_at": "2026-10-17T21:29:52.537680+00:00",
+  "state": "completed",
+  "total_experiments": 2,
+  "total_rounds": 200,
+  "updated_at": "2026-10-18T03:35:39.057021+00:00"
+}

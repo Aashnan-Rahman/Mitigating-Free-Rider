@@ -1,0 +1,58 @@
+{
+  "created_at_utc": "2026-10-17T19:39:41.530375+00:00",
+  "implementation_sha256": {
+    "benchmark_mnist_std_dagmm.py": "75f1dca883669d6b6732d630af7fe2a707cb03c27fd322bf3b249bd844fd49c9",
+    "comparison\\std_dagmm.py": "2481d2067576eaa4efe1a104d951fda56d55fc40e92680a601eaa74931e0c228",
+    "models\\architectures.py": "c631e20aa93a810d8612c5f740d1f54294a441a72134acad494d5b37e3608e43",
+    "server\\diagonal_decision.py": "5b103ab09cd11b749d9478e2661953db27aae72ef41671891ae24715ff872224",
+    "server\\model_fingerprint.py": "3b596e2780fd405c60a5ca8c0fae33bdcd79921b5e1fdba7134a8a66b24df726",
+    "server\\v15_certificate_memory.py": "bd678fc1c7fd3d279836bf37f55667916bf87cf7567fe5f329bc33b88ebd4092",
+    "server\\v15_evidence.py": "ac51b13801862771031798e4fbde86b54fd0101774f11a841489384605143e92",
+    "server\\v15_protocol.py": "d9a712617554e309ddb6db1e12f1ea5feb20f0860c57432efb3e80803a64a4aa",
+    "server\\v15_strict_norm.py": "65e51eaff541637159517bd27da9ab45c27fba6f519858b27c400ac53ab82833",
+    "train.py": "dc2172dd5ed0f7400cfb4962c61d1587bc195d24d99a06e233a3e8ea9e162d95"
+  },
+  "initial_available_ram_gib": 2.9813232421875,
+  "limitations": [
+    "Synthetic full-sized unlabelled CPU workload; NOT MNIST training or detection accuracy.",
+    "Paired comparison uses 200 responses (two batches of 100), not one deployment round.",
+    "Ours includes features, scoring and first-cycle transition; excludes scheduling/trap generation/logging.",
+    "STD online assumes a fitted detector; fit+score reports fresh 5-epoch fitting, not verified convergence.",
+    "RSS is sampled every 20ms; Python heaps/allocators differ; peak includes untimed warmup.",
+    "No matched federated baseline, so no overall FL overhead percentage can be asserted."
+  ],
+  "logical_cpus": 12,
+  "physical_cpus": 6,
+  "platform": "Windows-10-10.0.26200-SP0",
+  "processor": "Intel64 Family 6 Model 158 Stepping 10, GenuineIntel",
+  "python": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+  "settings": {
+    "batch_size": 20,
+    "clients": 100,
+    "epochs": 5,
+    "output": "E:\\New Projects\\Mitigating-Free-Rider\\analysis\\mnist_std_dagmm_pilot_seed42",
+    "repeats": 3,
+    "seed": 42,
+    "threads": 6,
+    "worker": null
+  },
+  "sources": [
+    "https://arxiv.org/pdf/1911.12560",
+    "https://arxiv.org/html/2410.05020v2"
+  ],
+  "state": "completed",
+  "summary": {
+    "denominator_note": "No matched no-detector federated run was measured; do not divide by old round-time logs.",
+    "ours_fit_plus_score_time_reduction_percent": 96.76981218438098,
+    "ours_online_time_reduction_percent": -18.86781234208943,
+    "ours_paired_batch_seconds": 0.8796607999829575,
+    "ours_percent_of_std_fit_plus_score": 3.2301878156190074,
+    "ours_percent_of_std_online": 118.86781234208942,
+    "overall_federated_round_overhead_percent": null,
+    "std_paired_fit_plus_score_seconds": 27.232497000004514,
+    "std_paired_online_seconds": 0.7400328000076115
+  },
+  "torch": "2.14.0+cpu",
+  "total_ram_gib": 11.8009033203125,
+  "wall_seconds": 103.56285709999793
+}

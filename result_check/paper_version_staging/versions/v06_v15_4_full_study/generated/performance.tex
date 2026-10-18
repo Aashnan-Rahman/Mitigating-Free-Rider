@@ -1,0 +1,19 @@
+\begin{table*}[t]
+\centering\footnotesize\setlength{\tabcolsep}{4pt}
+\caption{Detection quality, attack-specific final test accuracy (\%), and mean round time. Each row groups four attacks; seed 42, 100 rounds.}\label{tab:performance}
+\begin{tabular}{llrrrrrrrr}
+\toprule
+Dataset & Partition & FR (\%) & Precision (\%) & Recall (\%) & FR1 acc. & FR2 acc. & FR3 acc. & FR4 acc. & s/round \\
+\midrule
+MNIST & IID & 30 & 100.00 & 100.00 & 99.02 & 99.00 & 99.00 & 98.82 & 42.99 \\
+MNIST & Non-IID & 30 & 100.00 & 100.00 & 99.01 & 99.00 & 98.98 & 98.96 & 41.28 \\
+MNIST & IID & 40 & 100.00 & 100.00 & 98.90 & 98.91 & 98.85 & 98.77 & 36.43 \\
+MNIST & Non-IID & 40 & 100.00 & 100.00 & 98.96 & 98.96 & 98.93 & 98.98 & 34.57 \\
+CIFAR-10 & IID & 30 & 100.00 & 100.00 & 78.07 & 77.93 & 78.17 & 78.03 & 101.23 \\
+CIFAR-10 & Non-IID & 30 & 100.00 & 100.00 & 75.80 & 75.58 & 75.36 & 75.78 & 97.15 \\
+CIFAR-10 & IID & 40 & 100.00 & 100.00 & 77.46 & 77.65 & 77.27 & 77.36 & 90.66 \\
+CIFAR-10 & Non-IID & 40 & 100.00 & 100.00 & 75.28 & 75.43 & 74.89 & 75.14 & 79.46 \\
+\bottomrule
+\end{tabular}
+\par\smallskip\begin{minipage}{0.96\textwidth}\scriptsize Precision/recall pool permanent removals over FR1--FR4; accuracy measures the global model, not the detector. Time averages the four logged mean round times. Detailed counts and completion rounds are retained in Appendix A.\end{minipage}
+\end{table*}

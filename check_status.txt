@@ -126,7 +126,18 @@ function Show-Status {
             Write-Host "Accuracy:        $($progress.global_accuracy)"
             Write-Host "Loss:            $($progress.global_loss)"
             Write-Host "Active clients:  $($progress.active_clients)"
-            Write-Host "Suspected:       $($progress.suspected_clients)"
+            if ($progress.methodology_version -in @('std_dagmm_native_observational', 'fedavg_no_detection')) {
+                Write-Host "Working round:   $($progress.working_round)"
+                Write-Host "Responses:       $($progress.completed_clients) / $($progress.active_clients)"
+                if ($progress.methodology_version -eq 'fedavg_no_detection') {
+                    Write-Host "Policy:          No detector/traps/filtering/removal; all responses aggregate"
+                } else {
+                    Write-Host "Flags (not removal): $($progress.flagged_clients)"
+                    Write-Host "Fit / scoring s: $($progress.fit_seconds) / $($progress.inference_seconds)"
+                }
+            } else {
+                Write-Host "Suspected:       $($progress.suspected_clients)"
+            }
             Write-Host "Phase:           $($progress.phase)"
         }
     } else {

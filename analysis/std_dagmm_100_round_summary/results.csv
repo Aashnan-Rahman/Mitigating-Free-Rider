@@ -1,0 +1,3 @@
+dataset,rounds,mean_fit_s,mean_scoring_s,mean_detector_s,mean_round_compute_s,actual_compute_minutes,final_accuracy,ever_flagged_free_riders,ever_flagged_honest,permanent_removals,detector_peak_rss_mib,minimum_system_available_mib
+mnist,100,13.629329961000039,0.27823004999998374,13.952452686999605,50.18578841900351,83.64298069833919,0.9844,0,60,0,1482.33984375,2329.3046875
+cifar10,100,45.02932439800032,0.8560371490001853,46.04007650300191,127.23861887100546,212.0643647850091,0.7255,0,60,0,3749.078125,0.140625

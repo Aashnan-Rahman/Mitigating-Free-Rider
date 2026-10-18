@@ -1,0 +1,38 @@
+{
+  "bins": 10,
+  "bootstrap_confidence": 0.99,
+  "bootstrap_replicates": 1000,
+  "bootstrap_seed": 20261011,
+  "boundaries": [
+    {
+      "lower": 0.7060316183727253,
+      "threshold": 1.8783670410713613,
+      "upper": 1.8783670410713613,
+      "view": "average"
+    },
+    {
+      "lower": 0.6472539941530617,
+      "threshold": 1.797326574133523,
+      "upper": 1.797326574133523,
+      "view": "trap_A"
+    },
+    {
+      "lower": 0.7648092425923885,
+      "threshold": 1.9594075080091997,
+      "upper": 1.9594075080091997,
+      "view": "trap_B"
+    }
+  ],
+  "clients": 100,
+  "enforced": false,
+  "majority_gate": true,
+  "revision": "diagonal_histogram_bootstrap_v1",
+  "score": "profile_z - norm_z",
+  "status": "provisional_split",
+  "valid_clients": 100,
+  "views": [
+    "average",
+    "trap_A",
+    "trap_B"
+  ]
+}

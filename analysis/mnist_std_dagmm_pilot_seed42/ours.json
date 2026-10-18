@@ -1,0 +1,40 @@
+{
+  "clients": 100,
+  "dimensions": 206922,
+  "excludes": "trap generation, scheduling, aggregation, training, transport and research logging",
+  "includes": "norm/profile/fingerprint extraction + exact LOO scores + screen/gates + fresh cycle state transition",
+  "input_batches": 2,
+  "input_payload_mib": 157.86895751953125,
+  "input_sha256": "d4b478a109646fe79ecb37f314f755a9e2d3380ed4704e136b6f9ae36fb9e91c",
+  "memory": {
+    "baseline_rss_mib": 358.66015625,
+    "incremental_sampled_peak_mib": 9.44921875,
+    "minimum_available_ram_mib": 2705.19140625,
+    "peak_sampled_rss_mib": 368.109375,
+    "sample_interval_seconds": 0.02
+  },
+  "method": "ours",
+  "trials": [
+    {
+      "decision_seconds": 0.03196530000423081,
+      "feature_seconds": 0.5262576999957673,
+      "measurement_seconds": 0.3209764999919571,
+      "total_seconds": 0.8791994999919552
+    },
+    {
+      "decision_seconds": 0.032845699999597855,
+      "feature_seconds": 0.5402898000029381,
+      "measurement_seconds": 0.3299808000010671,
+      "total_seconds": 0.9031163000036031
+    },
+    {
+      "decision_seconds": 0.03153609999571927,
+      "feature_seconds": 0.5291840999998385,
+      "measurement_seconds": 0.31894059998739976,
+      "total_seconds": 0.8796607999829575
+    }
+  ],
+  "warmed_up_discarded_trials": 1,
+  "worker_cpu_seconds": 18.015625,
+  "worker_wall_seconds": 3.875803000002634
+}

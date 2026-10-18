@@ -1,0 +1,10 @@
+\begin{table*}[t]\centering\footnotesize
+\caption{Historical whole-process comparison: CIFAR-10, non-IID, 40\%, seed 42, CPU, 100 rounds. Only completed matching v15.3 runs are included.}\label{tab:historical-cost}
+\begin{tabular}{lrrrrrr}\toprule
+ & \multicolumn{2}{c}{Mean s/round} & \multicolumn{2}{c}{Peak RSS (GiB)} & \multicolumn{2}{c}{Execution (min)} \\
+Attack & v15.3 & v15.4 & v15.3 & v15.4 & v15.3 & v15.4 \\ \midrule
+FR2 & 78.32 & 75.80 & 0.78 & 0.78 & 133.06 & 128.91 \\
+FR3 & 85.32 & 84.85 & 1.89 & 2.13 & 163.38 & 160.10 \\
+FR4 & 86.50 & 78.79 & 1.81 & 2.07 & 169.51 & 149.52 \\
+\bottomrule\end{tabular}
+\par\smallskip\begin{minipage}{0.96\textwidth}\scriptsize The unfinished v15.3 FR1 is not reconstructed. Different trajectories, machine load and restarts confound causal overhead claims. These are not isolated detector benchmarks.\end{minipage}\end{table*}

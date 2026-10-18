@@ -1,0 +1,279 @@
+{
+  "batch_name": "v13_paired_shadow_fresh",
+  "results_root": "./results",
+  "defaults": {
+    "methodology_version": "swtcp_v13",
+    "paired_measurement_only": true,
+    "dataset": "mnist",
+    "num_clients": 100,
+    "num_rounds": 40,
+    "warmup_rounds": 10,
+    "free_rider_pct": 0.4,
+    "dirichlet_alpha": 0.5,
+    "seed": 46,
+    "device": "auto",
+    "cycle_target_false_alarm_rate": 0.01,
+    "save_checkpoints": true,
+    "checkpoint_keep_last": 5
+  },
+  "stages": [
+    {
+      "id": "noniid_seed46_control",
+      "id_format": "shadow_{distribution}_{attack_type}_fr{free_rider_percent}_seed{seed}",
+      "matrix": {
+        "distribution": [
+          "noniid"
+        ],
+        "seed": [
+          46
+        ],
+        "attack_type": [
+          "FR4"
+        ],
+        "free_rider_pct": [
+          0
+        ],
+        "paired_shadow_calibration": [
+          "configs/calibration/paired_shadow_mnist_noniid.json"
+        ],
+        "paired_shadow_calibration_sha256": [
+          "95a75d1470126faf78a3d06a509a2f08b9c3c274fa0e7f3a67471792999f2979"
+        ]
+      }
+    },
+    {
+      "id": "noniid_seed46_mixed",
+      "id_format": "shadow_{distribution}_{attack_type}_fr{free_rider_percent}_seed{seed}",
+      "matrix": {
+        "distribution": [
+          "noniid"
+        ],
+        "seed": [
+          46
+        ],
+        "attack_type": [
+          "FR4",
+          "FR3",
+          "FR2",
+          "FR1"
+        ],
+        "free_rider_pct": [
+          0.4
+        ],
+        "paired_shadow_calibration": [
+          "configs/calibration/paired_shadow_mnist_noniid.json"
+        ],
+        "paired_shadow_calibration_sha256": [
+          "95a75d1470126faf78a3d06a509a2f08b9c3c274fa0e7f3a67471792999f2979"
+        ]
+      }
+    },
+    {
+      "id": "noniid_seed47_control",
+      "id_format": "shadow_{distribution}_{attack_type}_fr{free_rider_percent}_seed{seed}",
+      "matrix": {
+        "distribution": [
+          "noniid"
+        ],
+        "seed": [
+          47
+        ],
+        "attack_type": [
+          "FR4"
+        ],
+        "free_rider_pct": [
+          0
+        ],
+        "paired_shadow_calibration": [
+          "configs/calibration/paired_shadow_mnist_noniid.json"
+        ],
+        "paired_shadow_calibration_sha256": [
+          "95a75d1470126faf78a3d06a509a2f08b9c3c274fa0e7f3a67471792999f2979"
+        ]
+      }
+    },
+    {
+      "id": "noniid_seed47_mixed",
+      "id_format": "shadow_{distribution}_{attack_type}_fr{free_rider_percent}_seed{seed}",
+      "matrix": {
+        "distribution": [
+          "noniid"
+        ],
+        "seed": [
+          47
+        ],
+        "attack_type": [
+          "FR4",
+          "FR3",
+          "FR2",
+          "FR1"
+        ],
+        "free_rider_pct": [
+          0.4
+        ],
+        "paired_shadow_calibration": [
+          "configs/calibration/paired_shadow_mnist_noniid.json"
+        ],
+        "paired_shadow_calibration_sha256": [
+          "95a75d1470126faf78a3d06a509a2f08b9c3c274fa0e7f3a67471792999f2979"
+        ]
+      }
+    },
+    {
+      "id": "replay_history1",
+      "id_format": "shadow_{distribution}_{attack_type}_fr{free_rider_percent}_seed{seed}_history1",
+      "matrix": {
+        "distribution": [
+          "noniid"
+        ],
+        "seed": [
+          46
+        ],
+        "attack_type": [
+          "FR4"
+        ],
+        "free_rider_pct": [
+          0.4
+        ],
+        "fr4_history_size": [
+          1
+        ],
+        "paired_shadow_calibration": [
+          "configs/calibration/paired_shadow_mnist_noniid.json"
+        ],
+        "paired_shadow_calibration_sha256": [
+          "95a75d1470126faf78a3d06a509a2f08b9c3c274fa0e7f3a67471792999f2979"
+        ]
+      }
+    },
+    {
+      "id": "replay_history10",
+      "id_format": "shadow_{distribution}_{attack_type}_fr{free_rider_percent}_seed{seed}_history10",
+      "matrix": {
+        "distribution": [
+          "noniid"
+        ],
+        "seed": [
+          46
+        ],
+        "attack_type": [
+          "FR4"
+        ],
+        "free_rider_pct": [
+          0.4
+        ],
+        "fr4_history_size": [
+          10
+        ],
+        "paired_shadow_calibration": [
+          "configs/calibration/paired_shadow_mnist_noniid.json"
+        ],
+        "paired_shadow_calibration_sha256": [
+          "95a75d1470126faf78a3d06a509a2f08b9c3c274fa0e7f3a67471792999f2979"
+        ]
+      }
+    },
+    {
+      "id": "iid_seed46_control",
+      "id_format": "shadow_{distribution}_{attack_type}_fr{free_rider_percent}_seed{seed}",
+      "matrix": {
+        "distribution": [
+          "iid"
+        ],
+        "seed": [
+          46
+        ],
+        "attack_type": [
+          "FR4"
+        ],
+        "free_rider_pct": [
+          0
+        ],
+        "paired_shadow_calibration": [
+          "configs/calibration/paired_shadow_mnist_iid.json"
+        ],
+        "paired_shadow_calibration_sha256": [
+          "6427fca4cb21920b172db4047fe8575c746cf4667cc863b7ca72791fb4400206"
+        ]
+      }
+    },
+    {
+      "id": "iid_seed46_mixed",
+      "id_format": "shadow_{distribution}_{attack_type}_fr{free_rider_percent}_seed{seed}",
+      "matrix": {
+        "distribution": [
+          "iid"
+        ],
+        "seed": [
+          46
+        ],
+        "attack_type": [
+          "FR4",
+          "FR3",
+          "FR2",
+          "FR1"
+        ],
+        "free_rider_pct": [
+          0.4
+        ],
+        "paired_shadow_calibration": [
+          "configs/calibration/paired_shadow_mnist_iid.json"
+        ],
+        "paired_shadow_calibration_sha256": [
+          "6427fca4cb21920b172db4047fe8575c746cf4667cc863b7ca72791fb4400206"
+        ]
+      }
+    },
+    {
+      "id": "iid_seed47_control",
+      "id_format": "shadow_{distribution}_{attack_type}_fr{free_rider_percent}_seed{seed}",
+      "matrix": {
+        "distribution": [
+          "iid"
+        ],
+        "seed": [
+          47
+        ],
+        "attack_type": [
+          "FR4"
+        ],
+        "free_rider_pct": [
+          0
+        ],
+        "paired_shadow_calibration": [
+          "configs/calibration/paired_shadow_mnist_iid.json"
+        ],
+        "paired_shadow_calibration_sha256": [
+          "6427fca4cb21920b172db4047fe8575c746cf4667cc863b7ca72791fb4400206"
+        ]
+      }
+    },
+    {
+      "id": "iid_seed47_mixed",
+      "id_format": "shadow_{distribution}_{attack_type}_fr{free_rider_percent}_seed{seed}",
+      "matrix": {
+        "distribution": [
+          "iid"
+        ],
+        "seed": [
+          47
+        ],
+        "attack_type": [
+          "FR4",
+          "FR3",
+          "FR2",
+          "FR1"
+        ],
+        "free_rider_pct": [
+          0.4
+        ],
+        "paired_shadow_calibration": [
+          "configs/calibration/paired_shadow_mnist_iid.json"
+        ],
+        "paired_shadow_calibration_sha256": [
+          "6427fca4cb21920b172db4047fe8575c746cf4667cc863b7ca72791fb4400206"
+        ]
+      }
+    }
+  ]
+}

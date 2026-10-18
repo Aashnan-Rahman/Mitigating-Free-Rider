@@ -1,0 +1,137 @@
+\begin{figure*}[t]\centering
+\begin{tikzpicture}
+\begin{groupplot}[group style={group size=2 by 2,horizontal sep=1.15cm,vertical sep=1.35cm},
+width=0.44\textwidth,height=3.5cm,xmin=0,xmax=100,ymin=0,ymax=1,
+xlabel={Round},ylabel={Cumulative removal recall},grid=major,legend style={font=\scriptsize},
+tick label style={font=\scriptsize},title style={font=\small}]
+\nextgroupplot[title={30\% IID}]
+\addplot[blue,solid,thick] table[x=round,y=recall] {generated/iid_FR1_p30.dat};
+\addlegendentry{FR1}
+\addplot[red,dashed,thick] table[x=round,y=recall] {generated/iid_FR2_p30.dat};
+\addlegendentry{FR2}
+\addplot[teal,dotted,thick] table[x=round,y=recall] {generated/iid_FR3_p30.dat};
+\addlegendentry{FR3}
+\addplot[orange,dashdotted,thick] table[x=round,y=recall] {generated/iid_FR4_p30.dat};
+\addlegendentry{FR4}
+\nextgroupplot[title={30\% Non-IID}]
+\addplot[blue,solid,thick] table[x=round,y=recall] {generated/noniid_FR1_p30.dat};
+\addlegendentry{FR1}
+\addplot[red,dashed,thick] table[x=round,y=recall] {generated/noniid_FR2_p30.dat};
+\addlegendentry{FR2}
+\addplot[teal,dotted,thick] table[x=round,y=recall] {generated/noniid_FR3_p30.dat};
+\addlegendentry{FR3}
+\addplot[orange,dashdotted,thick] table[x=round,y=recall] {generated/noniid_FR4_p30.dat};
+\addlegendentry{FR4}
+\nextgroupplot[title={40\% IID}]
+\addplot[blue,solid,thick] table[x=round,y=recall] {generated/iid_FR1_p40.dat};
+\addlegendentry{FR1}
+\addplot[red,dashed,thick] table[x=round,y=recall] {generated/iid_FR2_p40.dat};
+\addlegendentry{FR2}
+\addplot[teal,dotted,thick] table[x=round,y=recall] {generated/iid_FR3_p40.dat};
+\addlegendentry{FR3}
+\addplot[orange,dashdotted,thick] table[x=round,y=recall] {generated/iid_FR4_p40.dat};
+\addlegendentry{FR4}
+\nextgroupplot[title={40\% Non-IID}]
+\addplot[blue,solid,thick] table[x=round,y=recall] {generated/noniid_FR1_p40.dat};
+\addlegendentry{FR1}
+\addplot[red,dashed,thick] table[x=round,y=recall] {generated/noniid_FR2_p40.dat};
+\addlegendentry{FR2}
+\addplot[teal,dotted,thick] table[x=round,y=recall] {generated/noniid_FR3_p40.dat};
+\addlegendentry{FR3}
+\addplot[orange,dashdotted,thick] table[x=round,y=recall] {generated/noniid_FR4_p40.dat};
+\addlegendentry{FR4}
+\end{groupplot}\end{tikzpicture}
+\caption{Cumulative removal recall, seed 42. All attacks are retained, including misses; coincident curves may overlap.}
+\end{figure*}
+
+\begin{figure*}[t]\centering
+\begin{tikzpicture}
+\begin{groupplot}[group style={group size=2 by 2,horizontal sep=1.15cm,vertical sep=1.35cm},
+width=0.44\textwidth,height=3.5cm,xmin=0,xmax=100,ymin=0,ymax=1,
+xlabel={Round},ylabel={Honest false-removal rate},grid=major,legend style={font=\scriptsize},
+tick label style={font=\scriptsize},title style={font=\small}]
+\nextgroupplot[title={30\% IID}]
+\addplot[blue,solid,thick] table[x=round,y=fpr] {generated/iid_FR1_p30.dat};
+\addlegendentry{FR1}
+\addplot[red,dashed,thick] table[x=round,y=fpr] {generated/iid_FR2_p30.dat};
+\addlegendentry{FR2}
+\addplot[teal,dotted,thick] table[x=round,y=fpr] {generated/iid_FR3_p30.dat};
+\addlegendentry{FR3}
+\addplot[orange,dashdotted,thick] table[x=round,y=fpr] {generated/iid_FR4_p30.dat};
+\addlegendentry{FR4}
+\nextgroupplot[title={30\% Non-IID}]
+\addplot[blue,solid,thick] table[x=round,y=fpr] {generated/noniid_FR1_p30.dat};
+\addlegendentry{FR1}
+\addplot[red,dashed,thick] table[x=round,y=fpr] {generated/noniid_FR2_p30.dat};
+\addlegendentry{FR2}
+\addplot[teal,dotted,thick] table[x=round,y=fpr] {generated/noniid_FR3_p30.dat};
+\addlegendentry{FR3}
+\addplot[orange,dashdotted,thick] table[x=round,y=fpr] {generated/noniid_FR4_p30.dat};
+\addlegendentry{FR4}
+\nextgroupplot[title={40\% IID}]
+\addplot[blue,solid,thick] table[x=round,y=fpr] {generated/iid_FR1_p40.dat};
+\addlegendentry{FR1}
+\addplot[red,dashed,thick] table[x=round,y=fpr] {generated/iid_FR2_p40.dat};
+\addlegendentry{FR2}
+\addplot[teal,dotted,thick] table[x=round,y=fpr] {generated/iid_FR3_p40.dat};
+\addlegendentry{FR3}
+\addplot[orange,dashdotted,thick] table[x=round,y=fpr] {generated/iid_FR4_p40.dat};
+\addlegendentry{FR4}
+\nextgroupplot[title={40\% Non-IID}]
+\addplot[blue,solid,thick] table[x=round,y=fpr] {generated/noniid_FR1_p40.dat};
+\addlegendentry{FR1}
+\addplot[red,dashed,thick] table[x=round,y=fpr] {generated/noniid_FR2_p40.dat};
+\addlegendentry{FR2}
+\addplot[teal,dotted,thick] table[x=round,y=fpr] {generated/noniid_FR3_p40.dat};
+\addlegendentry{FR3}
+\addplot[orange,dashdotted,thick] table[x=round,y=fpr] {generated/noniid_FR4_p40.dat};
+\addlegendentry{FR4}
+\end{groupplot}\end{tikzpicture}
+\caption{Honest false-removal rate, seed 42. All attacks are retained, including misses; coincident curves may overlap.}
+\end{figure*}
+
+\begin{figure*}[t]\centering
+\begin{tikzpicture}
+\begin{groupplot}[group style={group size=2 by 2,horizontal sep=1.15cm,vertical sep=1.35cm},
+width=0.44\textwidth,height=3.5cm,xmin=0,xmax=100,ymin=0,ymax=1,
+xlabel={Round},ylabel={Global test accuracy},grid=major,legend style={font=\scriptsize},
+tick label style={font=\scriptsize},title style={font=\small}]
+\nextgroupplot[title={30\% IID}]
+\addplot[blue,solid,thick] table[x=round,y=accuracy] {generated/iid_FR1_p30.dat};
+\addlegendentry{FR1}
+\addplot[red,dashed,thick] table[x=round,y=accuracy] {generated/iid_FR2_p30.dat};
+\addlegendentry{FR2}
+\addplot[teal,dotted,thick] table[x=round,y=accuracy] {generated/iid_FR3_p30.dat};
+\addlegendentry{FR3}
+\addplot[orange,dashdotted,thick] table[x=round,y=accuracy] {generated/iid_FR4_p30.dat};
+\addlegendentry{FR4}
+\nextgroupplot[title={30\% Non-IID}]
+\addplot[blue,solid,thick] table[x=round,y=accuracy] {generated/noniid_FR1_p30.dat};
+\addlegendentry{FR1}
+\addplot[red,dashed,thick] table[x=round,y=accuracy] {generated/noniid_FR2_p30.dat};
+\addlegendentry{FR2}
+\addplot[teal,dotted,thick] table[x=round,y=accuracy] {generated/noniid_FR3_p30.dat};
+\addlegendentry{FR3}
+\addplot[orange,dashdotted,thick] table[x=round,y=accuracy] {generated/noniid_FR4_p30.dat};
+\addlegendentry{FR4}
+\nextgroupplot[title={40\% IID}]
+\addplot[blue,solid,thick] table[x=round,y=accuracy] {generated/iid_FR1_p40.dat};
+\addlegendentry{FR1}
+\addplot[red,dashed,thick] table[x=round,y=accuracy] {generated/iid_FR2_p40.dat};
+\addlegendentry{FR2}
+\addplot[teal,dotted,thick] table[x=round,y=accuracy] {generated/iid_FR3_p40.dat};
+\addlegendentry{FR3}
+\addplot[orange,dashdotted,thick] table[x=round,y=accuracy] {generated/iid_FR4_p40.dat};
+\addlegendentry{FR4}
+\nextgroupplot[title={40\% Non-IID}]
+\addplot[blue,solid,thick] table[x=round,y=accuracy] {generated/noniid_FR1_p40.dat};
+\addlegendentry{FR1}
+\addplot[red,dashed,thick] table[x=round,y=accuracy] {generated/noniid_FR2_p40.dat};
+\addlegendentry{FR2}
+\addplot[teal,dotted,thick] table[x=round,y=accuracy] {generated/noniid_FR3_p40.dat};
+\addlegendentry{FR3}
+\addplot[orange,dashdotted,thick] table[x=round,y=accuracy] {generated/noniid_FR4_p40.dat};
+\addlegendentry{FR4}
+\end{groupplot}\end{tikzpicture}
+\caption{Global test accuracy, seed 42. All attacks are retained, including misses; coincident curves may overlap.}
+\end{figure*}

@@ -1,0 +1,27 @@
+\begin{figure*}[tp]\centering\begin{tikzpicture}
+\begin{groupplot}[group style={group size=2 by 1,horizontal sep=1.6cm},
+width=0.43\textwidth,height=5.8cm,
+grid=major,grid style={black!8},axis line style={black!35},
+tick label style={font=\scriptsize},label style={font=\small},title style={font=\small},
+legend style={font=\scriptsize,draw=none},scaled y ticks=false]
+\nextgroupplot[title={MNIST: ours, 100 measured rounds},ybar stacked,bar width=45pt,ymin=0,ylabel={Amortized seconds per round},xtick={1},xticklabels={Sum / 100},xmin=0.3,xmax=1.7,legend to name=timing-phase-legend,legend columns=3]
+\addplot[fill=black!35,draw=white] table[x=x,y=warmup] {\TimingDataDir/phases_mnist.dat};
+\addlegendentry{Warm-up}
+\addplot[fill=blue!60,draw=white] table[x=x,y=probe] {\TimingDataDir/phases_mnist.dat};
+\addlegendentry{Probe without cycle decision}
+\addplot[fill=riderorange,draw=white] table[x=x,y=full_cycle] {\TimingDataDir/phases_mnist.dat};
+\addlegendentry{Full-cycle decision}
+\addplot[fill=violet!65,draw=white] table[x=x,y=single_audit] {\TimingDataDir/phases_mnist.dat};
+\addlegendentry{Single audit}
+\addplot[fill=teal!65,draw=white] table[x=x,y=ordinary] {\TimingDataDir/phases_mnist.dat};
+\addlegendentry{Ordinary}
+\nextgroupplot[title={CIFAR-10: ours, 100 measured rounds},ybar stacked,bar width=45pt,ymin=0,ylabel={Amortized seconds per round},xtick={1},xticklabels={Sum / 100},xmin=0.3,xmax=1.7]
+\addplot[fill=black!35,draw=white] table[x=x,y=warmup] {\TimingDataDir/phases_cifar10.dat};
+\addplot[fill=blue!60,draw=white] table[x=x,y=probe] {\TimingDataDir/phases_cifar10.dat};
+\addplot[fill=riderorange,draw=white] table[x=x,y=full_cycle] {\TimingDataDir/phases_cifar10.dat};
+\addplot[fill=violet!65,draw=white] table[x=x,y=single_audit] {\TimingDataDir/phases_cifar10.dat};
+\addplot[fill=teal!65,draw=white] table[x=x,y=ordinary] {\TimingDataDir/phases_cifar10.dat};
+\end{groupplot}\end{tikzpicture}
+\par\ref{timing-phase-legend}
+\caption{Amortizing our actual 100-round cost: each segment is the TOTAL time of one round category divided by 100. These are event categories, NOT isolated training/detection/trap CPU costs. Full-cycle rounds include training as well as decisions; collection/features can occur in other rounds.}\label{fig:timing-phases}
+\end{figure*}

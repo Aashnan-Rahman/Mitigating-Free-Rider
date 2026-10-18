@@ -31,7 +31,7 @@ def main() -> None:
             print(f"Waiting for status file: {waiting_for}")
         else:
             render(state, status_path)
-            if state.get("state") not in {"running"}:
+            if state.get("state") not in {"running", "recovering"}:
                 break
         if not args.watch:
             break
@@ -66,7 +66,7 @@ def resolve_status_path(explicit: Path | None) -> Path | None:
 
     def rank(path: Path) -> tuple[int, float]:
         state = read_status(path) or {}
-        running = int(state.get("state") == "running")
+        running = int(state.get("state") in {"running", "recovering"})
         try:
             modified = path.stat().st_mtime
         except OSError:
@@ -87,6 +87,8 @@ def render(status: dict, status_path: Path | None = None) -> None:
     print(f"Runs:    {completed}/{total} completed, {failed} failed")
     print(f"Elapsed: {duration(status.get('elapsed_seconds'))}")
     print(f"ETA:     {duration(status.get('estimated_remaining_seconds'))}")
+    if status.get('error'):
+        print(f"Recovery: {status['error']}")
 
     current_id = status.get("current_experiment")
     if current_id:
@@ -117,6 +119,8 @@ def render(status: dict, status_path: Path | None = None) -> None:
         print()
         print(f"Current: {current_id}")
         print(f"Round:   {round_idx}/{rounds} ({percent:.1f}%)")
+        if methodology in {'std_dagmm_native_observational','fedavg_no_detection'}:
+            print(f"Working round: {progress.get('working_round', '-')} | client responses: {progress.get('completed_clients', 0)}/{progress.get('active_clients', '-')} (round completion is checkpointed)")
         phase = str(progress.get("phase", "-"))
         if methodology in {"swtcp_v9", "swtcp_v10", "swtcp_v11", "swtcp_v12", "swtcp_v13"}:
             phase_names = {
@@ -130,11 +134,15 @@ def render(status: dict, status_path: Path | None = None) -> None:
             print(f"Phase:   {phase}")
         print(f"Device:  {progress.get('device', '-')}")
         print(f"Active:  {progress.get('active_clients', '-')}")
-        if phase in {"frida_loss", "frad_reproduction"}:
+        if methodology=='fedavg_no_detection':
+            print('Policy: no detector/traps/filtering/removal; every response aggregates')
+        elif phase in {"frida_loss", "frad_reproduction"} or methodology == 'std_dagmm_native_observational':
             flagged = progress.get(
                 "flagged_clients", progress.get("suspected_clients", "-")
             )
             print(f"Flagged this round: {flagged}")
+            if methodology == 'std_dagmm_native_observational':
+                print('Policy: flags only, no removals')
         elif methodology in {"swtcp_v9", "swtcp_v10", "swtcp_v11", "swtcp_v12", "swtcp_v13"}:
             print(f"Cycle C:  {progress.get('candidate_clients', '-')}")
             print(f"Cycle S:  {progress.get('suspected_clients', '-')}")
@@ -148,6 +156,8 @@ def render(status: dict, status_path: Path | None = None) -> None:
             print(
                 f"Detector:   {format_number(progress.get('detector_time_seconds'), 's')}"
             )
+        if methodology == 'std_dagmm_native_observational':
+            print(f"Fit / score: {format_number(progress.get('fit_seconds'), 's')} / {format_number(progress.get('inference_seconds'), 's')} (last complete round)")
         print(f"Accuracy:   {format_number(progress.get('global_accuracy'), '')}")
         print(f"Loss:       {format_number(progress.get('global_loss'), '')}")
         print(f"RSS:        {format_number(progress.get('process_rss_mb'), ' MB')}")

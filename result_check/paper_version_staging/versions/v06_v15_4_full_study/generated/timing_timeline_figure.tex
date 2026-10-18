@@ -1,0 +1,21 @@
+\begin{figure*}[tp]\centering\begin{tikzpicture}
+\begin{groupplot}[group style={group size=2 by 1,horizontal sep=1.6cm},
+width=0.43\textwidth,height=6.4cm,
+grid=major,grid style={black!8},axis line style={black!35},
+tick label style={font=\scriptsize},label style={font=\small},title style={font=\small},
+legend style={font=\scriptsize,draw=none},scaled y ticks=false]
+\nextgroupplot[title={MNIST},xmin=0,xmax=101,ymin=0,xlabel={Round},ylabel={Measured seconds},xtick={1,20,40,60,80,100},legend to name=timing-trace-legend,legend columns=3]
+\addplot[black!65,thick] table[x=round,y=seconds] {\TimingDataDir/timeline_mnist.dat};
+\addlegendentry{Ours: actual 100 rounds}
+\addplot[only marks,mark=*,mark size=2pt,color=riderorange] table[x=round,y=seconds] {\TimingDataDir/cycle_rounds_mnist.dat};
+\addlegendentry{Full-cycle decision rounds}
+\addplot[blue!70!black,thick] table[x=round,y=seconds] {\TimingDataDir/std_rounds_mnist.dat};
+\addlegendentry{STD: actual rounds 1--100}
+\nextgroupplot[title={CIFAR-10},xmin=0,xmax=101,ymin=0,xlabel={Round},ylabel={Measured seconds},xtick={1,20,40,60,80,100}]
+\addplot[black!65,thick] table[x=round,y=seconds] {\TimingDataDir/timeline_cifar10.dat};
+\addplot[only marks,mark=*,mark size=2pt,color=riderorange] table[x=round,y=seconds] {\TimingDataDir/cycle_rounds_cifar10.dat};
+\addplot[blue!70!black,thick] table[x=round,y=seconds] {\TimingDataDir/std_rounds_cifar10.dat};
+\end{groupplot}\end{tikzpicture}
+\par\ref{timing-trace-legend}
+\caption{Actual per-round durations. Our 100-round trajectories include changing active-client counts and probing schedules. STD-DAGMM also has 100 measured rounds; neither trace is extrapolated. Markers indicate full-cycle decisions, not their isolated computational cost. Axis scales differ by dataset.}\label{fig:timing-traces}
+\end{figure*}

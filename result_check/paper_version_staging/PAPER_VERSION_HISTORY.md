@@ -64,7 +64,105 @@ Date archived: 2026-09-21
 
 Archived files: `versions/v02_introduction_draft/paper.tex`, `paper.pdf`, and `refs.bib`.
 
+## v04 — V8 all-run attack-behavior statistics
+
+Date: 2026-10-08
+
+- New revision based on v2's v8 methodology; v2/v3 archives remain unchanged.
+- Analyze all 67 completed v8 runs across all 32 dataset/partition/share/attack
+  combinations, excluding the 16 baseline-detector entries.
+- Add attack-specific tables for both shares and all four dataset/partition
+  settings, with mean/sample-SD recall, ranges, pooled precision/F1, honest
+  removals, full-detection success counts, conditional completion timing and
+  final model accuracy. Failed runs remain in detection summaries.
+- Add round-20 norm/profile evidence tables and exported score quartiles;
+  explicitly distinguish client summary flags from per-probe joint evidence.
+- Replace best-observed abstract/results/conclusion claims with all-run findings
+  and limitations. Keep later paired/shadow experiments outside this revision.
+- Export per-run and grouped CSVs, configuration checks and source-file hashes.
+- Reproduce using `build_paper_v4_v8_statistics.py`; source/PDF/data live under
+  `versions/v04_v8_behavior_statistics/`.
+- Aggregation unit test passed; PDF compiled with BibTeX and resolved references.
+  Outcome and evidence pages were visually checked for clipping/readability.
+
+## v05 — V15.4 CIFAR-10 fresh-certificate memory
+
+Date: 2026-10-15
+
+- New source and permanent blank-template PDF under
+  `versions/v05_v15_4_cifar10/`; earlier versions remain unchanged.
+- Replace v8 anchors/penalties and previous-model FR1 with the actual v15.4
+  method: strict norm certificates, diagnostic diagonal score, non-consecutive
+  fresh same-component confirmation, clean-cycle clearance and bounded review.
+- Blank tables cover all sixteen CIFAR-10 seed-42 runs at 30% and 40%, IID and
+  non-IID, FR1-FR4. Older MNIST versions are not mixed into this evaluation.
+- Separate removal quality, temporary honest exclusion, candidate flags, model
+  accuracy and whole-simulator resources. Isolated detector overhead is not
+  inferred from simulator RSS or round time.
+- `build_paper_v5_v15_4.py` fills tables/curves only after both batches complete
+  and logs/provenance validate; completed detection failures remain included.
+- The recovery launcher checks this after completion, without changing training
+  or task credentials. The permanent blank template remains available.
+- Single-seed/development selection and correlated-certificate risks are
+  explicit. This is a local draft requiring author review, not a submission.
+
+## v06 — V2-style full v15.4 study
+
+Date: 2026-10-17
+
+- Rewrote the manuscript as a full paper following v02's organization and tone:
+  Abstract, Introduction, Literature Review, Threat Model, Proposed Methodology,
+  Results, Result Analysis, Security Analysis, Conclusion, and appendices.
+- Include all 32 completed v15.4 runs: MNIST/CIFAR-10, IID/non-IID, 30%/40%,
+  FR1–FR4, seed 42; no older-method data or best-seed selection.
+- Separate permanent removal from candidate flags, temporary quarantine, trap
+  exclusion, utility, detection latency, and whole-process cost.
+- Add eight-panel detection and accuracy figures, grouped performance/safety/cost
+  tables, and complete per-run appendix tables with machine-readable exports.
+- Give explicit confirmation invariants and discuss identifiability, adaptive
+  evasion, trap secrecy, evidence dependence, long-lived false evidence, honest
+  majority, secure aggregation, availability and computational limitations.
+- Correct current FR1 semantics and avoid importing the old v8 anchors/penalties.
+  Keep single-development-seed and missing-control/ablation limitations explicit.
+- Validate all logs and recorded detector source hashes; preserve previous paper
+  versions and experiment inputs. Rebuild with `build_paper_v6_full_study.py`.
+- Source and PDF: `versions/v06_v15_4_full_study/paper_v6.tex` and `paper_v6.pdf`.
+
+Visual/analysis revision requested 2026-10-18:
+
+- Replace repetitive perfect-outcome columns with grouped precision/recall,
+  separate FR1–FR4 final test accuracies and round time. Expand FR3 honest impact
+  into run-level candidate, quarantine, trap and additional-exclusion counts.
+- Move recall curves to the appendix; add client score clouds at both shares,
+  raw-norm histograms and mean/IQR score evolution. Zoom late-accuracy panels
+  with explicit independent scales; retain full trajectories in the appendix.
+- Expand measured resource ranges and compare only completed matching v15.3
+  executions. Add architecture-derived payload sizes and a separate complexity
+  section including median sorting, quadratic comparisons and retained logging.
+- Do not change detector code, thresholds, experiment data or detection totals;
+  computed resource estimates are explicitly not isolated overhead measurements.
+
 ## Versioning procedure
+
+Full-horizon STD-DAGMM update, 18 October 2026:
+
+- Replace ten-round projections with both completed actual 100-round executions.
+  Refresh component tables, full trajectories, measured sums, source provenance
+  and standalone timing report; keep earlier pilots separately.
+- Report the selected non-IID FR3 reproduction's poor flagging honestly: zero
+  free riders ever flagged and all 60 honest clients flagged at least once in
+  both datasets; flags are observational, not permanent removals. Keep the
+  five-epoch/author-code-fidelity and CIFAR memory-pressure caveats.
+
+Additional timing/layout revision, 18 October 2026 (v06 working manuscript):
+
+- Add segmented native STD-DAGMM timings for MNIST/CIFAR-10 (ten actual rounds
+  each), actual 100-round v15.4 means, explicit conditional STD projections,
+  full-round phase amortization and measured round trajectories. Preserve
+  missing task/communication measurements and host/memory-pressure caveats.
+- Widen eight-panel score/accuracy figures to two columns and enlarge the
+  histogram, score-trend and resource panels. Preserve data and detector code.
+- Standalone tables/vector charts: `analysis/timing_breakdown/timing_report.pdf`.
 
 For each substantive revision:
 

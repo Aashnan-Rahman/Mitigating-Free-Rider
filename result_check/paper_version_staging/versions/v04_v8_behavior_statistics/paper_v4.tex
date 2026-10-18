@@ -1,0 +1,370 @@
+\documentclass[conference]{IEEEtran}
+\usepackage{amsmath,amssymb,booktabs,array,enumitem,algorithm,algpseudocode,microtype,graphicx,pgfplots,placeins}
+\usepackage[hidelinks]{hyperref}
+\pgfplotsset{compat=1.18}
+\usepgfplotslibrary{groupplots}
+\providecommand*{\algorithmautorefname}{Algorithm}
+\title{Lightweight Trap-Based Free-Rider Detection and Mitigation in Federated Learning}
+\author{\IEEEauthorblockN{Aashnan Rahman}
+\IEEEauthorblockA{Department of Computer Science and Engineering\\
+Islamic University of Technology\\
+MSc Thesis}}
+
+\begin{document}
+\maketitle
+\begin{tikzpicture}[remember picture,overlay]
+\node[anchor=north east,font=\footnotesize] at ([xshift=-0.55in,yshift=-0.32in]current page.north east) {Paper v4: v8 archive analysis, 8 October 2026};
+\end{tikzpicture}
+
+\begin{abstract}
+This revision analyzes all 67 archived completed executions of detector v8, rather than selecting each attack's best seed. The evaluation covers FR1--FR4 on MNIST and CIFAR-10 with IID and Dirichlet non-IID partitions at 30\% and 40\% free riders. We report seed variability, pooled precision and F1, honest removals, detection completion, final model accuracy, and initial norm/profile evidence separately. Most configurations contain two seeds; MNIST non-IID FR4 at 40\% contains five. The results expose both attack-dependent behavior and heterogeneous honest-client false removals. In particular, successful trajectory-imitation detection under some seeds does not imply reliable removal under every seed. These descriptive archival statistics do not establish statistical guarantees, causal effects, or generalization to adaptive attacks. The detector uses server-observable updates; client labels are used only for evaluation.
+\end{abstract}
+
+\begin{IEEEkeywords}
+federated learning, free riding, anomaly detection, robust statistics, client auditing, lightweight defense
+\end{IEEEkeywords}
+
+\section{Introduction}
+Federated learning (FL) enables multiple clients to train a shared model without transferring their raw data to a central server. In a typical communication round, the server distributes the current global model, participating clients improve it using their local data, and the server aggregates their returned updates, for example through Federated Averaging (FedAvg) \cite{mcmahan2017communication}. This collaborative arrangement makes learning possible across distributed and privacy-sensitive data sources and has supported large-scale applications \cite{bonawitz2019towards,hard2018federated}.
+
+The quality of the resulting global model nevertheless depends on clients actually performing the local work expected of them. In practice, some clients may decide not to contribute meaningful training. A client may have insufficient useful data, limited computation or energy, or may simply wish to conserve its own resources while continuing to receive the model produced by the federation. Such a participant is commonly described as a \emph{free rider} \cite{lin2019freeriders,fraboni2021freerider}. It obtains the benefit of the collaborative model while contributing little or no genuine learning in return.
+
+Free riding differs from an active poisoning attack. A free rider does not necessarily attempt to insert a harmful objective, corrupt labels, or deliberately steer the global model in an adversarial direction. Its harmful effect is primarily an omission of useful work. Had the client trained honestly, its local data and computation could have produced an informative update and potentially improved the aggregated model. When it does not, the global model must depend more heavily on the remaining contributors. One inactive participant may have little visible effect, but widespread free riding reduces the effective training population, wastes communication and coordination resources, slows or weakens learning, and creates an unfair distribution of computational cost.
+
+Accordingly, this work studies a lightweight server-side method for identifying clients that repeatedly avoid meaningful local training without relying on client-reported performance or resource information.
+
+The principal contributions are:
+\begin{itemize}[leftmargin=*,nosep]
+    \item \textbf{Lightweight server-side detection}: The method uses only the model updates already returned to the server. It does not request client accuracy, loss, resource use, or training logs, and it requires no auxiliary learned detector, additional client model, or specialized hardware.
+    \item \textbf{Trap-based challenge mechanism}: The server sends selected clients randomized, scale-aware perturbations of the global model without identifying them as audits. Responses produced from the same trap provide a controlled basis for distinguishing genuine local training from fabricated updates.
+    \item \textbf{Robust detection and mitigation}: Update magnitude and normalized layer profile are evaluated with median and MAD statistics over repeated challenges. Candidate confirmation, anchor comparison, cumulative penalties, rehabilitation, temporary exclusion, and permanent removal prevent a single anomalous response from determining the final decision.
+    \item \textbf{Evaluation across attacks and data settings}: Four free-rider strategies, namely playback, bounded-random fabrication, historical averaging, and trajectory imitation, are evaluated on MNIST and CIFAR-10 under both IID and non-IID partitions with 30\% and 40\% free riders. The study reports detection quality, removal timing, model utility, and execution cost.
+\end{itemize}
+
+\section{Related Work}
+\subsection{Free-rider attacks}
+Lin \emph{et al.} formalized free riding in FL and introduced both fabricated-update attacks and STD-DAGMM detection \cite{lin2019freeriders}. Fraboni \emph{et al.} showed that free riders can imitate successive global updates and disguise them with calibrated noise \cite{fraboni2021freerider}. Zhu \emph{et al.} subsequently constructed a stronger attack that matches geometric properties used by feature-based defenses \cite{zhu2023advanced}. Collectively, these works show that replay and arbitrary noise are insufficient evaluation targets: a detector based on a fixed, known update statistic can be imitated by a history-aware attacker.
+
+\subsection{Statistical and Learning-Based Detection}
+Statistical detectors use update norms, dispersion, cosine similarity, or temporal consistency because these signals are available at the server and relatively inexpensive. Their central weakness is that non-IID honest updates may also be outliers, while adaptive attackers can reproduce the statistics being monitored. \textbf{FRAD} improves on a single statistic by combining a DAGMM-style anomaly detector with contribution and reputation models \cite{wang2024frad}. \textbf{PASS} combines parameter auditing with contribution evaluation and considers both resource-poor and strategically selfish free riders \cite{wang2023pass}. Both enrich the evidence available to the server, but introduce auxiliary models or auditing assumptions, additional calibration, and greater computational cost. Their learned or engineered references may also require adaptation when the model architecture, data heterogeneity, or attacker behavior changes.
+
+\subsection{Challenge-Based and Verifiable Computation}
+\textbf{FRIDA} seeks evidence of genuine training through privacy-attack techniques \cite{recasens2024frida}. Its membership-inference variants use a shared canary batch, while its property-inference variants test whether inferred client-data properties remain plausible across rounds. This targets the cause of free riding more directly than update geometry, but adds client or server computation, requires individual-update access, and exposes a known canary objective that a capable attacker can deliberately satisfy. Trusted hardware, remote attestation, and cryptographic proof can provide stronger execution guarantees, but require specialized support or substantial proof and communication overhead. They also complicate integration with secure aggregation \cite{bonawitz2017practical}. The remaining gap is a lightweight server-side method that creates unpredictable evidence without auxiliary detector training, trusted client reports, public canary data, or specialized hardware.
+
+\section{Threat Model and Attacks}
+There are $N$ attributable clients and a coordinating server. In round $t$, client $i$ receives $w^{\mathrm{send}}_{t,i}$ and returns $w^{\mathrm{ret}}_{t,i}$. The server derives
+\begin{equation}
+\Delta_{t,i}=w^{\mathrm{ret}}_{t,i}-w^{\mathrm{send}}_{t,i},
+\quad r_{t,i}=\lVert\Delta_{t,i}\rVert_2.
+\end{equation}
+For an audited client, $w^{\mathrm{send}}_{t,i}$ is a perturbed trap rather than the aggregating global model. Clients receive no trap indicator, and trap-derived updates are excluded from aggregation.
+
+Attackers know only models previously sent to them. They do not know the audit schedule, group membership, anchor identities, thresholds, or ground-truth labels. Four increasingly informed behaviors are evaluated.
+
+\medskip\noindent\textbf{FR1: Playback}
+\begin{equation}
+\widehat w_{t,i}=w^{\mathrm{send}}_{t-1,i}.
+\end{equation}
+The client stores the last model it received and submits that model in the next round without training. During its first round, when no previous model exists, it returns the current received model. This is the least expensive attack, but it responds to a new model using stale information and may also create an exact or near-exact send-back.
+
+\medskip\noindent\textbf{FR2: Bounded Random Update}
+\begin{equation}
+\widehat w_{t,i}=w^{\mathrm{send}}_{t,i}+\epsilon,
+\quad \epsilon_j\sim\mathcal U(-10^{-3},10^{-3}).
+\end{equation}
+FR2 avoids an exact send-back by adding an independently sampled bounded value to every floating-point coordinate. The response is nonzero and superficially update-like, but it contains no information from local data and has no memory of earlier rounds. It represents a client attempting to bypass simple equality or zero-norm checks at negligible computational cost.
+
+\medskip\noindent\textbf{FR3: Historical Averaging}
+\begin{equation}
+\widehat w_{t,i}=\frac{1}{|\mathcal H_{t,i}|}
+\sum_{w\in\mathcal H_{t,i}}w,
+\quad |\mathcal H_{t,i}|\leq 5.
+\end{equation}
+The client maintains a rolling history $\mathcal H_{t,i}$ of up to five models received from the server, including the current one, and returns their element-wise mean. Averaging produces a smooth, history-dependent response without local optimization. Because the client is not told which models are traps, every trap enters the same history and can affect several later responses.
+
+\medskip\noindent\textbf{FR4: Trajectory Imitation}
+\begin{equation}
+d_s=w^{\mathrm{send}}_{s,i}-w^{\mathrm{send}}_{s-1,i},\quad
+\widehat w_{t,i}=w^{\mathrm{send}}_{t,i}+\bar d+\eta,
+\end{equation}
+where $\bar d$ is the mean of the latest five received-model differences and Gaussian $\eta$ is normalized to 10\% of $\lVert\bar d\rVert_2$. At cold start, the attacker uses a small Gaussian update. FR4 therefore attempts to imitate the direction and scale of recent global evolution, making it more plausible than memoryless noise. Nevertheless, it uses every received model indiscriminately, so an undisclosed trap also contaminates its trajectory estimate.
+
+Collusion, partial honest training, intermittent participation, and defense-aware adaptation are outside the evaluated scope.
+
+\section{Proposed Methodology}
+\noindent\textbf{Detection primitives.}
+For floating tensor $k$, a trap is generated as
+\begin{equation}
+\begin{aligned}
+\tau_k &= w_{t,k}+0.01\max(\sigma(w_{t,k}),10^{-4})\xi_k,\\
+\xi_k &\sim \mathcal N(0,I).
+\end{aligned}
+\end{equation}
+The tensor-wise standard deviation makes the perturbation architecture- and scale-aware. The factor 0.01 keeps it small enough to remain trainable, while the $10^{-4}$ floor ensures that nearly constant tensors are still challenged. Responses are evaluated only against responses to the same trap. For reference norms $R$, the server computes median $m_r$, median absolute deviation $d_r$, and
+\begin{equation}
+z^{\mathrm{norm}}_{t,i}=\frac{r_{t,i}-m_r}{\max(d_r,0.05)}.
+\end{equation}
+The magnitude signal fires when $|z^{\mathrm{norm}}_{t,i}|>3$. The absolute value detects both unusually weak and unusually strong responses. The threshold of three robust scales is deliberately conservative, and the 0.05 MAD floor prevents a nearly identical reference set from turning harmless numerical variation into an extreme score. For floating layer $k$, a scale-free profile is
+\begin{equation}
+p_{t,i,k}=\frac{\lVert\Delta_{t,i,k}\rVert_2}
+{\sum_j\lVert\Delta_{t,i,j}\rVert_2}.
+\end{equation}
+Distance from the coordinate-wise median profile is standardized by median/MAD with floor 0.01. The profile signal also fires above three robust scales. Its smaller floor reflects the fact that profile coordinates are normalized to sum to one. Using the same three-scale rule for both signals avoids attack-specific tuning. Either signal can initiate candidate confirmation, but ordinary statistical penalties require both, so an honest client with only unusual update size or only unusual layer allocation is not punished. A response norm below $10^{-6}$ is treated separately as an exact-send-back tolerance rather than a learned statistical threshold.
+
+Each active client occupies one of three states: unflagged ($U$), candidate ($C$), or suspicious ($S$). Let $q_i$ denote its cumulative penalty, $n_i$ its current-episode probe count, and $f_i$ its joint-failure count. The detector then proceeds through the following phases.
+
+\subsection{Phase I: Warm-Up}
+For the first ten rounds, every client receives the ordinary global model. Ten rounds allow the initial global trajectory to stabilize and give history-based behavior a genuine model history before controlled probing begins. Nonzero population outliers are deliberately ignored because no controlled challenge has yet been issued. Only an exact or near-exact send-back is treated as evidence, adding five permanent points. Five is reserved for this strongest evidence so that three repeated send-backs reach the removal threshold of 15, while a single numerical accident cannot remove a client. This prevents natural early-training heterogeneity from populating the candidate set before the server has a trap-based reference. The procedure is summarized in \autoref{alg:warmup}.
+
+\begin{algorithm}[t]
+\caption{Phase I: warm-up}
+\label{alg:warmup}
+\begin{algorithmic}[1]
+\Require global state $w_t$, active clients $V_t$
+\ForAll{$i\in V_t$}
+ \State send $w_t$ and receive $w^{\mathrm{ret}}_{t,i}$
+ \State compute $\Delta_{t,i}$
+ \If{$\lVert\Delta_{t,i}\rVert_2<10^{-6}$}
+   \State $q_i\gets q_i+5$
+ \EndIf
+\EndFor
+\State remove $i$ after three near-zero responses
+\State aggregate all other ordinary responses with FedAvg
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Phase II: Double Coverage}
+The server shuffles the 100-client population into ten base groups, giving a nominal group size of ten without making group membership observable to clients. In each round it probes two groups, preserving approximately 80\% of clients for aggregation while completing one pass in five rounds. Two independently generated trap models, $\tau_A$ and $\tau_B$, are used in randomized passes. Every client therefore responds once to each trap over ten rounds. Two challenges prevent a single favorable or unfavorable trap response from deciding initial suspicion. Evidence is stored until both passes finish, and responses to $\tau_A$ and $\tau_B$ are calibrated separately so different challenges do not share a reference distribution.
+
+Two joint magnitude/profile failures can immediately move a client to $S$: repeat agreement across both independent traps is required for direct escalation. A weaker anomaly moves it to $C$ for fresh confirmation. Each joint coverage failure adds two points, an intermediate weight reflecting controlled but population-level evidence, while each near-zero response adds five. Every probed response is withheld from the global aggregation so deliberate trap updates cannot alter the production model. \autoref{alg:coverage} gives the complete sweep.
+
+\begin{algorithm}[t]
+\caption{Phase II: double coverage sweep}
+\label{alg:coverage}
+\begin{algorithmic}[1]
+\Require active clients $V$, traps $\tau_A,\tau_B$
+\State randomly partition $V$ into ten base groups
+\ForAll{$\tau\in\{\tau_A,\tau_B\}$}
+ \State randomize a five-round pairing of the ten groups
+ \ForAll{paired groups $G$}
+   \State send $\tau$ to every $i\in G$; store $\Delta_i$ and $p_i$
+   \State exclude $G$ from the current aggregation
+ \EndFor
+ \State compute norm/profile references using only responses to $\tau$
+\EndFor
+\ForAll{$i\in V$}
+ \State add two points per joint failure and five per near-zero response
+ \If{two joint failures} \State move $i$ to $S$
+ \ElsIf{either signal fires} \State move $i$ to $C$
+ \EndIf
+\EndFor
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Phase III: Surveillance and Candidate Confirmation}
+Clients remaining in $U$ are shuffled across ten surveillance groups. Retaining ten groups preserves the nominal ten-client comparison scale used during coverage. One group per round receives a shared surveillance trap. Probing only one group preserves roughly 90\% of ordinary contributions, and after ten rounds every group has been observed once. The server then evaluates the completed sweep and starts another with a new trap. A joint surveillance failure carries only one point because it is the broadest and most heterogeneous comparison. Any statistical anomaly places a client in $C$, where it is withheld from aggregation and receives a fresh group-specific trap in subsequent rounds.
+
+Each candidate group is paired with up to three rotating anchors that have never been flagged. Three permits a median reference to tolerate one atypical anchor, while a global cap of ten anchors limits the number of honest updates withheld when several candidate or suspicious groups coexist. Candidates and anchors receive the same trap, making the anchor distribution a local reference for that challenge. Two joint candidate failures confirm $S$, again requiring repeated fresh-trap evidence rather than one outlier. A candidate that produces a normal confirmation is returned to $U$ and its current magnitude episode is cleared so one false accusation does not bias later episodes. Off-duty anchors remain in ordinary surveillance and contribute normally. This rotating confirmation process appears in \autoref{alg:surveillance}.
+
+\begin{algorithm}[t]
+\caption{Phase III: surveillance and confirmation}
+\label{alg:surveillance}
+\begin{algorithmic}[1]
+\State probe the next of ten $U$ groups with the sweep trap
+\If{the surveillance sweep is complete}
+ \State calibrate same-trap norm and profile statistics
+ \State move anomalous clients $U\rightarrow C$
+\EndIf
+\ForAll{candidate groups $C_g$}
+ \State rotate up to three never-flagged anchors $A_g$
+ \State generate fresh trap $\tau_g$ and send it to $C_g\cup A_g$
+ \State compare candidates with the same-trap anchor reference
+ \If{candidate accumulates two joint confirmations}
+   \State move candidate $C\rightarrow S$
+ \ElsIf{candidate passes confirmation}
+   \State return candidate $C\rightarrow U$ and clear episode evidence
+ \EndIf
+\EndFor
+\State withhold surveillance, candidate, and anchor trap responses
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Phase IV: Suspicion, Penalties, and Rehabilitation}
+Suspicious clients are divided into approximately one group per ten suspects and are challenged every round. A ten-client target keeps groups large enough for future resistance to simple response sharing without imposing a hard maximum group size as $S$ shrinks. Each group receives its own fresh trap and rotating same-trap anchors. A joint suspicion failure adds three points because a same-trap, anchor-relative failure is stronger than population evidence. A near-zero response adds five points. Statistical removal requires $q_i\geq15$ and at least ten suspicion probes. The threshold therefore needs five strong anchor-relative failures, or three exact send-backs, rather than one extreme observation. Ten probes also provide a meaningful denominator for rehabilitation. After that minimum, a client with $f_i/n_i\leq0.10$, meaning at most one joint failure in ten probes, is instead rehabilitated. It returns to $U$ and its current magnitude penalty is cleared. This ``mercy'' rule prevents an initially false suspicion from keeping an otherwise consistent client under permanent intensive auditing. Near-zero penalties are permanent, so repeated exact send-backs cannot be erased through rehabilitation. The decision process is specified in \autoref{alg:suspicion}.
+
+\begin{algorithm}[t]
+\caption{Phase IV: weighted suspicion and decision}
+\label{alg:suspicion}
+\begin{algorithmic}[1]
+\State form approximately $\max(1,\lfloor|S|/10\rfloor)$ suspect groups
+\ForAll{suspect groups $S_g$}
+ \State attach rotating anchors $A_g$ and generate fresh trap $\tau_g$
+ \State send $\tau_g$ to $S_g\cup A_g$ and withhold all responses
+ \ForAll{$i\in S_g$}
+   \State $n_i\gets n_i+1$
+   \If{joint failure} \State $q_i\gets q_i+3$; $f_i\gets f_i+1$
+   \EndIf
+   \If{near-zero response} \State add five permanent points
+   \EndIf
+   \If{$n_i\geq10$ and $f_i/n_i\leq0.10$}
+     \State rehabilitate $i$ and clear magnitude-episode points
+   \ElsIf{$n_i\geq10$ and $q_i\geq15$}
+     \State remove $i$ from the federation
+   \EndIf
+ \EndFor
+\EndFor
+\State aggregate only active, non-trapped, non-candidate responses
+\end{algorithmic}
+\end{algorithm}
+
+\medskip\noindent\textbf{Lightweight implementation.}
+For a model with $P$ floating parameters and $L$ tensors, processing one returned model requires one parameter pass, $O(P)$ arithmetic, and an $L$-dimensional profile. Medians operate on scalar norms and short profiles. The server neither recomputes gradients nor trains a detector. Client software performs ordinary local training on whichever model it receives and does not train a second model. Apart from model/trap tensors, server state consists mainly of small per-client counters and bounded histories. Cost arises from probe training and temporary exclusion of trap responses, not an auxiliary learning pipeline.
+
+
+\section{Experimental Design and Statistical Reporting}
+This revision retains the v8 methodology described above and reanalyzes its archived logs. It does not report v11--v13 or the later paired/shadow protocol. The archive contains 67 distinct completed 100-round executions across 32 dataset, partition, attacker-share, and attack combinations. Each uses 100 fully participating clients. Most cells contain seeds 42 and 43; MNIST non-IID FR4 at 40\% also includes seeds 44--46. Baseline detector executions are excluded. No unsuccessful completed v8 run is discarded.
+
+The common training recipe is three local epochs, batch size 32, SGD with learning rate 0.01 and momentum 0.9, and a ten-round warm-up. Non-IID partitions use Dirichlet concentration 0.5. The accompanying configuration-values file records archived settings; hardware and seed-dependent data, initialization, attacker selection and challenge trajectories are not controlled causal interventions.
+
+A positive outcome is permanent removal: $TP$ counts removed attackers, $FP$ removed honest clients, and $FN$ remaining attackers. Recall is summarized across runs as mean and sample standard deviation, with its minimum and maximum. Pooled precision is $\sum TP/(\sum TP+\sum FP)$ and pooled F1 is $2\sum TP/(2\sum TP+\sum FP+\sum FN)$. These are not averages of per-run precision/F1. Model accuracy refers to final test classification accuracy, not detector accuracy. Honest removal counts are reported per run, and machine-readable data also include the honest removal rate.
+
+Full-detection counts explicitly expose failures. Completion rounds are conditional on complete removal; incomplete runs are censored beyond the 100-round horizon rather than assigned a fictitious completion time. Seed counts are small, unequal across cells, and sometimes unpaired across attacks. We therefore report descriptive variation, not confidence intervals or claims of statistical superiority. Client observations within a run share a training trajectory and are not independent replicates.
+
+\section{Results}
+\subsection{All-Run Attack-Specific Outcomes}
+The following four tables separate attacks and attacker shares within each dataset/partition combination. They replace the earlier best-observed tables. Precision, recall and false removal must be considered jointly: high model accuracy is not evidence that free riders were detected, and no honest removals can coexist with complete detection failure.
+\begin{table*}[t]\centering\scriptsize
+\setlength{\tabcolsep}{3.5pt}
+\caption{All-run outcomes for MNIST IID. Recall and model accuracy are mean $\pm$ sample SD across runs. P/F1 pool removal counts; H-FP is mean honest removals per run. Full is successful executions/total; $T_{all}$ is median completion round among successful executions only.}
+\begin{tabular}{llrllllllll}\toprule
+Share & Attack & $n$ & Recall (\%) & Range & P (\%) & F1 (\%) & H-FP & Full & $T_{all}$ & Model acc. (\%) \\\midrule
+30\% & FR1 & 2 & 100.0 $\pm$ 0.0 & 100--100 & 95.2 & 97.6 & 1.5 & 2/2 & 30.0 & 98.9 $\pm$ 0.0 \\
+30\% & FR2 & 2 & 100.0 $\pm$ 0.0 & 100--100 & 96.8 & 98.4 & 1.0 & 2/2 & 30.0 & 98.9 $\pm$ 0.0 \\
+30\% & FR3 & 2 & 100.0 $\pm$ 0.0 & 100--100 & 98.4 & 99.2 & 0.5 & 2/2 & 30.0 & 99.0 $\pm$ 0.0 \\
+30\% & FR4 & 2 & 100.0 $\pm$ 0.0 & 100--100 & 95.2 & 97.6 & 1.5 & 2/2 & 30.0 & 98.9 $\pm$ 0.0 \\
+40\% & FR1 & 2 & 100.0 $\pm$ 0.0 & 100--100 & 97.6 & 98.8 & 1.0 & 2/2 & 30.0 & 98.9 $\pm$ 0.0 \\
+40\% & FR2 & 2 & 100.0 $\pm$ 0.0 & 100--100 & 98.8 & 99.4 & 0.5 & 2/2 & 30.0 & 98.9 $\pm$ 0.0 \\
+40\% & FR3 & 2 & 100.0 $\pm$ 0.0 & 100--100 & 97.6 & 98.8 & 1.0 & 2/2 & 30.0 & 98.9 $\pm$ 0.0 \\
+40\% & FR4 & 2 & 100.0 $\pm$ 0.0 & 100--100 & 98.8 & 99.4 & 0.5 & 2/2 & 31.5 & 98.8 $\pm$ 0.0 \\
+\bottomrule\end{tabular}\end{table*}
+\begin{table*}[t]\centering\scriptsize
+\setlength{\tabcolsep}{3.5pt}
+\caption{All-run outcomes for MNIST non-IID. Recall and model accuracy are mean $\pm$ sample SD across runs. P/F1 pool removal counts; H-FP is mean honest removals per run. Full is successful executions/total; $T_{all}$ is median completion round among successful executions only.}
+\begin{tabular}{llrllllllll}\toprule
+Share & Attack & $n$ & Recall (\%) & Range & P (\%) & F1 (\%) & H-FP & Full & $T_{all}$ & Model acc. (\%) \\\midrule
+30\% & FR1 & 2 & 100.0 $\pm$ 0.0 & 100--100 & 93.8 & 96.8 & 2.0 & 2/2 & 30.0 & 98.9 $\pm$ 0.0 \\
+30\% & FR2 & 2 & 100.0 $\pm$ 0.0 & 100--100 & 92.3 & 96.0 & 2.5 & 2/2 & 32.0 & 98.9 $\pm$ 0.0 \\
+30\% & FR3 & 2 & 100.0 $\pm$ 0.0 & 100--100 & 90.9 & 95.2 & 3.0 & 2/2 & 30.0 & 98.9 $\pm$ 0.0 \\
+30\% & FR4 & 2 & 100.0 $\pm$ 0.0 & 100--100 & 93.8 & 96.8 & 2.0 & 2/2 & 32.0 & 98.9 $\pm$ 0.0 \\
+40\% & FR1 & 2 & 100.0 $\pm$ 0.0 & 100--100 & 95.2 & 97.6 & 2.0 & 2/2 & 30.0 & 98.9 $\pm$ 0.0 \\
+40\% & FR2 & 2 & 100.0 $\pm$ 0.0 & 100--100 & 96.4 & 98.2 & 1.5 & 2/2 & 33.0 & 98.9 $\pm$ 0.0 \\
+40\% & FR3 & 2 & 100.0 $\pm$ 0.0 & 100--100 & 92.0 & 95.8 & 3.5 & 2/2 & 30.0 & 98.9 $\pm$ 0.0 \\
+40\% & FR4 & 5 & 40.0 $\pm$ 54.8 & 0--100 & 97.6 & 56.7 & 0.4 & 2/5 & 82.0 & 98.9 $\pm$ 0.1 \\
+\bottomrule\end{tabular}\end{table*}
+\begin{table*}[t]\centering\scriptsize
+\setlength{\tabcolsep}{3.5pt}
+\caption{All-run outcomes for CIFAR-10 IID. Recall and model accuracy are mean $\pm$ sample SD across runs. P/F1 pool removal counts; H-FP is mean honest removals per run. Full is successful executions/total; $T_{all}$ is median completion round among successful executions only.}
+\begin{tabular}{llrllllllll}\toprule
+Share & Attack & $n$ & Recall (\%) & Range & P (\%) & F1 (\%) & H-FP & Full & $T_{all}$ & Model acc. (\%) \\\midrule
+30\% & FR1 & 2 & 100.0 $\pm$ 0.0 & 100--100 & 96.8 & 98.4 & 1.0 & 2/2 & 30.0 & 77.6 $\pm$ 0.0 \\
+30\% & FR2 & 2 & 100.0 $\pm$ 0.0 & 100--100 & 100.0 & 100.0 & 0.0 & 2/2 & 30.0 & 77.8 $\pm$ 0.3 \\
+30\% & FR3 & 2 & 100.0 $\pm$ 0.0 & 100--100 & 96.8 & 98.4 & 1.0 & 2/2 & 30.0 & 77.9 $\pm$ 0.4 \\
+30\% & FR4 & 2 & 100.0 $\pm$ 0.0 & 100--100 & 100.0 & 100.0 & 0.0 & 2/2 & 30.0 & 77.5 $\pm$ 0.4 \\
+40\% & FR1 & 2 & 100.0 $\pm$ 0.0 & 100--100 & 98.8 & 99.4 & 0.5 & 2/2 & 30.0 & 76.8 $\pm$ 0.5 \\
+40\% & FR2 & 2 & 100.0 $\pm$ 0.0 & 100--100 & 98.8 & 99.4 & 0.5 & 2/2 & 30.0 & 76.7 $\pm$ 0.6 \\
+40\% & FR3 & 2 & 100.0 $\pm$ 0.0 & 100--100 & 98.8 & 99.4 & 0.5 & 2/2 & 30.0 & 76.8 $\pm$ 0.2 \\
+40\% & FR4 & 2 & 100.0 $\pm$ 0.0 & 100--100 & 98.8 & 99.4 & 0.5 & 2/2 & 30.0 & 76.7 $\pm$ 0.6 \\
+\bottomrule\end{tabular}\end{table*}
+\begin{table*}[t]\centering\scriptsize
+\setlength{\tabcolsep}{3.5pt}
+\caption{All-run outcomes for CIFAR-10 non-IID. Recall and model accuracy are mean $\pm$ sample SD across runs. P/F1 pool removal counts; H-FP is mean honest removals per run. Full is successful executions/total; $T_{all}$ is median completion round among successful executions only.}
+\begin{tabular}{llrllllllll}\toprule
+Share & Attack & $n$ & Recall (\%) & Range & P (\%) & F1 (\%) & H-FP & Full & $T_{all}$ & Model acc. (\%) \\\midrule
+30\% & FR1 & 2 & 100.0 $\pm$ 0.0 & 100--100 & 78.9 & 88.2 & 8.0 & 2/2 & 30.0 & 75.7 $\pm$ 0.5 \\
+30\% & FR2 & 2 & 100.0 $\pm$ 0.0 & 100--100 & 65.9 & 79.5 & 15.5 & 2/2 & 32.0 & 76.0 $\pm$ 0.1 \\
+30\% & FR3 & 2 & 100.0 $\pm$ 0.0 & 100--100 & 70.6 & 82.8 & 12.5 & 2/2 & 30.0 & 75.6 $\pm$ 0.1 \\
+30\% & FR4 & 2 & 100.0 $\pm$ 0.0 & 100--100 & 64.5 & 78.4 & 16.5 & 2/2 & 32.0 & 75.2 $\pm$ 0.6 \\
+40\% & FR1 & 2 & 100.0 $\pm$ 0.0 & 100--100 & 82.5 & 90.4 & 8.5 & 2/2 & 30.0 & 74.7 $\pm$ 0.1 \\
+40\% & FR2 & 2 & 100.0 $\pm$ 0.0 & 100--100 & 78.4 & 87.9 & 11.0 & 2/2 & 32.0 & 74.8 $\pm$ 0.2 \\
+40\% & FR3 & 2 & 100.0 $\pm$ 0.0 & 100--100 & 78.4 & 87.9 & 11.0 & 2/2 & 30.0 & 74.6 $\pm$ 0.3 \\
+40\% & FR4 & 2 & 100.0 $\pm$ 0.0 & 100--100 & 86.0 & 92.5 & 6.5 & 2/2 & 62.5 & 74.5 $\pm$ 0.2 \\
+\bottomrule\end{tabular}\end{table*}
+\FloatBarrier
+\subsection{Initial Evidence and Attack Behavior}
+The next tables describe the round-20 double-coverage decision, before later anchor-based suspicion changes the reference population. Signed norm-z distinguishes smaller from larger updates; profile-z describes upper-tail deviation in the layer-norm profile. Norm/profile flags and joint-probe rates expose whether evidence was one-sided or jointly sufficient for the historical penalty rule. These rates are descriptive logs, not calibrated p-values or independent error estimates. Per-client combined log rows can report a representative response; the recorded joint-probe count preserves the actual number of jointly failing checks. Missing/undefined scores, especially for exact-zero responses, are not replaced by zero.
+\begin{table*}[t]\centering\scriptsize
+\setlength{\tabcolsep}{3.5pt}
+\caption{Initial double-coverage evidence at round 20 for MNIST IID. Scores pool descriptive client summaries across runs (not independent samples). A/H denotes attackers/honest clients. Flag rates refer to combined logged client summaries; Joint refers to the fraction of recorded probes failing both tests. Undefined scores are --.}
+\begin{tabular}{llrrrrrrrr}\toprule
+Share & Attack & A norm-z & A profile-z & H norm-z & H profile-z & A norm flag (\%) & A profile flag (\%) & A joint (\%) & H joint (\%) \\\midrule
+30\% & FR1 & -7.72 & 12.95 & 0.53 & -0.54 & 100.0 & 100.0 & 70.8 & 0.0 \\
+30\% & FR2 & -5.57 & 22.20 & 0.45 & -0.37 & 100.0 & 100.0 & 100.0 & 0.0 \\
+30\% & FR3 & -9.08 & 11.22 & 0.54 & -0.48 & 100.0 & 100.0 & 95.8 & 0.0 \\
+30\% & FR4 & -7.34 & 7.74 & 0.43 & -0.46 & 100.0 & 100.0 & 100.0 & 0.0 \\
+40\% & FR1 & -4.45 & 5.09 & 0.53 & -0.58 & 96.2 & 100.0 & 56.9 & 0.0 \\
+40\% & FR2 & -3.80 & 10.58 & 0.47 & -0.59 & 100.0 & 100.0 & 100.0 & 0.0 \\
+40\% & FR3 & -5.57 & 4.89 & 0.55 & -0.40 & 100.0 & 100.0 & 100.0 & 0.0 \\
+40\% & FR4 & -4.42 & 3.06 & 0.46 & -0.57 & 100.0 & 66.2 & 33.1 & 0.0 \\
+\bottomrule\end{tabular}\end{table*}
+\begin{table*}[t]\centering\scriptsize
+\setlength{\tabcolsep}{3.5pt}
+\caption{Initial double-coverage evidence at round 20 for MNIST non-IID. Scores pool descriptive client summaries across runs (not independent samples). A/H denotes attackers/honest clients. Flag rates refer to combined logged client summaries; Joint refers to the fraction of recorded probes failing both tests. Undefined scores are --.}
+\begin{tabular}{llrrrrrrrr}\toprule
+Share & Attack & A norm-z & A profile-z & H norm-z & H profile-z & A norm flag (\%) & A profile flag (\%) & A joint (\%) & H joint (\%) \\\midrule
+30\% & FR1 & -2.10 & 6.13 & 0.66 & -0.41 & 10.0 & 100.0 & 5.0 & 0.0 \\
+30\% & FR2 & -2.12 & 15.79 & 0.43 & -0.48 & 0.0 & 100.0 & 0.0 & 0.0 \\
+30\% & FR3 & -2.51 & 5.93 & 0.54 & -0.49 & 0.0 & 100.0 & 0.0 & 0.0 \\
+30\% & FR4 & -3.24 & 5.79 & 0.40 & -0.41 & 90.0 & 100.0 & 61.7 & 0.0 \\
+40\% & FR1 & -0.59 & 1.97 & 0.97 & -0.61 & 7.5 & 15.0 & 2.5 & 0.0 \\
+40\% & FR2 & -1.23 & 7.70 & 0.58 & -0.53 & 0.0 & 100.0 & 0.0 & 0.0 \\
+40\% & FR3 & -1.29 & 1.59 & 0.80 & -0.80 & 0.0 & 0.0 & 0.0 & 0.0 \\
+40\% & FR4 & -1.65 & 1.66 & 0.46 & -0.63 & 0.0 & 11.0 & 0.0 & 0.0 \\
+\bottomrule\end{tabular}\end{table*}
+\begin{table*}[t]\centering\scriptsize
+\setlength{\tabcolsep}{3.5pt}
+\caption{Initial double-coverage evidence at round 20 for CIFAR-10 IID. Scores pool descriptive client summaries across runs (not independent samples). A/H denotes attackers/honest clients. Flag rates refer to combined logged client summaries; Joint refers to the fraction of recorded probes failing both tests. Undefined scores are --.}
+\begin{tabular}{llrrrrrrrr}\toprule
+Share & Attack & A norm-z & A profile-z & H norm-z & H profile-z & A norm flag (\%) & A profile flag (\%) & A joint (\%) & H joint (\%) \\\midrule
+30\% & FR1 & -19.59 & 7.67 & 0.55 & -0.50 & 100.0 & 100.0 & 100.0 & 0.0 \\
+30\% & FR2 & -20.24 & 35.97 & 0.49 & -0.41 & 100.0 & 100.0 & 100.0 & 0.0 \\
+30\% & FR3 & -19.86 & 4.27 & 0.43 & -0.49 & 100.0 & 100.0 & 96.7 & 0.0 \\
+30\% & FR4 & -19.31 & 11.43 & 0.45 & -0.38 & 100.0 & 100.0 & 100.0 & 0.0 \\
+40\% & FR1 & -11.31 & 3.15 & 0.53 & -0.60 & 100.0 & 100.0 & 78.8 & 0.0 \\
+40\% & FR2 & -11.43 & 25.97 & 0.48 & -0.53 & 100.0 & 100.0 & 100.0 & 0.0 \\
+40\% & FR3 & -12.14 & 2.43 & 0.57 & -0.53 & 100.0 & 53.8 & 30.6 & 0.0 \\
+40\% & FR4 & -11.08 & 6.99 & 0.53 & -0.46 & 100.0 & 100.0 & 100.0 & 0.0 \\
+\bottomrule\end{tabular}\end{table*}
+\begin{table*}[t]\centering\scriptsize
+\setlength{\tabcolsep}{3.5pt}
+\caption{Initial double-coverage evidence at round 20 for CIFAR-10 non-IID. Scores pool descriptive client summaries across runs (not independent samples). A/H denotes attackers/honest clients. Flag rates refer to combined logged client summaries; Joint refers to the fraction of recorded probes failing both tests. Undefined scores are --.}
+\begin{tabular}{llrrrrrrrr}\toprule
+Share & Attack & A norm-z & A profile-z & H norm-z & H profile-z & A norm flag (\%) & A profile flag (\%) & A joint (\%) & H joint (\%) \\\midrule
+30\% & FR1 & -1.57 & 2.61 & 0.59 & -0.45 & 0.0 & 43.3 & 0.0 & 1.1 \\
+30\% & FR2 & -2.72 & 23.43 & 0.53 & -0.55 & 0.0 & 100.0 & 0.0 & 1.1 \\
+30\% & FR3 & -2.04 & 1.23 & 0.53 & -0.50 & 20.0 & 0.0 & 0.0 & 1.4 \\
+30\% & FR4 & -3.52 & 4.08 & 0.48 & -0.44 & 93.3 & 100.0 & 60.8 & 1.1 \\
+40\% & FR1 & -1.22 & 0.83 & 1.06 & -1.21 & 0.0 & 28.7 & 0.0 & 1.2 \\
+40\% & FR2 & -1.38 & 12.76 & 0.64 & -0.62 & 0.0 & 100.0 & 0.0 & 0.0 \\
+40\% & FR3 & -1.24 & -0.03 & 0.62 & 0.45 & 0.0 & 0.0 & 0.0 & 0.8 \\
+40\% & FR4 & -1.51 & 4.32 & 0.67 & -0.55 & 0.0 & 92.5 & 0.0 & 0.4 \\
+\bottomrule\end{tabular}\end{table*}
+\FloatBarrier
+\section{Discussion and Limitations}
+Playback (FR1), bounded independent noise (FR2), historical averaging (FR3), and noisy trajectory imitation (FR4) generate different response geometries. Magnitude alone is not a proof of computation: a fabricated update can be nonzero, and genuine non-IID training can be atypical. Joint norm/profile evidence may improve specificity but can miss an attack that deviates in only one component. Initial evidence and eventual removal should therefore not be treated as equivalent outcomes.
+
+The evidence tables expose a concrete distinction at 40\% non-IID MNIST: FR2 has median norm-z $-1.23$ and profile-z $7.70$. Every logged attacker summary has a profile flag, but none has a norm flag and the initial joint-probe rate is zero. FR4 has median norm-z $-1.65$ and profile-z $1.66$, with only 11\% profile-flagged summaries and zero initial joint-probe failures. Thus FR2 produces pronounced single-component evidence, while FR4 often produces neither removal-strength component in the initial population comparison. Later anchor-based decisions can differ substantially from this first audit. Initial honest joint-probe rates are zero on MNIST, yet honest removals later occur; first-audit specificity does not establish whole-run specificity.
+
+The strongest seed sensitivity occurs for MNIST non-IID FR4 at 40\%: seeds 42, 43 and 46 remove none of the 40 attackers, while seeds 44 and 45 remove all 40. Recall is thus 40\% on average with a 0--100\% range. Complete detection in those two successful runs occurs by rounds 83 and 81 respectively; the other three do not complete within 100 rounds. The successful cases demonstrate capability, not robustness. Later removals rely on repeated anchor-based evidence and are affected by reference composition and candidate progression.
+
+Non-IID false removals show that legitimate data heterogeneity can accumulate removal-strength evidence. Failed attacker removal and honest false removal must be reported together. Neither fixed robust-z thresholds nor MAD scaling supply a distribution-free false-positive guarantee under dependent, contaminated and changing populations. Increasing attacker share also changes the training population and peer distribution; the observed 30\%/40\% differences cannot be attributed to attacker share alone because seeds and trajectories are not fully controlled.
+
+Temporary quarantine and withheld probe updates have costs not captured by permanent-removal precision. The archived client logs do not uniformly expose a reliable per-round aggregation/quarantine indicator, so this revision does not fabricate those counts. Runtime and hardware differences are likewise not interpreted as causal speed comparisons. Complete source paths, hashes, seeds, removal counts, conditional timing and score quartiles are supplied with the paper for reproducibility.
+
+\section{Assumptions and Future Work}
+The experiments assume fixed attacker identities, full participation, an honest server with individually attributable updates, an honest majority, and one attack implementation per run. The detector does not receive attack labels or client-local loss/accuracy as decision inputs. Dropout, partial computation, on-off behavior, mixed strategies, collusion, defense-aware imitation and ordinary secure aggregation remain outside the demonstrated scope. Future evaluations should separate random streams, use matched multi-seed controls, qualify reference uncertainty, report temporary exclusion, and test related challenge responses without attack-window-specific reconstruction. Any new decision rule requires fresh validation rather than thresholds selected from these archived outcomes.
+
+\section{Conclusion}
+All-run statistics reveal limitations hidden by best-observed selection. V8 supplies useful challenge evidence for the evaluated attacks, but its reliability depends on attack behavior, data heterogeneity, and seed-dependent reference trajectories. The attack-specific tables distinguish detection sensitivity, honest-removal cost, completion failures, and model accuracy. They support methodological improvement, not a universal or zero-false-positive detection claim.
+\bibliographystyle{IEEEtran}
+\bibliography{refs}
+\end{document}

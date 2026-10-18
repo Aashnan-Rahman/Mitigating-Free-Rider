@@ -4,7 +4,7 @@
   "completed_rounds": 270,
   "current_experiment": null,
   "elapsed_seconds": 16267.49885892868,
-  "estimated_remaining_seconds": 7832.493951038077,
+  "estimated_remaining_seconds": 0,
   "experiments": [
     {
       "completed_rounds": 100,
@@ -147,7 +147,8 @@
         "total_rounds": 100
       },
       "started_at": "2026-09-14T01:24:06.163708",
-      "state": "failed"
+      "state": "discarded",
+      "discard_reason": "Historical incomplete work discarded at user request on 2026-10-15. Do not auto-resume; see result_check/cleanup_2026_10_15.json."
     },
     {
       "config": {
@@ -157,14 +158,17 @@
         "free_rider_pct": 0.4
       },
       "id": "stage1_v8_mnist_iid_fr4_fr40",
-      "state": "queued"
+      "state": "discarded",
+      "discard_reason": "Historical incomplete work discarded at user request on 2026-10-15. Do not auto-resume; see result_check/cleanup_2026_10_15.json."
     }
   ],
   "failed_experiments": 1,
   "plan": "configs\\stage1_v8_plan.json",
   "started_at": "2026-09-13T22:06:33.364923",
-  "state": "failed",
+  "state": "discarded_partial",
   "total_experiments": 4,
   "total_rounds": 400,
-  "updated_at": "2026-09-14T02:37:40.863750"
+  "updated_at": "2026-09-14T02:37:40.86375",
+  "discarded_at": "2026-10-15",
+  "discard_reason": "Historical incomplete work discarded at user request on 2026-10-15. Do not auto-resume; see result_check/cleanup_2026_10_15.json."
 }

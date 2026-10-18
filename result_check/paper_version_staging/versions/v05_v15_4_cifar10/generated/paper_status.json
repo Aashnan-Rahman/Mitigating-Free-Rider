@@ -1,0 +1,556 @@
+{
+  "compiled": true,
+  "expected_runs": 16,
+  "final_results_populated": true,
+  "fingerprints": {
+    "E:\\New Projects\\Mitigating-Free-Rider\\result_check\\paper_version_staging\\versions\\v05_v15_4_cifar10\\paper_body.tex": [
+      15705,
+      1792085152508487200
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\result_check\\paper_version_staging\\versions\\v05_v15_4_cifar10\\paper_v5.tex": [
+      63,
+      1792085080141073300
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\result_check\\paper_version_staging\\versions\\v05_v15_4_cifar10\\refs.bib": [
+      920,
+      1792085081449844400
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr30\\experiment_manifest.json": [
+      2260,
+      1792084081872490100
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr30\\experiment_status.json": [
+      18058,
+      1792189233968611600
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR1_seed42\\client_metrics.csv": [
+      612586,
+      1792189233117535200
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR1_seed42\\cycle_signals.csv": [
+      159186,
+      1792189232636114900
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR1_seed42\\detection_summary.csv": [
+      158,
+      1792189233316729900
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR1_seed42\\global_metrics.csv": [
+      9984,
+      1792189233031044100
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR1_seed42\\latest_results.json": [
+      1596,
+      1792189233725953800
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR1_seed42\\protocol.json": [
+      6339,
+      1792188990219152400
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR1_seed42\\removals.csv": [
+      1680,
+      1792189233183799400
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR1_seed42\\run_config.json": [
+      11141,
+      1792189233682974600
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR2_seed42\\client_metrics.csv": [
+      626967,
+      1792179762234082100
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR2_seed42\\cycle_signals.csv": [
+      161127,
+      1792179761726387900
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR2_seed42\\detection_summary.csv": [
+      158,
+      1792179762435886300
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR2_seed42\\global_metrics.csv": [
+      10084,
+      1792179762143537600
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR2_seed42\\latest_results.json": [
+      1597,
+      1792179762825835500
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR2_seed42\\protocol.json": [
+      6339,
+      1792169827155607800
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR2_seed42\\removals.csv": [
+      1680,
+      1792179762300820800
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR2_seed42\\run_config.json": [
+      11012,
+      1792179762783971000
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR3_seed42\\client_metrics.csv": [
+      625745,
+      1792169823606291500
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR3_seed42\\cycle_signals.csv": [
+      161390,
+      1792169823024859000
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR3_seed42\\detection_summary.csv": [
+      158,
+      1792169823845571400
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR3_seed42\\global_metrics.csv": [
+      10174,
+      1792169823504726900
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR3_seed42\\latest_results.json": [
+      1597,
+      1792169824246278300
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR3_seed42\\protocol.json": [
+      6339,
+      1792165310145266200
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR3_seed42\\removals.csv": [
+      1680,
+      1792169823696242000
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR3_seed42\\run_config.json": [
+      11141,
+      1792169824204560700
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR4_seed42\\client_metrics.csv": [
+      623229,
+      1792138088846171900
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR4_seed42\\cycle_signals.csv": [
+      161153,
+      1792138088359247800
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR4_seed42\\detection_summary.csv": [
+      158,
+      1792138089049245800
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR4_seed42\\global_metrics.csv": [
+      10102,
+      1792138088757197200
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR4_seed42\\latest_results.json": [
+      1596,
+      1792138089438506600
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR4_seed42\\protocol.json": [
+      6339,
+      1792125039102668700
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR4_seed42\\removals.csv": [
+      1680,
+      1792138088906095500
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR4_seed42\\run_config.json": [
+      10974,
+      1792138089398049600
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR1_seed42\\client_metrics.csv": [
+      642437,
+      1792125035312597100
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR1_seed42\\cycle_signals.csv": [
+      157754,
+      1792125034822638600
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR1_seed42\\detection_summary.csv": [
+      158,
+      1792125035507310000
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR1_seed42\\global_metrics.csv": [
+      10086,
+      1792125035190916400
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR1_seed42\\latest_results.json": [
+      1599,
+      1792125035930292800
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR1_seed42\\protocol.json": [
+      6342,
+      1792115258469909900
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR1_seed42\\removals.csv": [
+      1680,
+      1792125035373130100
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR1_seed42\\run_config.json": [
+      10977,
+      1792125035856949500
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR2_seed42\\client_metrics.csv": [
+      656258,
+      1792115256408519700
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR2_seed42\\cycle_signals.csv": [
+      159911,
+      1792115255952178500
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR2_seed42\\detection_summary.csv": [
+      158,
+      1792115256622430600
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR2_seed42\\global_metrics.csv": [
+      10077,
+      1792115256297986900
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR2_seed42\\latest_results.json": [
+      1600,
+      1792115256995429700
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR2_seed42\\protocol.json": [
+      6342,
+      1792106151877967800
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR2_seed42\\removals.csv": [
+      1680,
+      1792115256487259700
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR2_seed42\\run_config.json": [
+      10979,
+      1792115256962794000
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR3_seed42\\client_metrics.csv": [
+      764205,
+      1792095722137461600
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR3_seed42\\cycle_signals.csv": [
+      265270,
+      1792095721646874500
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR3_seed42\\detection_summary.csv": [
+      158,
+      1792095722347346800
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR3_seed42\\global_metrics.csv": [
+      10758,
+      1792095722031955100
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR3_seed42\\latest_results.json": [
+      1603,
+      1792095722750063500
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR3_seed42\\protocol.json": [
+      6342,
+      1792084122748246100
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR3_seed42\\removals.csv": [
+      1680,
+      1792095722205632500
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR3_seed42\\run_config.json": [
+      10987,
+      1792095722706510000
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR4_seed42\\client_metrics.csv": [
+      653406,
+      1792106148304376700
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR4_seed42\\cycle_signals.csv": [
+      160094,
+      1792106147823840400
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR4_seed42\\detection_summary.csv": [
+      158,
+      1792106148494624100
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR4_seed42\\global_metrics.csv": [
+      10081,
+      1792106148217836900
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR4_seed42\\latest_results.json": [
+      1599,
+      1792106148862080400
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR4_seed42\\protocol.json": [
+      6342,
+      1792095725974615700
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR4_seed42\\removals.csv": [
+      1680,
+      1792106148362387700
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR4_seed42\\run_config.json": [
+      10981,
+      1792106148828996000
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr40\\experiment_manifest.json": [
+      2260,
+      1792001017254865200
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr40\\experiment_status.json": [
+      18069,
+      1792076595455979200
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR1_seed42\\client_metrics.csv": [
+      550375,
+      1792076594586324500
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR1_seed42\\cycle_signals.csv": [
+      146098,
+      1792076594116207800
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR1_seed42\\detection_summary.csv": [
+      158,
+      1792076594813990800
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR1_seed42\\global_metrics.csv": [
+      10068,
+      1792076594506613500
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR1_seed42\\latest_results.json": [
+      1595,
+      1792076595220763400
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR1_seed42\\protocol.json": [
+      6339,
+      1792068209501751200
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR1_seed42\\removals.csv": [
+      2207,
+      1792076594679222200
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR1_seed42\\run_config.json": [
+      11012,
+      1792076595181039100
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR2_seed42\\client_metrics.csv": [
+      569458,
+      1792068207210436700
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR2_seed42\\cycle_signals.csv": [
+      148364,
+      1792068206773579800
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR2_seed42\\detection_summary.csv": [
+      158,
+      1792068207393874400
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR2_seed42\\global_metrics.csv": [
+      10029,
+      1792068207128344400
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR2_seed42\\latest_results.json": [
+      1597,
+      1792068207778174000
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR2_seed42\\protocol.json": [
+      6339,
+      1792060328432258700
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR2_seed42\\removals.csv": [
+      2207,
+      1792068207259936800
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR2_seed42\\run_config.json": [
+      11011,
+      1792068207744626100
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR3_seed42\\client_metrics.csv": [
+      566983,
+      1792060324523414800
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR3_seed42\\cycle_signals.csv": [
+      148349,
+      1792060324095653300
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR3_seed42\\detection_summary.csv": [
+      158,
+      1792060324753660600
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR3_seed42\\global_metrics.csv": [
+      10176,
+      1792060324446214800
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR3_seed42\\latest_results.json": [
+      1596,
+      1792060325148284200
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR3_seed42\\protocol.json": [
+      6339,
+      1792048431086963700
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR3_seed42\\removals.csv": [
+      2207,
+      1792060324596336300
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR3_seed42\\run_config.json": [
+      11014,
+      1792060325105799900
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR4_seed42\\client_metrics.csv": [
+      564222,
+      1792048426045011900
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR4_seed42\\cycle_signals.csv": [
+      148120,
+      1792048425565137300
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR4_seed42\\detection_summary.csv": [
+      158,
+      1792048426227908700
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR4_seed42\\global_metrics.csv": [
+      10072,
+      1792048425946129200
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR4_seed42\\latest_results.json": [
+      1598,
+      1792048426653853900
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR4_seed42\\protocol.json": [
+      6339,
+      1792036781262501000
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR4_seed42\\removals.csv": [
+      2207,
+      1792048426086524000
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR4_seed42\\run_config.json": [
+      11011,
+      1792048426614474500
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR1_seed42\\client_metrics.csv": [
+      575302,
+      1792036777509176500
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR1_seed42\\cycle_signals.csv": [
+      144772,
+      1792036777052065600
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR1_seed42\\detection_summary.csv": [
+      158,
+      1792036777694946800
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR1_seed42\\global_metrics.csv": [
+      10065,
+      1792036777429015500
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR1_seed42\\latest_results.json": [
+      1599,
+      1792036778046660300
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR1_seed42\\protocol.json": [
+      6342,
+      1792028625281126800
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR1_seed42\\removals.csv": [
+      2207,
+      1792036777553779700
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR1_seed42\\run_config.json": [
+      11019,
+      1792036778013132300
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR2_seed42\\client_metrics.csv": [
+      593882,
+      1792028621577189900
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR2_seed42\\cycle_signals.csv": [
+      147126,
+      1792028620984520700
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR2_seed42\\detection_summary.csv": [
+      158,
+      1792028621779213400
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR2_seed42\\global_metrics.csv": [
+      10061,
+      1792028621465380200
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR2_seed42\\latest_results.json": [
+      1594,
+      1792028622227903700
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR2_seed42\\protocol.json": [
+      6342,
+      1792020887038009600
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR2_seed42\\removals.csv": [
+      2207,
+      1792028621637764700
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR2_seed42\\run_config.json": [
+      11015,
+      1792028622148467200
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR3_seed42\\client_metrics.csv": [
+      679996,
+      1792011898482539600
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR3_seed42\\cycle_signals.csv": [
+      243905,
+      1792011897966984600
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR3_seed42\\detection_summary.csv": [
+      158,
+      1792011898697749600
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR3_seed42\\global_metrics.csv": [
+      10617,
+      1792011898381992600
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR3_seed42\\latest_results.json": [
+      1600,
+      1792011899116317900
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR3_seed42\\protocol.json": [
+      6342,
+      1792006267369458500
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR3_seed42\\removals.csv": [
+      2207,
+      1792011898546408600
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR3_seed42\\run_config.json": [
+      11155,
+      1792011899074390500
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR4_seed42\\client_metrics.csv": [
+      589414,
+      1792020883329902600
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR4_seed42\\cycle_signals.csv": [
+      147529,
+      1792020882887535200
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR4_seed42\\detection_summary.csv": [
+      158,
+      1792020883515477900
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR4_seed42\\global_metrics.csv": [
+      10066,
+      1792020883244806500
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR4_seed42\\latest_results.json": [
+      1597,
+      1792020883962435900
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR4_seed42\\protocol.json": [
+      6342,
+      1792011902534731400
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR4_seed42\\removals.csv": [
+      2207,
+      1792020883379266200
+    ],
+    "E:\\New Projects\\Mitigating-Free-Rider\\results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR4_seed42\\run_config.json": [
+      11017,
+      1792020883881837400
+    ]
+  },
+  "generated_at_utc": "2026-10-16T22:20:57.891264+00:00",
+  "state": "ready",
+  "totals": {
+    "fn": 0,
+    "fp": 0,
+    "honest": 1040,
+    "tp": 560
+  },
+  "validated_runs": 16
+}

@@ -9,7 +9,365 @@ elsewhere.
 > **Current protocol:** `swtcp_v13`. Historical sections remain for provenance.
 > The v13 rules below override them when `methodology_version="swtcp_v13"`.
 
+## V15 cycle confirmation (`swtcp_v15`)
+
+### V15.4 fresh certificate memory (`swtcp_v15_4`)
+
+Keep the entire v15.3 screening/certificate gate unchanged. Remember counts
+separately for norm_low and profile_high. A newly issued full A/B certificate
+increments only its own component, at most once per distinct completed cycle.
+The configured confirmation count (two in this plan) need not be consecutive.
+A C/ambiguous cycle pauses, never increments or erases these counts. Clear
+statistical memory after the configured number of consecutive complete R cycles
+(two in this plan). Mixed components never combine into a removal certificate.
+Single-trap audits cannot confirm or clear memory. Exact sendback keeps its
+existing consecutive-full-cycle path. Duplicate/older cycles are rejected.
+
+Retained evidence does not by itself start/renew quarantine or force dense
+probing. Preserve bounded v15.3 review, release, cooldown, rehabilitation,
+grouping, trap schedules and training. A removal still requires a FRESH current
+certificate for the component whose retained count reaches confirmation.
+There is no median-only confirmation, attack-window reconstruction, attacker
+label, known prevalence, removal quota, fitted z cutoff, or round-60 exception.
+There ARE fixed design choices/support requirements and no calibrated error
+guarantee: correlated false certificates may accumulate over a long lifetime.
+Evidence has no arbitrary round-based expiry, but clean cycles clear it.
+
+Checkpoint the small per-client count dictionary and clean streak. Decisions
+log fresh_certificate_counts, certificate_clean_cycles and confirmed components;
+removals distinguish repeated_fresh_component_certificates from the unchanged
+exact/consecutive path. Frozen source hashes include v15.3 and v15.4 gates.
+Do not modify source-hashed files for paused v15.3 recovery.
+
+Cleanup update (2026-10-15): the unfinished prior CIFAR run and its remaining
+queue were discarded at user request. Completed results remain preserved;
+STOP_REQUESTED prevents restart. See result_check/cleanup_2026_10_15.json.
+
+Original launch instruction: preserve/pause the prior CIFAR batch. Run
+`configs/v15_4_cifar10_seed42_fr40_plan.json`: CIFAR-10, seed 42, 100 clients,
+40% free riders, 100 rounds; non-IID FR3/FR4/FR2/FR1 before IID FR4/FR3/FR2/FR1.
+The updated resume task runs at logon and every five minutes while logged on,
+uses a launcher mutex/duplicate-runner guard and ignores parallel task starts.
+It resumes the latest published checkpoint and skips completed experiments;
+an intentional STOP_REQUESTED marker blocks automatic restart. Interrupted
+training is recovered after the machine/user session is available again, not
+while powered off. Old-decision replays are eligibility checks, not promised
+counterfactual fresh-run recall or honest-removal rates.
+
+### V15.3 strict norm removal (`swtcp_v15_3`)
+
+Keep v15.1 screening, bounded review, two-trap/two-consecutive-cycle confirmation,
+training and trap settings. A low-norm cohort can authorize removal ONLY when
+the existing core gap exceeds its IQR AND the gap from its upper quartile to
+the smallest peer norm exceeds that same cohort IQR, on BOTH selected traps.
+The density/concentration alternative no longer authorizes norm removal.
+Overlapping norm cohorts remain candidates without removal strikes or automatic
+quarantine; weak evidence cannot indefinitely renew exclusion. Profile-distance
+certificates retain the v15.1 gate. Exact current/previous sendback remains a
+separate confirmation channel. Diagonal scores are diagnostic only, since they
+contain negative norm-z and must not bypass a rejected norm certificate.
+
+The identical rule applies in every cycle, with no round-30 switch, population
+quota, attack labels, known prevalence, learned classifier or fitted z cutoff.
+It is a conservative geometric heuristic, not a false-positive guarantee, and
+can delay/miss free riders: recorded seed-73 non-IID FR4 loses its round-30
+norm certificate, whereas seed-42 non-IID FR4 retains it. Recorded replay
+eligibility is not a counterfactual rerun or promised detection rate.
+
+The compact detector retains no extra full-response histories or training work.
+`diagnostic_certified_channels` logs the former v15.1 certificates; enforcing
+channels exclude diagonal and require strict norm separation. Use the isolated
+`train_v15_3.py` engine so source-hashed files of the still-running v15.1 batch
+remain unchanged/resumable. Its provenance hashes both evidence modules and the
+new engine. Future changes to either gate reject v15.3 checkpoint resume.
+
+Queue `configs/v15_3_mnist_seed42_fr40_plan.json` ONLY after the entire
+`v15_1_mnist_seed42_fr40` batch completes successfully: MNIST, 100 clients,
+40% free riders, 100 rounds, non-IID FR3/FR4/FR2/FR1 then IID FR4/FR3/FR2/FR1.
+`queued_experiments.ps1` waits for existing runners, recovers the prerequisite
+first after an outage, honours either batch's STOP_REQUESTED marker, and starts
+or resumes the new batch only after all prerequisite completion markers exist.
+Preserve all previous results and never retune this policy to obtain 40 removals.
+
+### V15.2 individual follow-up (`swtcp_v15_2`)
+
+Initial screening/cohort certificates and trap/training settings are unchanged.
+Only a fresh cohort certificate can enrol a client/component on the individual
+watchlist. Neither a weak candidate flag nor individual followup can invent
+that initial permission. Exact sendback stays on its existing separate path.
+Previously certified clients need not pass the combined-score nomination or
+meet a minimum cohort size again to confirm their own previously certified
+component. Fresh matching evidence must still occur on BOTH selected traps:
+norm-z below its same-trap leave-one-out median centre; profile-z above its
+same-trap leave-one-out median centre; or diagonal score above the same-trap
+leave-one-out diagonal median. Zero for the signed z scores denotes a measured
+median, not an attack-fitted z cutoff. Undefined measurements never confirm.
+Diagonal medians use central order-statistic selection, not a client-score sort.
+
+Removal still requires the SAME component in consecutive full cycles. A mixed
+or undefined pair interrupts its confirmation streak but does not certify
+clearance. Retain the compact watch until two complete consecutive clean cycles
+clear the previously certified component. Quarantine/review remains bounded;
+after exclusion expires an unresolved client may aggregate on ordinary rounds
+but continues targeted paired probing. A single audit cannot confirm or clear
+this watch. Fresh full certificates can enrol new components; removed clients
+leave the watch permanently. One extra clean-cycle reference probation follows
+rehabilitation as before. No round-30 switch, attack type, known prevalence,
+labels, private loss, sample count or telemetry participates in these rules.
+
+The checkpointed state keeps pending components, clean counts and certification
+origin cycles (O(N*components), no response-vector history). Logged decisions
+distinguish cohort_certified_channels, followup_matched_channels,
+followup_clean_channels and pending/origin fields. Removal reasons distinguish
+fresh repeated certificates from prior-certificate paired followup. This is
+more permissive than v15.1 and may increase honest removals; it is not a
+statistical error guarantee or universal zero-miss detector.
+
+Run the same eight MNIST seed-73, 40%-FR, 100-round cases into
+`results/v15_2_mnist_seed73_fr40`, non-IID FR4/FR3/FR2/FR1 before IID. Preserve
+the completed v15.1 snapshot/results. `replay_v15_followup.py` checks recorded
+round-20/30 eligibility without exposing labels to scoring. This is a
+development replay/rerun; fresh results, especially later honest removals,
+must be evaluated separately. Do not retune to achieve a desired removal count.
+
+### V15.1 evidence gate (`swtcp_v15_1`)
+
+This revision keeps the old screening as diagnostics, but removes its direct
+removal authority. A screened S cohort must be a strict minority with at least
+ceil(N/ceil(sqrt(N))) members; this population-derived support requirement does
+not use the configured attack prevalence. Independently test low raw update
+norm, high raw profile distance, and high diagonal score. On each trap, require
+disjoint interquartile cores with a gap larger than the screened cohort's IQR.
+Additionally require either that this gap persists against the full peer range
+or that the cohort's IQR/(cohort size-1) is smaller than the peers' IQR/(peer
+size-1). The latter prevents a smaller slice of a continuous population from
+appearing artificially cohesive merely because it has fewer members.
+An individual must also lie on the claimed side of the peer median; a
+wrong-direction outlier cannot inherit a cohort's separation certificate.
+No z
+cutoff, attack-specific parameter, class labels, known-prevalence selection,
+external calibration artifact or learned classifier enters this rule.
+
+The SAME evidence component must certify the client on both traps and in
+consecutive complete cycles to authorize removal. Repeated exact current/previous
+sendback on both selected responses remains a separate evidence component.
+Changing from norm evidence to profile evidence does not continue the removal
+streak. Missing or weak evidence interrupts it. This is a geometric screening
+heuristic, not a calibrated error guarantee or proof of non-training.
+
+Weak S/C diagnostics become C without removal strikes or automatic quarantine.
+Only certified S starts quarantine. Single-trap certified audit proposals start
+bounded followup, not quarantine or a confirmation strike. Followup and existing
+quarantine expire after the configured review budget if no strong evidence
+returns; weak evidence cannot renew the budget. Release of unconfirmed evidence
+is logged separately from rehabilitation and does not certify honesty. Review
+cooldowns expire on audits, not on a cycle counter that could stall in quiet
+mode. Fresh paired strong evidence overrides cooldown. Quiet audits begin when
+no pending review or clean-cycle reference probation remains, even if weak C
+diagnostics remain. Released/weak candidates can aggregate on non-trap rounds.
+
+Exactly the same gate applies at round 20, 30 and later; there is no round-30
+switch and no assumption that removed clients exhaust all attackers. New gate
+work is a few scalar quantiles per signal/trap; existing screening/bootstrap
+and compact measurement costs are unchanged. No extra model training or full
+response history is required. `cycle_decisions.csv` records screen_state,
+strong_channels, evidence_strength, quarantine and remaining review budget.
+`cycle_policy.csv` records measured gaps/spreads and certificate rejection reasons.
+`candidate_events.csv` distinguishes unconfirmed releases from rehabilitation.
+
+Keep v15 outputs intact. Rerun all eight MNIST seed-73 40%-FR cases into
+`v15_1_mnist_seed73_fr40`, non-IID before IID, with the unchanged 100-round
+horizon/training/trap strengths. Offline replays on old trajectories only check
+eligibility; they are NOT counterfactual accuracy/removal estimates. The rule
+was developed after examining prior results, so these are development reruns,
+not held-out validation. Do not retune it to the new batch outcomes.
+
+This opt-in version overrides older removal, anchor and penalty rules. Warmup
+is rounds 1-10; rounds 11-20 give every client two independent traps around a
+frozen round-10 global model. Each dense cycle lasts ten rounds. Decision rule:
+the unchanged diagonal histogram/bootstrap screening; if its population split
+is unsupported, fall back to below-peer-median norm on both traps (S), one
+trap/undefined evidence (C), or neither (R). Exact current/previous model
+send-back on both selected trap responses independently implies S. Warmup
+send-backs are diagnostic, never an immediate-removal bypass.
+
+After the first cycle, create at most ten groups, with S/C in a monitored pool
+separate from R. Allocate proportionally, nearest rounding with ties down
+(42/100 => 4 monitored groups; 45 => 4; 46 => 5), bounded by pool sizes.
+Monitored clients receive a trap every round, alternating A/B. Each R group
+receives each trap once; use two R groups in a round where required for full
+coverage. Fresh balanced grouping and fresh independent trap models each
+cycle. All schedules depend only on public IDs and inferred state.
+
+One A/B response pair per client is preselected uniformly from the schedule
+before any scores are observed. It supplies the same exact same-trap
+leave-one-out norm/profile statistics as v14.1; all active clients contribute
+one response per trap, including unknown attackers. Additional monitored
+responses are logged, never counted as extra removal strikes. No cosine or
+full response histories are retained. Persistent detector memory is O(N*L),
+apart from the two trap models, ordinary per-round training and simulator
+attack histories. Bootstrap scratch space is unchanged.
+
+Only S in two consecutive completed double-trap cycles removes (earliest
+round 30). Any C/R result interrupts confirmation. New S waits for the next
+complete cycle. S/C stay excluded from aggregation until two consecutive
+complete R cycles; C or missing data interrupts clearance. Rehabilitated R
+aggregates again but has one extra clean-cycle reference probation. References
+for the present score remain the whole population, not filtered R anchors.
+Trap responses never aggregate; newly flagged/removed responses also cannot
+aggregate on the decision round. If all clients are quarantined, keep the
+previous global model, not an empty/invalid average.
+
+When no S/C or probation remains, use one all-client single-trap audit every
+ten rounds; this may only escalate to C and a fresh dense cycle. It cannot
+remove, confirm S or rehabilitate. Population/group counts shrink after removal;
+fewer than ten remaining clients use fewer nonempty groups. No new clients
+enter these fixed-population experiments. Permanent removal has no automatic
+re-entry. A completed single audit with degenerate scores supplies no proof of
+honesty; the periodic audit continues.
+
+Server scoring, schedule and state transitions have no attack type, labels,
+private loss, sample counts, telemetry or history-window inputs. Evaluation
+labels are appended after decisions. The simulator necessarily uses attack
+configuration to fabricate responses, separately from detection. The frozen
+decision policy, independent stream seeds and source hashes are recorded in
+`protocol.json`; checkpoints preserve selected pairs, traps, states, RNGs and
+data-loader/attacker history and reject changed policy/settings/source hashes.
+
+Outputs: `cycle_probes.csv`, `cycle_groups.csv`, `cycle_signals.csv`,
+`cycle_decisions.csv`, `cycle_decision_summary.csv`, `cycle_policy.csv`, actual
+removals/rehabilitations and global/aggregation diagnostics. Suspected screening
+recall is distinct from permanent-removal recall. This is an empirical
+high-recall policy, NOT a guaranteed false-positive bound: persistent honest
+low updates may fail consecutive cycles. The previous 24 runs were development
+backtests. The new eight-run MNIST seed-73, 40%-FR, 100-round plan is fresh
+validation, with non-IID FR4/FR3/FR2/FR1 before IID. No tuning to seed-73 results.
+
 ## Current v13 corrections
+
+### V14.1 preliminary comparison (`v14_1_preli`)
+
+Optional `preliminary_diagonal_decisions` adds observational round-20 R/C/S
+assignments, without changing aggregation or removing anyone. Frozen before the
+CIFAR-10 seed-42 batch: D = profile-z minus signed norm-z on each trap;
+three views are D_A, D_B and their average. Each histogram uses ceil(sqrt(N))
+bins and an Otsu between-class-variance boundary. Resample whole client pairs
+1,000 times (fixed bootstrap seed 20261011), retaining a 99% boundary-stability
+band. All three views below their lower boundaries => R; all above their upper
+boundaries => S; otherwise C. Both exact-zero trap responses independently imply
+S. Invalid/degenerate evidence defers, and the average-view lower cohort must
+contain a strict majority of all evaluated clients. No attack type, prevalence,
+label, private loss or history-window knowledge enters classification.
+
+This split is provisional: Otsu can split honest heterogeneity as well as
+attacks, and bootstrap stability is NOT a calibrated false-positive guarantee.
+The score direction was selected using MNIST development evidence; CIFAR is
+fresh evaluation, not proof of universal attack coverage. No parameters are
+retuned to CIFAR outcomes. Logs `preliminary_decisions.csv` and
+`preliminary_decision_summary.csv` distinguish S/C/R from actual removals;
+`preliminary_decision_policy.json` records the rule and learned boundary bands.
+The additional decision uses O(bootstrap_replicates * N) scalar scratch space,
+no extra training or model histories. Existing exact-cosine diagnostics still
+temporarily retain full response vectors; that baseline cost is separate.
+
+MNIST, seed 42, 40% free riders; eight IID/non-IID FR1-FR4 runs. Rounds 1-10
+are warmup, 11-20 cover all clients under two independent, parameter-relative
+perturbations of a frozen round-10 model. Ten shuffled groups receive each
+trap exactly once per client; trap responses do not aggregate. All clients,
+including exact send-backs, remain active through round 20. No statistical or
+send-back removal, quarantine, shadow calibration, or paired-gain classification.
+
+At round 20, `preliminary_signals.csv` contains one row per client per trap:
+raw update norm, signed robust norm-z (normal-consistent MAD, no threshold/floor),
+exact cosine against the leave-one-out same-trap mean update, and normalized
+layer profile plus distance/profile-z against leave-one-out median profiles.
+Zero response/reference cosine and degenerate MAD scores are undefined, not
+zero-filled. References contain unknown attackers; cosine is descriptive, not
+proof of honesty. It differs from v8's coverage coordinate-median reference.
+
+`preliminary_comparison.csv` supplies means, medians, quartiles, ranges and
+undefined counts by trap, class and signal. Ground truth is appended only for
+evaluation after all measurements; it cannot select references. Independent
+random streams and checkpointed partial coverage are retained. No FedProx or
+increased trap strength is included in this baseline experiment.
+
+Exact post-sweep cosine needs temporarily stored CPU response vectors (O(NP)
+memory for a single sweep), unlike the earlier compact shadow summaries. The
+buffers are discarded after comparison, and successful-run checkpoints are
+cleaned up. This is a diagnostic memory tradeoff, not an unbounded model history.
+
+### Frozen combined shadow rule (`paired_combined_shadow_v1`)
+
+`paired_shadow_calibration` enables shadow proposals ONLY within paired
+measurement mode. It never changes aggregation, C/S state, statistical penalties
+or actual removals. The exact-sendback path remains separate and enforced.
+
+For each complete pair, collect signed gain, the mean log update norm, log
+profile difference, and signed per-layer gains. Over three consecutive paired
+cycles, take the median of each component. Compare these medians in both
+directions against a frozen honest-only fitting center and MAD scale. The score
+is the maximum absolute standardized component, without attack-specific weights,
+history reconstruction, signature values, or a personal-baseline veto.
+
+Calibrate that whole maximum score on a separate complete honest-only run, not
+on current peers or filtered passing clients. With n calibration windows and
+preselected alpha=0.01, the boundary is rank ceil((n+1)(1-alpha)); strict greater
+than rejection. Unsupported rank resolution defers. Degenerate fitting scales
+fail calibration instead of silently inventing floors. Invalid observations or
+cycle gaps defer/restart a window, not certify clearance. Windows do not overlap.
+
+Development fitting uses completed clean seed-42 controls; separate clean
+seed-44 controls calibrate each IID/non-IID context with 100 client windows.
+Neither source contains attackers. Artifact provenance records source hashes;
+fresh-run plans pin artifact SHA-256, protocol, context, and the unchanged risk
+budget. Seeds 46/47 and replay-history variants are evaluation, not calibration.
+No automatic retuning or enabling removals based on these results.
+
+This is EMPIRICAL, not a guaranteed 1% deployment or lifetime false-removal rate.
+Client windows share training trajectories and need not be exchangeable with
+fresh attacker-containing runs. Dataset, partition skew, training settings,
+perturbation settings, and run horizon must match the calibration context.
+Shadow results must report attacker misses and honest proposals separately;
+zero actual removals is not evidence of low statistical false-positive rates.
+
+Runtime keeps up to three short feature vectors per client, a calibration
+vector, and client IDs. It retains no full response histories. Checkpoints
+preserve partial windows and reject a changed calibration fingerprint. Decisions
+and reasons are in `paired_shadow_decisions.csv`; ground truth is appended only
+for evaluation after scoring and cannot influence the decision.
+
+### Paired validation mode (`paired_measurement_v1`)
+
+When `paired_measurement_only=true`, the following overrides statistical v13
+classification. Exact current/previous send-back strikes remain active.
+
+- Generate plus/minus perturbations around one frozen cycle model. Keep the
+  existing parameter-relative perturbation amplitude; do not fit it to outcomes.
+- Randomize each group's first sign; the complementary second half gives each
+  client both signs with the same round gap. Fresh randomness every cycle.
+  Both trap responses are excluded from aggregation. Every cycle stays paired.
+- Record directional response gain, per-layer gains, norms, and profile change.
+  Keep only O(clients * layers) scalar summaries between probe rounds.
+- No population-tail thresholds, personal-baseline vetoes, statistical flags,
+  quarantine or statistical removals. This is measurement, not a new validated
+  detector. Non-IID distributions, chronology and SGD noise can still overlap.
+- Independent, checkpointed random streams cover partitioning, attacker
+  selection, initialization, training, scheduling, trap directions and attacks.
+  Explicit per-stream seed overrides permit one-factor comparisons. Attack draws
+  cannot consume trap randomness. Attacks can still affect the learned base
+  model, so actual trap weights need not match between different attacks.
+- `paired_responses.csv` ground truth is evaluation-only, added after feature
+  extraction. Feature functions accept no attack configuration or labels.
+- Freeze this protocol before observing held-out seeds 44/45. The fresh 26-run
+  MNIST validation plan uses 100 clients and 40 rounds: matched honest-only/FR4
+  controls, isolated partition/trap/attack seed changes, held-out IID/non-IID,
+  alternate replay histories, and FR1-FR3 IID/non-IID. No auto-tuning to results.
+- Resume rejects changed paired seeds/settings and preserves partial pairs,
+  logs, client data-loader states, attack RNG and simulation history.
+
+The previous batch is stopped and preserved. Validation output uses a fresh
+directory. Zero FR4 removals in this mode is expected; evaluate response
+separation and honest variability before authorizing a classification rule.
 
 - Use only update norm and normalized layer-profile evidence. Do not reconstruct
   averaging windows or model trajectories, and do not use attack parameters,
@@ -18,15 +376,18 @@ elsewhere.
   evaluated client out of its peer reference. A too-small batch cannot support
   statistical removal. No current outlier trimming/recomputed narrow baseline.
 - Apply log-norm robust statistics, normal-consistent MAD and historical scales.
-  Derive bootstrap cutoffs from a configured false-alarm budget and adapt them
-  using prior nonflagged cycle scores excluding the client's own scores. This
-  is empirical calibration, not a guaranteed false-positive bound.
-- Keep small personal residual histories from non-joint cycles. After sufficient
-  history, consistency with the client's own baseline may veto population flags.
-- Single-signal anomalies create weak C evidence with zero penalty. Strong
-  evidence requires joint norm/profile anomalies with the same norm direction
-  on both distinct traps and confirmation in consecutive fresh cycles.
-- Weak or clean cycles erase strong evidence. Old evidence expires; unconfirmed
+  Derive cutoffs from prior complete-cycle score ranks, excluding the client's
+  own scores and matching probe counts. Include flagged scores to avoid a
+  passing-only truncated calibration tail. No Gaussian bootstrap or chosen z
+  threshold. Insufficient calibration defers statistical decisions.
+- Keep small personal residual histories only from fully clear, calibrated
+  cycles. Consistency may weaken confirmation, but cannot erase population
+  screening or teach a flagged client its own baseline.
+- Strong evidence requires the same anomalous component/direction on both
+  distinct traps and confirmation in consecutive fresh cycles. Norm-only or
+  profile-only evidence can qualify; joint norm/profile failure is not required.
+- Weak or clean cycles interrupt confirmation, but retain bounded follow-up
+  records. Old evidence expires; unconfirmed
   quarantine is bounded by a configured review deadline. After release, weak
   evidence has a cooldown; strong evidence can still trigger fresh confirmation.
 - If references are insufficient, release quarantine rather than hold it
@@ -38,6 +399,28 @@ elsewhere.
 - Schedule all MNIST runs together, with non-IID FR4 seeds 42, 43, 46 first,
   then other non-IID cases and finally IID, at 40% free riders and 100 rounds.
 - Paired differential challenges are deferred pending separate validation.
+
+### Calibration contract (revision `empirical_combined_v2`)
+
+Each cycle score is the maximum of absolute norm-z and positive profile-z over
+all probes. Given n earlier matching-probe scores and a preselected risk budget
+alpha, use sorted rank ceil((n+1)(1-alpha)), with strict greater-than rejection.
+If that rank exceeds n, defer. The existing deployment alpha remains 0.01;
+at least 99 peer observations are needed for a finite boundary. This is a
+policy error budget, not a value selected to catch an attack in saved results.
+
+The rank rule has its usual error interpretation only for exchangeable null
+scores. Federated scores drift, repeat clients, and include unknown attackers;
+therefore this implementation is empirical screening, NOT a guaranteed 1%
+honest-removal rate or lifetime error bound. Contaminated calibration can mask
+attacks. Consecutive confirmation is not an independence/alpha-squared claim.
+Robust peer centering assumes an honest majority, and norm/profile alone cannot
+distinguish an attacker that reproduces honest observable behavior. Report both
+misses and honest quarantine/removal; do not tune thresholds to those outcomes.
+
+Original v13 checkpoints are incompatible with this revision and are rejected.
+Keep old outputs intact. The scheduled experiment batch remains user-stopped;
+new experiments require explicit authorization and a fresh output directory.
 
 ## Current v12 corrections
 

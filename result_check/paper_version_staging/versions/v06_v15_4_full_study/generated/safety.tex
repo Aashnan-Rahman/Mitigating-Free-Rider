@@ -1,0 +1,19 @@
+\begin{table*}[t]
+\centering\footnotesize\setlength{\tabcolsep}{4pt}
+\caption{Honest-client burden by individual FR3 run, plus any other run with honest quarantine. All runs end with zero permanent honest removals and zero quarantined clients.}\label{tab:safety}
+\begin{tabular}{llrlrrrrrr}
+\toprule
+Dataset & Partition & FR (\%) & Attack & \shortstack{Final honest\\candidates} & \shortstack{Ever\\quarantined} & \shortstack{Quarantine\\client-rounds} & \shortstack{Trap\\client-rounds} & \shortstack{Non-trap\\excluded} & \shortstack{All excluded\\(\%)} \\
+\midrule
+MNIST & IID & 30 & FR3 & 8/70 & 0 & 0 & 770 & 0 & 11.00 \\
+MNIST & Non-IID & 30 & FR3 & 8/70 & 0 & 0 & 770 & 0 & 11.00 \\
+MNIST & IID & 40 & FR3 & 5/60 & 0 & 0 & 660 & 0 & 11.00 \\
+MNIST & Non-IID & 40 & FR3 & 34/60 & 1 & 20 & 736 & 1 & 12.28 \\
+CIFAR-10 & IID & 30 & FR3 & 2/70 & 0 & 0 & 770 & 0 & 11.00 \\
+CIFAR-10 & Non-IID & 30 & FR3 & 70/70 & 1 & 20 & 1160 & 0 & 16.57 \\
+CIFAR-10 & IID & 40 & FR3 & 4/60 & 0 & 0 & 660 & 0 & 11.00 \\
+CIFAR-10 & Non-IID & 40 & FR3 & 52/60 & 9 & 180 & 1104 & 5 & 18.48 \\
+\bottomrule
+\end{tabular}
+\par\smallskip\begin{minipage}{0.96\textwidth}\scriptsize Candidate entries are unresolved honest clients / honest population. Quarantine client-rounds count clients times rounds, and can overlap trap client-rounds. Non-trap excluded counts only withheld honest responses not already explained by traps; the last column divides all withheld honest responses by active honest client-rounds. The complete per-run appendix retains the other attacks.\end{minipage}
+\end{table*}

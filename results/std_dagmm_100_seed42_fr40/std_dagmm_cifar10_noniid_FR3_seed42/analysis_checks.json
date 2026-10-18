@@ -1,0 +1,18 @@
+{
+  "clients_per_round": 100,
+  "ever_flagged_free_riders": 0,
+  "ever_flagged_honest": 60,
+  "first3_fit_mean": 43.44177373333272,
+  "historical_ours_context": {
+    "mean_logged_round_s": 84.84527439300001,
+    "measured_rounds": 100,
+    "summed_logged_round_s": 8484.527439300002
+  },
+  "last3_fit_mean": 45.59351323333491,
+  "last_round_flagged_free_riders": 0,
+  "last_round_flagged_honest": 20,
+  "max_detector_worker_rss_mib": 3749.078125,
+  "max_simulator_parent_rss_mib": 1855.55078125,
+  "minimum_system_available_mib": 0.140625,
+  "validated_rounds": 100
+}

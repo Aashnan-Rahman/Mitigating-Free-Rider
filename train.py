@@ -1,11 +1,13 @@
 from __future__ import annotations
 
 import math
+import json
 import os
 import platform
 import random
 import shutil
 import time
+from dataclasses import replace
 from collections import deque
 from pathlib import Path
 from datetime import datetime
@@ -39,7 +41,13 @@ from server.cycle_trap_selection import CycleTrapSelector
 from server.cycle_protocol import transition_cycle_state
 from server.model_fingerprint import model_fingerprint
 from server.v11_detection import evaluate_v11_cycle
-from server.v13_detection import V13Detector, settings_from_config
+from server.v13_detection import PROTOCOL_REVISION, V13Detector, settings_from_config
+from server.paired_challenges import (
+    REVISION as PAIRED_REVISION, derive_seed, stream_seeds, make_pair,
+    summarize_response, pair_features, measurement_evidence,
+)
+from server.paired_shadow import PairedShadow, context_from_config, load_artifact
+from server.preliminary_signals import PreliminarySignals, REVISION as PRELI_REVISION
 from server.v12_detection import (
     compact_sketch,
     evaluate_v12_cycle,
@@ -224,36 +232,71 @@ def run_experiment(
     progress_callback: Callable[[dict[str, object]], None] | None = None,
 ) -> str:
     config.validate()
+    if config.methodology_version == "swtcp_v15_4":
+        from train_v15_4 import run_experiment as run_v15_4
+        return run_v15_4(config, progress_callback)
+    if config.methodology_version == "swtcp_v15_3":
+        from train_v15_3 import run_experiment as run_v15_3
+        return run_v15_3(config, progress_callback)
+    if config.methodology_version in {"swtcp_v15", "swtcp_v15_1", "swtcp_v15_2"}:
+        from train_v15 import run_experiment as run_v15
+        return run_v15(config, progress_callback)
     run_name = config.resolved_run_name()
     start_time = datetime.now()
     wall_start = time.perf_counter()
 
-    set_global_seed(config.seed)
+    paired_mode = config.paired_measurement_only
+    preliminary = PreliminarySignals() if config.methodology_version == "v14_1_preli" else None
+    measurement_revision = PRELI_REVISION if preliminary is not None else PAIRED_REVISION
+    seeds = stream_seeds(config) if paired_mode else {}
+    shadow = (PairedShadow(
+        load_artifact(config.paired_shadow_calibration, config.paired_shadow_calibration_sha256),
+        context=context_from_config(config), alpha=config.cycle_target_false_alarm_rate,
+    ) if config.paired_shadow_calibration else None)
+    paired_protocol = ({
+        "revision": measurement_revision, "seeds": seeds,
+        "settings": {name: getattr(config, name) for name in (
+            "num_clients", "local_epochs", "batch_size", "optimizer", "learning_rate",
+            "momentum", "trap_noise_scale", "trap_noise_floor", "warmup_rounds",
+            "surveillance_groups", "dirichlet_alpha",
+        )},
+    } if paired_mode else None)
+    if config.preliminary_diagonal_decisions:
+        from server.diagonal_decision import policy as diagonal_policy
+        paired_protocol["diagonal_decision_policy"] = diagonal_policy()
+    set_global_seed(seeds["model"] if paired_mode else config.seed)
     device = resolve_device(config.device)
     generator = torch.Generator(device=device)
-    generator.manual_seed(config.seed)
-    rng = random.Random(config.seed)
+    generator.manual_seed(seeds["attack"] if paired_mode else config.seed)
+    rng = random.Random(seeds["schedule"] if paired_mode else config.seed)
 
     train_set, test_set = get_datasets(config)
-    partitions = partition_dataset(train_set, config)
+    partitions = partition_dataset(train_set, replace(config, seed=seeds["partition"]) if paired_mode else config)
     client_loaders = [
-        make_client_loader(train_set, indices, config, seed=config.seed + client_id)
+        make_client_loader(train_set, indices, config, seed=(
+            derive_seed(seeds["training"], f"loader:{client_id}") if paired_mode else config.seed + client_id
+        ))
         for client_id, indices in enumerate(partitions)
     ]
     eval_loader = make_eval_loader(config, test_set)
 
     model = get_model(config.dataset).to(device)
     global_state = clone_state(model.state_dict())
+    if paired_mode:
+        set_global_seed(seeds["training"])
     loss_fn = nn.CrossEntropyLoss()
 
     free_rider_count = math.ceil(config.free_rider_pct * config.num_clients)
-    free_riders = set(rng.sample(range(config.num_clients), free_rider_count))
+    identity_rng = random.Random(seeds["attacker_selection"]) if paired_mode else rng
+    free_riders = set(identity_rng.sample(range(config.num_clients), free_rider_count))
     attacker = FreeRiderAttacker(config, device)
-    is_v13 = config.methodology_version == "swtcp_v13"
+    is_v13 = config.methodology_version in {"swtcp_v13", "v14_1_preli"}
     is_v12 = config.methodology_version == "swtcp_v12"
     is_v11 = config.methodology_version in {"swtcp_v11", "swtcp_v12", "swtcp_v13"}
     is_v10 = config.methodology_version in {"swtcp_v10", "swtcp_v11", "swtcp_v12", "swtcp_v13"}
     is_v9 = config.methodology_version in {"swtcp_v9", "swtcp_v10", "swtcp_v11", "swtcp_v12", "swtcp_v13"}
+    if preliminary is not None:
+        is_v11 = is_v10 = is_v9 = True
     v13_detector = V13Detector(settings_from_config(config)) if is_v13 else None
     selector = CycleTrapSelector(config, rng) if is_v9 else TrapSelector(config, rng)
     logger = RunLogger(config, run_name)
@@ -267,6 +310,7 @@ def run_experiment(
     first_flag_round: dict[int, int] = {}
     first_removal_round: dict[int, int] = {}
     coverage_trap_states: dict[int, dict[str, torch.Tensor]] = {}
+    paired_observations: dict[int, dict[int, dict]] = {}
     coverage_deltas: dict[int, list[torch.Tensor]] = {}
     coverage_norms: dict[int, list[float]] = {}
     coverage_profiles: dict[int, list[torch.Tensor]] = {}
@@ -311,6 +355,19 @@ def run_experiment(
         if not checkpoint_path.exists():
             raise FileNotFoundError(f"Resume checkpoint not found: {checkpoint_path}")
         checkpoint = torch.load(checkpoint_path, map_location=device, weights_only=False)
+        saved_paired = checkpoint.get("paired_protocol")
+        expected_paired = paired_protocol
+        if saved_paired != expected_paired:
+            raise ValueError("Paired protocol/seeds changed; start a fresh run")
+        saved_shadow = checkpoint.get("paired_shadow_state")
+        if (saved_shadow is not None) != (shadow is not None):
+            raise ValueError("Shadow scoring mode changed; start a fresh run")
+        if shadow is not None:
+            shadow.load_state_dict(saved_shadow)
+        if paired_mode:
+            paired_observations = checkpoint.get("paired_observations", {})
+        if preliminary is not None:
+            preliminary.load_state_dict(checkpoint["preliminary_state"])
         checkpoint_config = checkpoint.get("config", {})
         if checkpoint_config.get("methodology_version") != config.methodology_version:
             raise ValueError(
@@ -546,15 +603,29 @@ def run_experiment(
         if selection.phase == "coverage" or is_cycle_probe:
             if not coverage_trap_states:
                 trap_count = selector.checks_per_client if is_cycle_probe else config.coverage_checks_per_client
-                coverage_trap_states = {
-                    trap_id: make_trap_state(
-                        base_state,
-                        config.trap_noise_scale,
-                        config.trap_noise_floor,
-                        generator,
+                if paired_mode:
+                    if trap_count != 2:
+                        raise RuntimeError("Paired measurement requires two probes")
+                    trap_generator = torch.Generator(device=device).manual_seed(
+                        derive_seed(seeds["trap"], f"cycle:{selector.cycle_index}")
                     )
-                    for trap_id in range(trap_count)
-                }
+                    coverage_trap_states = (
+                        {trap: make_trap_state(base_state, config.trap_noise_scale, config.trap_noise_floor,
+                                              trap_generator) for trap in (0, 1)}
+                        if preliminary is not None else make_pair(
+                            base_state, config.trap_noise_scale, config.trap_noise_floor, trap_generator
+                        )
+                    )
+                else:
+                    coverage_trap_states = {
+                        trap_id: make_trap_state(
+                            base_state,
+                            config.trap_noise_scale,
+                            config.trap_noise_floor,
+                            generator,
+                        )
+                        for trap_id in range(trap_count)
+                    }
             if selection.coverage_trap_id is None:
                 raise RuntimeError("Coverage selection is missing its trap-model ID.")
             trap_state = coverage_trap_states[selection.coverage_trap_id]
@@ -669,6 +740,8 @@ def run_experiment(
                     model, returned_state, client_loaders[client_id], loss_fn, device, config
                 )
             else:
+                if paired_mode:
+                    set_global_seed(derive_seed(seeds["training"], f"client:{client_id}:round:{round_idx}"))
                 returned_state, metrics = train_local_model(
                     model,
                     received_state,
@@ -680,6 +753,10 @@ def run_experiment(
 
             returned_states[client_id] = returned_state
             deltas[client_id] = flatten_delta(returned_state, received_state)
+            if paired_mode and preliminary is None and was_trapped and is_cycle_probe:
+                observation = summarize_response(deltas[client_id], coverage_trap_states)
+                observation["round"] = round_idx
+                paired_observations.setdefault(client_id, {})[selection.coverage_trap_id] = observation
             if is_v12:
                 sent_sketch = sent_sketch_cache.get(state_identity)
                 if sent_sketch is None:
@@ -711,6 +788,9 @@ def run_experiment(
             profiles[client_id] = build_layer_profile(
                 returned_state, received_state, config.zero_update_epsilon
             )
+            if preliminary is not None and was_trapped and is_cycle_probe:
+                preliminary.observe(client_id, selection.coverage_trap_id, deltas[client_id],
+                                    profiles[client_id], round_idx)
             metrics["num_local_samples"] = len(client_loaders[client_id].dataset)
             metrics["local_steps"] = (
                 config.local_epochs * len(client_loaders[client_id])
@@ -790,7 +870,52 @@ def run_experiment(
                         }
                         if is_v12:
                             evaluator_kwargs["coverage_history_scores"] = coverage_history_scores
-                        if v13_detector is not None:
+                        if paired_mode:
+                            evidence = measurement_evidence()
+                            if preliminary is not None:
+                                measurements = preliminary.complete(set(active_this_round))
+                                if config.preliminary_diagonal_decisions:
+                                    from server.diagonal_decision import classify
+                                    decisions, metadata = classify(measurements)
+                                    logger.diagonal_metadata = metadata
+                                    logger.preliminary_decision_rows.extend({**decision,
+                                        "is_free_rider": int(decision["client_id"] in free_riders)}
+                                        for decision in decisions)
+                                for measurement in measurements:
+                                    logger.preliminary_rows.append({**measurement,
+                                        "is_free_rider": int(measurement["client_id"] in free_riders)})
+                                preliminary.responses = {0: {}, 1: {}}
+                            for client_id, observations in sorted(paired_observations.items()):
+                                if client_id not in active_this_round or set(observations) != {0, 1}:
+                                    continue
+                                features = pair_features(observations)
+                                features["profile_difference"] = float((coverage_profiles[client_id][0]
+                                                                         - coverage_profiles[client_id][1]).norm())
+                                if shadow is not None:
+                                    decision = shadow.observe(client_id, selector.cycle_index, features)
+                                    logger.paired_shadow_rows.append({
+                                        "round": round_idx, **decision,
+                                        "is_free_rider": int(client_id in free_riders),
+                                    })
+                                plus_round, minus_round = observations[0]["round"], observations[1]["round"]
+                                logger.paired_response_rows.append({
+                                    "round": round_idx, "cycle": selector.cycle_index,
+                                    "client_id": client_id,
+                                    # Evaluation only: feature extraction and all
+                                    # server scheduling receive no ground truth.
+                                    "is_free_rider": int(client_id in free_riders),
+                                    "plus_round": plus_round, "minus_round": minus_round,
+                                    "first_sign": "+" if plus_round < minus_round else "-",
+                                    "round_gap": abs(plus_round - minus_round),
+                                    "directional_gain": features["directional_gain"],
+                                    "layer_gains": json.dumps(features["layer_gains"]),
+                                    "perturbation_energy": features["perturbation_energy"],
+                                    "plus_update_norm": features["plus_update_norm"],
+                                    "minus_update_norm": features["minus_update_norm"],
+                                    "profile_difference": features["profile_difference"],
+                                    "statistical_decisions_enabled": 0,
+                                })
+                        elif v13_detector is not None:
                             evidence = v13_detector.evaluate_cycle(**{
                                 key: evaluator_kwargs[key] for key in (
                                     "coverage_norms", "coverage_profiles", "coverage_trap_ids",
@@ -826,7 +951,8 @@ def run_experiment(
                         cycle_frozen_reference_ids = evidence["frozen_reference_ids"]
                         cycle_norm_scales = evidence["norm_scales"]
                         cycle_profile_scales = evidence["profile_scales"]
-                        v11_last_cutoff = float(evidence["cutoff"])
+                        cutoff = float(evidence["cutoff"])
+                        v11_last_cutoff = cutoff if math.isfinite(cutoff) else None
                 else:
                     client_probe_ids: dict[int, list[int]] = {}
                     probe_results = {}
@@ -905,7 +1031,7 @@ def run_experiment(
                 decision_joint_counts.update(coverage_joint_flags_used)
                 trap_flag_counts.update(coverage_flags_used)
                 zero_responses_added.update(coverage_zero_responses_used)
-            ordinary_clients = set(active_this_round) - selection.trapped_clients
+            ordinary_clients = set(active_this_round) if paired_mode else set(active_this_round) - selection.trapped_clients
             ordinary_zero_results = evaluate_zero_updates_only(
                 {client_id: deltas[client_id] for client_id in ordinary_clients},
                 config,
@@ -1114,7 +1240,11 @@ def run_experiment(
                         }
                     )
 
-            if is_v10 and is_cycle_probe and selection.coverage_complete:
+            if paired_mode and is_cycle_probe and selection.coverage_complete:
+                # Every sweep remains a paired audit; no unvalidated "clean"
+                # observation may relax probing or quarantine/remove a client.
+                selector.finish_cycle(anomaly_found=True)
+            if is_v10 and is_cycle_probe and selection.coverage_complete and not paired_mode:
                 initial_cycle = selector.cycle_index == 0
                 if cycle_reference_valid:
                     previous_suspects = suspected_clients.copy()
@@ -1288,7 +1418,7 @@ def run_experiment(
                                     "is_free_rider": int(client_id in free_riders),
                                     "final_penalty": penalties[client_id],
                                     "removal_basis": (
-                                        "fresh_joint_cycles_with_expiring_evidence"
+                                        "calibrated_directional_cycles_with_expiring_evidence"
                                         if is_v13 else "two_strong_cycles_with_trusted_confirmation"
                                     ),
                                     "zero_update_count": zero_update_counts[client_id],
@@ -1323,12 +1453,16 @@ def run_experiment(
 
                     suspected_clients = next_suspects
                     candidate_clients = next_candidates - next_suspects
-                    anomaly_found = (
-                        bool(suspected_clients or candidate_clients)
-                        if is_v13 else v12_new_strong_anomaly
-                        if is_v12
-                        else bool(suspected_clients or candidate_clients)
-                    )
+                    if v13_detector is not None:
+                        anomaly_found = bool(suspected_clients or candidate_clients) or (
+                            v13_detector.has_pending_evidence(
+                                set(active_this_round) - set(removed_after_round)
+                            )
+                        )
+                    elif is_v12:
+                        anomaly_found = v12_new_strong_anomaly
+                    else:
+                        anomaly_found = bool(suspected_clients or candidate_clients)
                     selector.finish_cycle(anomaly_found)
                 else:
                     # Never relax probing or change statistical states when the
@@ -1340,13 +1474,12 @@ def run_experiment(
                                 "round": round_idx, "client_id": client_id,
                                 "is_free_rider": int(client_id in free_riders),
                                 "event": "released_inconclusive_reference",
-                                "reason": "insufficient_same_trap_population",
+                                "reason": "insufficient_population_or_prior_calibration",
                                 "cumulative_penalty": 0.0,
                             })
                             penalties[client_id] = 0.0
                             cycle_strong_counts[client_id] = 0
                             cycle_trusted_strong_counts[client_id] = 0
-                            v13_detector.evidence.pop(client_id, None)
                             v13_detector.ages.pop(client_id, None)
                             reference_eligible_clients.discard(client_id)
                             reference_probation_counts[client_id] = 0
@@ -1465,7 +1598,7 @@ def run_experiment(
                     config.warmup_rounds,
                     config.sendback_removal_count,
                 )
-                if not (score_removal or sendback_removal):
+                if preliminary is not None or not (score_removal or sendback_removal):
                     continue
                 if client_id in removed_after_round:
                     continue
@@ -1812,6 +1945,7 @@ def run_experiment(
             coverage_history_scores.clear()
             coverage_trap_ids.clear()
             coverage_observation_rounds.clear()
+            paired_observations.clear()
         if selection.surveillance_complete:
             surveillance_trap_state = None
             surveillance_deltas.clear()
@@ -2022,6 +2156,20 @@ def run_experiment(
                 "num_reference_eligible": len(reference_eligible_clients),
                 "num_reference_probation": len(reference_probation_counts),
                 "v11_cycle_cutoff": v11_last_cutoff if is_v11 else "",
+                **({
+                    "v13_calibration_ready": int(v11_last_cutoff is not None),
+                    "v13_pending_clients": sum(
+                        v13_detector.has_pending_evidence({client_id}) for client_id in active_clients
+                    ),
+                    "v13_personal_qualified_clients": sum(
+                        len(history) >= config.v13_personal_min_cycles
+                        for history in v13_detector.personal.values()
+                    ),
+                    "v13_detector_revision": measurement_revision if paired_mode else PROTOCOL_REVISION,
+                    "statistical_decisions_enabled": int(not paired_mode),
+                    "shadow_proposed_clients": len(shadow.proposed) if shadow else 0,
+                    "shadow_calibration_fingerprint": shadow.fingerprint if shadow else "",
+                } if is_v13 else {}),
                 "num_trapped": len(selection.trapped_clients),
                 "num_anchor_roster": len(selection.anchor_roster),
                 "num_active_anchors": len(selection.anchors),
@@ -2090,6 +2238,10 @@ def run_experiment(
                 "config": config.to_dict(),
                 "rng_state": rng.getstate(),
                 "generator_state": generator.get_state(),
+                "paired_protocol": paired_protocol,
+                "paired_observations": paired_observations,
+                "paired_shadow_state": shadow.state_dict() if shadow else None,
+                "preliminary_state": preliminary.state_dict() if preliminary else None,
                 "attacker_state": attacker.state_dict(),
             }
             if is_v13:
@@ -2108,7 +2260,14 @@ def run_experiment(
             )
         logger.global_rows[-1]["round_time_seconds"] = time.perf_counter() - round_start
         logger.global_rows[-1]["process_cpu_seconds"] = time.process_time() - process_start
-        logger.write_progress(round_idx, config.to_dict())
+        logger.write_progress(round_idx, {
+            **config.to_dict(),
+            **({"detector_revision": measurement_revision if paired_mode else PROTOCOL_REVISION} if is_v13 else {}),
+            **({"paired_protocol": paired_protocol,
+                "statistical_decisions_enabled": False} if paired_mode else {}),
+            **({"shadow_calibration_fingerprint": shadow.fingerprint,
+                "shadow_proposed_clients": len(shadow.proposed)} if shadow else {}),
+        })
         if progress_callback is not None:
             progress_callback(
                 {
@@ -2211,6 +2370,15 @@ def run_experiment(
         }
     )
     run_config["checkpoint_cleanup_on_success"] = True
+    if paired_mode:
+        run_config.update({"paired_protocol": paired_protocol,
+                           "statistical_decisions_enabled": False,
+                           "paired_measurements": len(logger.paired_response_rows)})
+    if shadow is not None:
+        run_config.update({"shadow_calibration_fingerprint": shadow.fingerprint,
+                           "shadow_proposed_clients": len(shadow.proposed),
+                           "shadow_rule_revision": shadow.artifact["revision"],
+                           "shadow_calibration_guarantee": shadow.artifact["guarantee"]})
     if is_v13:
         honest_rows = [row for row in logger.client_rows if not row["is_free_rider"]]
         run_config.update({
@@ -2223,7 +2391,11 @@ def run_experiment(
                                                    if row.get("was_quarantined", 0)}),
             "final_honest_candidate_clients": len(candidate_clients - free_riders),
             "detector_uses_attack_history": False,
-            "calibration_guarantee": "empirical; no distribution-free false-alarm guarantee",
+            "detector_revision": measurement_revision if paired_mode else PROTOCOL_REVISION,
+            "calibration_guarantee": (
+                "measurement only; no statistical classification" if paired_mode
+                else "empirical; no distribution-free false-alarm guarantee"
+            ),
         })
     run_config["checkpoints_deleted_on_success"] = []
     logger.write_all(run_config)
@@ -2349,7 +2521,7 @@ def hardware_info(device: torch.device) -> dict[str, object]:
 
 def set_global_seed(seed: int) -> None:
     random.seed(seed)
-    np.random.seed(seed)
+    np.random.seed(seed % (2**32))
     torch.manual_seed(seed)
     if torch.cuda.is_available():
         torch.cuda.manual_seed_all(seed)

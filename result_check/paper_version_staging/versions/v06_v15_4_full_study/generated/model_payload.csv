@@ -1,0 +1,3 @@
+dataset,parameters,float_coordinates,profile_tensors,two_trap_mib,compact_pair_kib,bootstrap_index_mib,bootstrap_counts_mib,loo_profile_coordinate_visits
+mnist,206922,206922,8,1.5786895751953125,8.59375,0.762939453125,0.0762939453125,158400
+cifar10,620810,621258,22,4.7398223876953125,19.53125,0.762939453125,0.0762939453125,435600

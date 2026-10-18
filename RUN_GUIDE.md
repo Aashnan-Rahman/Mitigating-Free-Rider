@@ -344,9 +344,9 @@ Run the same recovery launcher immediately without restarting Windows:
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\resume_experiments.ps1
 ```
 
-Task output is appended to `results/scheduled_resume.log`. Because the trigger
-uses the user-session Python environment and `E:` drive, Windows login is
-required after a reboot before recovery starts.
+Task output is appended to `results/scheduled_resume.log`. The interactive-only
+installer requires Windows login after a reboot. Before-login recovery requires
+the password-based startup installer below and access to the local project drive.
 
 To run before Windows is unlocked, open PowerShell as Administrator and install
 the startup variant. Windows prompts for the current account password and stores
@@ -357,8 +357,13 @@ cd "E:\New Projects\Mitigating-Free-Rider"
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\install_startup_resume_task.ps1
 ```
 
-This replaces the logon trigger with an `At startup` trigger under the same
-task name. Use the account password, not a Windows Hello PIN.
+This installs an `At startup` trigger with a one-minute delay, an `At logon`
+fallback, and five-minute recovery checks under the same task name. Setup verifies
+that Windows saved password-based login and the expected triggers. Use the
+account password, not a Windows Hello PIN. Setup does not stop running training;
+the task and launcher reject duplicate starts. Actual boot-time execution can
+only be confirmed after a subsequent reboot; do not reboot an active experiment
+solely to test setup.
 
 When `save_checkpoints=true`, every completed round creates a recovery
 checkpoint. While a run is active or interrupted, only the five newest numbered

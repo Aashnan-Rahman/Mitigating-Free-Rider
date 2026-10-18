@@ -1,0 +1,196 @@
+{
+  "date": "2026-10-15",
+  "action": "Recoverable removal of historical incomplete runs and cancellation of remaining historical queues; no detector/training changes.",
+  "protected_batch": "results/v15_4_cifar10_seed42_fr30",
+  "original_archives": "Original archives and all completed run folders are preserved.",
+  "recovery": "Run folders and original batch metadata are retained locally under .local_cleanup/2026-10-15 (Git-ignored). Restore there before attempting any historical resume; remove STOP_REQUESTED only intentionally.",
+  "removed_incomplete_runs": [
+    {
+      "path": "results/v12_cifar10_iid_fr30_seed42_cuda/v12_cifar10_iid_fr30_seed42_cuda_FR1",
+      "last_round": 16,
+      "bytes": 340327.0,
+      "recovery_path": ".local_cleanup/2026-10-15/results/v12_cifar10_iid_fr30_seed42_cuda/v12_cifar10_iid_fr30_seed42_cuda_FR1"
+    },
+    {
+      "path": "results/v13_calibrated_mnist_priority_fr40/v13_calibrated_mnist_noniid_fr40_seed42_FR1",
+      "last_round": 72,
+      "bytes": 222528826.0,
+      "recovery_path": ".local_cleanup/2026-10-15/results/v13_calibrated_mnist_priority_fr40/v13_calibrated_mnist_noniid_fr40_seed42_FR1"
+    },
+    {
+      "path": "results/v13_mnist_priority_fr40/v13_mnist_noniid_fr40_seed43_FR4",
+      "last_round": 31,
+      "bytes": 1215393697.0,
+      "recovery_path": ".local_cleanup/2026-10-15/results/v13_mnist_priority_fr40/v13_mnist_noniid_fr40_seed43_FR4"
+    },
+    {
+      "path": "results/v15_3_cifar10_seed42_fr40/v15_3_cifar10_noniid_FR1_seed42",
+      "last_round": 41,
+      "bytes": 309023018.0,
+      "recovery_path": ".local_cleanup/2026-10-15/results/v15_3_cifar10_seed42_fr40/v15_3_cifar10_noniid_FR1_seed42"
+    },
+    {
+      "path": "result_check/results_v8_organized/_archive_extract/mnist_iid_fr40_seed42/results/batch_20260913_220633/stage1_v8_mnist_iid_fr3_fr40",
+      "last_round": 70,
+      "bytes": 1590057.0,
+      "recovery_path": ".local_cleanup/2026-10-15/result_check/results_v8_organized/_archive_extract/mnist_iid_fr40_seed42/results/batch_20260913_220633/stage1_v8_mnist_iid_fr3_fr40"
+    }
+  ],
+  "cancelled_batches": [
+    {
+      "path": "results/v12_cifar10_iid_fr30_seed42_cuda",
+      "retained_completed_runs": 0,
+      "discarded_experiments": [
+        {
+          "id": "v12_cifar10_iid_fr30_seed42_cuda_FR1",
+          "previous_state": "running",
+          "last_completed_round": 16
+        },
+        {
+          "id": "v12_cifar10_iid_fr30_seed42_cuda_FR2",
+          "previous_state": "queued",
+          "last_completed_round": null
+        },
+        {
+          "id": "v12_cifar10_iid_fr30_seed42_cuda_FR3",
+          "previous_state": "queued",
+          "last_completed_round": null
+        },
+        {
+          "id": "v12_cifar10_iid_fr30_seed42_cuda_FR4",
+          "previous_state": "queued",
+          "last_completed_round": null
+        }
+      ]
+    },
+    {
+      "path": "results/v13_calibrated_mnist_priority_fr40",
+      "retained_completed_runs": 5,
+      "discarded_experiments": [
+        {
+          "id": "v13_calibrated_mnist_noniid_fr40_seed42_FR1",
+          "previous_state": "interrupted",
+          "last_completed_round": 72
+        },
+        {
+          "id": "v13_calibrated_mnist_iid_fr40_seed42_FR3",
+          "previous_state": "queued",
+          "last_completed_round": null
+        },
+        {
+          "id": "v13_calibrated_mnist_iid_fr40_seed42_FR4",
+          "previous_state": "queued",
+          "last_completed_round": null
+        },
+        {
+          "id": "v13_calibrated_mnist_iid_fr40_seed42_FR2",
+          "previous_state": "queued",
+          "last_completed_round": null
+        },
+        {
+          "id": "v13_calibrated_mnist_iid_fr40_seed42_FR1",
+          "previous_state": "queued",
+          "last_completed_round": null
+        }
+      ]
+    },
+    {
+      "path": "results/v13_mnist_priority_fr40",
+      "retained_completed_runs": 1,
+      "discarded_experiments": [
+        {
+          "id": "v13_mnist_noniid_fr40_seed43_FR4",
+          "previous_state": "interrupted",
+          "last_completed_round": 31
+        },
+        {
+          "id": "v13_mnist_noniid_fr40_seed46_FR4",
+          "previous_state": "queued",
+          "last_completed_round": null
+        },
+        {
+          "id": "v13_mnist_noniid_fr40_seed42_FR3",
+          "previous_state": "queued",
+          "last_completed_round": null
+        },
+        {
+          "id": "v13_mnist_noniid_fr40_seed42_FR2",
+          "previous_state": "queued",
+          "last_completed_round": null
+        },
+        {
+          "id": "v13_mnist_noniid_fr40_seed42_FR1",
+          "previous_state": "queued",
+          "last_completed_round": null
+        },
+        {
+          "id": "v13_mnist_iid_fr40_seed42_FR3",
+          "previous_state": "queued",
+          "last_completed_round": null
+        },
+        {
+          "id": "v13_mnist_iid_fr40_seed42_FR4",
+          "previous_state": "queued",
+          "last_completed_round": null
+        },
+        {
+          "id": "v13_mnist_iid_fr40_seed42_FR2",
+          "previous_state": "queued",
+          "last_completed_round": null
+        },
+        {
+          "id": "v13_mnist_iid_fr40_seed42_FR1",
+          "previous_state": "queued",
+          "last_completed_round": null
+        }
+      ]
+    },
+    {
+      "path": "results/v15_3_cifar10_seed42_fr40",
+      "retained_completed_runs": 3,
+      "discarded_experiments": [
+        {
+          "id": "v15_3_cifar10_noniid_FR1_seed42",
+          "previous_state": "interrupted",
+          "last_completed_round": 41
+        },
+        {
+          "id": "v15_3_cifar10_iid_FR4_seed42",
+          "previous_state": "queued",
+          "last_completed_round": null
+        },
+        {
+          "id": "v15_3_cifar10_iid_FR3_seed42",
+          "previous_state": "queued",
+          "last_completed_round": null
+        },
+        {
+          "id": "v15_3_cifar10_iid_FR2_seed42",
+          "previous_state": "queued",
+          "last_completed_round": null
+        },
+        {
+          "id": "v15_3_cifar10_iid_FR1_seed42",
+          "previous_state": "queued",
+          "last_completed_round": null
+        }
+      ]
+    },
+    {
+      "path": "result_check/results_v8_organized/_archive_extract/mnist_iid_fr40_seed42/results/batch_20260913_220633",
+      "retained_completed_runs": 2,
+      "discarded_experiments": [
+        {
+          "id": "stage1_v8_mnist_iid_fr3_fr40",
+          "previous_state": "failed",
+          "last_completed_round": 70
+        },
+        {
+          "id": "stage1_v8_mnist_iid_fr4_fr40",
+          "previous_state": "queued",
+          "last_completed_round": null
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,170 @@
+\documentclass[landscape,a4paper]{article}
+\usepackage[margin=10mm]{geometry}
+\usepackage{pgfplots}
+\usepgfplotslibrary{groupplots}
+\pgfplotsset{compat=1.18}
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\definecolor{honestblue}{RGB}{0,114,178}
+\definecolor{riderorange}{RGB}{213,94,0}
+\begin{document}
+{\Large\bfseries V14.1 preliminary: seed 42, IID}\par
+\small MNIST, 100 clients, 40\% free riders; comparison at round 20.
+Each point is one client response. Blue circles: honest; orange triangles: free riders.
+\par\small No score sorting, jitter, fitted boundaries, or removals. Axes scale independently per panel.
+\par\vspace{2mm}\centering\begin{tikzpicture}
+\begin{groupplot}[group style={group size=4 by 2,horizontal sep=12mm,vertical sep=20mm},
+width=60mm,height=60mm,scale only axis=false,
+xlabel={Norm-z},ylabel={Profile-z},
+tick label style={font=\scriptsize},label style={font=\small},title style={font=\small},
+grid=major,major grid style={draw=gray!20},scaled ticks=false,
+ticklabel style={/pgf/number format/fixed,/pgf/number format/precision=2},
+unbounded coords=discard]
+\nextgroupplot[title={FR1 -- Trap A},xmin=-4.288658455758353,xmax=1.7663435412267274,ymin=-5.365131575206263,ymax=41.65826422887042]
+\addplot[only marks,mark=*,mark size=1.5pt,honestblue,opacity=.8] table[x=norm_z,y=profile_z,col sep=comma]{data/seed42_iid_FR1_trap0_honest.csv};
+\addplot[only marks,mark=triangle*,mark size=2pt,riderorange,opacity=.8] table[x=norm_z,y=profile_z,col sep=comma]{data/seed42_iid_FR1_trap0_riders.csv};
+\nextgroupplot[title={FR2 -- Trap A},xmin=-2.7711694581245765,xmax=1.594511773892349,ymin=-1.9173688989526578,ymax=9.731617081333347]
+\addplot[only marks,mark=*,mark size=1.5pt,honestblue,opacity=.8] table[x=norm_z,y=profile_z,col sep=comma]{data/seed42_iid_FR2_trap0_honest.csv};
+\addplot[only marks,mark=triangle*,mark size=2pt,riderorange,opacity=.8] table[x=norm_z,y=profile_z,col sep=comma]{data/seed42_iid_FR2_trap0_riders.csv};
+\nextgroupplot[title={FR3 -- Trap A},xmin=-5.486821527912788,xmax=2.110891220465376,ymin=-1.5183589085782319,ymax=4.740579952051324]
+\addplot[only marks,mark=*,mark size=1.5pt,honestblue,opacity=.8] table[x=norm_z,y=profile_z,col sep=comma]{data/seed42_iid_FR3_trap0_honest.csv};
+\addplot[only marks,mark=triangle*,mark size=2pt,riderorange,opacity=.8] table[x=norm_z,y=profile_z,col sep=comma]{data/seed42_iid_FR3_trap0_riders.csv};
+\nextgroupplot[title={FR4 -- Trap A},xmin=-3.1169475945982503,xmax=1.7183920828655168,ymin=-1.317978439303446,ymax=2.4089261558250126]
+\addplot[only marks,mark=*,mark size=1.5pt,honestblue,opacity=.8] table[x=norm_z,y=profile_z,col sep=comma]{data/seed42_iid_FR4_trap0_honest.csv};
+\addplot[only marks,mark=triangle*,mark size=2pt,riderorange,opacity=.8] table[x=norm_z,y=profile_z,col sep=comma]{data/seed42_iid_FR4_trap0_riders.csv};
+\nextgroupplot[title={FR1 -- Trap B},xmin=-3.756254701027451,xmax=1.6494784014998347,ymin=-5.357251267507214,ymax=40.648068339304416]
+\addplot[only marks,mark=*,mark size=1.5pt,honestblue,opacity=.8] table[x=norm_z,y=profile_z,col sep=comma]{data/seed42_iid_FR1_trap1_honest.csv};
+\addplot[only marks,mark=triangle*,mark size=2pt,riderorange,opacity=.8] table[x=norm_z,y=profile_z,col sep=comma]{data/seed42_iid_FR1_trap1_riders.csv};
+\nextgroupplot[title={FR2 -- Trap B},xmin=-2.421625791722035,xmax=1.54403039554717,ymin=-1.7265719502553467,ymax=7.544592167833398]
+\addplot[only marks,mark=*,mark size=1.5pt,honestblue,opacity=.8] table[x=norm_z,y=profile_z,col sep=comma]{data/seed42_iid_FR2_trap1_honest.csv};
+\addplot[only marks,mark=triangle*,mark size=2pt,riderorange,opacity=.8] table[x=norm_z,y=profile_z,col sep=comma]{data/seed42_iid_FR2_trap1_riders.csv};
+\nextgroupplot[title={FR3 -- Trap B},xmin=-5.001070565468842,xmax=2.365153559676542,ymin=-1.4270377737167623,ymax=4.346737961492952]
+\addplot[only marks,mark=*,mark size=1.5pt,honestblue,opacity=.8] table[x=norm_z,y=profile_z,col sep=comma]{data/seed42_iid_FR3_trap1_honest.csv};
+\addplot[only marks,mark=triangle*,mark size=2pt,riderorange,opacity=.8] table[x=norm_z,y=profile_z,col sep=comma]{data/seed42_iid_FR3_trap1_riders.csv};
+\nextgroupplot[title={FR4 -- Trap B},xmin=-2.8764523264165516,xmax=1.6418339439636296,ymin=-1.1676653242919666,ymax=2.0080161076048455]
+\addplot[only marks,mark=*,mark size=1.5pt,honestblue,opacity=.8] table[x=norm_z,y=profile_z,col sep=comma]{data/seed42_iid_FR4_trap1_honest.csv};
+\addplot[only marks,mark=triangle*,mark size=2pt,riderorange,opacity=.8] table[x=norm_z,y=profile_z,col sep=comma]{data/seed42_iid_FR4_trap1_riders.csv};
+\end{groupplot}\end{tikzpicture}\par\vspace{2mm}
+\raggedright\footnotesize Top row: Trap A. Bottom row: Trap B. FR1's 40 exact-zero responses coincide at one location; no jitter is added.
+\par Labels are evaluation ground truth, not inputs to the reference statistics. Coincident markers may hide multiple clients.
+\newpage
+{\Large\bfseries V14.1 preliminary: seed 42, Non-IID}\par
+\small MNIST, 100 clients, 40\% free riders; comparison at round 20.
+Each point is one client response. Blue circles: honest; orange triangles: free riders.
+\par\small No score sorting, jitter, fitted boundaries, or removals. Axes scale independently per panel.
+\par\vspace{2mm}\centering\begin{tikzpicture}
+\begin{groupplot}[group style={group size=4 by 2,horizontal sep=12mm,vertical sep=20mm},
+width=60mm,height=60mm,scale only axis=false,
+xlabel={Norm-z},ylabel={Profile-z},
+tick label style={font=\scriptsize},label style={font=\small},title style={font=\small},
+grid=major,major grid style={draw=gray!20},scaled ticks=false,
+ticklabel style={/pgf/number format/fixed,/pgf/number format/precision=2},
+unbounded coords=discard]
+\nextgroupplot[title={FR1 -- Trap A},xmin=-1.2303842812503747,xmax=2.3156727123699725,ymin=-3.461434258006745,ymax=23.131646638928565]
+\addplot[only marks,mark=*,mark size=1.5pt,honestblue,opacity=.8] table[x=norm_z,y=profile_z,col sep=comma]{data/seed42_noniid_FR1_trap0_honest.csv};
+\addplot[only marks,mark=triangle*,mark size=2pt,riderorange,opacity=.8] table[x=norm_z,y=profile_z,col sep=comma]{data/seed42_noniid_FR1_trap0_riders.csv};
+\nextgroupplot[title={FR2 -- Trap A},xmin=-1.1323020819284209,xmax=3.5778321979017726,ymin=-1.7686683166449786,ymax=7.454516131977347]
+\addplot[only marks,mark=*,mark size=1.5pt,honestblue,opacity=.8] table[x=norm_z,y=profile_z,col sep=comma]{data/seed42_noniid_FR2_trap0_honest.csv};
+\addplot[only marks,mark=triangle*,mark size=2pt,riderorange,opacity=.8] table[x=norm_z,y=profile_z,col sep=comma]{data/seed42_noniid_FR2_trap0_riders.csv};
+\nextgroupplot[title={FR3 -- Trap A},xmin=-1.65949734133459,xmax=2.957509547919932,ymin=-1.278658349171627,ymax=2.7962618039532]
+\addplot[only marks,mark=*,mark size=1.5pt,honestblue,opacity=.8] table[x=norm_z,y=profile_z,col sep=comma]{data/seed42_noniid_FR3_trap0_honest.csv};
+\addplot[only marks,mark=triangle*,mark size=2pt,riderorange,opacity=.8] table[x=norm_z,y=profile_z,col sep=comma]{data/seed42_noniid_FR3_trap0_riders.csv};
+\nextgroupplot[title={FR4 -- Trap A},xmin=-2.0002037948334372,xmax=4.171415981155806,ymin=-1.3383137703375478,ymax=2.0175623805264298]
+\addplot[only marks,mark=*,mark size=1.5pt,honestblue,opacity=.8] table[x=norm_z,y=profile_z,col sep=comma]{data/seed42_noniid_FR4_trap0_honest.csv};
+\addplot[only marks,mark=triangle*,mark size=2pt,riderorange,opacity=.8] table[x=norm_z,y=profile_z,col sep=comma]{data/seed42_noniid_FR4_trap0_riders.csv};
+\nextgroupplot[title={FR1 -- Trap B},xmin=-1.2224735013578218,xmax=1.4240873328104544,ymin=-3.6921057939537056,ymax=25.997844939061967]
+\addplot[only marks,mark=*,mark size=1.5pt,honestblue,opacity=.8] table[x=norm_z,y=profile_z,col sep=comma]{data/seed42_noniid_FR1_trap1_honest.csv};
+\addplot[only marks,mark=triangle*,mark size=2pt,riderorange,opacity=.8] table[x=norm_z,y=profile_z,col sep=comma]{data/seed42_noniid_FR1_trap1_riders.csv};
+\nextgroupplot[title={FR2 -- Trap B},xmin=-0.9525621208176711,xmax=1.9056423005965901,ymin=-1.6506816580037138,ymax=6.7500172428910865]
+\addplot[only marks,mark=*,mark size=1.5pt,honestblue,opacity=.8] table[x=norm_z,y=profile_z,col sep=comma]{data/seed42_noniid_FR2_trap1_honest.csv};
+\addplot[only marks,mark=triangle*,mark size=2pt,riderorange,opacity=.8] table[x=norm_z,y=profile_z,col sep=comma]{data/seed42_noniid_FR2_trap1_riders.csv};
+\nextgroupplot[title={FR3 -- Trap B},xmin=-2.1782778687231032,xmax=3.133010627022057,ymin=-1.2506916248618243,ymax=2.14539407055901]
+\addplot[only marks,mark=*,mark size=1.5pt,honestblue,opacity=.8] table[x=norm_z,y=profile_z,col sep=comma]{data/seed42_noniid_FR3_trap1_honest.csv};
+\addplot[only marks,mark=triangle*,mark size=2pt,riderorange,opacity=.8] table[x=norm_z,y=profile_z,col sep=comma]{data/seed42_noniid_FR3_trap1_riders.csv};
+\nextgroupplot[title={FR4 -- Trap B},xmin=-1.4534553102997128,xmax=2.0713112937194076,ymin=-1.5389651230429662,ymax=2.1860240658333625]
+\addplot[only marks,mark=*,mark size=1.5pt,honestblue,opacity=.8] table[x=norm_z,y=profile_z,col sep=comma]{data/seed42_noniid_FR4_trap1_honest.csv};
+\addplot[only marks,mark=triangle*,mark size=2pt,riderorange,opacity=.8] table[x=norm_z,y=profile_z,col sep=comma]{data/seed42_noniid_FR4_trap1_riders.csv};
+\end{groupplot}\end{tikzpicture}\par\vspace{2mm}
+\raggedright\footnotesize Top row: Trap A. Bottom row: Trap B. FR1's 40 exact-zero responses coincide at one location; no jitter is added.
+\par Labels are evaluation ground truth, not inputs to the reference statistics. Coincident markers may hide multiple clients.
+\newpage
+{\Large\bfseries V14.1 preliminary: seed 43, IID}\par
+\small MNIST, 100 clients, 40\% free riders; comparison at round 20.
+Each point is one client response. Blue circles: honest; orange triangles: free riders.
+\par\small No score sorting, jitter, fitted boundaries, or removals. Axes scale independently per panel.
+\par\vspace{2mm}\centering\begin{tikzpicture}
+\begin{groupplot}[group style={group size=4 by 2,horizontal sep=12mm,vertical sep=20mm},
+width=60mm,height=60mm,scale only axis=false,
+xlabel={Norm-z},ylabel={Profile-z},
+tick label style={font=\scriptsize},label style={font=\small},title style={font=\small},
+grid=major,major grid style={draw=gray!20},scaled ticks=false,
+ticklabel style={/pgf/number format/fixed,/pgf/number format/precision=2},
+unbounded coords=discard]
+\nextgroupplot[title={FR1 -- Trap A},xmin=-3.628567666814228,xmax=1.3040760119970325,ymin=-4.342562194912768,ymax=32.31906902925361]
+\addplot[only marks,mark=*,mark size=1.5pt,honestblue,opacity=.8] table[x=norm_z,y=profile_z,col sep=comma]{data/seed43_iid_FR1_trap0_honest.csv};
+\addplot[only marks,mark=triangle*,mark size=2pt,riderorange,opacity=.8] table[x=norm_z,y=profile_z,col sep=comma]{data/seed43_iid_FR1_trap0_riders.csv};
+\nextgroupplot[title={FR2 -- Trap A},xmin=-2.4942329375352146,xmax=1.1947399691285137,ymin=-1.7598155199067862,ymax=8.461594711532056]
+\addplot[only marks,mark=*,mark size=1.5pt,honestblue,opacity=.8] table[x=norm_z,y=profile_z,col sep=comma]{data/seed43_iid_FR2_trap0_honest.csv};
+\addplot[only marks,mark=triangle*,mark size=2pt,riderorange,opacity=.8] table[x=norm_z,y=profile_z,col sep=comma]{data/seed43_iid_FR2_trap0_riders.csv};
+\nextgroupplot[title={FR3 -- Trap A},xmin=-4.5788039050451275,xmax=1.7329273569356365,ymin=-1.5422052242783233,ymax=4.949852113809083]
+\addplot[only marks,mark=*,mark size=1.5pt,honestblue,opacity=.8] table[x=norm_z,y=profile_z,col sep=comma]{data/seed43_iid_FR3_trap0_honest.csv};
+\addplot[only marks,mark=triangle*,mark size=2pt,riderorange,opacity=.8] table[x=norm_z,y=profile_z,col sep=comma]{data/seed43_iid_FR3_trap0_riders.csv};
+\nextgroupplot[title={FR4 -- Trap A},xmin=-3.101597903684215,xmax=1.5342653941720235,ymin=-1.3161901617957141,ymax=2.731747134749341]
+\addplot[only marks,mark=*,mark size=1.5pt,honestblue,opacity=.8] table[x=norm_z,y=profile_z,col sep=comma]{data/seed43_iid_FR4_trap0_honest.csv};
+\addplot[only marks,mark=triangle*,mark size=2pt,riderorange,opacity=.8] table[x=norm_z,y=profile_z,col sep=comma]{data/seed43_iid_FR4_trap0_riders.csv};
+\nextgroupplot[title={FR1 -- Trap B},xmin=-3.5698787365675275,xmax=1.5622828681534944,ymin=-4.400035146328185,ymax=32.252665657833795]
+\addplot[only marks,mark=*,mark size=1.5pt,honestblue,opacity=.8] table[x=norm_z,y=profile_z,col sep=comma]{data/seed43_iid_FR1_trap1_honest.csv};
+\addplot[only marks,mark=triangle*,mark size=2pt,riderorange,opacity=.8] table[x=norm_z,y=profile_z,col sep=comma]{data/seed43_iid_FR1_trap1_riders.csv};
+\nextgroupplot[title={FR2 -- Trap B},xmin=-2.295916536716852,xmax=1.416452305882093,ymin=-1.7547525497181367,ymax=8.51687839357293]
+\addplot[only marks,mark=*,mark size=1.5pt,honestblue,opacity=.8] table[x=norm_z,y=profile_z,col sep=comma]{data/seed43_iid_FR2_trap1_honest.csv};
+\addplot[only marks,mark=triangle*,mark size=2pt,riderorange,opacity=.8] table[x=norm_z,y=profile_z,col sep=comma]{data/seed43_iid_FR2_trap1_riders.csv};
+\nextgroupplot[title={FR3 -- Trap B},xmin=-5.175408921512608,xmax=1.9442784643432862,ymin=-1.2145239910288663,ymax=3.1923757505310455]
+\addplot[only marks,mark=*,mark size=1.5pt,honestblue,opacity=.8] table[x=norm_z,y=profile_z,col sep=comma]{data/seed43_iid_FR3_trap1_honest.csv};
+\addplot[only marks,mark=triangle*,mark size=2pt,riderorange,opacity=.8] table[x=norm_z,y=profile_z,col sep=comma]{data/seed43_iid_FR3_trap1_riders.csv};
+\nextgroupplot[title={FR4 -- Trap B},xmin=-3.186383314430992,xmax=1.6068212354447433,ymin=-1.3014575368761243,ymax=3.461424224309827]
+\addplot[only marks,mark=*,mark size=1.5pt,honestblue,opacity=.8] table[x=norm_z,y=profile_z,col sep=comma]{data/seed43_iid_FR4_trap1_honest.csv};
+\addplot[only marks,mark=triangle*,mark size=2pt,riderorange,opacity=.8] table[x=norm_z,y=profile_z,col sep=comma]{data/seed43_iid_FR4_trap1_riders.csv};
+\end{groupplot}\end{tikzpicture}\par\vspace{2mm}
+\raggedright\footnotesize Top row: Trap A. Bottom row: Trap B. FR1's 40 exact-zero responses coincide at one location; no jitter is added.
+\par Labels are evaluation ground truth, not inputs to the reference statistics. Coincident markers may hide multiple clients.
+\newpage
+{\Large\bfseries V14.1 preliminary: seed 43, Non-IID}\par
+\small MNIST, 100 clients, 40\% free riders; comparison at round 20.
+Each point is one client response. Blue circles: honest; orange triangles: free riders.
+\par\small No score sorting, jitter, fitted boundaries, or removals. Axes scale independently per panel.
+\par\vspace{2mm}\centering\begin{tikzpicture}
+\begin{groupplot}[group style={group size=4 by 2,horizontal sep=12mm,vertical sep=20mm},
+width=60mm,height=60mm,scale only axis=false,
+xlabel={Norm-z},ylabel={Profile-z},
+tick label style={font=\scriptsize},label style={font=\small},title style={font=\small},
+grid=major,major grid style={draw=gray!20},scaled ticks=false,
+ticklabel style={/pgf/number format/fixed,/pgf/number format/precision=2},
+unbounded coords=discard]
+\nextgroupplot[title={FR1 -- Trap A},xmin=-1.408213821365869,xmax=4.560582627401669,ymin=-3.5018225452858873,ymax=24.36819200159106]
+\addplot[only marks,mark=*,mark size=1.5pt,honestblue,opacity=.8] table[x=norm_z,y=profile_z,col sep=comma]{data/seed43_noniid_FR1_trap0_honest.csv};
+\addplot[only marks,mark=triangle*,mark size=2pt,riderorange,opacity=.8] table[x=norm_z,y=profile_z,col sep=comma]{data/seed43_noniid_FR1_trap0_riders.csv};
+\nextgroupplot[title={FR2 -- Trap A},xmin=-1.6109771334546124,xmax=8.04633789435506,ymin=-1.5721388530887657,ymax=5.719155705319774]
+\addplot[only marks,mark=*,mark size=1.5pt,honestblue,opacity=.8] table[x=norm_z,y=profile_z,col sep=comma]{data/seed43_noniid_FR2_trap0_honest.csv};
+\addplot[only marks,mark=triangle*,mark size=2pt,riderorange,opacity=.8] table[x=norm_z,y=profile_z,col sep=comma]{data/seed43_noniid_FR2_trap0_riders.csv};
+\nextgroupplot[title={FR3 -- Trap A},xmin=-1.7587869595305912,xmax=3.5327370309799875,ymin=-1.1355323603667267,ymax=1.2329098915985472]
+\addplot[only marks,mark=*,mark size=1.5pt,honestblue,opacity=.8] table[x=norm_z,y=profile_z,col sep=comma]{data/seed43_noniid_FR3_trap0_honest.csv};
+\addplot[only marks,mark=triangle*,mark size=2pt,riderorange,opacity=.8] table[x=norm_z,y=profile_z,col sep=comma]{data/seed43_noniid_FR3_trap0_riders.csv};
+\nextgroupplot[title={FR4 -- Trap A},xmin=-1.5966198064008237,xmax=2.753695646579343,ymin=-1.430886502382849,ymax=2.291450307191429]
+\addplot[only marks,mark=*,mark size=1.5pt,honestblue,opacity=.8] table[x=norm_z,y=profile_z,col sep=comma]{data/seed43_noniid_FR4_trap0_honest.csv};
+\addplot[only marks,mark=triangle*,mark size=2pt,riderorange,opacity=.8] table[x=norm_z,y=profile_z,col sep=comma]{data/seed43_noniid_FR4_trap0_riders.csv};
+\nextgroupplot[title={FR1 -- Trap B},xmin=-0.9965174950332183,xmax=1.4914088753377261,ymin=-4.326539434577451,ymax=31.205212384008604]
+\addplot[only marks,mark=*,mark size=1.5pt,honestblue,opacity=.8] table[x=norm_z,y=profile_z,col sep=comma]{data/seed43_noniid_FR1_trap1_honest.csv};
+\addplot[only marks,mark=triangle*,mark size=2pt,riderorange,opacity=.8] table[x=norm_z,y=profile_z,col sep=comma]{data/seed43_noniid_FR1_trap1_riders.csv};
+\nextgroupplot[title={FR2 -- Trap B},xmin=-1.0705532148079782,xmax=3.0015875137097643,ymin=-1.469435864552258,ymax=5.751670789799362]
+\addplot[only marks,mark=*,mark size=1.5pt,honestblue,opacity=.8] table[x=norm_z,y=profile_z,col sep=comma]{data/seed43_noniid_FR2_trap1_honest.csv};
+\addplot[only marks,mark=triangle*,mark size=2pt,riderorange,opacity=.8] table[x=norm_z,y=profile_z,col sep=comma]{data/seed43_noniid_FR2_trap1_riders.csv};
+\nextgroupplot[title={FR3 -- Trap B},xmin=-1.5807943387238872,xmax=2.6441571032008264,ymin=-1.1440773225798562,ymax=1.637006489854457]
+\addplot[only marks,mark=*,mark size=1.5pt,honestblue,opacity=.8] table[x=norm_z,y=profile_z,col sep=comma]{data/seed43_noniid_FR3_trap1_honest.csv};
+\addplot[only marks,mark=triangle*,mark size=2pt,riderorange,opacity=.8] table[x=norm_z,y=profile_z,col sep=comma]{data/seed43_noniid_FR3_trap1_riders.csv};
+\nextgroupplot[title={FR4 -- Trap B},xmin=-1.1073106624375897,xmax=1.6831474195796237,ymin=-1.4515139621997977,ymax=2.3541905503672385]
+\addplot[only marks,mark=*,mark size=1.5pt,honestblue,opacity=.8] table[x=norm_z,y=profile_z,col sep=comma]{data/seed43_noniid_FR4_trap1_honest.csv};
+\addplot[only marks,mark=triangle*,mark size=2pt,riderorange,opacity=.8] table[x=norm_z,y=profile_z,col sep=comma]{data/seed43_noniid_FR4_trap1_riders.csv};
+\end{groupplot}\end{tikzpicture}\par\vspace{2mm}
+\raggedright\footnotesize Top row: Trap A. Bottom row: Trap B. FR1's 40 exact-zero responses coincide at one location; no jitter is added.
+\par Labels are evaluation ground truth, not inputs to the reference statistics. Coincident markers may hide multiple clients.
+\end{document}

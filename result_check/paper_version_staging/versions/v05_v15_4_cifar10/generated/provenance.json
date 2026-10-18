@@ -1,0 +1,329 @@
+{
+  "implementation_sha256": {
+    "server/diagonal_decision.py": "5b103ab09cd11b749d9478e2661953db27aae72ef41671891ae24715ff872224",
+    "server/v15_certificate_memory.py": "bd678fc1c7fd3d279836bf37f55667916bf87cf7567fe5f329bc33b88ebd4092",
+    "server/v15_evidence.py": "ac51b13801862771031798e4fbde86b54fd0101774f11a841489384605143e92",
+    "server/v15_protocol.py": "d9a712617554e309ddb6db1e12f1ea5feb20f0860c57432efb3e80803a64a4aa",
+    "server/v15_strict_norm.py": "65e51eaff541637159517bd27da9ab45c27fba6f519858b27c400ac53ab82833",
+    "train_v15_4.py": "69287b184df77f5b7106467b9478bee5815b8ea2cfb37e8e10984baaf20dc7b6"
+  },
+  "policy": {
+    "audit": "single trap cannot confirm or clear statistical certificate memory",
+    "calibration": "none",
+    "certificate": "strict full-peer separation for norm; unchanged v15.1 profile gate; diagonal diagnostic only",
+    "certificate_revision": "v15_3_strict_norm_v1",
+    "cohort_minimum": "ceil(N/ceil(sqrt(N)))",
+    "cosine": "not collected",
+    "diagonal": "diagnostic only; not independent evidence of low norm",
+    "exact_sendback": "unchanged consecutive complete-cycle confirmation",
+    "features": [
+      [
+        "norm_low",
+        "delta_norm",
+        "low",
+        "identity"
+      ],
+      [
+        "profile_high",
+        "profile_distance",
+        "high",
+        "identity"
+      ]
+    ],
+    "followup": "bounded v15.1 review; no median-only individual confirmation",
+    "memory_clearance": "configured clean-cycle count of consecutive full R cycles; C pauses but does not erase certificates",
+    "memory_lifetime": "until clean-cycle clearance or removal; no round-based expiry",
+    "norm_certificate": "existing core gap > cohort IQR AND full-peer gap > cohort IQR; no density alternative",
+    "pair_selection": "unchanged preselected A/B positions",
+    "profile_certificate": "unchanged v15.1 profile-distance certificate",
+    "quarantine": "unchanged bounded review; stored certificates cannot renew exclusion or force probing",
+    "references": "all active clients, no label or passing-only filter",
+    "removal": "same statistical component freshly certified on both traps in configured number of distinct full cycles; adjacency not required",
+    "removal_channels": [
+      "norm_low",
+      "profile_high",
+      "exact_sendback"
+    ],
+    "review": "bounded followup; weak evidence cannot renew its own exclusion",
+    "revision": "v15_4_fresh_certificate_memory_v1",
+    "risk": "persistent correlated false certificates may accumulate; no recall or false-positive guarantee",
+    "round_dependent_thresholds": false,
+    "spread": "empirical interquartile range",
+    "weak_evidence": "screening only; no removal strike or automatic quarantine"
+  },
+  "revision": "v15_4_fresh_certificate_memory_v1",
+  "runs": [
+    {
+      "files": {
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR1_seed42\\client_metrics.csv": "5723552426d2b23f6aa3be45f862404be08f70308f7b0c54457b4531d0c7655c",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR1_seed42\\cycle_signals.csv": "0c550c114fd99632640514609b5fe37898617347c1c3a886f327c4ea6da2a753",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR1_seed42\\detection_summary.csv": "c7f200ee62e44f5c001e6ca1f1f8fa6728f9b41110785ec08b7ff5b189c8b3cf",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR1_seed42\\global_metrics.csv": "58293b264252cf875dc4cba4b0b3895040e240b8e6d6b6d2fa7c136306f69d6c",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR1_seed42\\latest_results.json": "6d1a9de52560bbd18ccebf32b412ee5f8efb2bacbda032ea8b4f152e0b89e0dc",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR1_seed42\\protocol.json": "fb8e38ea48d473a05cb127ea27c78bb6cc2ffb2d7e1b9656d1311d376bddce64",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR1_seed42\\removals.csv": "1c48edb7158a39c29b95c9b43a93ab4b658e96a06b8dda2b7e02ba83ea2c4b36",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR1_seed42\\run_config.json": "81f56a537489656e1f49c78e3e7fc2d3258181bb8fc5d7621481b7a5ac5a75fd"
+      },
+      "key": [
+        30,
+        "iid",
+        "FR1"
+      ]
+    },
+    {
+      "files": {
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR2_seed42\\client_metrics.csv": "ab55e0b26453614421a24ec0fcd68f0793f32723d329948a980fac2d2b759ab0",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR2_seed42\\cycle_signals.csv": "b5b07c086cdd5fc0aef22dba4eb96db27d4c77d597b3acb86d86e71e7255bd63",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR2_seed42\\detection_summary.csv": "c7f200ee62e44f5c001e6ca1f1f8fa6728f9b41110785ec08b7ff5b189c8b3cf",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR2_seed42\\global_metrics.csv": "e948e2a5cd36edb3b2adc13ac36e0df37a031ac01cd01370fb3f504bb2475cbd",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR2_seed42\\latest_results.json": "651e1360eceb13fd5f67dcd4c3ed9cfcdf63760f0dde133f77ae8c38e3e6ea50",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR2_seed42\\protocol.json": "9b0ab559d30481b101feb687e24e64a2ae2f3df3e0b39d1917859e628173ff76",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR2_seed42\\removals.csv": "1c48edb7158a39c29b95c9b43a93ab4b658e96a06b8dda2b7e02ba83ea2c4b36",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR2_seed42\\run_config.json": "bfb762e79b6a7e6a8184c0f84159b2879ef3db190a1fb03d4cfe1c3c3faf89ec"
+      },
+      "key": [
+        30,
+        "iid",
+        "FR2"
+      ]
+    },
+    {
+      "files": {
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR3_seed42\\client_metrics.csv": "1e2434404dc65103f4a5acdaffe42e6d38cab2c2477be129cc440c8407ee8c90",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR3_seed42\\cycle_signals.csv": "9b9e56bceeb7ff03446b532ddf462b8af57e92158528755b6c2d3248eb2332a8",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR3_seed42\\detection_summary.csv": "c7f200ee62e44f5c001e6ca1f1f8fa6728f9b41110785ec08b7ff5b189c8b3cf",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR3_seed42\\global_metrics.csv": "9e5b52b48dd4f4c65c9ddb5aef23822e12148f9ee011cca5164e6de5c498ee4a",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR3_seed42\\latest_results.json": "a2fee2e6fac72c5dba6aa063613e3f8ed9de625fb0f8d0454cc6fcd67de850e3",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR3_seed42\\protocol.json": "febb7db78a0e652bb7113bd62499b84c18938b56012a267846089d0b99b86781",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR3_seed42\\removals.csv": "1c48edb7158a39c29b95c9b43a93ab4b658e96a06b8dda2b7e02ba83ea2c4b36",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR3_seed42\\run_config.json": "6cc46ce1b6edb212ae92424e04b87b7b83acc276ce227282be51f3170b1a6775"
+      },
+      "key": [
+        30,
+        "iid",
+        "FR3"
+      ]
+    },
+    {
+      "files": {
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR4_seed42\\client_metrics.csv": "668f61e8c92e169901ee424f506e4b95bb7ff8c59aae6757965407b4d2511070",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR4_seed42\\cycle_signals.csv": "fe342659bb17ff49c21c3f5fe44b8fafe95096660d9b2a8a59ecc3d2710fb29c",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR4_seed42\\detection_summary.csv": "c7f200ee62e44f5c001e6ca1f1f8fa6728f9b41110785ec08b7ff5b189c8b3cf",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR4_seed42\\global_metrics.csv": "0b63fd2b6ada1ecef63021230e893c805336a878daa48ce6eeaf1442bd453cff",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR4_seed42\\latest_results.json": "e2b4ec93811f072799f1caa061adac3c9956f6d3cb8e8d6a90c23398fe543492",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR4_seed42\\protocol.json": "e3afca8154567038fe29e2a1ed396038c1263f4e555c41f6f1f752cf5685e545",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR4_seed42\\removals.csv": "1c48edb7158a39c29b95c9b43a93ab4b658e96a06b8dda2b7e02ba83ea2c4b36",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR4_seed42\\run_config.json": "ecf5ce39a498e671edcccb97e359c2aecbd80c6b8e56e4f0cfd48a8dc13fae07"
+      },
+      "key": [
+        30,
+        "iid",
+        "FR4"
+      ]
+    },
+    {
+      "files": {
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR1_seed42\\client_metrics.csv": "ef7e855408ed38421519d3c80a36ad78c38401554800cbaf178bb5f765f42f2a",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR1_seed42\\cycle_signals.csv": "2e810205f2f9074e97a9094341f1ef67fc034fd3962a5d7d6064fc93355a0513",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR1_seed42\\detection_summary.csv": "c7f200ee62e44f5c001e6ca1f1f8fa6728f9b41110785ec08b7ff5b189c8b3cf",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR1_seed42\\global_metrics.csv": "90a67d403d9e81c8f6f465588e84d99e2b673446010b0be7f5b2206c1c5c279e",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR1_seed42\\latest_results.json": "73f265a3c916e54aa30b0e7eec331f325668d5ad3540bb72bd25bcfc12f4e64f",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR1_seed42\\protocol.json": "e0e322d97c91be3c8c0e339066947746791f538b05897f2d1ded5b596bf75c33",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR1_seed42\\removals.csv": "1c48edb7158a39c29b95c9b43a93ab4b658e96a06b8dda2b7e02ba83ea2c4b36",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR1_seed42\\run_config.json": "345d121c355b6fdaab07cb86a3587992e1675f7be1cac3df605edcf343dcb659"
+      },
+      "key": [
+        30,
+        "noniid",
+        "FR1"
+      ]
+    },
+    {
+      "files": {
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR2_seed42\\client_metrics.csv": "93b4aefd2a602de1197e75fe949edef585cd01861d7a6ce5db051381458437b4",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR2_seed42\\cycle_signals.csv": "57bbc35be2814d2bd7deee162a9eb9c5b557c93eaa142a197a75e1ef012a3779",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR2_seed42\\detection_summary.csv": "c7f200ee62e44f5c001e6ca1f1f8fa6728f9b41110785ec08b7ff5b189c8b3cf",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR2_seed42\\global_metrics.csv": "f6e17270e1736aa82a2b24d7444fe3616047755b254b980be46a312b04793652",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR2_seed42\\latest_results.json": "88cc113bbf77459b2f5e17de1b45ca2ede1ac057bab75d048e2b5b9d6e7301ec",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR2_seed42\\protocol.json": "e63a538060673db212a9ca614412fb2fa070a7692059e166c0ef15c260517561",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR2_seed42\\removals.csv": "1c48edb7158a39c29b95c9b43a93ab4b658e96a06b8dda2b7e02ba83ea2c4b36",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR2_seed42\\run_config.json": "9721f0578ccb764afbea7211da6920b791892dd606d7246ee510d5d7711f763c"
+      },
+      "key": [
+        30,
+        "noniid",
+        "FR2"
+      ]
+    },
+    {
+      "files": {
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR3_seed42\\client_metrics.csv": "77afb125fe93e30b88fc4b707240b57354e2acfd35a9e43dcf9cac6ab76d4df3",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR3_seed42\\cycle_signals.csv": "2195bcea56565d0b0d896ca9203bca21cb7c418476bd6beb6c3d41b3b67abc06",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR3_seed42\\detection_summary.csv": "c7f200ee62e44f5c001e6ca1f1f8fa6728f9b41110785ec08b7ff5b189c8b3cf",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR3_seed42\\global_metrics.csv": "b8a365e947477bd20c6b2860bba1d137a69a4350e24985a04c7f539a593bb728",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR3_seed42\\latest_results.json": "0fc609db1fc875ac5440546aa3e171a74df036110f47699010fb912fb611f8eb",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR3_seed42\\protocol.json": "989227a2352c74245a1c5eea05e333b143ad116f7dd08f180f31cec1ce32889d",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR3_seed42\\removals.csv": "1b53ea3bcdd1f2e84f607d97b8121c907eba346665809b5a5a2c9cb0f0c875b5",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR3_seed42\\run_config.json": "b8b6218e28a5b7e62e7d2e2a9909ef6170fe11f9f947f68d5dfeed9242c11379"
+      },
+      "key": [
+        30,
+        "noniid",
+        "FR3"
+      ]
+    },
+    {
+      "files": {
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR4_seed42\\client_metrics.csv": "f759d1a57913bea134ddab340f10e4b342579f7b1460cce2446c0eaf5bd10eb9",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR4_seed42\\cycle_signals.csv": "02d28239ba7f7d4c5f08a80ef3e5cf3e079d4cf9e89797e2ad1831698af07227",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR4_seed42\\detection_summary.csv": "c7f200ee62e44f5c001e6ca1f1f8fa6728f9b41110785ec08b7ff5b189c8b3cf",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR4_seed42\\global_metrics.csv": "8f53f95378de33bc0e7254a2942b31dd17934dc59b37093dc7b4733ceffc80b1",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR4_seed42\\latest_results.json": "31450002cc148593ebe41ca4aca81f08c6fe7ae8faa0acfe38442da1f7b0ec3b",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR4_seed42\\protocol.json": "70bef8733e993293c11009dc03e9785e0dc8fc304e625a3e456db5ba6b3437a0",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR4_seed42\\removals.csv": "1c48edb7158a39c29b95c9b43a93ab4b658e96a06b8dda2b7e02ba83ea2c4b36",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR4_seed42\\run_config.json": "4d0f837507424d51339abb2e0dd3f10e5e51f5b47b29e8586351d6430cca1bac"
+      },
+      "key": [
+        30,
+        "noniid",
+        "FR4"
+      ]
+    },
+    {
+      "files": {
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR1_seed42\\client_metrics.csv": "e47c41b41aa4ceab352ee3bb1a8e8b511b9b9103e784133cea93d2cb87b713a0",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR1_seed42\\cycle_signals.csv": "83c74bab63ac378238821050591ee9dff65e0e768fadecf76341c765c49e9d4e",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR1_seed42\\detection_summary.csv": "73a0acce3c3c622feeb89aa0f75311a5bcf11896bbb2a59a58ee78405f9b9970",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR1_seed42\\global_metrics.csv": "84b6491f0bfa3740de880592af9ffc22001f058e58c5381ac1d9f1aedcc3c3be",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR1_seed42\\latest_results.json": "8f1ed79884e0c0f89f82fea345000b7fe0029712b0f13899adf0a1dc6a0a9ab0",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR1_seed42\\protocol.json": "d6df04a73943d5a10dab36fb66dec8b2ca577b8f81723fd0625e633aabc50f11",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR1_seed42\\removals.csv": "88c74e3260b58fac2088d990a03f55b5453d28048e534199ebdfcd84ad790c95",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR1_seed42\\run_config.json": "5886201c6631bc3752f66ef445cff28d7205ecb6a916ffe5222f78c9a12512c7"
+      },
+      "key": [
+        40,
+        "iid",
+        "FR1"
+      ]
+    },
+    {
+      "files": {
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR2_seed42\\client_metrics.csv": "6c4e079f812d18c251f46eaae85af4d310a5bc540d1f20fb445f6e20e6a1e038",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR2_seed42\\cycle_signals.csv": "bfc2d13289f72f5401cea2ea3311b0a93819a07a90b0190186443a83f2475d2b",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR2_seed42\\detection_summary.csv": "73a0acce3c3c622feeb89aa0f75311a5bcf11896bbb2a59a58ee78405f9b9970",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR2_seed42\\global_metrics.csv": "54cb3f7fbcef025f4fc0466dc0cd0c3037fa819389b95da37fd72739dd64b5d1",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR2_seed42\\latest_results.json": "0bfbf6e58837086a664f834c828d437a55cb80eb329dabfc455f1d3f6abe3a29",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR2_seed42\\protocol.json": "e7cc1b3a01690f1a6325b0f001727f29eb16468fde5ff2e597cf5b0124be676a",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR2_seed42\\removals.csv": "88c74e3260b58fac2088d990a03f55b5453d28048e534199ebdfcd84ad790c95",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR2_seed42\\run_config.json": "faa2dff245a0f9e76f040bddaabb934a46f5b6ebf20a0bab9d129656ae47be04"
+      },
+      "key": [
+        40,
+        "iid",
+        "FR2"
+      ]
+    },
+    {
+      "files": {
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR3_seed42\\client_metrics.csv": "6606eb3a96f033ca17dd9974aa393d51c3d87ef8a60d46f60c8652e3da2e5727",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR3_seed42\\cycle_signals.csv": "26aad9bdfa6d9a678aeadec41a65bf6c7e3a0a37bcaaf662779d53c7d3bc84a6",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR3_seed42\\detection_summary.csv": "73a0acce3c3c622feeb89aa0f75311a5bcf11896bbb2a59a58ee78405f9b9970",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR3_seed42\\global_metrics.csv": "5314fadacd507bdce1081bbd22763b68a209173436ec1e017abfdf3303b65a7c",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR3_seed42\\latest_results.json": "8d129eea64e265c7bf663c942988a696d28bf271dfb712f5e049b1cecd897af4",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR3_seed42\\protocol.json": "772bf8b462365a1ecfe0f7b30cd223f72731fe97533ec51d23fd916bb58638dc",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR3_seed42\\removals.csv": "88c74e3260b58fac2088d990a03f55b5453d28048e534199ebdfcd84ad790c95",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR3_seed42\\run_config.json": "81bcb7948c3795f20dc3db98ea41f24d47a732d69663defbaf2d6dc968ff783d"
+      },
+      "key": [
+        40,
+        "iid",
+        "FR3"
+      ]
+    },
+    {
+      "files": {
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR4_seed42\\client_metrics.csv": "459521c186563b6b268320c51c2205124ce668562c6119ea45c958ad7870ee40",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR4_seed42\\cycle_signals.csv": "d17c3cf832bac54510f44cda0ccdb316d7627b1558b86cd4a80700050d29e4ff",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR4_seed42\\detection_summary.csv": "73a0acce3c3c622feeb89aa0f75311a5bcf11896bbb2a59a58ee78405f9b9970",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR4_seed42\\global_metrics.csv": "abd0a60f56b31332761526e4b571f6dc3192621880554a3c913d24c35489c7d1",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR4_seed42\\latest_results.json": "375a3ee77ddd42367b31baee9503b84848af2cc13d0d35de3cb373d4663743a5",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR4_seed42\\protocol.json": "8ace52c61d61ae1945d235995552bede82ae0b8ae4436d68e076b1106e59b839",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR4_seed42\\removals.csv": "88c74e3260b58fac2088d990a03f55b5453d28048e534199ebdfcd84ad790c95",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR4_seed42\\run_config.json": "ed5cae35ce791b47b733a6266d8e7b4e70e2b0c5d83909bedef04da259a11b21"
+      },
+      "key": [
+        40,
+        "iid",
+        "FR4"
+      ]
+    },
+    {
+      "files": {
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR1_seed42\\client_metrics.csv": "37dbc4ed653fb5ef905c83daeffd8100bec42b3e520baafcb4056f0ccd46e999",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR1_seed42\\cycle_signals.csv": "a28508ff776cb83983b69b4f64306e9809c4c0e5a4d52cbd8f5a585985b0f75c",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR1_seed42\\detection_summary.csv": "73a0acce3c3c622feeb89aa0f75311a5bcf11896bbb2a59a58ee78405f9b9970",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR1_seed42\\global_metrics.csv": "16470b2c69c6335e2be590a2d69798fec2ed8f8735c55cecda0706d30eb2a7ef",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR1_seed42\\latest_results.json": "c7a5145f42d40041c8aa0f4beb3b7940b2860a0564b46acea039b1f83eeda6f4",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR1_seed42\\protocol.json": "6487635a33e5ec2602df9420e2bdeeb978e89ecddbc81e75451e0b32acfccced",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR1_seed42\\removals.csv": "88c74e3260b58fac2088d990a03f55b5453d28048e534199ebdfcd84ad790c95",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR1_seed42\\run_config.json": "b9e94826ad01cecae06e258cd9a0727a245470c6b18d226f7aa96aea0448bd41"
+      },
+      "key": [
+        40,
+        "noniid",
+        "FR1"
+      ]
+    },
+    {
+      "files": {
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR2_seed42\\client_metrics.csv": "42ee963a88443524c3217af1cbcb6c30b636d248063dc08b9a8f59dfbc32d8d4",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR2_seed42\\cycle_signals.csv": "653a8eca06833a58a98a27eaacd2e84e976e9bbfad971f5dcf7df6ea2133ce5e",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR2_seed42\\detection_summary.csv": "73a0acce3c3c622feeb89aa0f75311a5bcf11896bbb2a59a58ee78405f9b9970",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR2_seed42\\global_metrics.csv": "5795ef392b3088bdbd9ea45f2fd76b9ef7446c04ea6ed2c597bc941f46ca19c2",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR2_seed42\\latest_results.json": "a6291ad8c1386fcd635bc8a5b79e3dbd5f6438d6aa74a89beed156160bb24f78",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR2_seed42\\protocol.json": "e6b966e29db461089b63abc430fb9138816244e15e1728f5b3a64e379e01b1c2",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR2_seed42\\removals.csv": "88c74e3260b58fac2088d990a03f55b5453d28048e534199ebdfcd84ad790c95",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR2_seed42\\run_config.json": "a58d35ade6ab5a346bbbaa7bb85c0d42e586220f8e2d449062f8c711945edea8"
+      },
+      "key": [
+        40,
+        "noniid",
+        "FR2"
+      ]
+    },
+    {
+      "files": {
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR3_seed42\\client_metrics.csv": "445cfb70d04beb4e61b990284ba6065467fa6f72649bfc21034d2fcd2b63aae6",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR3_seed42\\cycle_signals.csv": "91eb81ecd78873f82d9dd1bc6836a1424093a453b65d10f6eeb6e94983661062",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR3_seed42\\detection_summary.csv": "73a0acce3c3c622feeb89aa0f75311a5bcf11896bbb2a59a58ee78405f9b9970",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR3_seed42\\global_metrics.csv": "618c9c94e63f51b6c554df579b608d22c0f32c3ba5ebda225d2ee99d006f771c",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR3_seed42\\latest_results.json": "087cb3bc86213d49b6f41333aaaed261529c3e004bf589141f749e3a69533a5f",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR3_seed42\\protocol.json": "6a376647473db6a2c041ad5ffc64906652c67a846d6f8ae2259d24ddeadafe16",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR3_seed42\\removals.csv": "5829454af59b3fd38ca348664544be61749764c00d33f3ff11fb4ef5145d23d5",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR3_seed42\\run_config.json": "4758172f3dafee36ee279ec2a894f95f03e87f6ec899ae179d397ef67eb7eaad"
+      },
+      "key": [
+        40,
+        "noniid",
+        "FR3"
+      ]
+    },
+    {
+      "files": {
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR4_seed42\\client_metrics.csv": "22271aef325e2a916f19d78cf2dc2b638c88ef774ed7fd25742d7112a3edbe2a",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR4_seed42\\cycle_signals.csv": "e4e79a3ddf419af987aff8cadef1808f4251ca7f4946531f5862f55702149ff9",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR4_seed42\\detection_summary.csv": "73a0acce3c3c622feeb89aa0f75311a5bcf11896bbb2a59a58ee78405f9b9970",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR4_seed42\\global_metrics.csv": "adcd6c8a390431df25afb64a1d2fc6bb75ac470a2c51358324d62a088bcd2be8",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR4_seed42\\latest_results.json": "8014f09fa68d80dd50703cfa025bd37984b41368a7bb96eb2ced6ca38298c5ea",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR4_seed42\\protocol.json": "d682b51cfcae1a100a583c10f23deaa60c78d7122faf09c96fa6e9d1adc714b6",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR4_seed42\\removals.csv": "88c74e3260b58fac2088d990a03f55b5453d28048e534199ebdfcd84ad790c95",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR4_seed42\\run_config.json": "5024380026f591a5949a3a5af6632e55f26ea2d7790fb83eb560b7de02f6d827"
+      },
+      "key": [
+        40,
+        "noniid",
+        "FR4"
+      ]
+    }
+  ]
+}

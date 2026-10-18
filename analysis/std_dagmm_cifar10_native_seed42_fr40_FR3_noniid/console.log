@@ -1,0 +1,153 @@
+Round 1/10: 20/100 client responses
+Round 1/10: 40/100 client responses
+Round 1/10: 60/100 client responses
+Round 1/10: 80/100 client responses
+Round 1/10: 100/100 client responses
+Round 1: fit=50.41s score=0.953s, compute=161.47s, flagged FR=0/40, H=9/60
+Round 2/10: 20/100 client responses
+Round 2/10: 40/100 client responses
+Round 2/10: 60/100 client responses
+Round 2/10: 80/100 client responses
+Round 2/10: 100/100 client responses
+Round 2: fit=48.06s score=0.969s, compute=159.87s, flagged FR=0/40, H=19/60
+Round 3/10: 20/100 client responses
+Round 3/10: 40/100 client responses
+Round 3/10: 60/100 client responses
+Round 3/10: 80/100 client responses
+Round 3/10: 100/100 client responses
+Round 3: fit=46.90s score=0.951s, compute=155.06s, flagged FR=0/40, H=22/60
+Round 4/10: 20/100 client responses
+Round 4/10: 40/100 client responses
+Round 4/10: 60/100 client responses
+Round 4/10: 80/100 client responses
+Round 4/10: 100/100 client responses
+Round 4: fit=45.85s score=0.951s, compute=155.31s, flagged FR=0/40, H=20/60
+Round 5/10: 20/100 client responses
+Round 5/10: 40/100 client responses
+Round 5/10: 60/100 client responses
+Round 5/10: 80/100 client responses
+Round 5/10: 100/100 client responses
+Round 5: fit=41.96s score=0.845s, compute=132.60s, flagged FR=0/40, H=22/60
+Round 6/10: 20/100 client responses
+Round 6/10: 40/100 client responses
+Round 6/10: 60/100 client responses
+Round 6/10: 80/100 client responses
+Round 6/10: 100/100 client responses
+Round 6: fit=41.30s score=0.819s, compute=133.91s, flagged FR=0/40, H=19/60
+Round 7/10: 20/100 client responses
+Round 7/10: 40/100 client responses
+Round 7/10: 60/100 client responses
+Round 7/10: 80/100 client responses
+Round 7/10: 100/100 client responses
+Round 7: fit=41.84s score=0.815s, compute=132.33s, flagged FR=0/40, H=16/60
+Round 8/10: 20/100 client responses
+Round 8/10: 40/100 client responses
+Round 8/10: 60/100 client responses
+Round 8/10: 80/100 client responses
+Round 8/10: 100/100 client responses
+Round 8: fit=41.43s score=0.830s, compute=134.33s, flagged FR=0/40, H=23/60
+Round 9/10: 20/100 client responses
+Round 9/10: 40/100 client responses
+Round 9/10: 60/100 client responses
+Round 9/10: 80/100 client responses
+Round 9/10: 100/100 client responses
+Round 9: fit=44.87s score=0.981s, compute=137.23s, flagged FR=0/40, H=23/60
+Round 10/10: 20/100 client responses
+Round 10/10: 40/100 client responses
+Round 10/10: 60/100 client responses
+Round 10/10: 80/100 client responses
+Round 10/10: 100/100 client responses
+Round 10: fit=47.12s score=0.959s, compute=160.77s, flagged FR=0/40, H=21/60
+{
+  "preparation_seconds": {
+    "mean": 0.15563214000139852,
+    "median": 0.14242204999754904,
+    "minimum": 0.12206090000108816,
+    "maximum": 0.2528127000114182,
+    "sample_sd": 0.03931147455889412,
+    "coefficient_of_variation": 0.2525922637736708,
+    "projected_100_round_seconds": 15.563214000139853
+  },
+  "fit_seconds": {
+    "mean": 44.97313232000015,
+    "median": 45.36209315000451,
+    "minimum": 41.303028900001664,
+    "maximum": 50.405444799995166,
+    "sample_sd": 3.2165396285325487,
+    "coefficient_of_variation": 0.07152136092380007,
+    "projected_100_round_seconds": 4497.313232000015
+  },
+  "inference_seconds": {
+    "mean": 0.907362899997679,
+    "median": 0.9512063499932992,
+    "minimum": 0.8149949999933597,
+    "maximum": 0.9813891000085277,
+    "sample_sd": 0.06994619053391446,
+    "coefficient_of_variation": 0.0770873379703902,
+    "projected_100_round_seconds": 90.7362899997679
+  },
+  "decision_seconds": {
+    "mean": 0.012888079999538605,
+    "median": 0.000316249999741558,
+    "minimum": 0.00015389999316539615,
+    "maximum": 0.03298839999479242,
+    "sample_sd": 0.016341634144496905,
+    "coefficient_of_variation": 1.2679649835415312,
+    "projected_100_round_seconds": 1.2888079999538604
+  },
+  "detector_seconds": {
+    "mean": 46.04901543999877,
+    "median": 46.472360900006606,
+    "minimum": 42.27363390001119,
+    "maximum": 51.539876899987576,
+    "sample_sd": 3.300779409190573,
+    "coefficient_of_variation": 0.07167969559504357,
+    "projected_100_round_seconds": 4604.901543999877
+  },
+  "baseline_compute_seconds": {
+    "mean": 100.23997555997194,
+    "median": 99.49162429991702,
+    "minimum": 89.51743750006426,
+    "maximum": 112.44063029995596,
+    "sample_sd": 10.073327628101959,
+    "coefficient_of_variation": 0.10049211975391246,
+    "projected_100_round_seconds": 10023.997555997194
+  },
+  "round_compute_seconds": {
+    "mean": 146.2889909999707,
+    "median": 146.14321739993466,
+    "minimum": 132.3335523000569,
+    "maximum": 161.47121579994564,
+    "sample_sd": 13.095880032839863,
+    "coefficient_of_variation": 0.08952061220274932,
+    "projected_100_round_seconds": 14628.89909999707
+  },
+  "added_detector_time_percent_of_same_trajectory_baseline": 45.93877361078205,
+  "detector_fraction_of_instrumented_compute_percent": 31.478114057132288,
+  "fixed_workload_conditions": "100 active clients, unchanged detector/local epochs, same model and hardware; descriptive projection, NOT a completed 100-round run"
+}
+{
+  "validated_rounds": 10,
+  "clients_per_round": 100,
+  "ever_flagged_free_riders": 0,
+  "ever_flagged_honest": 59,
+  "last_round_flagged_free_riders": 0,
+  "last_round_flagged_honest": 21,
+  "max_detector_worker_rss_mib": 3704.2578125,
+  "max_simulator_parent_rss_mib": 1903.2734375,
+  "minimum_system_available_mib": 0.19921875,
+  "first3_fit_mean": 48.453901533333315,
+  "last3_fit_mean": 44.472643200002494,
+  "historical_ours_context": {
+    "mean_logged_round_s": 84.84527439300001,
+    "summed_logged_round_s": 8484.527439300002,
+    "measured_rounds": 100
+  }
+}
+| Component | MNIST mean ± SD (s/round) | CIFAR-10 mean ± SD (s/round) | CIFAR/MNIST |
+|---|---:|---:|---:|
+| fit_seconds | 15.557 ± 0.701 | 44.973 ± 3.217 | 2.89× |
+| inference_seconds | 0.323 ± 0.008 | 0.907 ± 0.070 | 2.80× |
+| detector_seconds | 15.941 ± 0.702 | 46.049 ± 3.301 | 2.89× |
+| baseline_compute_seconds | 46.487 ± 0.451 | 100.240 ± 10.073 | 2.16× |
+| round_compute_seconds | 62.428 ± 0.791 | 146.289 ± 13.096 | 2.34× |

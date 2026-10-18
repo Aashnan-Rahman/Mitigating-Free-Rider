@@ -1,0 +1,127 @@
+\documentclass[landscape,a4paper]{article}
+\usepackage[margin=10mm]{geometry}\usepackage{pgfplots}
+\usepgfplotslibrary{groupplots}\pgfplotsset{compat=1.18}
+\pagestyle{empty}\setlength{\parindent}{0pt}
+\definecolor{honestblue}{RGB}{0,114,178}
+\definecolor{riderorange}{RGB}{213,94,0}\begin{document}
+{\Large\bfseries CIFAR-10: IID, seed 42 -- per-trap signals}\par
+\small Round 20; 100 clients; 40\% free riders. Blue circles: honest. Orange triangles: free riders.
+\par Top: Trap A. Bottom: Trap B. No sorting or jitter; coincident points may hide clients.
+\par\vspace{3mm}\centering\begin{tikzpicture}
+\begin{groupplot}[group style={group size=4 by 2,horizontal sep=12mm,vertical sep=20mm},
+width=60mm,height=62mm,xlabel={Norm-z},ylabel={Profile-z},grid=major,
+major grid style={draw=gray!20},tick label style={font=\scriptsize},
+label style={font=\small},title style={font=\small},scaled ticks=false]
+\nextgroupplot[title={FR1 -- Trap A}]
+\addplot[only marks,mark=*,mark size=1.5pt,honestblue,opacity=.75] table[x=norm_z,y=profile_z,col sep=comma]{data/iid_FR1_trap0_honest.csv};
+\addplot[only marks,mark=triangle*,mark size=1.5pt,riderorange,opacity=.75] table[x=norm_z,y=profile_z,col sep=comma]{data/iid_FR1_trap0_riders.csv};
+\nextgroupplot[title={FR2 -- Trap A}]
+\addplot[only marks,mark=*,mark size=1.5pt,honestblue,opacity=.75] table[x=norm_z,y=profile_z,col sep=comma]{data/iid_FR2_trap0_honest.csv};
+\addplot[only marks,mark=triangle*,mark size=1.5pt,riderorange,opacity=.75] table[x=norm_z,y=profile_z,col sep=comma]{data/iid_FR2_trap0_riders.csv};
+\nextgroupplot[title={FR3 -- Trap A}]
+\addplot[only marks,mark=*,mark size=1.5pt,honestblue,opacity=.75] table[x=norm_z,y=profile_z,col sep=comma]{data/iid_FR3_trap0_honest.csv};
+\addplot[only marks,mark=triangle*,mark size=1.5pt,riderorange,opacity=.75] table[x=norm_z,y=profile_z,col sep=comma]{data/iid_FR3_trap0_riders.csv};
+\nextgroupplot[title={FR4 -- Trap A}]
+\addplot[only marks,mark=*,mark size=1.5pt,honestblue,opacity=.75] table[x=norm_z,y=profile_z,col sep=comma]{data/iid_FR4_trap0_honest.csv};
+\addplot[only marks,mark=triangle*,mark size=1.5pt,riderorange,opacity=.75] table[x=norm_z,y=profile_z,col sep=comma]{data/iid_FR4_trap0_riders.csv};
+\nextgroupplot[title={FR1 -- Trap B}]
+\addplot[only marks,mark=*,mark size=1.5pt,honestblue,opacity=.75] table[x=norm_z,y=profile_z,col sep=comma]{data/iid_FR1_trap1_honest.csv};
+\addplot[only marks,mark=triangle*,mark size=1.5pt,riderorange,opacity=.75] table[x=norm_z,y=profile_z,col sep=comma]{data/iid_FR1_trap1_riders.csv};
+\nextgroupplot[title={FR2 -- Trap B}]
+\addplot[only marks,mark=*,mark size=1.5pt,honestblue,opacity=.75] table[x=norm_z,y=profile_z,col sep=comma]{data/iid_FR2_trap1_honest.csv};
+\addplot[only marks,mark=triangle*,mark size=1.5pt,riderorange,opacity=.75] table[x=norm_z,y=profile_z,col sep=comma]{data/iid_FR2_trap1_riders.csv};
+\nextgroupplot[title={FR3 -- Trap B}]
+\addplot[only marks,mark=*,mark size=1.5pt,honestblue,opacity=.75] table[x=norm_z,y=profile_z,col sep=comma]{data/iid_FR3_trap1_honest.csv};
+\addplot[only marks,mark=triangle*,mark size=1.5pt,riderorange,opacity=.75] table[x=norm_z,y=profile_z,col sep=comma]{data/iid_FR3_trap1_riders.csv};
+\nextgroupplot[title={FR4 -- Trap B}]
+\addplot[only marks,mark=*,mark size=1.5pt,honestblue,opacity=.75] table[x=norm_z,y=profile_z,col sep=comma]{data/iid_FR4_trap1_honest.csv};
+\addplot[only marks,mark=triangle*,mark size=1.5pt,riderorange,opacity=.75] table[x=norm_z,y=profile_z,col sep=comma]{data/iid_FR4_trap1_riders.csv};
+\end{groupplot}\end{tikzpicture}\par\raggedright\footnotesize
+Axes scale independently. FR1's 40 identical exact-zero responses coincide. Labels are evaluation-only.
+\newpage
+{\Large\bfseries CIFAR-10: Non-IID, seed 42 -- per-trap signals}\par
+\small Round 20; 100 clients; 40\% free riders. Blue circles: honest. Orange triangles: free riders.
+\par Top: Trap A. Bottom: Trap B. No sorting or jitter; coincident points may hide clients.
+\par\vspace{3mm}\centering\begin{tikzpicture}
+\begin{groupplot}[group style={group size=4 by 2,horizontal sep=12mm,vertical sep=20mm},
+width=60mm,height=62mm,xlabel={Norm-z},ylabel={Profile-z},grid=major,
+major grid style={draw=gray!20},tick label style={font=\scriptsize},
+label style={font=\small},title style={font=\small},scaled ticks=false]
+\nextgroupplot[title={FR1 -- Trap A}]
+\addplot[only marks,mark=*,mark size=1.5pt,honestblue,opacity=.75] table[x=norm_z,y=profile_z,col sep=comma]{data/noniid_FR1_trap0_honest.csv};
+\addplot[only marks,mark=triangle*,mark size=1.5pt,riderorange,opacity=.75] table[x=norm_z,y=profile_z,col sep=comma]{data/noniid_FR1_trap0_riders.csv};
+\nextgroupplot[title={FR2 -- Trap A}]
+\addplot[only marks,mark=*,mark size=1.5pt,honestblue,opacity=.75] table[x=norm_z,y=profile_z,col sep=comma]{data/noniid_FR2_trap0_honest.csv};
+\addplot[only marks,mark=triangle*,mark size=1.5pt,riderorange,opacity=.75] table[x=norm_z,y=profile_z,col sep=comma]{data/noniid_FR2_trap0_riders.csv};
+\nextgroupplot[title={FR3 -- Trap A}]
+\addplot[only marks,mark=*,mark size=1.5pt,honestblue,opacity=.75] table[x=norm_z,y=profile_z,col sep=comma]{data/noniid_FR3_trap0_honest.csv};
+\addplot[only marks,mark=triangle*,mark size=1.5pt,riderorange,opacity=.75] table[x=norm_z,y=profile_z,col sep=comma]{data/noniid_FR3_trap0_riders.csv};
+\nextgroupplot[title={FR4 -- Trap A}]
+\addplot[only marks,mark=*,mark size=1.5pt,honestblue,opacity=.75] table[x=norm_z,y=profile_z,col sep=comma]{data/noniid_FR4_trap0_honest.csv};
+\addplot[only marks,mark=triangle*,mark size=1.5pt,riderorange,opacity=.75] table[x=norm_z,y=profile_z,col sep=comma]{data/noniid_FR4_trap0_riders.csv};
+\nextgroupplot[title={FR1 -- Trap B}]
+\addplot[only marks,mark=*,mark size=1.5pt,honestblue,opacity=.75] table[x=norm_z,y=profile_z,col sep=comma]{data/noniid_FR1_trap1_honest.csv};
+\addplot[only marks,mark=triangle*,mark size=1.5pt,riderorange,opacity=.75] table[x=norm_z,y=profile_z,col sep=comma]{data/noniid_FR1_trap1_riders.csv};
+\nextgroupplot[title={FR2 -- Trap B}]
+\addplot[only marks,mark=*,mark size=1.5pt,honestblue,opacity=.75] table[x=norm_z,y=profile_z,col sep=comma]{data/noniid_FR2_trap1_honest.csv};
+\addplot[only marks,mark=triangle*,mark size=1.5pt,riderorange,opacity=.75] table[x=norm_z,y=profile_z,col sep=comma]{data/noniid_FR2_trap1_riders.csv};
+\nextgroupplot[title={FR3 -- Trap B}]
+\addplot[only marks,mark=*,mark size=1.5pt,honestblue,opacity=.75] table[x=norm_z,y=profile_z,col sep=comma]{data/noniid_FR3_trap1_honest.csv};
+\addplot[only marks,mark=triangle*,mark size=1.5pt,riderorange,opacity=.75] table[x=norm_z,y=profile_z,col sep=comma]{data/noniid_FR3_trap1_riders.csv};
+\nextgroupplot[title={FR4 -- Trap B}]
+\addplot[only marks,mark=*,mark size=1.5pt,honestblue,opacity=.75] table[x=norm_z,y=profile_z,col sep=comma]{data/noniid_FR4_trap1_honest.csv};
+\addplot[only marks,mark=triangle*,mark size=1.5pt,riderorange,opacity=.75] table[x=norm_z,y=profile_z,col sep=comma]{data/noniid_FR4_trap1_riders.csv};
+\end{groupplot}\end{tikzpicture}\par\raggedright\footnotesize
+Axes scale independently. FR1's 40 identical exact-zero responses coincide. Labels are evaluation-only.
+\newpage{\Large\bfseries CIFAR-10: combined decision score at round 20}\par
+\small $D=(D_A+D_B)/2$, with $D_t=\mathrm{profile\mbox{-}z}_t-\mathrm{norm\mbox{-}z}_t$.
+\par Blue: honest. Orange: free riders. Dashed lines: frozen rule's bootstrap lower/upper average-view boundaries.
+\par Client IDs are unsorted. Decisions also require agreement on both trap views and the majority gate.
+\par\vspace{3mm}\centering\begin{tikzpicture}
+\begin{groupplot}[group style={group size=4 by 2,horizontal sep=12mm,vertical sep=20mm},
+width=60mm,height=62mm,xlabel={Client ID},ylabel={Average D},grid=major,
+major grid style={draw=gray!20},tick label style={font=\scriptsize},
+label style={font=\small},title style={font=\small},scaled ticks=false]
+\nextgroupplot[title={IID FR1},xmin=-2,xmax=101]
+\addplot[only marks,mark=*,mark size=1.5pt,honestblue,opacity=.75] table[x=client_id,y=D_average,col sep=comma]{data/iid_FR1_average_honest.csv};
+\addplot[only marks,mark=triangle*,mark size=1.5pt,riderorange,opacity=.75] table[x=client_id,y=D_average,col sep=comma]{data/iid_FR1_average_riders.csv};
+\addplot[gray,dashed,no marks] coordinates {(0,1.5220587656123186) (99,1.5220587656123186)};
+\addplot[gray,dashed,no marks] coordinates {(0,1.5220587656123186) (99,1.5220587656123186)};
+\nextgroupplot[title={IID FR2},xmin=-2,xmax=101]
+\addplot[only marks,mark=*,mark size=1.5pt,honestblue,opacity=.75] table[x=client_id,y=D_average,col sep=comma]{data/iid_FR2_average_honest.csv};
+\addplot[only marks,mark=triangle*,mark size=1.5pt,riderorange,opacity=.75] table[x=client_id,y=D_average,col sep=comma]{data/iid_FR2_average_riders.csv};
+\addplot[gray,dashed,no marks] coordinates {(0,1.5449479890709124) (99,1.5449479890709124)};
+\addplot[gray,dashed,no marks] coordinates {(0,1.5449479890709124) (99,1.5449479890709124)};
+\nextgroupplot[title={IID FR3},xmin=-2,xmax=101]
+\addplot[only marks,mark=*,mark size=1.5pt,honestblue,opacity=.75] table[x=client_id,y=D_average,col sep=comma]{data/iid_FR3_average_honest.csv};
+\addplot[only marks,mark=triangle*,mark size=1.5pt,riderorange,opacity=.75] table[x=client_id,y=D_average,col sep=comma]{data/iid_FR3_average_riders.csv};
+\addplot[gray,dashed,no marks] coordinates {(0,0.5631599218118659) (99,0.5631599218118659)};
+\addplot[gray,dashed,no marks] coordinates {(0,0.5631599218118659) (99,0.5631599218118659)};
+\nextgroupplot[title={IID FR4},xmin=-2,xmax=101]
+\addplot[only marks,mark=*,mark size=1.5pt,honestblue,opacity=.75] table[x=client_id,y=D_average,col sep=comma]{data/iid_FR4_average_honest.csv};
+\addplot[only marks,mark=triangle*,mark size=1.5pt,riderorange,opacity=.75] table[x=client_id,y=D_average,col sep=comma]{data/iid_FR4_average_riders.csv};
+\addplot[gray,dashed,no marks] coordinates {(0,0.2847027799256556) (99,0.2847027799256556)};
+\addplot[gray,dashed,no marks] coordinates {(0,0.2847027799256556) (99,0.2847027799256556)};
+\nextgroupplot[title={Non-IID FR1},xmin=-2,xmax=101]
+\addplot[only marks,mark=*,mark size=1.5pt,honestblue,opacity=.75] table[x=client_id,y=D_average,col sep=comma]{data/noniid_FR1_average_honest.csv};
+\addplot[only marks,mark=triangle*,mark size=1.5pt,riderorange,opacity=.75] table[x=client_id,y=D_average,col sep=comma]{data/noniid_FR1_average_riders.csv};
+\addplot[gray,dashed,no marks] coordinates {(0,0.7060316183727253) (99,0.7060316183727253)};
+\addplot[gray,dashed,no marks] coordinates {(0,1.8783670410713613) (99,1.8783670410713613)};
+\nextgroupplot[title={Non-IID FR2},xmin=-2,xmax=101]
+\addplot[only marks,mark=*,mark size=1.5pt,honestblue,opacity=.75] table[x=client_id,y=D_average,col sep=comma]{data/noniid_FR2_average_honest.csv};
+\addplot[only marks,mark=triangle*,mark size=1.5pt,riderorange,opacity=.75] table[x=client_id,y=D_average,col sep=comma]{data/noniid_FR2_average_riders.csv};
+\addplot[gray,dashed,no marks] coordinates {(0,0.11456560942764771) (99,0.11456560942764771)};
+\addplot[gray,dashed,no marks] coordinates {(0,1.208347820916425) (99,1.208347820916425)};
+\nextgroupplot[title={Non-IID FR3 (gate failed)},xmin=-2,xmax=101]
+\addplot[only marks,mark=*,mark size=1.5pt,honestblue,opacity=.75] table[x=client_id,y=D_average,col sep=comma]{data/noniid_FR3_average_honest.csv};
+\addplot[only marks,mark=triangle*,mark size=1.5pt,riderorange,opacity=.75] table[x=client_id,y=D_average,col sep=comma]{data/noniid_FR3_average_riders.csv};
+\addplot[gray,dashed,no marks] coordinates {(0,0.0017699343239536702) (99,0.0017699343239536702)};
+\addplot[gray,dashed,no marks] coordinates {(0,0.9040522606142369) (99,0.9040522606142369)};
+\nextgroupplot[title={Non-IID FR4},xmin=-2,xmax=101]
+\addplot[only marks,mark=*,mark size=1.5pt,honestblue,opacity=.75] table[x=client_id,y=D_average,col sep=comma]{data/noniid_FR4_average_honest.csv};
+\addplot[only marks,mark=triangle*,mark size=1.5pt,riderorange,opacity=.75] table[x=client_id,y=D_average,col sep=comma]{data/noniid_FR4_average_riders.csv};
+\addplot[gray,dashed,no marks] coordinates {(0,0.6113255634389221) (99,0.6113255634389221)};
+\addplot[gray,dashed,no marks] coordinates {(0,2.0924614460218436) (99,2.0924614460218436)};
+\end{groupplot}\end{tikzpicture}\par\raggedright\footnotesize
+Non-IID FR3: everyone remains candidate because the lower-score cohort fails the majority check.
+\par These plots do not tune thresholds and no clients were removed.\end{document}

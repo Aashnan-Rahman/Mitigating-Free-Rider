@@ -1,0 +1,81 @@
+\begin{table*}[t]
+\centering\footnotesize\setlength{\tabcolsep}{4pt}
+\caption{Removal performance. NR means complete removal was not achieved by round 100; -- denotes pending/undefined evidence.}\label{tab:detection}
+\begin{tabular}{rllrrrrrrr}
+\toprule
+FR (\%) & Split & Attack & TP & FP & FN & Recall (\%) & Precision (\%) & F1 (\%) & $t_{\rm all}$ \\
+\midrule
+30 & IID & FR1 & -- & -- & -- & -- & -- & -- & -- \\
+30 & IID & FR2 & -- & -- & -- & -- & -- & -- & -- \\
+30 & IID & FR3 & -- & -- & -- & -- & -- & -- & -- \\
+30 & IID & FR4 & -- & -- & -- & -- & -- & -- & -- \\
+30 & Non-IID & FR1 & -- & -- & -- & -- & -- & -- & -- \\
+30 & Non-IID & FR2 & -- & -- & -- & -- & -- & -- & -- \\
+30 & Non-IID & FR3 & -- & -- & -- & -- & -- & -- & -- \\
+30 & Non-IID & FR4 & -- & -- & -- & -- & -- & -- & -- \\
+40 & IID & FR1 & -- & -- & -- & -- & -- & -- & -- \\
+40 & IID & FR2 & -- & -- & -- & -- & -- & -- & -- \\
+40 & IID & FR3 & -- & -- & -- & -- & -- & -- & -- \\
+40 & IID & FR4 & -- & -- & -- & -- & -- & -- & -- \\
+40 & Non-IID & FR1 & -- & -- & -- & -- & -- & -- & -- \\
+40 & Non-IID & FR2 & -- & -- & -- & -- & -- & -- & -- \\
+40 & Non-IID & FR3 & -- & -- & -- & -- & -- & -- & -- \\
+40 & Non-IID & FR4 & -- & -- & -- & -- & -- & -- & -- \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+\begin{table*}[t]
+\centering\footnotesize\setlength{\tabcolsep}{4pt}
+\caption{Utility and honest-client safety. $C_H$ is final honest-candidate count, $Q_H$ unique honest clients ever quarantined, $E_H$ honest quarantine client-rounds, and $Q_T$ all clients quarantined at completion.}\label{tab:safety}
+\begin{tabular}{rllrrrrr}
+\toprule
+FR (\%) & Split & Attack & Accuracy (\%) & $C_H$ & $Q_H$ & $E_H$ & $Q_T$ \\
+\midrule
+30 & IID & FR1 & -- & -- & -- & -- & -- \\
+30 & IID & FR2 & -- & -- & -- & -- & -- \\
+30 & IID & FR3 & -- & -- & -- & -- & -- \\
+30 & IID & FR4 & -- & -- & -- & -- & -- \\
+30 & Non-IID & FR1 & -- & -- & -- & -- & -- \\
+30 & Non-IID & FR2 & -- & -- & -- & -- & -- \\
+30 & Non-IID & FR3 & -- & -- & -- & -- & -- \\
+30 & Non-IID & FR4 & -- & -- & -- & -- & -- \\
+40 & IID & FR1 & -- & -- & -- & -- & -- \\
+40 & IID & FR2 & -- & -- & -- & -- & -- \\
+40 & IID & FR3 & -- & -- & -- & -- & -- \\
+40 & IID & FR4 & -- & -- & -- & -- & -- \\
+40 & Non-IID & FR1 & -- & -- & -- & -- & -- \\
+40 & Non-IID & FR2 & -- & -- & -- & -- & -- \\
+40 & Non-IID & FR3 & -- & -- & -- & -- & -- \\
+40 & Non-IID & FR4 & -- & -- & -- & -- & -- \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+\begin{table*}[t]
+\centering\footnotesize\setlength{\tabcolsep}{4pt}
+\caption{Whole-simulator resources, not isolated detector overhead. Mean logged round time excludes subsequent checkpoint/log publication; wall time includes initialization and publication. RSS includes training, aggregation and simulated attacker histories.}\label{tab:resources}
+\begin{tabular}{rllrrr}
+\toprule
+FR (\%) & Split & Attack & Mean round (s) & Peak RSS (MiB) & Wall time (min) \\
+\midrule
+30 & IID & FR1 & -- & -- & -- \\
+30 & IID & FR2 & -- & -- & -- \\
+30 & IID & FR3 & -- & -- & -- \\
+30 & IID & FR4 & -- & -- & -- \\
+30 & Non-IID & FR1 & -- & -- & -- \\
+30 & Non-IID & FR2 & -- & -- & -- \\
+30 & Non-IID & FR3 & -- & -- & -- \\
+30 & Non-IID & FR4 & -- & -- & -- \\
+40 & IID & FR1 & -- & -- & -- \\
+40 & IID & FR2 & -- & -- & -- \\
+40 & IID & FR3 & -- & -- & -- \\
+40 & IID & FR4 & -- & -- & -- \\
+40 & Non-IID & FR1 & -- & -- & -- \\
+40 & Non-IID & FR2 & -- & -- & -- \\
+40 & Non-IID & FR3 & -- & -- & -- \\
+40 & Non-IID & FR4 & -- & -- & -- \\
+\bottomrule
+\end{tabular}
+\end{table*}
+

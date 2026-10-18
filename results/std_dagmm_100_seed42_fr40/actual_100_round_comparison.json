@@ -1,0 +1,23 @@
+{
+  "measured": true,
+  "runs": [
+    {
+      "actual_compute_total_s": 5018.578841900351,
+      "dataset": "mnist",
+      "mean_compute_s": 50.18578841900351,
+      "mean_detector_s": 13.952452686999605,
+      "mean_fit_s": 13.629329961000039,
+      "mean_inference_s": 0.27823004999998374,
+      "measured_rounds": 100
+    },
+    {
+      "actual_compute_total_s": 12723.861887100546,
+      "dataset": "cifar10",
+      "mean_compute_s": 127.23861887100546,
+      "mean_detector_s": 46.04007650300191,
+      "mean_fit_s": 45.02932439800032,
+      "mean_inference_s": 0.8560371490001853,
+      "measured_rounds": 100
+    }
+  ]
+}

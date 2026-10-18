@@ -1,0 +1,61 @@
+{
+  "alpha": 0.01,
+  "calibration_windows": 100,
+  "center": [
+    -0.002714876592805047,
+    -0.532147244646552,
+    -4.0688361072546675,
+    -0.009698677844765432,
+    -0.0021576050772059326,
+    -0.005095560372185743,
+    0.001150823409391651,
+    -0.0004949280498902822,
+    0.0019063431843481938,
+    -0.0027615855343822433,
+    -0.005147290371679774
+  ],
+  "context": {
+    "batch_size": 32,
+    "dataset": "mnist",
+    "dirichlet_alpha": 0.5,
+    "distribution": "noniid",
+    "learning_rate": 0.01,
+    "local_epochs": 3,
+    "momentum": 0.9,
+    "num_clients": 100,
+    "num_rounds": 40,
+    "optimizer": "sgd",
+    "surveillance_groups": 10,
+    "trap_noise_floor": 0.0001,
+    "trap_noise_scale": 0.01,
+    "warmup_rounds": 10
+  },
+  "cutoff": 8.800601376789755,
+  "fit_windows": 100,
+  "guarantee": "Empirical FL calibration; no lifetime/distribution-free guarantee",
+  "provenance": {
+    "calibration": {
+      "run": "E:\\New Projects\\Mitigating-Free-Rider\\results\\v13_paired_mnist_validation\\paired_heldout44_noniid_fr0_FR4",
+      "sha256": "fea2396b4e539b4d97da5138de62387caf4f3b36953201eb3bdbf5cd1d96f0cf"
+    },
+    "fit": {
+      "run": "E:\\New Projects\\Mitigating-Free-Rider\\results\\v13_paired_mnist_validation\\paired_noniid_baseline_noniid_fr0_FR4",
+      "sha256": "5d3138ae7b61956c15496cf79ad298e31eb02fe49688e3aa0d43325bddc39e0c"
+    }
+  },
+  "revision": "paired_combined_shadow_v1",
+  "scale": [
+    0.004893027818902908,
+    0.28213720832554307,
+    0.3958483215075233,
+    0.022434898919225156,
+    0.03778409254676223,
+    0.00919608443204442,
+    0.08222047243943717,
+    0.0023826676495599633,
+    0.08753825640091557,
+    0.023128974141719483,
+    0.19850714354467883
+  ],
+  "window": 3
+}

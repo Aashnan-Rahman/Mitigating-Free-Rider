@@ -1,0 +1,56 @@
+\begin{figure*}[tp]\centering
+\begin{tikzpicture}
+\begin{groupplot}[group style={group size=2 by 4,horizontal sep=0.9cm,vertical sep=1.25cm},
+width=0.455\textwidth,height=4.6cm,xmin=0,xmax=100,
+ymin=0,ymax=1.05,
+grid=major,xtick={0,30,60,100},tick label style={font=\scriptsize},
+title style={font=\small},label style={font=\scriptsize},legend style={font=\scriptsize,draw=none},
+legend columns=4]
+\nextgroupplot[title={MNIST FR1},ylabel={Removal recall},legend to name=fig:recall-legend]
+\addplot[blue,solid,thick,const plot] table[x=round,y=recall] {generated/mnist_iid_FR1_p30.dat};
+\addlegendentry{30\% IID}
+\addplot[red!80!black,dashed,thick,const plot] table[x=round,y=recall] {generated/mnist_noniid_FR1_p30.dat};
+\addlegendentry{30\% Non-IID}
+\addplot[teal!70!black,dotted,thick,const plot] table[x=round,y=recall] {generated/mnist_iid_FR1_p40.dat};
+\addlegendentry{40\% IID}
+\addplot[orange!90!black,dashdotted,thick,const plot] table[x=round,y=recall] {generated/mnist_noniid_FR1_p40.dat};
+\addlegendentry{40\% Non-IID}
+\nextgroupplot[title={MNIST FR2}]
+\addplot[blue,solid,thick,const plot] table[x=round,y=recall] {generated/mnist_iid_FR2_p30.dat};
+\addplot[red!80!black,dashed,thick,const plot] table[x=round,y=recall] {generated/mnist_noniid_FR2_p30.dat};
+\addplot[teal!70!black,dotted,thick,const plot] table[x=round,y=recall] {generated/mnist_iid_FR2_p40.dat};
+\addplot[orange!90!black,dashdotted,thick,const plot] table[x=round,y=recall] {generated/mnist_noniid_FR2_p40.dat};
+\nextgroupplot[title={MNIST FR3}]
+\addplot[blue,solid,thick,const plot] table[x=round,y=recall] {generated/mnist_iid_FR3_p30.dat};
+\addplot[red!80!black,dashed,thick,const plot] table[x=round,y=recall] {generated/mnist_noniid_FR3_p30.dat};
+\addplot[teal!70!black,dotted,thick,const plot] table[x=round,y=recall] {generated/mnist_iid_FR3_p40.dat};
+\addplot[orange!90!black,dashdotted,thick,const plot] table[x=round,y=recall] {generated/mnist_noniid_FR3_p40.dat};
+\nextgroupplot[title={MNIST FR4}]
+\addplot[blue,solid,thick,const plot] table[x=round,y=recall] {generated/mnist_iid_FR4_p30.dat};
+\addplot[red!80!black,dashed,thick,const plot] table[x=round,y=recall] {generated/mnist_noniid_FR4_p30.dat};
+\addplot[teal!70!black,dotted,thick,const plot] table[x=round,y=recall] {generated/mnist_iid_FR4_p40.dat};
+\addplot[orange!90!black,dashdotted,thick,const plot] table[x=round,y=recall] {generated/mnist_noniid_FR4_p40.dat};
+\nextgroupplot[title={CIFAR-10 FR1},ylabel={Removal recall}]
+\addplot[blue,solid,thick,const plot] table[x=round,y=recall] {generated/cifar10_iid_FR1_p30.dat};
+\addplot[red!80!black,dashed,thick,const plot] table[x=round,y=recall] {generated/cifar10_noniid_FR1_p30.dat};
+\addplot[teal!70!black,dotted,thick,const plot] table[x=round,y=recall] {generated/cifar10_iid_FR1_p40.dat};
+\addplot[orange!90!black,dashdotted,thick,const plot] table[x=round,y=recall] {generated/cifar10_noniid_FR1_p40.dat};
+\nextgroupplot[title={CIFAR-10 FR2}]
+\addplot[blue,solid,thick,const plot] table[x=round,y=recall] {generated/cifar10_iid_FR2_p30.dat};
+\addplot[red!80!black,dashed,thick,const plot] table[x=round,y=recall] {generated/cifar10_noniid_FR2_p30.dat};
+\addplot[teal!70!black,dotted,thick,const plot] table[x=round,y=recall] {generated/cifar10_iid_FR2_p40.dat};
+\addplot[orange!90!black,dashdotted,thick,const plot] table[x=round,y=recall] {generated/cifar10_noniid_FR2_p40.dat};
+\nextgroupplot[title={CIFAR-10 FR3},xlabel={Round}]
+\addplot[blue,solid,thick,const plot] table[x=round,y=recall] {generated/cifar10_iid_FR3_p30.dat};
+\addplot[red!80!black,dashed,thick,const plot] table[x=round,y=recall] {generated/cifar10_noniid_FR3_p30.dat};
+\addplot[teal!70!black,dotted,thick,const plot] table[x=round,y=recall] {generated/cifar10_iid_FR3_p40.dat};
+\addplot[orange!90!black,dashdotted,thick,const plot] table[x=round,y=recall] {generated/cifar10_noniid_FR3_p40.dat};
+\nextgroupplot[title={CIFAR-10 FR4},xlabel={Round}]
+\addplot[blue,solid,thick,const plot] table[x=round,y=recall] {generated/cifar10_iid_FR4_p30.dat};
+\addplot[red!80!black,dashed,thick,const plot] table[x=round,y=recall] {generated/cifar10_noniid_FR4_p30.dat};
+\addplot[teal!70!black,dotted,thick,const plot] table[x=round,y=recall] {generated/cifar10_iid_FR4_p40.dat};
+\addplot[orange!90!black,dashdotted,thick,const plot] table[x=round,y=recall] {generated/cifar10_noniid_FR4_p40.dat};
+\end{groupplot}\end{tikzpicture}
+\par\ref{fig:recall-legend}
+\caption{Cumulative free-rider removal recall in all 32 runs. Enlarged two-column panels identify dataset and attack in each title; the four lines distinguish partition and attacker share. Coincident curves overlap. Complete outcomes are retained, including incomplete detection if present.}\label{fig:recall}
+\end{figure*}

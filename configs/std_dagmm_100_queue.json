@@ -1,0 +1,22 @@
+{
+  "auto_resume": true,
+  "batch_name": "std_dagmm_100_seed42_fr40",
+  "results_root": "results",
+  "description": "Two fresh actual 100-round native STD-DAGMM runs; MNIST then CIFAR-10. Preserve ten-round samples.",
+  "defaults": {
+    "rounds": 100,
+    "clients": 100,
+    "distribution": "noniid",
+    "attack": "FR3",
+    "free_rider_pct": 0.4,
+    "seed": 42,
+    "threads": 6,
+    "local_epochs": 3,
+    "detector_epochs": 5,
+    "detector_batch": 20
+  },
+  "experiments": [
+    {"id": "std_dagmm_mnist_noniid_FR3_seed42", "dataset": "mnist"},
+    {"id": "std_dagmm_cifar10_noniid_FR3_seed42", "dataset": "cifar10"}
+  ]
+}

@@ -1,0 +1,90 @@
+{
+  "inputs": [
+    "E:\\New Projects\\Mitigating-Free-Rider\\analysis\\std_dagmm_mnist_native_seed42_fr40_FR3_noniid",
+    "E:\\New Projects\\Mitigating-Free-Rider\\analysis\\std_dagmm_cifar10_native_seed42_fr40_FR3_noniid"
+  ],
+  "matched_config_fields": [
+    "num_clients",
+    "num_rounds",
+    "distribution",
+    "seed",
+    "attack_type",
+    "free_rider_pct",
+    "local_epochs",
+    "batch_size",
+    "learning_rate",
+    "momentum",
+    "dirichlet_alpha",
+    "device"
+  ],
+  "model_update_coordinates": {
+    "cifar10": 621258,
+    "mnist": 206922
+  },
+  "records": [
+    {
+      "cifar10_mean_s": 44.97313232000015,
+      "cifar10_projected_100_min": 74.95522053333359,
+      "cifar10_sd_s": 3.2165396285325487,
+      "cifar_to_mnist_ratio": 2.8907846931900427,
+      "component": "fit_seconds",
+      "mnist_mean_s": 15.557413330001873,
+      "mnist_projected_100_min": 25.92902221666979,
+      "mnist_sd_s": 0.7012032684630451
+    },
+    {
+      "cifar10_mean_s": 0.907362899997679,
+      "cifar10_projected_100_min": 1.5122714999961318,
+      "cifar10_sd_s": 0.06994619053391446,
+      "cifar_to_mnist_ratio": 2.8049327534995268,
+      "component": "inference_seconds",
+      "mnist_mean_s": 0.32348829000111434,
+      "mnist_projected_100_min": 0.5391471500018573,
+      "mnist_sd_s": 0.007673857906813822
+    },
+    {
+      "cifar10_mean_s": 46.04901543999877,
+      "cifar10_projected_100_min": 76.7483590666646,
+      "cifar10_sd_s": 3.300779409190573,
+      "cifar_to_mnist_ratio": 2.8887413924328,
+      "component": "detector_seconds",
+      "mnist_mean_s": 15.940857690005213,
+      "mnist_projected_100_min": 26.56809615000869,
+      "mnist_sd_s": 0.7021027234567545
+    },
+    {
+      "cifar10_mean_s": 100.23997555997194,
+      "cifar10_projected_100_min": 167.06662593328656,
+      "cifar10_sd_s": 10.073327628101959,
+      "cifar_to_mnist_ratio": 2.156300432190378,
+      "component": "baseline_compute_seconds",
+      "mnist_mean_s": 46.48701733002381,
+      "mnist_projected_100_min": 77.47836221670634,
+      "mnist_sd_s": 0.4507526310694009
+    },
+    {
+      "cifar10_mean_s": 146.2889909999707,
+      "cifar10_projected_100_min": 243.81498499995118,
+      "cifar10_sd_s": 13.095880032839863,
+      "cifar_to_mnist_ratio": 2.3433280558250003,
+      "component": "round_compute_seconds",
+      "mnist_mean_s": 62.42787502002902,
+      "mnist_projected_100_min": 104.04645836671504,
+      "mnist_sd_s": 0.7910480664498736
+    }
+  ],
+  "sampled_resources": [
+    {
+      "dataset": "mnist",
+      "max_detector_worker_rss_mib": 1480.85546875,
+      "max_training_parent_rss_mib": 903.40234375,
+      "minimum_system_available_mib": 1169.06640625
+    },
+    {
+      "dataset": "cifar10",
+      "max_detector_worker_rss_mib": 3704.2578125,
+      "max_training_parent_rss_mib": 1903.2734375,
+      "minimum_system_available_mib": 0.19921875
+    }
+  ]
+}

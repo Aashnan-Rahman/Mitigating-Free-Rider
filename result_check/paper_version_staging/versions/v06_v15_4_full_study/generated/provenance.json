@@ -1,0 +1,698 @@
+{
+  "generated_at_utc": "2026-10-18T03:31:08.407810+00:00",
+  "implementation_sha256": {
+    "server/diagonal_decision.py": "5b103ab09cd11b749d9478e2661953db27aae72ef41671891ae24715ff872224",
+    "server/v15_certificate_memory.py": "bd678fc1c7fd3d279836bf37f55667916bf87cf7567fe5f329bc33b88ebd4092",
+    "server/v15_evidence.py": "ac51b13801862771031798e4fbde86b54fd0101774f11a841489384605143e92",
+    "server/v15_protocol.py": "d9a712617554e309ddb6db1e12f1ea5feb20f0860c57432efb3e80803a64a4aa",
+    "server/v15_strict_norm.py": "65e51eaff541637159517bd27da9ab45c27fba6f519858b27c400ac53ab82833",
+    "train_v15_4.py": "69287b184df77f5b7106467b9478bee5815b8ea2cfb37e8e10984baaf20dc7b6"
+  },
+  "policy": {
+    "audit": "single trap cannot confirm or clear statistical certificate memory",
+    "calibration": "none",
+    "certificate": "strict full-peer separation for norm; unchanged v15.1 profile gate; diagonal diagnostic only",
+    "certificate_revision": "v15_3_strict_norm_v1",
+    "cohort_minimum": "ceil(N/ceil(sqrt(N)))",
+    "cosine": "not collected",
+    "diagonal": "diagnostic only; not independent evidence of low norm",
+    "exact_sendback": "unchanged consecutive complete-cycle confirmation",
+    "features": [
+      [
+        "norm_low",
+        "delta_norm",
+        "low",
+        "identity"
+      ],
+      [
+        "profile_high",
+        "profile_distance",
+        "high",
+        "identity"
+      ]
+    ],
+    "followup": "bounded v15.1 review; no median-only individual confirmation",
+    "memory_clearance": "configured clean-cycle count of consecutive full R cycles; C pauses but does not erase certificates",
+    "memory_lifetime": "until clean-cycle clearance or removal; no round-based expiry",
+    "norm_certificate": "existing core gap > cohort IQR AND full-peer gap > cohort IQR; no density alternative",
+    "pair_selection": "unchanged preselected A/B positions",
+    "profile_certificate": "unchanged v15.1 profile-distance certificate",
+    "quarantine": "unchanged bounded review; stored certificates cannot renew exclusion or force probing",
+    "references": "all active clients, no label or passing-only filter",
+    "removal": "same statistical component freshly certified on both traps in configured number of distinct full cycles; adjacency not required",
+    "removal_channels": [
+      "norm_low",
+      "profile_high",
+      "exact_sendback"
+    ],
+    "review": "bounded followup; weak evidence cannot renew its own exclusion",
+    "revision": "v15_4_fresh_certificate_memory_v1",
+    "risk": "persistent correlated false certificates may accumulate; no recall or false-positive guarantee",
+    "round_dependent_thresholds": false,
+    "spread": "empirical interquartile range",
+    "weak_evidence": "screening only; no removal strike or automatic quarantine"
+  },
+  "revision": "v15_4_fresh_certificate_memory_v1",
+  "runs": [
+    {
+      "files": {
+        "results\\v15_4_mnist_seed42_fr30\\v15_4_mnist_iid_FR1_seed42\\client_metrics.csv": "2d66017330a1113481a2062637e3ab36cc57ab27a0d73821982416f916cc9ee3",
+        "results\\v15_4_mnist_seed42_fr30\\v15_4_mnist_iid_FR1_seed42\\cycle_decisions.csv": "f6c341fb3e78be0456c3337c485d2c7d3e54bb9564eaf8855e01cf4b126daad5",
+        "results\\v15_4_mnist_seed42_fr30\\v15_4_mnist_iid_FR1_seed42\\cycle_policy.csv": "bcc0e69453c375385fde84fb3475a82eaf80bf48809a307c8bb286631ecc86c6",
+        "results\\v15_4_mnist_seed42_fr30\\v15_4_mnist_iid_FR1_seed42\\cycle_signals.csv": "ccea28c2de94fcb807eec929cbec98c904a4118b0e878e823430fd127b88d10a",
+        "results\\v15_4_mnist_seed42_fr30\\v15_4_mnist_iid_FR1_seed42\\detection_summary.csv": "c7f200ee62e44f5c001e6ca1f1f8fa6728f9b41110785ec08b7ff5b189c8b3cf",
+        "results\\v15_4_mnist_seed42_fr30\\v15_4_mnist_iid_FR1_seed42\\global_metrics.csv": "5715f361139c312d410ab3006efc5100c1cd58f570cf17414834ceed521da96e",
+        "results\\v15_4_mnist_seed42_fr30\\v15_4_mnist_iid_FR1_seed42\\latest_results.json": "40c1a766ed310124a79c224e851e965881cbda86808e5fb08839d605ed55586a",
+        "results\\v15_4_mnist_seed42_fr30\\v15_4_mnist_iid_FR1_seed42\\protocol.json": "785d4bc8e974a3d737333a1e44fecb9b6e1c159603e3a45fb3a38e567a8ac3dd",
+        "results\\v15_4_mnist_seed42_fr30\\v15_4_mnist_iid_FR1_seed42\\removals.csv": "1c48edb7158a39c29b95c9b43a93ab4b658e96a06b8dda2b7e02ba83ea2c4b36",
+        "results\\v15_4_mnist_seed42_fr30\\v15_4_mnist_iid_FR1_seed42\\run_config.json": "446552076aedd25030278617d42aae5e5f4f11dda036d294fcc31078228f385f"
+      },
+      "key": [
+        "mnist",
+        30,
+        "iid",
+        "FR1"
+      ]
+    },
+    {
+      "files": {
+        "results\\v15_4_mnist_seed42_fr30\\v15_4_mnist_iid_FR2_seed42\\client_metrics.csv": "79f598532cd1e8edf6db9a21e20f6f60e0d156ee36896afa08096fa07469dc8d",
+        "results\\v15_4_mnist_seed42_fr30\\v15_4_mnist_iid_FR2_seed42\\cycle_decisions.csv": "82d2380453b02b0fe62c91ebef07174643c6c6d79495715eee7aaa28613976e1",
+        "results\\v15_4_mnist_seed42_fr30\\v15_4_mnist_iid_FR2_seed42\\cycle_policy.csv": "446b3bde584245559948f63fc0ab1f49adff35b415348f1eae57a9ab81c2add9",
+        "results\\v15_4_mnist_seed42_fr30\\v15_4_mnist_iid_FR2_seed42\\cycle_signals.csv": "6be56a4a89ab35f6b008793adf48328a486b3277a207aa01c7fb9ec118a8da28",
+        "results\\v15_4_mnist_seed42_fr30\\v15_4_mnist_iid_FR2_seed42\\detection_summary.csv": "c7f200ee62e44f5c001e6ca1f1f8fa6728f9b41110785ec08b7ff5b189c8b3cf",
+        "results\\v15_4_mnist_seed42_fr30\\v15_4_mnist_iid_FR2_seed42\\global_metrics.csv": "214e39b8e22f27f05d3864303187826a333efafd9005ad359149f4a4db9bc060",
+        "results\\v15_4_mnist_seed42_fr30\\v15_4_mnist_iid_FR2_seed42\\latest_results.json": "cf8f749a15993f052b463b7bd04ea972b2c279b7f078fc7d117a6486a775ab52",
+        "results\\v15_4_mnist_seed42_fr30\\v15_4_mnist_iid_FR2_seed42\\protocol.json": "ae82f58215921172b6ae721459acdea84cf1d5a4fe05a280209aec7a6d9d964b",
+        "results\\v15_4_mnist_seed42_fr30\\v15_4_mnist_iid_FR2_seed42\\removals.csv": "1c48edb7158a39c29b95c9b43a93ab4b658e96a06b8dda2b7e02ba83ea2c4b36",
+        "results\\v15_4_mnist_seed42_fr30\\v15_4_mnist_iid_FR2_seed42\\run_config.json": "339e3f2d9493d71f7e9e7299965d0b341b936504b36858d76ce2d49de9a94ea4"
+      },
+      "key": [
+        "mnist",
+        30,
+        "iid",
+        "FR2"
+      ]
+    },
+    {
+      "files": {
+        "results\\v15_4_mnist_seed42_fr30\\v15_4_mnist_iid_FR3_seed42\\client_metrics.csv": "3ca0f2234e8c618dcdacfcd06ae030aa6b0c1c53ae2aa5789da8e8f59c6f583d",
+        "results\\v15_4_mnist_seed42_fr30\\v15_4_mnist_iid_FR3_seed42\\cycle_decisions.csv": "adf23ee2e8a83710c6989a9e44947833e34a937c13508112464ac2fe7324bbb7",
+        "results\\v15_4_mnist_seed42_fr30\\v15_4_mnist_iid_FR3_seed42\\cycle_policy.csv": "7d20896aa1b9b4d07eb29080a675a0e008d7c846d80979a045f6c8bc09971d1d",
+        "results\\v15_4_mnist_seed42_fr30\\v15_4_mnist_iid_FR3_seed42\\cycle_signals.csv": "309680d2e17a9f7c9800629f272c5ca2bbd564c6d2f0dd78a5fda3fdbb1f8830",
+        "results\\v15_4_mnist_seed42_fr30\\v15_4_mnist_iid_FR3_seed42\\detection_summary.csv": "c7f200ee62e44f5c001e6ca1f1f8fa6728f9b41110785ec08b7ff5b189c8b3cf",
+        "results\\v15_4_mnist_seed42_fr30\\v15_4_mnist_iid_FR3_seed42\\global_metrics.csv": "1a38b59a5f19deceff8cfb96fd942897814de248a6a07ebc548941afa6dda7cc",
+        "results\\v15_4_mnist_seed42_fr30\\v15_4_mnist_iid_FR3_seed42\\latest_results.json": "f61b058be9931d1d336c8b6867d5fe2fd527df3eb1f7279176aa47588a9679ca",
+        "results\\v15_4_mnist_seed42_fr30\\v15_4_mnist_iid_FR3_seed42\\protocol.json": "8fc70f67f998b3489c6d2f9745647032241b111b6d498554c86de18993b29c37",
+        "results\\v15_4_mnist_seed42_fr30\\v15_4_mnist_iid_FR3_seed42\\removals.csv": "1c48edb7158a39c29b95c9b43a93ab4b658e96a06b8dda2b7e02ba83ea2c4b36",
+        "results\\v15_4_mnist_seed42_fr30\\v15_4_mnist_iid_FR3_seed42\\run_config.json": "1525535af849a4b55a1378ba8ba6430344a600ad27239af7f369b2e8d9e8c3ca"
+      },
+      "key": [
+        "mnist",
+        30,
+        "iid",
+        "FR3"
+      ]
+    },
+    {
+      "files": {
+        "results\\v15_4_mnist_seed42_fr30\\v15_4_mnist_iid_FR4_seed42\\client_metrics.csv": "01ae633286fce0f48e983dc4e73136d90b08cd03c521063b1b673f2bdc91eec0",
+        "results\\v15_4_mnist_seed42_fr30\\v15_4_mnist_iid_FR4_seed42\\cycle_decisions.csv": "be35103205d1bb88cd6f200706b0ed78cc231493a4417136dfd524fdf8e25121",
+        "results\\v15_4_mnist_seed42_fr30\\v15_4_mnist_iid_FR4_seed42\\cycle_policy.csv": "85b10671aa9cc521cf1ec5574f1d05a4839311a13cc55e30ea464b82ab93eb99",
+        "results\\v15_4_mnist_seed42_fr30\\v15_4_mnist_iid_FR4_seed42\\cycle_signals.csv": "46cdcaa2439a0a34e7c1223030797cd8050d4b0c5af486a7e88407343a86ba92",
+        "results\\v15_4_mnist_seed42_fr30\\v15_4_mnist_iid_FR4_seed42\\detection_summary.csv": "c7f200ee62e44f5c001e6ca1f1f8fa6728f9b41110785ec08b7ff5b189c8b3cf",
+        "results\\v15_4_mnist_seed42_fr30\\v15_4_mnist_iid_FR4_seed42\\global_metrics.csv": "1671641b6a7e30e6718fd3d3213263fe5dfacb9cf3a63fa2be93e75b1b2ed83a",
+        "results\\v15_4_mnist_seed42_fr30\\v15_4_mnist_iid_FR4_seed42\\latest_results.json": "83cd31bf5875b43702b5e06407c3953021b48c50901296217a4222556e60886a",
+        "results\\v15_4_mnist_seed42_fr30\\v15_4_mnist_iid_FR4_seed42\\protocol.json": "acc2462d007c581f5c51a2d22aa8dcad99239eb1acee8cb82e7b084939a7e4a4",
+        "results\\v15_4_mnist_seed42_fr30\\v15_4_mnist_iid_FR4_seed42\\removals.csv": "1c48edb7158a39c29b95c9b43a93ab4b658e96a06b8dda2b7e02ba83ea2c4b36",
+        "results\\v15_4_mnist_seed42_fr30\\v15_4_mnist_iid_FR4_seed42\\run_config.json": "a26f94111f0f70e6bfefbc68e9184a4d1d53012b99ae08bb44d387ef6a3d6a7d"
+      },
+      "key": [
+        "mnist",
+        30,
+        "iid",
+        "FR4"
+      ]
+    },
+    {
+      "files": {
+        "results\\v15_4_mnist_seed42_fr30\\v15_4_mnist_noniid_FR1_seed42\\client_metrics.csv": "f4bfaeba0889793333973b724ad4e6d049c706d06f27d24390954d4b65a4fc3a",
+        "results\\v15_4_mnist_seed42_fr30\\v15_4_mnist_noniid_FR1_seed42\\cycle_decisions.csv": "0126f34f1aeafda74dedb72b110ec6c091119064fdbfe079462d4a6ecf4b5e9e",
+        "results\\v15_4_mnist_seed42_fr30\\v15_4_mnist_noniid_FR1_seed42\\cycle_policy.csv": "b2fef6bb683b50dba67c891c568a5ddaa8c13deb04dbdf1c11fc0026a42a8a5d",
+        "results\\v15_4_mnist_seed42_fr30\\v15_4_mnist_noniid_FR1_seed42\\cycle_signals.csv": "1ed7130a71ce75323f4c7aaba91680efffd193b7179824a128fa2c5793ca868a",
+        "results\\v15_4_mnist_seed42_fr30\\v15_4_mnist_noniid_FR1_seed42\\detection_summary.csv": "c7f200ee62e44f5c001e6ca1f1f8fa6728f9b41110785ec08b7ff5b189c8b3cf",
+        "results\\v15_4_mnist_seed42_fr30\\v15_4_mnist_noniid_FR1_seed42\\global_metrics.csv": "9dbadbedc49a817a1dd1ca71628a378a945050f22b612f89e94f258d3b50cfc2",
+        "results\\v15_4_mnist_seed42_fr30\\v15_4_mnist_noniid_FR1_seed42\\latest_results.json": "ab8fac3657ba004ee7266daf20587ea928965c3bc077dd24dd72f604debc0a20",
+        "results\\v15_4_mnist_seed42_fr30\\v15_4_mnist_noniid_FR1_seed42\\protocol.json": "03b8c5324c919a44e8b9ee1d8995ac1b37a95d69ea279f131d3cbcbde7cf226b",
+        "results\\v15_4_mnist_seed42_fr30\\v15_4_mnist_noniid_FR1_seed42\\removals.csv": "1c48edb7158a39c29b95c9b43a93ab4b658e96a06b8dda2b7e02ba83ea2c4b36",
+        "results\\v15_4_mnist_seed42_fr30\\v15_4_mnist_noniid_FR1_seed42\\run_config.json": "14a6c834a9718e6aa18aeedf941da03bd170dace3051c1471da50cedb1464894"
+      },
+      "key": [
+        "mnist",
+        30,
+        "noniid",
+        "FR1"
+      ]
+    },
+    {
+      "files": {
+        "results\\v15_4_mnist_seed42_fr30\\v15_4_mnist_noniid_FR2_seed42\\client_metrics.csv": "25c04fa81ba3b997e77a022b330fffea585c0de82aec301a08ee47e7890c6142",
+        "results\\v15_4_mnist_seed42_fr30\\v15_4_mnist_noniid_FR2_seed42\\cycle_decisions.csv": "045c3af283a5fac0784ff555cd88df0b117bafcb8946a45c1ffd6bc0de5bb8cb",
+        "results\\v15_4_mnist_seed42_fr30\\v15_4_mnist_noniid_FR2_seed42\\cycle_policy.csv": "15b225cfe86f93aacbe855a2b9571d092c1c6907061c18129198657cee6edd98",
+        "results\\v15_4_mnist_seed42_fr30\\v15_4_mnist_noniid_FR2_seed42\\cycle_signals.csv": "b820fc3138a45222104776223ada16ecb8f99bc2d6efbb551bc5731ecf45f600",
+        "results\\v15_4_mnist_seed42_fr30\\v15_4_mnist_noniid_FR2_seed42\\detection_summary.csv": "c7f200ee62e44f5c001e6ca1f1f8fa6728f9b41110785ec08b7ff5b189c8b3cf",
+        "results\\v15_4_mnist_seed42_fr30\\v15_4_mnist_noniid_FR2_seed42\\global_metrics.csv": "6c5e8a6e3b6931e65cf9160b06afb76babb81188e1c9bfb1ee2f7b0b41c9ab17",
+        "results\\v15_4_mnist_seed42_fr30\\v15_4_mnist_noniid_FR2_seed42\\latest_results.json": "c53aff84b91d8fc26e66caf6890d94c809de9c86b566ef56d45e6be94d8be343",
+        "results\\v15_4_mnist_seed42_fr30\\v15_4_mnist_noniid_FR2_seed42\\protocol.json": "31a89c91d03722d99ed1390d49324a9547e57209ccf71e77a4b557a9d0a80e70",
+        "results\\v15_4_mnist_seed42_fr30\\v15_4_mnist_noniid_FR2_seed42\\removals.csv": "1c48edb7158a39c29b95c9b43a93ab4b658e96a06b8dda2b7e02ba83ea2c4b36",
+        "results\\v15_4_mnist_seed42_fr30\\v15_4_mnist_noniid_FR2_seed42\\run_config.json": "c29cef9da78c67cee52772bfc0edfdeec0ab2ba232b6386a33fb42559df565a2"
+      },
+      "key": [
+        "mnist",
+        30,
+        "noniid",
+        "FR2"
+      ]
+    },
+    {
+      "files": {
+        "results\\v15_4_mnist_seed42_fr30\\v15_4_mnist_noniid_FR3_seed42\\client_metrics.csv": "c82da4342c28812ac54fc0d5e356494723fd27123c56db95406fc591062834ec",
+        "results\\v15_4_mnist_seed42_fr30\\v15_4_mnist_noniid_FR3_seed42\\cycle_decisions.csv": "f62b0e0578f24712a5ae36de3c912c8bfddf91a27286b38a9862b40c6f0e764c",
+        "results\\v15_4_mnist_seed42_fr30\\v15_4_mnist_noniid_FR3_seed42\\cycle_policy.csv": "a295eea03179951c4436bb23b2d8052f931dd4fb9a994e53ad2865b1bf2da083",
+        "results\\v15_4_mnist_seed42_fr30\\v15_4_mnist_noniid_FR3_seed42\\cycle_signals.csv": "3532c2778053e881dcaa61ec2bc7d06e546a27a7260ffcfe206f2b3516ab9b5a",
+        "results\\v15_4_mnist_seed42_fr30\\v15_4_mnist_noniid_FR3_seed42\\detection_summary.csv": "c7f200ee62e44f5c001e6ca1f1f8fa6728f9b41110785ec08b7ff5b189c8b3cf",
+        "results\\v15_4_mnist_seed42_fr30\\v15_4_mnist_noniid_FR3_seed42\\global_metrics.csv": "b44a09f0dc6206c97058b9887f83bbae02bf5f7bea92fdafcfc3de10b36f24d8",
+        "results\\v15_4_mnist_seed42_fr30\\v15_4_mnist_noniid_FR3_seed42\\latest_results.json": "f8e4d9b9a87cb68075624b21be3d27b4af9a62006216ff4dc1235c89a53bd501",
+        "results\\v15_4_mnist_seed42_fr30\\v15_4_mnist_noniid_FR3_seed42\\protocol.json": "a300037b94a536efcee3da8b0ff3a75e22e0bb235429f73c88e3ea18d3feaccb",
+        "results\\v15_4_mnist_seed42_fr30\\v15_4_mnist_noniid_FR3_seed42\\removals.csv": "1c48edb7158a39c29b95c9b43a93ab4b658e96a06b8dda2b7e02ba83ea2c4b36",
+        "results\\v15_4_mnist_seed42_fr30\\v15_4_mnist_noniid_FR3_seed42\\run_config.json": "f2ce80660272fef7e1608b27a5e8b0f35230b6219b8c6767a697d68f94fb9003"
+      },
+      "key": [
+        "mnist",
+        30,
+        "noniid",
+        "FR3"
+      ]
+    },
+    {
+      "files": {
+        "results\\v15_4_mnist_seed42_fr30\\v15_4_mnist_noniid_FR4_seed42\\client_metrics.csv": "1b1b5e350f565168da3f4a33b37b5ae4e3aea9c4e9e3bdafa15f021048bf29c4",
+        "results\\v15_4_mnist_seed42_fr30\\v15_4_mnist_noniid_FR4_seed42\\cycle_decisions.csv": "a997c9eea9f40cdd731922792702a1358b46399581d9b305850b184c5c60d3fe",
+        "results\\v15_4_mnist_seed42_fr30\\v15_4_mnist_noniid_FR4_seed42\\cycle_policy.csv": "4b8a85f0f29238bb67f7d3801653a78f29ef3d75f7ef9460c26b4113bf27f90d",
+        "results\\v15_4_mnist_seed42_fr30\\v15_4_mnist_noniid_FR4_seed42\\cycle_signals.csv": "d9a5bbd96a7cdd6df35767ddf452a6c2766a0e47992fb850a37d2e2d7d3e5a27",
+        "results\\v15_4_mnist_seed42_fr30\\v15_4_mnist_noniid_FR4_seed42\\detection_summary.csv": "c7f200ee62e44f5c001e6ca1f1f8fa6728f9b41110785ec08b7ff5b189c8b3cf",
+        "results\\v15_4_mnist_seed42_fr30\\v15_4_mnist_noniid_FR4_seed42\\global_metrics.csv": "c3d9a86eb151d077d8e2c4d32ff482644025a06df7abb44394cd7e2bf322de06",
+        "results\\v15_4_mnist_seed42_fr30\\v15_4_mnist_noniid_FR4_seed42\\latest_results.json": "485be93002ec91517d50f37d5f0ead740da58102569f566aec67d3b511de4c2e",
+        "results\\v15_4_mnist_seed42_fr30\\v15_4_mnist_noniid_FR4_seed42\\protocol.json": "831afba6c7946a5ee45a317e449e3a5c158df9a383074a7e951542503d6ba270",
+        "results\\v15_4_mnist_seed42_fr30\\v15_4_mnist_noniid_FR4_seed42\\removals.csv": "1c48edb7158a39c29b95c9b43a93ab4b658e96a06b8dda2b7e02ba83ea2c4b36",
+        "results\\v15_4_mnist_seed42_fr30\\v15_4_mnist_noniid_FR4_seed42\\run_config.json": "fd27a2445d990ee6e8b77fdab1ab0d80ed7100120485cea21af3a178aabb9c79"
+      },
+      "key": [
+        "mnist",
+        30,
+        "noniid",
+        "FR4"
+      ]
+    },
+    {
+      "files": {
+        "results\\v15_4_mnist_seed42_fr40\\v15_4_mnist_iid_FR1_seed42\\client_metrics.csv": "083d6b7091a932f65275599f5e6198135eff03bb523bfa3321c641cfeb14e219",
+        "results\\v15_4_mnist_seed42_fr40\\v15_4_mnist_iid_FR1_seed42\\cycle_decisions.csv": "8d8a98f08585865869dde35d93671bbbadf492d3f60d70419d76551939f3c808",
+        "results\\v15_4_mnist_seed42_fr40\\v15_4_mnist_iid_FR1_seed42\\cycle_policy.csv": "5ce25c52660963aa52e96c95d49c7ce23dc2aa2b47dbc4c2ab2b9d2989d73b94",
+        "results\\v15_4_mnist_seed42_fr40\\v15_4_mnist_iid_FR1_seed42\\cycle_signals.csv": "255f173dfb5f72752224d97658fabcefe9549a62fffff63232d3d8f909612697",
+        "results\\v15_4_mnist_seed42_fr40\\v15_4_mnist_iid_FR1_seed42\\detection_summary.csv": "73a0acce3c3c622feeb89aa0f75311a5bcf11896bbb2a59a58ee78405f9b9970",
+        "results\\v15_4_mnist_seed42_fr40\\v15_4_mnist_iid_FR1_seed42\\global_metrics.csv": "67044fc04fff07934bfaf944917bc82942427cb6cc7aedeeec93401bb9d908c1",
+        "results\\v15_4_mnist_seed42_fr40\\v15_4_mnist_iid_FR1_seed42\\latest_results.json": "480af15311a4e725cbef5806029971c5d58fe14ce0324d587f7a0bd588c50b48",
+        "results\\v15_4_mnist_seed42_fr40\\v15_4_mnist_iid_FR1_seed42\\protocol.json": "76595d85cdb887bd2298e027f1dcbaca8fb4134fdd0149a25df60ec2d7305f6c",
+        "results\\v15_4_mnist_seed42_fr40\\v15_4_mnist_iid_FR1_seed42\\removals.csv": "88c74e3260b58fac2088d990a03f55b5453d28048e534199ebdfcd84ad790c95",
+        "results\\v15_4_mnist_seed42_fr40\\v15_4_mnist_iid_FR1_seed42\\run_config.json": "2bc86e3c9c53336bafc5a7b8cd845a7441c51699c84e307a09aad0353c29954e"
+      },
+      "key": [
+        "mnist",
+        40,
+        "iid",
+        "FR1"
+      ]
+    },
+    {
+      "files": {
+        "results\\v15_4_mnist_seed42_fr40\\v15_4_mnist_iid_FR2_seed42\\client_metrics.csv": "89129e875ef7660a6afaf613943867f53ad359d221cabf47b4204d5b7ea8a5de",
+        "results\\v15_4_mnist_seed42_fr40\\v15_4_mnist_iid_FR2_seed42\\cycle_decisions.csv": "d63a2f99e0f00af0de4357d18be00302fe8c37aba30522b8f31be3ac0dad6234",
+        "results\\v15_4_mnist_seed42_fr40\\v15_4_mnist_iid_FR2_seed42\\cycle_policy.csv": "25a3fc499eaf552e3afecc6ecdf7742dbab4c0fead9343c689f944ba0740f224",
+        "results\\v15_4_mnist_seed42_fr40\\v15_4_mnist_iid_FR2_seed42\\cycle_signals.csv": "0ae7055e6dc91c82b6e9b6bf553d63fa2450a64c7b67b7f0c0039c70300c709b",
+        "results\\v15_4_mnist_seed42_fr40\\v15_4_mnist_iid_FR2_seed42\\detection_summary.csv": "73a0acce3c3c622feeb89aa0f75311a5bcf11896bbb2a59a58ee78405f9b9970",
+        "results\\v15_4_mnist_seed42_fr40\\v15_4_mnist_iid_FR2_seed42\\global_metrics.csv": "57077e21b2bc2cb3a878efb40e7c3e148ba92fe62988bab2681a1067f4c2924a",
+        "results\\v15_4_mnist_seed42_fr40\\v15_4_mnist_iid_FR2_seed42\\latest_results.json": "4f5a341a567771da4a0d6afd8c8e0015d1657e7b30b153fd65e56924d062e300",
+        "results\\v15_4_mnist_seed42_fr40\\v15_4_mnist_iid_FR2_seed42\\protocol.json": "d4ee6a171c9ca6d4a12bf6c7cea289cc46c4f48857f1443160602081df9be9f2",
+        "results\\v15_4_mnist_seed42_fr40\\v15_4_mnist_iid_FR2_seed42\\removals.csv": "88c74e3260b58fac2088d990a03f55b5453d28048e534199ebdfcd84ad790c95",
+        "results\\v15_4_mnist_seed42_fr40\\v15_4_mnist_iid_FR2_seed42\\run_config.json": "1e240df5848a5449118713845e14a1b536fddee664d0514be93dd2584167ae6d"
+      },
+      "key": [
+        "mnist",
+        40,
+        "iid",
+        "FR2"
+      ]
+    },
+    {
+      "files": {
+        "results\\v15_4_mnist_seed42_fr40\\v15_4_mnist_iid_FR3_seed42\\client_metrics.csv": "0c96e7074f0ad3e187dc9f3e5c421646d4239cc15304239514d9bfa6b58d502e",
+        "results\\v15_4_mnist_seed42_fr40\\v15_4_mnist_iid_FR3_seed42\\cycle_decisions.csv": "e9074a0eb8c08966474ad74dcca8e0ba6984e38dcb71450b55eb94a2aa77accd",
+        "results\\v15_4_mnist_seed42_fr40\\v15_4_mnist_iid_FR3_seed42\\cycle_policy.csv": "8cce4550ca29d991732f968bc216d15b2f038ab5aec56670c0677fd863d164ca",
+        "results\\v15_4_mnist_seed42_fr40\\v15_4_mnist_iid_FR3_seed42\\cycle_signals.csv": "20cf293dc71fa4f249a075849304fe5045096460573f60c9a303232bcdd9a976",
+        "results\\v15_4_mnist_seed42_fr40\\v15_4_mnist_iid_FR3_seed42\\detection_summary.csv": "73a0acce3c3c622feeb89aa0f75311a5bcf11896bbb2a59a58ee78405f9b9970",
+        "results\\v15_4_mnist_seed42_fr40\\v15_4_mnist_iid_FR3_seed42\\global_metrics.csv": "fa7c6db6874598460a63d2456ac0cda25f13d58048c55b014b4b9c6d6f5ba3d7",
+        "results\\v15_4_mnist_seed42_fr40\\v15_4_mnist_iid_FR3_seed42\\latest_results.json": "ac245d88a4e5ffc83c2cda8c3d3b5cc80b63f090f964fb72ee0881ffefe915b3",
+        "results\\v15_4_mnist_seed42_fr40\\v15_4_mnist_iid_FR3_seed42\\protocol.json": "294d6815cca93ad703b7c67c957100d4ded7a66818e90e9a56c337f11ad7306c",
+        "results\\v15_4_mnist_seed42_fr40\\v15_4_mnist_iid_FR3_seed42\\removals.csv": "88c74e3260b58fac2088d990a03f55b5453d28048e534199ebdfcd84ad790c95",
+        "results\\v15_4_mnist_seed42_fr40\\v15_4_mnist_iid_FR3_seed42\\run_config.json": "d38930ed0354dc9a7739f45ac178980bc8670975732cb33099aa0ddead3ed5f9"
+      },
+      "key": [
+        "mnist",
+        40,
+        "iid",
+        "FR3"
+      ]
+    },
+    {
+      "files": {
+        "results\\v15_4_mnist_seed42_fr40\\v15_4_mnist_iid_FR4_seed42\\client_metrics.csv": "be5c9c776cc7968ab5e2c3184328eadb048d0c042ab7bf05f908da5558e933b5",
+        "results\\v15_4_mnist_seed42_fr40\\v15_4_mnist_iid_FR4_seed42\\cycle_decisions.csv": "e0b72e832ca2de2e7b9e913ca33fa6953b876232237e29906c9afe2132d59c71",
+        "results\\v15_4_mnist_seed42_fr40\\v15_4_mnist_iid_FR4_seed42\\cycle_policy.csv": "7bf385b42d5dd2443990eede8713c6cee87484228b9717bb590032f771444215",
+        "results\\v15_4_mnist_seed42_fr40\\v15_4_mnist_iid_FR4_seed42\\cycle_signals.csv": "88c3e47304a18adafb8e3e36dd85905f46259627493aabece8b7bb2c8cdd3924",
+        "results\\v15_4_mnist_seed42_fr40\\v15_4_mnist_iid_FR4_seed42\\detection_summary.csv": "73a0acce3c3c622feeb89aa0f75311a5bcf11896bbb2a59a58ee78405f9b9970",
+        "results\\v15_4_mnist_seed42_fr40\\v15_4_mnist_iid_FR4_seed42\\global_metrics.csv": "040d7dce8a683f1d18fc33fd0a2750e617196b9e55efb46be06007468ea3fb5e",
+        "results\\v15_4_mnist_seed42_fr40\\v15_4_mnist_iid_FR4_seed42\\latest_results.json": "8897d63790e26c1194f36ba733ac35a254a3aacf38dda5c5b96bca6ae169a6c4",
+        "results\\v15_4_mnist_seed42_fr40\\v15_4_mnist_iid_FR4_seed42\\protocol.json": "cc24fa3cc13baba2698181cd16c748b5662ed5d4b7ebdba017e56e98f9b4588c",
+        "results\\v15_4_mnist_seed42_fr40\\v15_4_mnist_iid_FR4_seed42\\removals.csv": "88c74e3260b58fac2088d990a03f55b5453d28048e534199ebdfcd84ad790c95",
+        "results\\v15_4_mnist_seed42_fr40\\v15_4_mnist_iid_FR4_seed42\\run_config.json": "bde5d1f0bc451f0cc39e40136528567887a9df730cfd5ae38c31841fa5a26cdb"
+      },
+      "key": [
+        "mnist",
+        40,
+        "iid",
+        "FR4"
+      ]
+    },
+    {
+      "files": {
+        "results\\v15_4_mnist_seed42_fr40\\v15_4_mnist_noniid_FR1_seed42\\client_metrics.csv": "28e7087c8f7b7d464c6075fa0e278f6cb9b16a624975d216d30be1efaea2b8d8",
+        "results\\v15_4_mnist_seed42_fr40\\v15_4_mnist_noniid_FR1_seed42\\cycle_decisions.csv": "3f21b48d4a8a9a0057750fc4fd3aa826ede21f3211bd6368877a809a1518180c",
+        "results\\v15_4_mnist_seed42_fr40\\v15_4_mnist_noniid_FR1_seed42\\cycle_policy.csv": "7c70e436fce48378514b30b59e60ce5cec80f9e5ae2f751480ee8fc618ae43ae",
+        "results\\v15_4_mnist_seed42_fr40\\v15_4_mnist_noniid_FR1_seed42\\cycle_signals.csv": "f2e8f415b48246089e29b43e86238ad38be23f777e30c0deeca77252405337c9",
+        "results\\v15_4_mnist_seed42_fr40\\v15_4_mnist_noniid_FR1_seed42\\detection_summary.csv": "73a0acce3c3c622feeb89aa0f75311a5bcf11896bbb2a59a58ee78405f9b9970",
+        "results\\v15_4_mnist_seed42_fr40\\v15_4_mnist_noniid_FR1_seed42\\global_metrics.csv": "4acd9e3e8f3a2749df4ff2f7592f76e8e1150417ef04fb0431fb94312de5e1c2",
+        "results\\v15_4_mnist_seed42_fr40\\v15_4_mnist_noniid_FR1_seed42\\latest_results.json": "a9d10c1b72e33b1d157b4e383e9955d67319bf80e3c930f69c2ab123a69e1903",
+        "results\\v15_4_mnist_seed42_fr40\\v15_4_mnist_noniid_FR1_seed42\\protocol.json": "a50a30846e554ed4be689adf75f5db8091b011d0b1606e16e0e2b7b55fef6a43",
+        "results\\v15_4_mnist_seed42_fr40\\v15_4_mnist_noniid_FR1_seed42\\removals.csv": "88c74e3260b58fac2088d990a03f55b5453d28048e534199ebdfcd84ad790c95",
+        "results\\v15_4_mnist_seed42_fr40\\v15_4_mnist_noniid_FR1_seed42\\run_config.json": "05f884ed9ed29514e57220b438aceebcafaa38f8ad1be3ebfb2884da0b1a7232"
+      },
+      "key": [
+        "mnist",
+        40,
+        "noniid",
+        "FR1"
+      ]
+    },
+    {
+      "files": {
+        "results\\v15_4_mnist_seed42_fr40\\v15_4_mnist_noniid_FR2_seed42\\client_metrics.csv": "680e7bbfe2be2aad428bb296db6bb17ec7af47c01e7367c7b0c1a4314dc70782",
+        "results\\v15_4_mnist_seed42_fr40\\v15_4_mnist_noniid_FR2_seed42\\cycle_decisions.csv": "b983159af6618a2cc6549e3410a3f3881a7b936d8b2b7d0aa8e9de04db4cc967",
+        "results\\v15_4_mnist_seed42_fr40\\v15_4_mnist_noniid_FR2_seed42\\cycle_policy.csv": "07920495bedd0bfce54319c97c28f92205b5c543e120bace6a6a65cbd8d606c1",
+        "results\\v15_4_mnist_seed42_fr40\\v15_4_mnist_noniid_FR2_seed42\\cycle_signals.csv": "5fa4cec65efcc0b3b5a1f94fcf6e3b063a55d8a739fe6c669ac255d73973eb95",
+        "results\\v15_4_mnist_seed42_fr40\\v15_4_mnist_noniid_FR2_seed42\\detection_summary.csv": "73a0acce3c3c622feeb89aa0f75311a5bcf11896bbb2a59a58ee78405f9b9970",
+        "results\\v15_4_mnist_seed42_fr40\\v15_4_mnist_noniid_FR2_seed42\\global_metrics.csv": "20c3b01abdd0805c267cfabfb0e74e5845de8e2b0aa2f78e638b1908cb46cb1b",
+        "results\\v15_4_mnist_seed42_fr40\\v15_4_mnist_noniid_FR2_seed42\\latest_results.json": "9f623a54073611fd06415fa7685746f1af476d096f94c7ed047e86f1aeb1c6ac",
+        "results\\v15_4_mnist_seed42_fr40\\v15_4_mnist_noniid_FR2_seed42\\protocol.json": "f3dc8ea99d1292ecde74c866ad63eb6b73c4bb4cd1e97f752b165af37384915c",
+        "results\\v15_4_mnist_seed42_fr40\\v15_4_mnist_noniid_FR2_seed42\\removals.csv": "88c74e3260b58fac2088d990a03f55b5453d28048e534199ebdfcd84ad790c95",
+        "results\\v15_4_mnist_seed42_fr40\\v15_4_mnist_noniid_FR2_seed42\\run_config.json": "85ad7f80a9feedfe4f1149c8ee565e6bc480ae49ca59854845111c2ac8cd58e8"
+      },
+      "key": [
+        "mnist",
+        40,
+        "noniid",
+        "FR2"
+      ]
+    },
+    {
+      "files": {
+        "results\\v15_4_mnist_seed42_fr40\\v15_4_mnist_noniid_FR3_seed42\\client_metrics.csv": "113cc27c0f5faa659e76dfcf44c7e10b895071d157aff38e0490aafc1b60d4c2",
+        "results\\v15_4_mnist_seed42_fr40\\v15_4_mnist_noniid_FR3_seed42\\cycle_decisions.csv": "697253172a5eb487dd2e7d05a3386609ec6987119cecb92b86b674776e697990",
+        "results\\v15_4_mnist_seed42_fr40\\v15_4_mnist_noniid_FR3_seed42\\cycle_policy.csv": "e8bd7a5e531417e32cb4dc1597f684c70cb585d56d1d365790552dfc4a9a6527",
+        "results\\v15_4_mnist_seed42_fr40\\v15_4_mnist_noniid_FR3_seed42\\cycle_signals.csv": "d6d1a92a75549b3a544d7aa5e8d7e419360764fd4aba9254347a576d36a5c29c",
+        "results\\v15_4_mnist_seed42_fr40\\v15_4_mnist_noniid_FR3_seed42\\detection_summary.csv": "73a0acce3c3c622feeb89aa0f75311a5bcf11896bbb2a59a58ee78405f9b9970",
+        "results\\v15_4_mnist_seed42_fr40\\v15_4_mnist_noniid_FR3_seed42\\global_metrics.csv": "5ee5696a94892a6c9e447ca26312dd3d4f17db87721c1477416bad55fc6e1ea7",
+        "results\\v15_4_mnist_seed42_fr40\\v15_4_mnist_noniid_FR3_seed42\\latest_results.json": "cfd3e2b7cd8c3e7fdc4df8fc71b1f979f03925d611541b4637a3ebb9b0e07a3a",
+        "results\\v15_4_mnist_seed42_fr40\\v15_4_mnist_noniid_FR3_seed42\\protocol.json": "8287f513e2f8a58e48a7199c7291c41722216dc7599021ae19b658d3f020c468",
+        "results\\v15_4_mnist_seed42_fr40\\v15_4_mnist_noniid_FR3_seed42\\removals.csv": "88c74e3260b58fac2088d990a03f55b5453d28048e534199ebdfcd84ad790c95",
+        "results\\v15_4_mnist_seed42_fr40\\v15_4_mnist_noniid_FR3_seed42\\run_config.json": "e0ee24ea691d068f01b7daf09c91bf005ed0f750a5c9b208cf12e1f26108ab6c"
+      },
+      "key": [
+        "mnist",
+        40,
+        "noniid",
+        "FR3"
+      ]
+    },
+    {
+      "files": {
+        "results\\v15_4_mnist_seed42_fr40\\v15_4_mnist_noniid_FR4_seed42\\client_metrics.csv": "9c1d81a4a618cb71ff7294958ba4f9469733c4cf74d962d2b761da536137be80",
+        "results\\v15_4_mnist_seed42_fr40\\v15_4_mnist_noniid_FR4_seed42\\cycle_decisions.csv": "669a0297fe52b50e2f1e82e5e8b547a1c79763abea57c3a178a28343acc4dcfb",
+        "results\\v15_4_mnist_seed42_fr40\\v15_4_mnist_noniid_FR4_seed42\\cycle_policy.csv": "d755dfdd7218f1f3c3a6170150bdbaeab1ae3cab33181933ef777d14576dd56b",
+        "results\\v15_4_mnist_seed42_fr40\\v15_4_mnist_noniid_FR4_seed42\\cycle_signals.csv": "5baf4cfe0cbab749ef5f53c1f8c95b62aa3a51853eedb7ccad03fcebe32ea4a0",
+        "results\\v15_4_mnist_seed42_fr40\\v15_4_mnist_noniid_FR4_seed42\\detection_summary.csv": "73a0acce3c3c622feeb89aa0f75311a5bcf11896bbb2a59a58ee78405f9b9970",
+        "results\\v15_4_mnist_seed42_fr40\\v15_4_mnist_noniid_FR4_seed42\\global_metrics.csv": "ed5e67af5a1e28f3dcd67ab58230e7e476755731e7521dd36ae568ca70601456",
+        "results\\v15_4_mnist_seed42_fr40\\v15_4_mnist_noniid_FR4_seed42\\latest_results.json": "b2c9538521fa8df3e982c0c48f09a863d8c5a04872686606d6f86f8e998942b5",
+        "results\\v15_4_mnist_seed42_fr40\\v15_4_mnist_noniid_FR4_seed42\\protocol.json": "b37019458f548bffad296acb61d3a1484a6856996dbddee95e99ea68a8ff8d69",
+        "results\\v15_4_mnist_seed42_fr40\\v15_4_mnist_noniid_FR4_seed42\\removals.csv": "88c74e3260b58fac2088d990a03f55b5453d28048e534199ebdfcd84ad790c95",
+        "results\\v15_4_mnist_seed42_fr40\\v15_4_mnist_noniid_FR4_seed42\\run_config.json": "aaea948734f4e33a19a935d10d9c4c4051fb507289b7c5cc1ad8a0e07c05b846"
+      },
+      "key": [
+        "mnist",
+        40,
+        "noniid",
+        "FR4"
+      ]
+    },
+    {
+      "files": {
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR1_seed42\\client_metrics.csv": "5723552426d2b23f6aa3be45f862404be08f70308f7b0c54457b4531d0c7655c",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR1_seed42\\cycle_decisions.csv": "20c5d4ef230f75445d17c7a083c07eda21eccf25be00be8b4407938625fffba0",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR1_seed42\\cycle_policy.csv": "21475120b53e5df4f61188c5964d5b15cb877b783de562b955496d4afaf854b9",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR1_seed42\\cycle_signals.csv": "0c550c114fd99632640514609b5fe37898617347c1c3a886f327c4ea6da2a753",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR1_seed42\\detection_summary.csv": "c7f200ee62e44f5c001e6ca1f1f8fa6728f9b41110785ec08b7ff5b189c8b3cf",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR1_seed42\\global_metrics.csv": "58293b264252cf875dc4cba4b0b3895040e240b8e6d6b6d2fa7c136306f69d6c",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR1_seed42\\latest_results.json": "6d1a9de52560bbd18ccebf32b412ee5f8efb2bacbda032ea8b4f152e0b89e0dc",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR1_seed42\\protocol.json": "fb8e38ea48d473a05cb127ea27c78bb6cc2ffb2d7e1b9656d1311d376bddce64",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR1_seed42\\removals.csv": "1c48edb7158a39c29b95c9b43a93ab4b658e96a06b8dda2b7e02ba83ea2c4b36",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR1_seed42\\run_config.json": "81f56a537489656e1f49c78e3e7fc2d3258181bb8fc5d7621481b7a5ac5a75fd"
+      },
+      "key": [
+        "cifar10",
+        30,
+        "iid",
+        "FR1"
+      ]
+    },
+    {
+      "files": {
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR2_seed42\\client_metrics.csv": "ab55e0b26453614421a24ec0fcd68f0793f32723d329948a980fac2d2b759ab0",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR2_seed42\\cycle_decisions.csv": "5338ba7c87deef865eaf01b7e99c47d36abdd1c3c5289800131eaab033f09bd0",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR2_seed42\\cycle_policy.csv": "d51c0ea32311a6e9721795397c64ba1231197c65ad358ee8d78acd7b3f2b9db3",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR2_seed42\\cycle_signals.csv": "b5b07c086cdd5fc0aef22dba4eb96db27d4c77d597b3acb86d86e71e7255bd63",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR2_seed42\\detection_summary.csv": "c7f200ee62e44f5c001e6ca1f1f8fa6728f9b41110785ec08b7ff5b189c8b3cf",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR2_seed42\\global_metrics.csv": "e948e2a5cd36edb3b2adc13ac36e0df37a031ac01cd01370fb3f504bb2475cbd",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR2_seed42\\latest_results.json": "651e1360eceb13fd5f67dcd4c3ed9cfcdf63760f0dde133f77ae8c38e3e6ea50",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR2_seed42\\protocol.json": "9b0ab559d30481b101feb687e24e64a2ae2f3df3e0b39d1917859e628173ff76",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR2_seed42\\removals.csv": "1c48edb7158a39c29b95c9b43a93ab4b658e96a06b8dda2b7e02ba83ea2c4b36",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR2_seed42\\run_config.json": "bfb762e79b6a7e6a8184c0f84159b2879ef3db190a1fb03d4cfe1c3c3faf89ec"
+      },
+      "key": [
+        "cifar10",
+        30,
+        "iid",
+        "FR2"
+      ]
+    },
+    {
+      "files": {
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR3_seed42\\client_metrics.csv": "1e2434404dc65103f4a5acdaffe42e6d38cab2c2477be129cc440c8407ee8c90",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR3_seed42\\cycle_decisions.csv": "ca86893c47c231b628bc0543dc15ff8cc160ec094746d9a6d4c2e6f5aad59b18",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR3_seed42\\cycle_policy.csv": "12a8235b6d3d6892bd456ded73b39ae9d1400afb14503d3d03e52aa594b50bcf",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR3_seed42\\cycle_signals.csv": "9b9e56bceeb7ff03446b532ddf462b8af57e92158528755b6c2d3248eb2332a8",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR3_seed42\\detection_summary.csv": "c7f200ee62e44f5c001e6ca1f1f8fa6728f9b41110785ec08b7ff5b189c8b3cf",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR3_seed42\\global_metrics.csv": "9e5b52b48dd4f4c65c9ddb5aef23822e12148f9ee011cca5164e6de5c498ee4a",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR3_seed42\\latest_results.json": "a2fee2e6fac72c5dba6aa063613e3f8ed9de625fb0f8d0454cc6fcd67de850e3",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR3_seed42\\protocol.json": "febb7db78a0e652bb7113bd62499b84c18938b56012a267846089d0b99b86781",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR3_seed42\\removals.csv": "1c48edb7158a39c29b95c9b43a93ab4b658e96a06b8dda2b7e02ba83ea2c4b36",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR3_seed42\\run_config.json": "6cc46ce1b6edb212ae92424e04b87b7b83acc276ce227282be51f3170b1a6775"
+      },
+      "key": [
+        "cifar10",
+        30,
+        "iid",
+        "FR3"
+      ]
+    },
+    {
+      "files": {
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR4_seed42\\client_metrics.csv": "668f61e8c92e169901ee424f506e4b95bb7ff8c59aae6757965407b4d2511070",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR4_seed42\\cycle_decisions.csv": "4d26f57e2229c4cb394439b17998b32347d016e301f798621fec61e260db84ca",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR4_seed42\\cycle_policy.csv": "71514713df26983965590e6190a442a0c278d464e486d2a13aecdb940ab505ac",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR4_seed42\\cycle_signals.csv": "fe342659bb17ff49c21c3f5fe44b8fafe95096660d9b2a8a59ecc3d2710fb29c",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR4_seed42\\detection_summary.csv": "c7f200ee62e44f5c001e6ca1f1f8fa6728f9b41110785ec08b7ff5b189c8b3cf",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR4_seed42\\global_metrics.csv": "0b63fd2b6ada1ecef63021230e893c805336a878daa48ce6eeaf1442bd453cff",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR4_seed42\\latest_results.json": "e2b4ec93811f072799f1caa061adac3c9956f6d3cb8e8d6a90c23398fe543492",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR4_seed42\\protocol.json": "e3afca8154567038fe29e2a1ed396038c1263f4e555c41f6f1f752cf5685e545",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR4_seed42\\removals.csv": "1c48edb7158a39c29b95c9b43a93ab4b658e96a06b8dda2b7e02ba83ea2c4b36",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_iid_FR4_seed42\\run_config.json": "ecf5ce39a498e671edcccb97e359c2aecbd80c6b8e56e4f0cfd48a8dc13fae07"
+      },
+      "key": [
+        "cifar10",
+        30,
+        "iid",
+        "FR4"
+      ]
+    },
+    {
+      "files": {
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR1_seed42\\client_metrics.csv": "ef7e855408ed38421519d3c80a36ad78c38401554800cbaf178bb5f765f42f2a",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR1_seed42\\cycle_decisions.csv": "741110cc82bb40eb838940eb8993f3aaa2ef7a7a284738802fbc0ca4739a12f5",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR1_seed42\\cycle_policy.csv": "0607b2ba6544fc22998bdffa01ff21df7d0589a854b01f2788fae07ab22eac90",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR1_seed42\\cycle_signals.csv": "2e810205f2f9074e97a9094341f1ef67fc034fd3962a5d7d6064fc93355a0513",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR1_seed42\\detection_summary.csv": "c7f200ee62e44f5c001e6ca1f1f8fa6728f9b41110785ec08b7ff5b189c8b3cf",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR1_seed42\\global_metrics.csv": "90a67d403d9e81c8f6f465588e84d99e2b673446010b0be7f5b2206c1c5c279e",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR1_seed42\\latest_results.json": "73f265a3c916e54aa30b0e7eec331f325668d5ad3540bb72bd25bcfc12f4e64f",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR1_seed42\\protocol.json": "e0e322d97c91be3c8c0e339066947746791f538b05897f2d1ded5b596bf75c33",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR1_seed42\\removals.csv": "1c48edb7158a39c29b95c9b43a93ab4b658e96a06b8dda2b7e02ba83ea2c4b36",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR1_seed42\\run_config.json": "345d121c355b6fdaab07cb86a3587992e1675f7be1cac3df605edcf343dcb659"
+      },
+      "key": [
+        "cifar10",
+        30,
+        "noniid",
+        "FR1"
+      ]
+    },
+    {
+      "files": {
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR2_seed42\\client_metrics.csv": "93b4aefd2a602de1197e75fe949edef585cd01861d7a6ce5db051381458437b4",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR2_seed42\\cycle_decisions.csv": "b8087ead941806abc6a5fa52f6fed02da869c9bfa574e761a0b16acc83b0a359",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR2_seed42\\cycle_policy.csv": "cf25b780354d7d5c0db8186b0541322d39b47a3bd896390f8fb909d8e70faf40",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR2_seed42\\cycle_signals.csv": "57bbc35be2814d2bd7deee162a9eb9c5b557c93eaa142a197a75e1ef012a3779",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR2_seed42\\detection_summary.csv": "c7f200ee62e44f5c001e6ca1f1f8fa6728f9b41110785ec08b7ff5b189c8b3cf",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR2_seed42\\global_metrics.csv": "f6e17270e1736aa82a2b24d7444fe3616047755b254b980be46a312b04793652",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR2_seed42\\latest_results.json": "88cc113bbf77459b2f5e17de1b45ca2ede1ac057bab75d048e2b5b9d6e7301ec",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR2_seed42\\protocol.json": "e63a538060673db212a9ca614412fb2fa070a7692059e166c0ef15c260517561",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR2_seed42\\removals.csv": "1c48edb7158a39c29b95c9b43a93ab4b658e96a06b8dda2b7e02ba83ea2c4b36",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR2_seed42\\run_config.json": "9721f0578ccb764afbea7211da6920b791892dd606d7246ee510d5d7711f763c"
+      },
+      "key": [
+        "cifar10",
+        30,
+        "noniid",
+        "FR2"
+      ]
+    },
+    {
+      "files": {
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR3_seed42\\client_metrics.csv": "77afb125fe93e30b88fc4b707240b57354e2acfd35a9e43dcf9cac6ab76d4df3",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR3_seed42\\cycle_decisions.csv": "ac13c099222e2f0867d2960fbd6da9e7b0a0e4c4c463ced5947c7d3e0d977c42",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR3_seed42\\cycle_policy.csv": "b4097c2df17bac91473c3425c3f81073c8b9b746d89aedd5dfc19ae3d1c65ce8",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR3_seed42\\cycle_signals.csv": "2195bcea56565d0b0d896ca9203bca21cb7c418476bd6beb6c3d41b3b67abc06",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR3_seed42\\detection_summary.csv": "c7f200ee62e44f5c001e6ca1f1f8fa6728f9b41110785ec08b7ff5b189c8b3cf",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR3_seed42\\global_metrics.csv": "b8a365e947477bd20c6b2860bba1d137a69a4350e24985a04c7f539a593bb728",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR3_seed42\\latest_results.json": "0fc609db1fc875ac5440546aa3e171a74df036110f47699010fb912fb611f8eb",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR3_seed42\\protocol.json": "989227a2352c74245a1c5eea05e333b143ad116f7dd08f180f31cec1ce32889d",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR3_seed42\\removals.csv": "1b53ea3bcdd1f2e84f607d97b8121c907eba346665809b5a5a2c9cb0f0c875b5",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR3_seed42\\run_config.json": "b8b6218e28a5b7e62e7d2e2a9909ef6170fe11f9f947f68d5dfeed9242c11379"
+      },
+      "key": [
+        "cifar10",
+        30,
+        "noniid",
+        "FR3"
+      ]
+    },
+    {
+      "files": {
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR4_seed42\\client_metrics.csv": "f759d1a57913bea134ddab340f10e4b342579f7b1460cce2446c0eaf5bd10eb9",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR4_seed42\\cycle_decisions.csv": "87d460f9164c0694f6802abf3b9d9e9b51a45ad973d0f7832ee82e63f05d086f",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR4_seed42\\cycle_policy.csv": "58b483b9abdba682157106f474cdc8affa2b9450c12a8a6c02404d379acc84e3",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR4_seed42\\cycle_signals.csv": "02d28239ba7f7d4c5f08a80ef3e5cf3e079d4cf9e89797e2ad1831698af07227",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR4_seed42\\detection_summary.csv": "c7f200ee62e44f5c001e6ca1f1f8fa6728f9b41110785ec08b7ff5b189c8b3cf",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR4_seed42\\global_metrics.csv": "8f53f95378de33bc0e7254a2942b31dd17934dc59b37093dc7b4733ceffc80b1",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR4_seed42\\latest_results.json": "31450002cc148593ebe41ca4aca81f08c6fe7ae8faa0acfe38442da1f7b0ec3b",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR4_seed42\\protocol.json": "70bef8733e993293c11009dc03e9785e0dc8fc304e625a3e456db5ba6b3437a0",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR4_seed42\\removals.csv": "1c48edb7158a39c29b95c9b43a93ab4b658e96a06b8dda2b7e02ba83ea2c4b36",
+        "results\\v15_4_cifar10_seed42_fr30\\v15_4_cifar10_noniid_FR4_seed42\\run_config.json": "4d0f837507424d51339abb2e0dd3f10e5e51f5b47b29e8586351d6430cca1bac"
+      },
+      "key": [
+        "cifar10",
+        30,
+        "noniid",
+        "FR4"
+      ]
+    },
+    {
+      "files": {
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR1_seed42\\client_metrics.csv": "e47c41b41aa4ceab352ee3bb1a8e8b511b9b9103e784133cea93d2cb87b713a0",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR1_seed42\\cycle_decisions.csv": "f46bfda1a9f40ea2fef2730228ede388cb820a7e2e758e7eaebf1a8419268dd7",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR1_seed42\\cycle_policy.csv": "881971113c044f0a9d3e9964b0c72af10087d3d370333b77dfc170c688a686e8",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR1_seed42\\cycle_signals.csv": "83c74bab63ac378238821050591ee9dff65e0e768fadecf76341c765c49e9d4e",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR1_seed42\\detection_summary.csv": "73a0acce3c3c622feeb89aa0f75311a5bcf11896bbb2a59a58ee78405f9b9970",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR1_seed42\\global_metrics.csv": "84b6491f0bfa3740de880592af9ffc22001f058e58c5381ac1d9f1aedcc3c3be",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR1_seed42\\latest_results.json": "8f1ed79884e0c0f89f82fea345000b7fe0029712b0f13899adf0a1dc6a0a9ab0",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR1_seed42\\protocol.json": "d6df04a73943d5a10dab36fb66dec8b2ca577b8f81723fd0625e633aabc50f11",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR1_seed42\\removals.csv": "88c74e3260b58fac2088d990a03f55b5453d28048e534199ebdfcd84ad790c95",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR1_seed42\\run_config.json": "5886201c6631bc3752f66ef445cff28d7205ecb6a916ffe5222f78c9a12512c7"
+      },
+      "key": [
+        "cifar10",
+        40,
+        "iid",
+        "FR1"
+      ]
+    },
+    {
+      "files": {
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR2_seed42\\client_metrics.csv": "6c4e079f812d18c251f46eaae85af4d310a5bc540d1f20fb445f6e20e6a1e038",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR2_seed42\\cycle_decisions.csv": "93fc3426782c621f72bee22d1a9e64eadf056f43467257553979252a2292469f",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR2_seed42\\cycle_policy.csv": "987cbf5a2c60ff20ec40e21562eaed3834c98c62904bee2336d18934f5e0f32a",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR2_seed42\\cycle_signals.csv": "bfc2d13289f72f5401cea2ea3311b0a93819a07a90b0190186443a83f2475d2b",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR2_seed42\\detection_summary.csv": "73a0acce3c3c622feeb89aa0f75311a5bcf11896bbb2a59a58ee78405f9b9970",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR2_seed42\\global_metrics.csv": "54cb3f7fbcef025f4fc0466dc0cd0c3037fa819389b95da37fd72739dd64b5d1",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR2_seed42\\latest_results.json": "0bfbf6e58837086a664f834c828d437a55cb80eb329dabfc455f1d3f6abe3a29",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR2_seed42\\protocol.json": "e7cc1b3a01690f1a6325b0f001727f29eb16468fde5ff2e597cf5b0124be676a",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR2_seed42\\removals.csv": "88c74e3260b58fac2088d990a03f55b5453d28048e534199ebdfcd84ad790c95",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR2_seed42\\run_config.json": "faa2dff245a0f9e76f040bddaabb934a46f5b6ebf20a0bab9d129656ae47be04"
+      },
+      "key": [
+        "cifar10",
+        40,
+        "iid",
+        "FR2"
+      ]
+    },
+    {
+      "files": {
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR3_seed42\\client_metrics.csv": "6606eb3a96f033ca17dd9974aa393d51c3d87ef8a60d46f60c8652e3da2e5727",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR3_seed42\\cycle_decisions.csv": "e5e87e84514724fe91d233cc434570b1ca1308913e46ff27e73c44a70b1b26df",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR3_seed42\\cycle_policy.csv": "f463b155c90546c5456bd77c0468e35c405f62416e57182bae3ad766cb7dc0e7",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR3_seed42\\cycle_signals.csv": "26aad9bdfa6d9a678aeadec41a65bf6c7e3a0a37bcaaf662779d53c7d3bc84a6",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR3_seed42\\detection_summary.csv": "73a0acce3c3c622feeb89aa0f75311a5bcf11896bbb2a59a58ee78405f9b9970",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR3_seed42\\global_metrics.csv": "5314fadacd507bdce1081bbd22763b68a209173436ec1e017abfdf3303b65a7c",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR3_seed42\\latest_results.json": "8d129eea64e265c7bf663c942988a696d28bf271dfb712f5e049b1cecd897af4",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR3_seed42\\protocol.json": "772bf8b462365a1ecfe0f7b30cd223f72731fe97533ec51d23fd916bb58638dc",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR3_seed42\\removals.csv": "88c74e3260b58fac2088d990a03f55b5453d28048e534199ebdfcd84ad790c95",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR3_seed42\\run_config.json": "81bcb7948c3795f20dc3db98ea41f24d47a732d69663defbaf2d6dc968ff783d"
+      },
+      "key": [
+        "cifar10",
+        40,
+        "iid",
+        "FR3"
+      ]
+    },
+    {
+      "files": {
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR4_seed42\\client_metrics.csv": "459521c186563b6b268320c51c2205124ce668562c6119ea45c958ad7870ee40",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR4_seed42\\cycle_decisions.csv": "d97b4bbc2ce26683413ec654b2d6ae5a7059471f1ac361d5b50180eebe30bb70",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR4_seed42\\cycle_policy.csv": "ecf53e41781015e7e3e1531ef738088888b1d37ad86ab44f9caf29ae885cfbdb",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR4_seed42\\cycle_signals.csv": "d17c3cf832bac54510f44cda0ccdb316d7627b1558b86cd4a80700050d29e4ff",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR4_seed42\\detection_summary.csv": "73a0acce3c3c622feeb89aa0f75311a5bcf11896bbb2a59a58ee78405f9b9970",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR4_seed42\\global_metrics.csv": "abd0a60f56b31332761526e4b571f6dc3192621880554a3c913d24c35489c7d1",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR4_seed42\\latest_results.json": "375a3ee77ddd42367b31baee9503b84848af2cc13d0d35de3cb373d4663743a5",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR4_seed42\\protocol.json": "8ace52c61d61ae1945d235995552bede82ae0b8ae4436d68e076b1106e59b839",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR4_seed42\\removals.csv": "88c74e3260b58fac2088d990a03f55b5453d28048e534199ebdfcd84ad790c95",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_iid_FR4_seed42\\run_config.json": "ed5cae35ce791b47b733a6266d8e7b4e70e2b0c5d83909bedef04da259a11b21"
+      },
+      "key": [
+        "cifar10",
+        40,
+        "iid",
+        "FR4"
+      ]
+    },
+    {
+      "files": {
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR1_seed42\\client_metrics.csv": "37dbc4ed653fb5ef905c83daeffd8100bec42b3e520baafcb4056f0ccd46e999",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR1_seed42\\cycle_decisions.csv": "3a3aad49e9789990bb57ccdce6d5283a4e517224db49e491d32fdbe127c99608",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR1_seed42\\cycle_policy.csv": "adf9a2a3e57f3f16b4d49609e7876800aba67e9ca89397cb9b95c7b089c7b4b6",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR1_seed42\\cycle_signals.csv": "a28508ff776cb83983b69b4f64306e9809c4c0e5a4d52cbd8f5a585985b0f75c",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR1_seed42\\detection_summary.csv": "73a0acce3c3c622feeb89aa0f75311a5bcf11896bbb2a59a58ee78405f9b9970",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR1_seed42\\global_metrics.csv": "16470b2c69c6335e2be590a2d69798fec2ed8f8735c55cecda0706d30eb2a7ef",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR1_seed42\\latest_results.json": "c7a5145f42d40041c8aa0f4beb3b7940b2860a0564b46acea039b1f83eeda6f4",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR1_seed42\\protocol.json": "6487635a33e5ec2602df9420e2bdeeb978e89ecddbc81e75451e0b32acfccced",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR1_seed42\\removals.csv": "88c74e3260b58fac2088d990a03f55b5453d28048e534199ebdfcd84ad790c95",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR1_seed42\\run_config.json": "b9e94826ad01cecae06e258cd9a0727a245470c6b18d226f7aa96aea0448bd41"
+      },
+      "key": [
+        "cifar10",
+        40,
+        "noniid",
+        "FR1"
+      ]
+    },
+    {
+      "files": {
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR2_seed42\\client_metrics.csv": "42ee963a88443524c3217af1cbcb6c30b636d248063dc08b9a8f59dfbc32d8d4",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR2_seed42\\cycle_decisions.csv": "26d2b8cf486c8fa8b201a225db90fc4fde60957d4d872ad9ce8668b5f361467a",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR2_seed42\\cycle_policy.csv": "c1556b0345914faecd8161255a39347c883789bcafcf8ac980c02306bbcc5410",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR2_seed42\\cycle_signals.csv": "653a8eca06833a58a98a27eaacd2e84e976e9bbfad971f5dcf7df6ea2133ce5e",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR2_seed42\\detection_summary.csv": "73a0acce3c3c622feeb89aa0f75311a5bcf11896bbb2a59a58ee78405f9b9970",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR2_seed42\\global_metrics.csv": "5795ef392b3088bdbd9ea45f2fd76b9ef7446c04ea6ed2c597bc941f46ca19c2",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR2_seed42\\latest_results.json": "a6291ad8c1386fcd635bc8a5b79e3dbd5f6438d6aa74a89beed156160bb24f78",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR2_seed42\\protocol.json": "e6b966e29db461089b63abc430fb9138816244e15e1728f5b3a64e379e01b1c2",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR2_seed42\\removals.csv": "88c74e3260b58fac2088d990a03f55b5453d28048e534199ebdfcd84ad790c95",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR2_seed42\\run_config.json": "a58d35ade6ab5a346bbbaa7bb85c0d42e586220f8e2d449062f8c711945edea8"
+      },
+      "key": [
+        "cifar10",
+        40,
+        "noniid",
+        "FR2"
+      ]
+    },
+    {
+      "files": {
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR3_seed42\\client_metrics.csv": "445cfb70d04beb4e61b990284ba6065467fa6f72649bfc21034d2fcd2b63aae6",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR3_seed42\\cycle_decisions.csv": "58a9e93ef249fc5f11f284634e3ab61e657b363504455d1da6267a20dbdd9d6c",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR3_seed42\\cycle_policy.csv": "e8008b3f05ddf62eb94544f532c1909b4878e083dc9574a4ce477a4d7f6fe79a",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR3_seed42\\cycle_signals.csv": "91eb81ecd78873f82d9dd1bc6836a1424093a453b65d10f6eeb6e94983661062",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR3_seed42\\detection_summary.csv": "73a0acce3c3c622feeb89aa0f75311a5bcf11896bbb2a59a58ee78405f9b9970",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR3_seed42\\global_metrics.csv": "618c9c94e63f51b6c554df579b608d22c0f32c3ba5ebda225d2ee99d006f771c",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR3_seed42\\latest_results.json": "087cb3bc86213d49b6f41333aaaed261529c3e004bf589141f749e3a69533a5f",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR3_seed42\\protocol.json": "6a376647473db6a2c041ad5ffc64906652c67a846d6f8ae2259d24ddeadafe16",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR3_seed42\\removals.csv": "5829454af59b3fd38ca348664544be61749764c00d33f3ff11fb4ef5145d23d5",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR3_seed42\\run_config.json": "4758172f3dafee36ee279ec2a894f95f03e87f6ec899ae179d397ef67eb7eaad"
+      },
+      "key": [
+        "cifar10",
+        40,
+        "noniid",
+        "FR3"
+      ]
+    },
+    {
+      "files": {
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR4_seed42\\client_metrics.csv": "22271aef325e2a916f19d78cf2dc2b638c88ef774ed7fd25742d7112a3edbe2a",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR4_seed42\\cycle_decisions.csv": "1558db1972422c15d7052a37ff319aed96b8f72888f47d678585c8d5a51dd323",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR4_seed42\\cycle_policy.csv": "c8acd52ca7fd0971c5ee3a78367d962b31796c28ab455654c112569584529ab2",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR4_seed42\\cycle_signals.csv": "e4e79a3ddf419af987aff8cadef1808f4251ca7f4946531f5862f55702149ff9",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR4_seed42\\detection_summary.csv": "73a0acce3c3c622feeb89aa0f75311a5bcf11896bbb2a59a58ee78405f9b9970",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR4_seed42\\global_metrics.csv": "adcd6c8a390431df25afb64a1d2fc6bb75ac470a2c51358324d62a088bcd2be8",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR4_seed42\\latest_results.json": "8014f09fa68d80dd50703cfa025bd37984b41368a7bb96eb2ced6ca38298c5ea",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR4_seed42\\protocol.json": "d682b51cfcae1a100a583c10f23deaa60c78d7122faf09c96fa6e9d1adc714b6",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR4_seed42\\removals.csv": "88c74e3260b58fac2088d990a03f55b5453d28048e534199ebdfcd84ad790c95",
+        "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR4_seed42\\run_config.json": "5024380026f591a5949a3a5af6632e55f26ea2d7790fb83eb560b7de02f6d827"
+      },
+      "key": [
+        "cifar10",
+        40,
+        "noniid",
+        "FR4"
+      ]
+    }
+  ]
+}

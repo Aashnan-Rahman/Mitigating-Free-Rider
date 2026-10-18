@@ -1,0 +1,197 @@
+{
+  "batch_id": "v13_mnist_priority_fr40",
+  "completed_experiments": 1,
+  "completed_rounds": 131,
+  "current_experiment": null,
+  "elapsed_seconds": 5490.176623106003,
+  "estimated_remaining_seconds": 0,
+  "experiments": [
+    {
+      "completed_rounds": 100,
+      "config": {
+        "attack_type": "FR4",
+        "distribution": "noniid",
+        "seed": 42
+      },
+      "finished_at": "2026-10-05T20:11:11.947382",
+      "id": "v13_mnist_noniid_fr40_seed42_FR4",
+      "progress": {
+        "active_clients": 100,
+        "candidate_clients": 0,
+        "cpu_percent": 0.0,
+        "cuda_allocated_mb": "",
+        "cuda_peak_allocated_mb": "",
+        "cuda_reserved_mb": "",
+        "device": "cpu",
+        "global_accuracy": 0.9892,
+        "global_loss": 0.03716134860946186,
+        "methodology_version": "swtcp_v13",
+        "new_flags": 0,
+        "new_rehabilitations": 0,
+        "new_removals": 0,
+        "phase": "single_probe",
+        "process_rss_mb": 832.62109375,
+        "reference_eligible_clients": 100,
+        "reference_probation_clients": 0,
+        "round": 100,
+        "round_time_seconds": 39.743998099991586,
+        "suspected_clients": 0,
+        "system_memory_percent": 81.0,
+        "total_rounds": 100
+      },
+      "run_dir": "results\\v13_mnist_priority_fr40\\v13_mnist_noniid_fr40_seed42_FR4",
+      "started_at": "2026-10-05T19:02:28.167306",
+      "state": "completed",
+      "summary": {
+        "average_round_time_seconds": 39.997110338000056,
+        "best_global_accuracy": 0.9894,
+        "detection_accuracy": 0.6,
+        "f1": 0.0,
+        "false_positive_removal_rate": 0.0,
+        "final_candidate_clients": 0,
+        "final_global_accuracy": 0.9892,
+        "final_global_loss": 0.03716134860946186,
+        "final_honest_candidate_clients": 0,
+        "final_suspected_clients": 0,
+        "honest_clients_ever_quarantined": 1,
+        "honest_excluded_active_client_rounds": 669,
+        "honest_quarantine_client_rounds": 9,
+        "honest_trap_client_rounds": 660,
+        "missed_free_riders": 40,
+        "peak_cuda_allocated_mb": null,
+        "peak_process_rss_mb": 977.171875,
+        "precision": 0.0,
+        "recall": 0.0,
+        "removed_free_riders": 0,
+        "removed_honest_clients": 0,
+        "total_wall_clock_seconds": 4119.602922399994
+      }
+    },
+    {
+      "completed_rounds": 31,
+      "config": {
+        "attack_type": "FR4",
+        "distribution": "noniid",
+        "seed": 43
+      },
+      "id": "v13_mnist_noniid_fr40_seed43_FR4",
+      "progress": {
+        "active_clients": 100,
+        "candidate_clients": 8,
+        "cpu_percent": 0.0,
+        "cuda_allocated_mb": "",
+        "cuda_peak_allocated_mb": "",
+        "cuda_reserved_mb": "",
+        "device": "cpu",
+        "global_accuracy": 0.9818,
+        "global_loss": 0.053963785266748165,
+        "methodology_version": "swtcp_v13",
+        "new_flags": 0,
+        "new_rehabilitations": 0,
+        "new_removals": 0,
+        "phase": "double_probe",
+        "process_rss_mb": 790.1484375,
+        "reference_eligible_clients": 61,
+        "reference_probation_clients": 31,
+        "round": 31,
+        "round_time_seconds": 56.75482160001411,
+        "suspected_clients": 0,
+        "system_memory_percent": 88.6,
+        "total_rounds": 100
+      },
+      "started_at": "2026-10-05T20:11:11.997763",
+      "state": "discarded",
+      "discard_reason": "Historical incomplete work discarded at user request on 2026-10-15. Do not auto-resume; see result_check/cleanup_2026_10_15.json."
+    },
+    {
+      "config": {
+        "attack_type": "FR4",
+        "distribution": "noniid",
+        "seed": 46
+      },
+      "id": "v13_mnist_noniid_fr40_seed46_FR4",
+      "state": "discarded",
+      "discard_reason": "Historical incomplete work discarded at user request on 2026-10-15. Do not auto-resume; see result_check/cleanup_2026_10_15.json."
+    },
+    {
+      "config": {
+        "attack_type": "FR3",
+        "distribution": "noniid",
+        "seed": 42
+      },
+      "id": "v13_mnist_noniid_fr40_seed42_FR3",
+      "state": "discarded",
+      "discard_reason": "Historical incomplete work discarded at user request on 2026-10-15. Do not auto-resume; see result_check/cleanup_2026_10_15.json."
+    },
+    {
+      "config": {
+        "attack_type": "FR2",
+        "distribution": "noniid",
+        "seed": 42
+      },
+      "id": "v13_mnist_noniid_fr40_seed42_FR2",
+      "state": "discarded",
+      "discard_reason": "Historical incomplete work discarded at user request on 2026-10-15. Do not auto-resume; see result_check/cleanup_2026_10_15.json."
+    },
+    {
+      "config": {
+        "attack_type": "FR1",
+        "distribution": "noniid",
+        "seed": 42
+      },
+      "id": "v13_mnist_noniid_fr40_seed42_FR1",
+      "state": "discarded",
+      "discard_reason": "Historical incomplete work discarded at user request on 2026-10-15. Do not auto-resume; see result_check/cleanup_2026_10_15.json."
+    },
+    {
+      "config": {
+        "attack_type": "FR3",
+        "distribution": "iid",
+        "seed": 42
+      },
+      "id": "v13_mnist_iid_fr40_seed42_FR3",
+      "state": "discarded",
+      "discard_reason": "Historical incomplete work discarded at user request on 2026-10-15. Do not auto-resume; see result_check/cleanup_2026_10_15.json."
+    },
+    {
+      "config": {
+        "attack_type": "FR4",
+        "distribution": "iid",
+        "seed": 42
+      },
+      "id": "v13_mnist_iid_fr40_seed42_FR4",
+      "state": "discarded",
+      "discard_reason": "Historical incomplete work discarded at user request on 2026-10-15. Do not auto-resume; see result_check/cleanup_2026_10_15.json."
+    },
+    {
+      "config": {
+        "attack_type": "FR2",
+        "distribution": "iid",
+        "seed": 42
+      },
+      "id": "v13_mnist_iid_fr40_seed42_FR2",
+      "state": "discarded",
+      "discard_reason": "Historical incomplete work discarded at user request on 2026-10-15. Do not auto-resume; see result_check/cleanup_2026_10_15.json."
+    },
+    {
+      "config": {
+        "attack_type": "FR1",
+        "distribution": "iid",
+        "seed": 42
+      },
+      "id": "v13_mnist_iid_fr40_seed42_FR1",
+      "state": "discarded",
+      "discard_reason": "Historical incomplete work discarded at user request on 2026-10-15. Do not auto-resume; see result_check/cleanup_2026_10_15.json."
+    }
+  ],
+  "failed_experiments": 0,
+  "plan": "E:\\New Projects\\Mitigating-Free-Rider\\configs\\v13_mnist_priority_fr40_plan.json",
+  "started_at": "2026-10-05T19:02:28.081304",
+  "state": "discarded_partial",
+  "stop_reason": "Stopped by user: completed FR4 seed 42 detected 0 of 40 attackers. Automatic resume blocked by STOP_REQUESTED marker.",
+  "total_experiments": 10,
+  "total_rounds": 1000,
+  "updated_at": "2026-10-05T20:33:58.257927",
+  "discarded_at": "2026-10-15",
+  "discard_reason": "Historical incomplete work discarded at user request on 2026-10-15. Do not auto-resume; see result_check/cleanup_2026_10_15.json."
+}

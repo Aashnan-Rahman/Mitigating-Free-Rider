@@ -1,2 +1,14 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+# New benchmark evidence is hash-addressed: retain original bytes on all OSes.
+/analysis/std_dagmm_*/** -text
+/analysis/mnist_std_dagmm_pilot_seed42/** -text
+/analysis/timing_breakdown/** -text
+/results/std_dagmm_100_seed42_fr40/** -text
+/result_check/paper_version_staging/versions/v06_v15_4_full_study/generated/timing/** -text
+/run_std_dagmm_*.py -text
+/benchmark_mnist_std_dagmm.py -text
+/std_dagmm_recovery.py -text
+/comparison/std_dagmm.py -text
+/run_fedavg_baseline.py -text

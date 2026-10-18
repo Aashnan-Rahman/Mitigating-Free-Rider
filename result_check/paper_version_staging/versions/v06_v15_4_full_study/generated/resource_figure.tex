@@ -1,0 +1,36 @@
+\begin{figure*}[tp]\centering
+\begin{tikzpicture}
+\begin{groupplot}[group style={group size=2 by 2,horizontal sep=0.8cm,vertical sep=1.4cm},
+width=0.455\textwidth,height=5.2cm,
+axis line style={black!35},grid=major,grid style={black!8},
+tick label style={font=\scriptsize},title style={font=\small},
+label style={font=\scriptsize},legend style={font=\scriptsize,draw=none},
+scaled ticks=false,unbounded coords=jump]
+\nextgroupplot[title={MNIST},ylabel={Mean seconds / round},ymin=0,ybar,bar width=5pt,xtick={1,2,3,4},xticklabels={FR1,FR2,FR3,FR4},enlarge x limits=0.18,legend to name=resource-bars-legend,legend columns=4]
+\addplot[fill=honestblue,fill opacity=0.8,draw=honestblue] table[x=attack,y=value] {generated/visuals/resource_mean_round_seconds_mnist_30_iid.dat};
+\addlegendentry{30\% IID}
+\addplot[fill=violet!75!black,fill opacity=0.8,draw=violet!75!black] table[x=attack,y=value] {generated/visuals/resource_mean_round_seconds_mnist_30_noniid.dat};
+\addlegendentry{30\% Non-IID}
+\addplot[fill=teal!75!black,fill opacity=0.8,draw=teal!75!black] table[x=attack,y=value] {generated/visuals/resource_mean_round_seconds_mnist_40_iid.dat};
+\addlegendentry{40\% IID}
+\addplot[fill=riderorange,fill opacity=0.8,draw=riderorange] table[x=attack,y=value] {generated/visuals/resource_mean_round_seconds_mnist_40_noniid.dat};
+\addlegendentry{40\% Non-IID}
+\nextgroupplot[title={CIFAR-10},ylabel={Mean seconds / round},ymin=0,ybar,bar width=5pt,xtick={1,2,3,4},xticklabels={FR1,FR2,FR3,FR4},enlarge x limits=0.18]
+\addplot[fill=honestblue,fill opacity=0.8,draw=honestblue] table[x=attack,y=value] {generated/visuals/resource_mean_round_seconds_cifar10_30_iid.dat};
+\addplot[fill=violet!75!black,fill opacity=0.8,draw=violet!75!black] table[x=attack,y=value] {generated/visuals/resource_mean_round_seconds_cifar10_30_noniid.dat};
+\addplot[fill=teal!75!black,fill opacity=0.8,draw=teal!75!black] table[x=attack,y=value] {generated/visuals/resource_mean_round_seconds_cifar10_40_iid.dat};
+\addplot[fill=riderorange,fill opacity=0.8,draw=riderorange] table[x=attack,y=value] {generated/visuals/resource_mean_round_seconds_cifar10_40_noniid.dat};
+\nextgroupplot[title={MNIST},ylabel={Peak process RSS (GiB)},ymin=0,ybar,bar width=5pt,xtick={1,2,3,4},xticklabels={FR1,FR2,FR3,FR4},enlarge x limits=0.18]
+\addplot[fill=honestblue,fill opacity=0.8,draw=honestblue] table[x=attack,y=value] {generated/visuals/resource_peak_process_mib_mnist_30_iid.dat};
+\addplot[fill=violet!75!black,fill opacity=0.8,draw=violet!75!black] table[x=attack,y=value] {generated/visuals/resource_peak_process_mib_mnist_30_noniid.dat};
+\addplot[fill=teal!75!black,fill opacity=0.8,draw=teal!75!black] table[x=attack,y=value] {generated/visuals/resource_peak_process_mib_mnist_40_iid.dat};
+\addplot[fill=riderorange,fill opacity=0.8,draw=riderorange] table[x=attack,y=value] {generated/visuals/resource_peak_process_mib_mnist_40_noniid.dat};
+\nextgroupplot[title={CIFAR-10},ylabel={Peak process RSS (GiB)},ymin=0,ybar,bar width=5pt,xtick={1,2,3,4},xticklabels={FR1,FR2,FR3,FR4},enlarge x limits=0.18]
+\addplot[fill=honestblue,fill opacity=0.8,draw=honestblue] table[x=attack,y=value] {generated/visuals/resource_peak_process_mib_cifar10_30_iid.dat};
+\addplot[fill=violet!75!black,fill opacity=0.8,draw=violet!75!black] table[x=attack,y=value] {generated/visuals/resource_peak_process_mib_cifar10_30_noniid.dat};
+\addplot[fill=teal!75!black,fill opacity=0.8,draw=teal!75!black] table[x=attack,y=value] {generated/visuals/resource_peak_process_mib_cifar10_40_iid.dat};
+\addplot[fill=riderorange,fill opacity=0.8,draw=riderorange] table[x=attack,y=value] {generated/visuals/resource_peak_process_mib_cifar10_40_noniid.dat};
+\end{groupplot}\end{tikzpicture}
+\par\ref{resource-bars-legend}
+\caption{Attack-specific whole-simulator resource profiles for all 32 runs: mean logged round time (top) and peak process RSS (bottom). Four bars per attack distinguish partition and free-rider share. Dataset panels use independent numeric scales. FR3/FR4 memory includes simulated history storage; these bars do not measure detector-only overhead.}\label{fig:resources}
+\end{figure*}

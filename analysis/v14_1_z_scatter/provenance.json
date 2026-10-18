@@ -1,0 +1,114 @@
+[
+  {
+    "seed": 42,
+    "distribution": "iid",
+    "attack": "FR1",
+    "source": "results\\v14_1_preli_mnist_seed42_fr40\\v14_1_preli_mnist_iid_FR1_seed42\\preliminary_signals.csv",
+    "sha256": "552ea2c948839cd50f22bf3845d4230e4c68689ef0ac4fe77de638b79825d22d"
+  },
+  {
+    "seed": 42,
+    "distribution": "iid",
+    "attack": "FR2",
+    "source": "results\\v14_1_preli_mnist_seed42_fr40\\v14_1_preli_mnist_iid_FR2_seed42\\preliminary_signals.csv",
+    "sha256": "f91fd17957cb5d20a2137a0eb19b83014d1c16265a091ef2797f22de68fd7dc3"
+  },
+  {
+    "seed": 42,
+    "distribution": "iid",
+    "attack": "FR3",
+    "source": "results\\v14_1_preli_mnist_seed42_fr40\\v14_1_preli_mnist_iid_FR3_seed42\\preliminary_signals.csv",
+    "sha256": "4f06f60cad1608e0b714264d892db98d00e7b477e010a3b4995f80ebd502af50"
+  },
+  {
+    "seed": 42,
+    "distribution": "iid",
+    "attack": "FR4",
+    "source": "results\\v14_1_preli_mnist_seed42_fr40\\v14_1_preli_mnist_iid_FR4_seed42\\preliminary_signals.csv",
+    "sha256": "06f8e6041e37ae839656aeea6a8d8ae88d93f593c16de1ee722ae45a3cf8a59c"
+  },
+  {
+    "seed": 42,
+    "distribution": "noniid",
+    "attack": "FR1",
+    "source": "results\\v14_1_preli_mnist_seed42_fr40\\v14_1_preli_mnist_noniid_FR1_seed42\\preliminary_signals.csv",
+    "sha256": "c200cee13c881fc37cc5f8058c1b3e8e622c9f987c632f0567d7d66a69483e03"
+  },
+  {
+    "seed": 42,
+    "distribution": "noniid",
+    "attack": "FR2",
+    "source": "results\\v14_1_preli_mnist_seed42_fr40\\v14_1_preli_mnist_noniid_FR2_seed42\\preliminary_signals.csv",
+    "sha256": "17d0d73e48ffdae0c301fd9af6c808cdf04cc5d9038120841ad81db8f08b5f1d"
+  },
+  {
+    "seed": 42,
+    "distribution": "noniid",
+    "attack": "FR3",
+    "source": "results\\v14_1_preli_mnist_seed42_fr40\\v14_1_preli_mnist_noniid_FR3_seed42\\preliminary_signals.csv",
+    "sha256": "e3c6156f7c970e7e6e558b9c336de2133c742948dde2a33459c0bff84ee8ddda"
+  },
+  {
+    "seed": 42,
+    "distribution": "noniid",
+    "attack": "FR4",
+    "source": "results\\v14_1_preli_mnist_seed42_fr40\\v14_1_preli_mnist_noniid_FR4_seed42\\preliminary_signals.csv",
+    "sha256": "aa8d63c8808cb7b6b2eb9faba2cedcd2a67c2c64d5d7bc58c493e531e67d3823"
+  },
+  {
+    "seed": 43,
+    "distribution": "iid",
+    "attack": "FR1",
+    "source": "results\\v14_1_preli_mnist_seed43_fr40\\v14_1_preli_mnist_iid_FR1_seed43\\preliminary_signals.csv",
+    "sha256": "2ae0e1ade03651f41c7243e79a8694de54888e215467378de50a9c4a9486f705"
+  },
+  {
+    "seed": 43,
+    "distribution": "iid",
+    "attack": "FR2",
+    "source": "results\\v14_1_preli_mnist_seed43_fr40\\v14_1_preli_mnist_iid_FR2_seed43\\preliminary_signals.csv",
+    "sha256": "8e9ea52cf836460c9dadf2275079ab23d72bb16f7d563255606138dec8f5d960"
+  },
+  {
+    "seed": 43,
+    "distribution": "iid",
+    "attack": "FR3",
+    "source": "results\\v14_1_preli_mnist_seed43_fr40\\v14_1_preli_mnist_iid_FR3_seed43\\preliminary_signals.csv",
+    "sha256": "cbe68fd02615437077c9aeb3e9cb47d121f3425eff8e672b7e453e87eceb4434"
+  },
+  {
+    "seed": 43,
+    "distribution": "iid",
+    "attack": "FR4",
+    "source": "results\\v14_1_preli_mnist_seed43_fr40\\v14_1_preli_mnist_iid_FR4_seed43\\preliminary_signals.csv",
+    "sha256": "caf5b48b64b4a956e7c6148972c8f5f9f363d5ab9499e3a53e954d3c0b2a85b1"
+  },
+  {
+    "seed": 43,
+    "distribution": "noniid",
+    "attack": "FR1",
+    "source": "results\\v14_1_preli_mnist_seed43_fr40\\v14_1_preli_mnist_noniid_FR1_seed43\\preliminary_signals.csv",
+    "sha256": "72c7fdc972b6dd6be863faec0d6f4b0548126fd0ee6defff261dc0502860c5f4"
+  },
+  {
+    "seed": 43,
+    "distribution": "noniid",
+    "attack": "FR2",
+    "source": "results\\v14_1_preli_mnist_seed43_fr40\\v14_1_preli_mnist_noniid_FR2_seed43\\preliminary_signals.csv",
+    "sha256": "add4a2888595dd4ffe4e7e3b1235195d77147814c57a33de9958e5ba78d635f4"
+  },
+  {
+    "seed": 43,
+    "distribution": "noniid",
+    "attack": "FR3",
+    "source": "results\\v14_1_preli_mnist_seed43_fr40\\v14_1_preli_mnist_noniid_FR3_seed43\\preliminary_signals.csv",
+    "sha256": "3eb8bf19ef19c3b4b9f946b97a5a82e82a771621b808ffd4586ea9c181e8ce14"
+  },
+  {
+    "seed": 43,
+    "distribution": "noniid",
+    "attack": "FR4",
+    "source": "results\\v14_1_preli_mnist_seed43_fr40\\v14_1_preli_mnist_noniid_FR4_seed43\\preliminary_signals.csv",
+    "sha256": "4ced0fa84a0117fd12e90fbee1f7181ecfd5e6103ebcc79f6d93647ce35cbe6c"
+  }
+]
