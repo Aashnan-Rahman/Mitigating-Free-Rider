@@ -1,5 +1,5 @@
 {
-  "auto_resume": false,
+  "auto_resume": true,
   "workflow": "fedavg_no_detection",
   "batch_name": "fedavg_cifar10_baseline_seed42_fr30_fr40",
   "results_root": "results",
