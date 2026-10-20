@@ -1,0 +1,13 @@
+1. Language should be natural, not too AI generated ish
+2. Introduction should build like I dont wanna focus on a single seed, dont mention it, because other papers dont, its a seed independent work
+3. Intro should build a bit first like what FL. then what FR, clients might or might not have computational power, they are trying to save resource and still benefit from the global model,
+had they actually done their work, it would have yielded better result.[build it like story, a flow]
+3. Lit review is fine, but make sure to mention the work, and make a slight criticism of it, like this uses STD-DAGMM which is expensive (like a hint, what we are going to solve or address/ how ours is better), dont say ours is better highlight their issues that we solve
+4. In a paper III B, No trap status flag is sent -- is this something you mention in a paper, of say the client dont know whether its a trap or original. and its not expecting traps
+5. Dont mention v2, v8 ,, its not a concern now. Maybe if required you can say this was tested and proved to be wrong or not accurate, but reviwer doesnt know v2 or prev versions
+6. Their generalization is untested -- why would someone put this in a paper?
+7. I think Experimental set up  needs to be fixed, I dont want any mention of seed, and its description is bad  x2 doesnt seem very professional, the policy was developed after failur?? what
+8. Fix Evaluation Matrices
+9. Dont explain Figures/Tables in Figure/Tables title, do it in some description and autoref the image
+10. In Tables, cant merge colns with same value?
+11. 

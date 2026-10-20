@@ -5,14 +5,46 @@ param(
 
 $ErrorActionPreference = "Stop"
 
-# Native timing queue explicitly enabled by the user takes priority. Keep the
-# existing Task Scheduler principal/credentials/triggers unchanged. Setting
-# auto_resume=false returns this launcher to its legacy plan/queue behavior.
-foreach ($nativeQueueRelative in @('configs\fedavg_cifar10_baseline_seed42_fr30_fr40.json', 'configs\std_dagmm_100_queue.json')) {
+# Native batches run in order, never advancing on a duplicate runner's early
+# return, intentional stop, failure, or incomplete checkpoint. Keep the existing
+# Task Scheduler credentials/triggers; its watchdog also picks up newly queued
+# batches after an already-running (older) launcher invocation finishes.
+function Test-NativeBatchComplete($Config, $Batch) {
+    $statusPath = Join-Path $Batch 'experiment_status.json'
+    if (-not (Test-Path -LiteralPath $statusPath)) { return $false }
+    $status = Get-Content -LiteralPath $statusPath -Raw | ConvertFrom-Json
+    if ($status.state -ne 'completed' -or @($Config.experiments).Count -eq 0) { return $false }
+    foreach ($entry in $Config.experiments) {
+        $output = Join-Path $Batch $entry.id
+        $horizon = if ($null -ne $entry.rounds) { [int]$entry.rounds } else { [int]$Config.defaults.rounds }
+        foreach ($name in @('summary.json', 'status.json', 'round_timings.csv')) {
+            if (-not (Test-Path -LiteralPath (Join-Path $output $name))) { return $false }
+        }
+        $summary = Get-Content -LiteralPath (Join-Path $output 'summary.json') -Raw | ConvertFrom-Json
+        $runStatus = Get-Content -LiteralPath (Join-Path $output 'status.json') -Raw | ConvertFrom-Json
+        if ($summary.state -ne 'completed' -or $summary.completed_rounds -ne $horizon -or $runStatus.state -ne 'completed') { return $false }
+        $rows = @(Import-Csv -LiteralPath (Join-Path $output 'round_timings.csv'))
+        if ($rows.Count -ne $horizon) { return $false }
+        for ($round = 1; $round -le $horizon; $round++) {
+            if ([int]$rows[$round - 1].round -ne $round) { return $false }
+        }
+    }
+    return $true
+}
+$nativeQueueEnabled = $false
+foreach ($nativeQueueRelative in @(
+    'configs\fedavg_cifar10_baseline_seed42_fr30_fr40.json',
+    'configs\fedavg_mnist_baseline_seed42_fr30_fr40.json',
+    'configs\std_dagmm_100_queue.json'
+)) {
     $nativeQueuePath = Join-Path $PSScriptRoot $nativeQueueRelative
 if (Test-Path -LiteralPath $nativeQueuePath) {
     $nativeQueueConfig = Get-Content -LiteralPath $nativeQueuePath -Raw | ConvertFrom-Json
     if ($nativeQueueConfig.auto_resume) {
+        $nativeQueueEnabled = $true
+        $nativeBatch = Join-Path (Join-Path $PSScriptRoot $nativeQueueConfig.results_root) $nativeQueueConfig.batch_name
+        if (Test-Path -LiteralPath (Join-Path $nativeBatch 'STOP_REQUESTED')) { exit 0 }
+        if (Test-NativeBatchComplete $nativeQueueConfig $nativeBatch) { continue }
         $nativePython = Join-Path $PSScriptRoot '.venv\Scripts\python.exe'
         Set-Location -LiteralPath $PSScriptRoot
         New-Item -ItemType Directory -Force -Path (Join-Path $PSScriptRoot 'results') | Out-Null
@@ -23,10 +55,13 @@ if (Test-Path -LiteralPath $nativeQueuePath) {
         } finally {
             Stop-Transcript -ErrorAction SilentlyContinue | Out-Null
         }
-        exit $nativeExitCode
+        if ($nativeExitCode -ne 0) { exit $nativeExitCode }
+        if (Test-Path -LiteralPath (Join-Path $nativeBatch 'STOP_REQUESTED')) { exit 0 }
+        if (-not (Test-NativeBatchComplete $nativeQueueConfig $nativeBatch)) { exit 0 }
     }
 }
 }
+if ($nativeQueueEnabled) { exit 0 }
 
 $projectRoot = $PSScriptRoot
 $resultsRoot = Join-Path $projectRoot "results"

@@ -6,6 +6,8 @@
 /analysis/mnist_std_dagmm_pilot_seed42/** -text
 /analysis/timing_breakdown/** -text
 /results/std_dagmm_100_seed42_fr40/** -text
+/results/fedavg_cifar10_baseline_seed42_fr30_fr40/** -text
+/results/fedavg_mnist_baseline_seed42_fr30_fr40/** -text
 /result_check/paper_version_staging/versions/v06_v15_4_full_study/generated/timing/** -text
 /run_std_dagmm_*.py -text
 /benchmark_mnist_std_dagmm.py -text

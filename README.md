@@ -11,7 +11,7 @@ The rewritten full-study manuscript is
 with v2-style sections, all 32 completed v15.4 runs, separate result/security
 analysis, and per-run appendices. Rebuild with `build_paper_v6_full_study.py --compile`.
 
-## Current CIFAR-10 no-detection baselines (18 October 2026)
+## Completed CIFAR-10 no-detection baselines (20 October 2026)
 
 `configs/fedavg_cifar10_baseline_seed42_fr30_fr40.json` schedules 16 sequential
 100-round cases: IID/non-IID, FR1--FR4, 30%/40%, seed 42, 100 clients, CPU/6
@@ -25,7 +25,26 @@ Watch with `.\.venv\Scripts\python.exe monitor.py --watch`. Outputs go to
 phase timings, partition indices, source/config hashes, logs, final global model,
 and latest/previous recovery states. Full response tensors from every client and
 round are not archived. A batch STOP_REQUESTED marker blocks recovery. Live
-baseline outputs stay out of Git until completion; files remain stored locally.
+baseline outputs are archived after completion; recovery checkpoints, atomic
+temporary files and runtime locks remain local. All 16 cases completed 100 rounds.
+
+## Completed MNIST no-detection baselines (20 October 2026)
+
+`configs/fedavg_mnist_baseline_seed42_fr30_fr40.json` scheduled 16 MNIST runs
+after the **entire CIFAR-10 baseline batch**: eight at 40%, then eight
+at 30%, each covering FR1--FR4 and non-IID/IID. Non-IID goes first within each
+percentage. All runs use seed 42, 100 clients, 100 rounds, three local SGD epochs
+and six CPU threads, with no detection, traps, filtering or removal.
+
+All 16 MNIST cases also completed 100 rounds. The existing recovery task
+dispatches CIFAR-10, then MNIST, and skips completed
+batches. It checks every run's completed status and full round sequence before
+advancing; stops and failures block successors. The added schedule was picked up
+by the five-minute watchdog after finishing CIFAR-10. Startup/logon recovery
+and credentials are unchanged. MNIST checkpoints, metrics, logs, manifests and
+final models use `results/fedavg_mnist_baseline_seed42_fr30_fr40/` and the same
+retention policy as CIFAR-10. Watch using `monitor.py --watch`; it switches to
+the active batch automatically.
 
 ## Completed native STD-DAGMM timing queue (18 October 2026)
 

@@ -589,7 +589,7 @@ network bytes or detector-only CPU time. Section~\ref{sec:complexity} therefore
 separates measured process resources from calculated algorithmic requirements.
 \input{generated/historical_cost.tex}
 
-\subsection{Native-Workflow Timing Sample and Amortization}
+\subsection{Measured 100-Round Native-Workflow Timing}
 We additionally execute 100 ordinary-update STD-DAGMM rounds per dataset:
 100 clients throughout, non-IID, seed 42, 40\% FR3, three local SGD epochs,
 CPU and six PyTorch threads. This is a paper-guided implementation, not
@@ -612,19 +612,23 @@ and worker startup are harness work, not network communication.
 For our actual horizon, the amortized time is
 $\overline t_{100}=\sum_{r=1}^{100}t_r/100$; summing all rounds includes expensive
 probing/decision rounds and lighter rounds without selecting either subset.
-Table~\ref{tab:timing-phases} and Figure~\ref{fig:timing-phases} distribute this
-same total by round category, not by isolated CPU task. STD's full-horizon
-number now also sums 100 actual observations, not a ten-round projection.
-First-ten-round bars use the first ten observations from those same full
-executions. Both trajectories continue through round 100 in
-Figure~\ref{fig:timing-traces}.
+Table~\ref{tab:timing-phases} and Figure~\ref{fig:timing-phases} explain how
+round frequency affects this average. The figure's left panels show the mean
+duration of a whole round in each category; its right panels multiply that
+mean by the category's round count and divide by 100. The five right-hand
+bars therefore sum to the observed full-run mean. For example, MNIST's three
+cycle-decision rounds average 34.45 seconds each and contribute 1.03 seconds
+to the 34.41-second full-run average. The 1.03 seconds is not an estimate of
+detector-only cost. All workflow comparisons use the full 100 executed rounds
+per method and dataset. Figure~\ref{fig:timing-traces} shows both complete
+trajectories.
 
 These are native-workflow costs, not a controlled speedup experiment: our
 trajectory removes clients and changes probing/aggregation, while the STD
-sample retains all 100. Historical local attacker evaluation, timer coverage,
+execution retains all 100. Historical local attacker evaluation, timer coverage,
 machine load and data trajectories also differ. CIFAR's detector has a sampled
 peak worker RSS of about 3.66 GiB and minimum available system memory near zero;
-paging may confound timing, although paging itself was not measured. The sample
+paging may confound timing, although paging itself was not measured. This experiment
 does not establish universal STD-DAGMM detection quality or end-to-end removal
 effectiveness. Per-round components, phase sums and input hashes are retained
 with the reporting artifacts.
@@ -634,8 +638,7 @@ In these selected non-IID FR3 runs, no free rider is ever flagged, whereas all
 60 honest clients are flagged at least once (not all in the same round).
 These observational flags are not removals and do not validate the chosen
 five-epoch recipe as an effective detector; neither do they establish a
-universal limitation of STD-DAGMM. The original ten-round pilots are retained
-separately rather than overwritten or pooled with these executions.
+universal limitation of STD-DAGMM.
 Removing non-training free riders does not itself remove honest SGD jobs:
 the savings can concern response handling, simulated attacker diagnostics,
 aggregation and detection, rather than a proportional reduction of genuine

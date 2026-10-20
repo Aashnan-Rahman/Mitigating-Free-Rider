@@ -43,10 +43,10 @@ def test_negative_or_nonfinite_timings_are_rejected():
             phase_summary([dict(round=1,phase='warmup',round_time_seconds=value)],set())
 
 
-def test_completed_full_runs_replace_projections_without_pooling_old_pilots(tmp_path):
-    import csv
+@pytest.fixture
+def full_timing_evidence(tmp_path):
     import json
-    from paper_timing_comparison import build,csv_text
+    from paper_timing_comparison import csv_text
     def write(path,value):
         path.parent.mkdir(parents=True,exist_ok=True)
         path.write_text(json.dumps(value))
@@ -74,11 +74,70 @@ def test_completed_full_runs_replace_projections_without_pooling_old_pilots(tmp_
         (ours/'cycle_decisions.csv').write_text('round\n20\n')
         # Malformed old pilot deliberately must never be opened/pooled.
         write(tmp_path/f'analysis/std_dagmm_{dataset}_native_seed42_fr40_FR3_noniid/summary.json',{})
+    return tmp_path
+
+
+def test_completed_full_runs_are_the_only_comparison_horizon(full_timing_evidence):
+    from paper_timing_comparison import build
+    tmp_path = full_timing_evidence
     output=tmp_path/'paper'
     result=build(tmp_path,output)
     std=[r for r in result['totals'] if r['method']=='std_100']
     assert len(std)==2 and all(r['evidence']=='measured' and r['rounds']==100 for r in std)
     assert all(r['mean_s']==57.5 and r['summed_s']==5750 for r in std)
+    assert len(result['totals']) == 4
+    assert {r['method'] for r in result['totals']} == {'ours_100', 'std_100'}
+    assert all(r['rounds'] == 100 for r in result['totals'])
     assert 'projection' not in (output/'generated/timing/provenance.json').read_text()
-    assert 'STD 1--100' in (output/'generated/timing_segments_figure.tex').read_text()
+    tables = (output/'generated/timing_tables.tex').read_text()
+    segments = (output/'generated/timing_segments_figure.tex').read_text()
+    assert '100 measured rounds' in segments
+    assert 'first10' not in (output/'generated/timing/totals.csv').read_text()
+    assert all(old not in tables + segments for old in ('1--10,', 'Projected', 'warm-up & 10'))
     assert len((output/'generated/timing/std_rounds_mnist.dat').read_text().splitlines())==101
+
+
+def test_phase_figure_separates_event_duration_from_weighted_contribution(full_timing_evidence):
+    from paper_timing_comparison import build
+    output = full_timing_evidence / 'paper'
+    build(full_timing_evidence, output)
+    text = (output/'generated/timing_phases_figure.tex').read_text()
+    assert 'group size=2 by 2' in text
+    assert 'ybar stacked' not in text
+    assert text.count(r'\nextgroupplot') == 4
+    assert 'cost of one category round' in text and 'contribution to' in text
+    assert 'n=99' in text and 'n=1' in text and 'n=0' in text
+    assert 'nodes near coords' in text
+    assert 'NOT detector-only time' in text
+    # No fabricated mean-of-empty-category bar; zeros remain valid contributions.
+    assert text.count(r'\addplot') == 14
+
+
+def test_old_pilots_alone_cannot_supply_paper_timing(tmp_path):
+    import json
+    from paper_timing_comparison import build
+    for dataset in ('mnist', 'cifar10'):
+        folder = tmp_path/f'analysis/std_dagmm_{dataset}_native_seed42_fr40_FR3_noniid'
+        folder.mkdir(parents=True)
+        (folder/'summary.json').write_text(json.dumps(dict(completed_rounds=10)))
+    out = tmp_path/'paper'
+    assert build(tmp_path, out) is None
+    assert not (out/'generated/timing/totals.csv').exists()
+    assert '100-round timing evidence unavailable' in (out/'generated/timing_comparison.tex').read_text()
+
+
+@pytest.mark.parametrize('problem', ['summary_horizon', 'summary_state', 'missing_round'])
+def test_incomplete_full_evidence_is_rejected_not_replaced_by_pilots(full_timing_evidence, problem):
+    import json
+    from paper_timing_comparison import build
+    native = full_timing_evidence/'results/std_dagmm_100_seed42_fr40/std_dagmm_mnist_noniid_FR3_seed42'
+    if problem == 'missing_round':
+        path = native/'round_timings.csv'
+        path.write_text('\n'.join(path.read_text().splitlines()[:-1]) + '\n')
+    else:
+        path = native/'summary.json'
+        value = json.loads(path.read_text())
+        value['completed_rounds' if problem == 'summary_horizon' else 'state'] = 10 if problem == 'summary_horizon' else 'running'
+        path.write_text(json.dumps(value))
+    with pytest.raises(ValueError):
+        build(full_timing_evidence, full_timing_evidence/'paper')

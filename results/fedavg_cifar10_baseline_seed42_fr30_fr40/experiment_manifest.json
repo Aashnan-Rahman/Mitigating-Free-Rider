@@ -1,0 +1,112 @@
+{
+  "batch_name": "fedavg_cifar10_baseline_seed42_fr30_fr40",
+  "defaults": {
+    "clients": 100,
+    "dataset": "cifar10",
+    "local_epochs": 3,
+    "rounds": 100,
+    "seed": 42,
+    "threads": 6
+  },
+  "description": "16 actual 100-round CIFAR-10 baselines, no detector/traps/filtering/removal; all client and round records plus final model retained.",
+  "experiments": [
+    {
+      "attack": "FR3",
+      "distribution": "noniid",
+      "free_rider_pct": 0.4,
+      "id": "fedavg_cifar10_noniid_FR3_fr40_seed42"
+    },
+    {
+      "attack": "FR4",
+      "distribution": "noniid",
+      "free_rider_pct": 0.4,
+      "id": "fedavg_cifar10_noniid_FR4_fr40_seed42"
+    },
+    {
+      "attack": "FR2",
+      "distribution": "noniid",
+      "free_rider_pct": 0.4,
+      "id": "fedavg_cifar10_noniid_FR2_fr40_seed42"
+    },
+    {
+      "attack": "FR1",
+      "distribution": "noniid",
+      "free_rider_pct": 0.4,
+      "id": "fedavg_cifar10_noniid_FR1_fr40_seed42"
+    },
+    {
+      "attack": "FR3",
+      "distribution": "noniid",
+      "free_rider_pct": 0.3,
+      "id": "fedavg_cifar10_noniid_FR3_fr30_seed42"
+    },
+    {
+      "attack": "FR4",
+      "distribution": "noniid",
+      "free_rider_pct": 0.3,
+      "id": "fedavg_cifar10_noniid_FR4_fr30_seed42"
+    },
+    {
+      "attack": "FR2",
+      "distribution": "noniid",
+      "free_rider_pct": 0.3,
+      "id": "fedavg_cifar10_noniid_FR2_fr30_seed42"
+    },
+    {
+      "attack": "FR1",
+      "distribution": "noniid",
+      "free_rider_pct": 0.3,
+      "id": "fedavg_cifar10_noniid_FR1_fr30_seed42"
+    },
+    {
+      "attack": "FR3",
+      "distribution": "iid",
+      "free_rider_pct": 0.4,
+      "id": "fedavg_cifar10_iid_FR3_fr40_seed42"
+    },
+    {
+      "attack": "FR4",
+      "distribution": "iid",
+      "free_rider_pct": 0.4,
+      "id": "fedavg_cifar10_iid_FR4_fr40_seed42"
+    },
+    {
+      "attack": "FR2",
+      "distribution": "iid",
+      "free_rider_pct": 0.4,
+      "id": "fedavg_cifar10_iid_FR2_fr40_seed42"
+    },
+    {
+      "attack": "FR1",
+      "distribution": "iid",
+      "free_rider_pct": 0.4,
+      "id": "fedavg_cifar10_iid_FR1_fr40_seed42"
+    },
+    {
+      "attack": "FR3",
+      "distribution": "iid",
+      "free_rider_pct": 0.3,
+      "id": "fedavg_cifar10_iid_FR3_fr30_seed42"
+    },
+    {
+      "attack": "FR4",
+      "distribution": "iid",
+      "free_rider_pct": 0.3,
+      "id": "fedavg_cifar10_iid_FR4_fr30_seed42"
+    },
+    {
+      "attack": "FR2",
+      "distribution": "iid",
+      "free_rider_pct": 0.3,
+      "id": "fedavg_cifar10_iid_FR2_fr30_seed42"
+    },
+    {
+      "attack": "FR1",
+      "distribution": "iid",
+      "free_rider_pct": 0.3,
+      "id": "fedavg_cifar10_iid_FR1_fr30_seed42"
+    }
+  ],
+  "results_root": "results",
+  "workflow": "fedavg_no_detection"
+}

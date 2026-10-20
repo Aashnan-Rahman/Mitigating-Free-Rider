@@ -14,16 +14,12 @@ Combined compute & 50.186 $\pm$ 1.943 & 127.239 $\pm$ 5.478 \\
 \bottomrule\end{tabular}
 \par\smallskip\begin{minipage}{0.96\textwidth}\scriptsize Our historical training, aggregation, detection and trap-generation components: not separately recorded. Network transmission: not measured in either local simulator. STD has no traps. All detector work includes preparation, fitting, scoring and decisions; it overlaps those table rows and must not be added a second time.\end{minipage}\end{table*}
 \begin{table*}[t]\centering\footnotesize
-\caption{Native-workflow elapsed compute, not a controlled speedup experiment. ``Projected'' rows are estimates.}\label{tab:timing-horizons}
+\caption{Native-workflow timing over 100 executed rounds per method and dataset. All entries are measured; this is not a controlled speedup experiment.}\label{tab:timing-horizons}
 \begin{tabular}{llrrr}\toprule Dataset & Workflow / horizon & Rounds & Mean s/round & Sum (min) \\ \midrule
-MNIST & Ours, measured warm-up & 10 & 37.00 & 6.17 \\
-MNIST & STD, measured & 10 & 53.22 & 8.87 \\
 MNIST & Ours, measured full horizon & 100 & 34.41 & 57.35 \\
-MNIST & STD, measured full horizon & 100 & 50.19 & 83.64 \\
-CIFAR-10 & Ours, measured warm-up & 10 & 117.76 & 19.63 \\
-CIFAR-10 & STD, measured & 10 & 125.23 & 20.87 \\
+MNIST & STD-DAGMM, measured full horizon & 100 & 50.19 & 83.64 \\
 CIFAR-10 & Ours, measured full horizon & 100 & 84.85 & 141.41 \\
-CIFAR-10 & STD, measured full horizon & 100 & 127.24 & 212.06 \\
+CIFAR-10 & STD-DAGMM, measured full horizon & 100 & 127.24 & 212.06 \\
 \bottomrule\end{tabular}\end{table*}
 \begin{table*}[t]\centering\footnotesize
 \caption{Our 100 measured rounds grouped by events. Within-category mean is not detector-only overhead; amortized contribution is category sum / 100.}\label{tab:timing-phases}

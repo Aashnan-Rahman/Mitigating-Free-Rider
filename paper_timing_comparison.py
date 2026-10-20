@@ -73,17 +73,16 @@ def phase_summary(metrics, decision_rounds):
 def gather(root):
     data, provenance = {}, {}
     long_paths={d:root/f'results/std_dagmm_100_seed42_fr40/std_dagmm_{d}_noniid_FR3_seed42' for d in ('mnist','cifar10')}
-    full=all((p/'summary.json').is_file() for p in long_paths.values())
     for dataset in ('mnist', 'cifar10'):
-        std = long_paths[dataset] if full else root/f'analysis/std_dagmm_{dataset}_native_seed42_fr40_FR3_noniid'
+        std = long_paths[dataset]
         ours = root/f'results/v15_4_{dataset}_seed42_fr40/v15_4_{dataset}_noniid_FR3_seed42'
         status = json.loads((std/'status.json').read_text())
         report = json.loads((std/'summary.json').read_text())
         marker = json.loads((ours/'latest_results.json').read_text())
         cfg = report['protocol']['config']
         old_cfg = json.loads((ours/'run_config.json').read_text())
-        expected=100 if full else 10
-        if status['state'] != 'completed' or report['completed_rounds'] != expected or cfg['num_rounds']!=expected or not marker.get('completed') or marker['latest_round'] != 100:
+        expected=100
+        if status['state'] != 'completed' or report['state'] != 'completed' or report['completed_rounds'] != expected or cfg['num_rounds']!=expected or not marker.get('completed') or marker['latest_round'] != 100:
             raise ValueError('Timing comparison requires completed matching horizons')
         for key, value in dict(dataset=dataset, distribution='noniid', seed=42,
                                num_clients=100, attack_type='FR3', free_rider_pct=.4,
@@ -120,80 +119,90 @@ def gather(root):
     return data, provenance
 
 
-def figures_start(columns=2, height='6.2cm'):
+def figures_start(columns=2, height='6.2cm', plot_rows=1):
+    vertical_sep = '2.3cm' if plot_rows > 1 else '1.6cm'
     return [r'\begin{figure*}[tp]\centering\begin{tikzpicture}',
-        rf'\begin{{groupplot}}[group style={{group size={columns} by 1,horizontal sep=1.6cm}},',
+        rf'\begin{{groupplot}}[group style={{group size={columns} by {plot_rows},horizontal sep=1.6cm,vertical sep={vertical_sep}}},',
         rf'width=0.43\textwidth,height={height},',
         r'grid=major,grid style={black!8},axis line style={black!35},',
         r'tick label style={font=\scriptsize},label style={font=\small},title style={font=\small},',
         r'legend style={font=\scriptsize,draw=none},scaled y ticks=false]']
 
 
-def finish(lines, caption, label, legend):
+def finish(lines, caption, label, legend=None):
     return '\n'.join(lines+[r'\end{groupplot}\end{tikzpicture}',
-        rf'\par\ref{{{legend}}}', rf'\caption{{{caption}}}\label{{{label}}}',r'\end{figure*}'])+'\n'
+        *([rf'\par\ref{{{legend}}}'] if legend else []),
+        rf'\caption{{{caption}}}\label{{{label}}}',r'\end{figure*}'])+'\n'
+
+
+def phase_panels(name, phases):
+    """Separate event cost from event frequency; never label either detector CPU."""
+    lines = []
+    ticks = ','.join(rf'{{{title}\\$n={item["rounds"]}$}}' for title, item in zip(
+        ('Warm-up', 'Probe', 'Cycle', 'Audit', 'Ordinary'), phases))
+    colors = ('black!45', 'blue!60!black', 'riderorange', 'violet!65', 'teal!65!black')
+    total = sum(item['amortized_s'] for item in phases)
+    for key, title, ylabel in (
+            ('mean_within_phase_s', f'{name}: cost of one category round', 'Mean seconds within category'),
+            ('amortized_s', f'{name}: contribution to {total:.2f} s/round', 'Seconds per full-run round')):
+        maximum = max((item[key] or 0.) for item in phases)
+        lines.append(r'\nextgroupplot[title={'+title+r'},ybar,bar width=22pt,bar shift=0pt,'
+            +rf'ymin=0,ymax={max(maximum * 1.22, 1.):.6f},xmin=0.4,xmax=5.6,'
+            +r'ylabel={'+ylabel+r'},xtick={1,2,3,4,5},xticklabels={'+ticks+r'},'
+            +r'xticklabel style={align=center,font=\scriptsize},xmajorgrids=false,'
+            +r'axis x line*=bottom,axis y line*=left,nodes near coords,'
+            +r'every node near coord/.append style={font=\scriptsize,text=black,'
+            +r'/pgf/number format/fixed,/pgf/number format/precision=2,/pgf/number format/fixed zerofill}]')
+        for index, (item, color) in enumerate(zip(phases, colors), start=1):
+            if item[key] is not None:
+                lines.append(rf'\addplot[fill={color},draw=none,bar shift=0pt] coordinates {{({index},{item[key]:.9f})}};')
+    return lines
 
 
 def build(root=ROOT, out=PAPER):
     generated = out/'generated'
-    needed = [root/f'analysis/std_dagmm_{d}_native_seed42_fr40_FR3_noniid/summary.json' for d in ('mnist','cifar10')]
     full_needed=[root/f'results/std_dagmm_100_seed42_fr40/std_dagmm_{d}_noniid_FR3_seed42/summary.json' for d in ('mnist','cifar10')]
-    if not all(path.is_file() for path in needed) and not all(path.is_file() for path in full_needed):
-        atomic_write_text(generated/'timing_comparison.tex', '% Native timing samples unavailable in this evidence root.\n')
+    if not all(path.is_file() for path in full_needed):
+        atomic_write_text(generated/'timing_comparison.tex', '% Completed 100-round timing evidence unavailable in this evidence root.\n')
         return None
     data, provenance = gather(root)
     target = generated/'timing'
     all_components, all_phases, totals, timeline = [], [], [], []
-    segment_plot, phase_plot, trace_plot = figures_start(), figures_start(height='5.8cm'), figures_start(height='6.4cm')
+    segment_plot, phase_plot, trace_plot = figures_start(), figures_start(height='5.5cm', plot_rows=2), figures_start(height='6.4cm')
     for dataset, group in data.items():
         name = 'MNIST' if dataset == 'mnist' else 'CIFAR-10'
         native, historical = group['std'], group['ours']
-        full=group['std_measured_rounds']==100
         first = dataset == 'mnist'
         mean_std = {k: statistics.mean(float(r[k]) for r in native) for k, _, _ in STD_SEGMENTS[:-2]}
         mean_std['score_decision_seconds'] = statistics.mean(float(r['inference_seconds'])+float(r['decision_seconds']) for r in native)
         mean_std['unsegmented_seconds'] = 0.
-        first10={k:statistics.mean(float(r[k]) for r in native[:10]) for k,_,_ in STD_SEGMENTS[:-2]}
-        first10['score_decision_seconds']=statistics.mean(float(r['inference_seconds'])+float(r['decision_seconds']) for r in native[:10])
-        first10['unsegmented_seconds']=0.
-        mean_ours10 = statistics.mean(float(r['round_time_seconds']) for r in historical[:10])
         mean_ours100 = statistics.mean(float(r['round_time_seconds']) for r in historical)
         for key, title, _ in STD_SEGMENTS[:-1]:
             all_components.append(dict(dataset=dataset, method='STD-DAGMM', segment=key, description=title,
                 mean_s=mean_std[key], measured_rounds=len(native),
-                actual_total_s=len(native)*mean_std[key],projected_100_s=None if full else 100*mean_std[key],
-                measurement='100 measured rounds' if full else '10 measured rounds; 100-round projection'))
+                actual_total_s=len(native)*mean_std[key],measurement='100 measured rounds'))
         columns = []
-        for x, value, method in ((1,mean_ours10,'ours_first10'),(2,None,'std_first10'),
-                                 (3,mean_ours100,'ours_100'),(4,None,'std_100' if full else 'std_100_projection')):
+        for x, value, method in ((1,mean_ours100,'ours_100'),(2,None,'std_100')):
             entry = dict(x=x)
-            selected=first10 if x==2 else mean_std
-            entry.update({k:(selected[k] if value is None else value if k=='unsegmented_seconds' else 0.) for k,_,_ in STD_SEGMENTS})
+            entry.update({k:(mean_std[k] if value is None else value if k=='unsegmented_seconds' else 0.) for k,_,_ in STD_SEGMENTS})
             columns.append(entry)
-            totals.append(dict(dataset=dataset, method=method, rounds=100 if x>=3 else 10,
-                evidence='projection' if x==4 and not full else 'measured', mean_s=sum(entry[k] for k,_,_ in STD_SEGMENTS),
-                summed_s=(100 if x>=3 else 10)*sum(entry[k] for k,_,_ in STD_SEGMENTS)))
+            totals.append(dict(dataset=dataset, method=method, rounds=100,
+                evidence='measured', mean_s=sum(entry[k] for k,_,_ in STD_SEGMENTS),
+                summed_s=100*sum(entry[k] for k,_,_ in STD_SEGMENTS)))
         atomic_write_text(target/f'segments_{dataset}.dat', csv_text(columns, ' '))
-        segment_plot.append(r'\nextgroupplot[title={'+name+r'},ybar stacked,bar width=19pt,ymin=0,ylabel={Seconds per round},'
-            +(r'xtick={1,2,3,4},xticklabels={Ours 1--10,STD 1--10,Ours 1--100,STD 1--100},' if full else r'xtick={1,2,3,4},xticklabels={Ours 1--10,STD 1--10,Ours 1--100,STD proj. 100},')
-            +r'xticklabel style={rotate=23,anchor=east},enlarge x limits=0.16'
+        segment_plot.append(r'\nextgroupplot[title={'+name+r': 100 measured rounds},ybar stacked,bar width=32pt,ymin=0,ylabel={Mean seconds per round},'
+            +r'xtick={1,2},xticklabels={Ours,STD-DAGMM},enlarge x limits=0.7'
             +(r',legend to name=timing-segments-legend,legend columns=3' if first else '')+']')
         for key, title, color in STD_SEGMENTS:
             segment_plot.append(rf'\addplot[fill={color},draw=white] table[x=x,y={key}] {{\TimingDataDir/segments_{dataset}.dat}};')
             if first:
                 segment_plot.append(rf'\addlegendentry{{{title}}}')
-        phase_values = dict(x=1)
-        for item in group['phases']:
+        phase_values = []
+        for index, item in enumerate(group['phases'], start=1):
             all_phases.append(dict(dataset=dataset, **item))
-            phase_values[item['phase']] = item['amortized_s']
-        atomic_write_text(target/f'phases_{dataset}.dat', csv_text([phase_values], ' '))
-        phase_plot.append(r'\nextgroupplot[title={'+name+r': ours, 100 measured rounds},ybar stacked,bar width=45pt,ymin=0,'
-            +r'ylabel={Amortized seconds per round},xtick={1},xticklabels={Sum / 100},xmin=0.3,xmax=1.7'
-            +(r',legend to name=timing-phase-legend,legend columns=3' if first else '')+']')
-        for key, title, color in zip(PHASES,PHASE_NAMES,('black!35','blue!60','riderorange','violet!65','teal!65')):
-            phase_plot.append(rf'\addplot[fill={color},draw=white] table[x=x,y={key}] {{\TimingDataDir/phases_{dataset}.dat}};')
-            if first:
-                phase_plot.append(rf'\addlegendentry{{{title}}}')
+            phase_values.append(dict(x=index, **item))
+        atomic_write_text(target/f'phases_{dataset}.dat', csv_text(phase_values, ' '))
+        phase_plot.extend(phase_panels(name, group['phases']))
         trace = [dict(round=int(r['round']), seconds=float(r['round_time_seconds']),
                       active_start=int(r['num_active_clients'])+int(r['new_removals'])) for r in historical]
         timeline.extend(dict(dataset=dataset, **row) for row in trace)
@@ -212,20 +221,14 @@ def build(root=ROOT, out=PAPER):
             if first:
                 trace_plot.append(rf'\addlegendentry{{{title}}}')
     segments = finish(segment_plot,
-        r'Timing breakdown: non-IID FR3, seed 42, 100 initial clients, 40\% free riders. STD-DAGMM segments are measured; our gray bars are UNDIVIDED totals, not zero-cost detection. Ours 1--10 is warm-up only; ours 1--100 includes probing and removal. STD proj.\ 100 repeats the ten-round mean, NOT 100 measured rounds. Different trajectories, timer coverage and host load prevent a causal speedup claim.',
+        r'Mean timing over 100 executed rounds per method and dataset: non-IID FR3, seed 42, 100 initial clients, 40\% free riders. STD-DAGMM has measured task components; our gray bars are undivided whole-round totals, not zero-cost detection. Both means include rounds 1--100. Different trajectories, timer coverage and host load prevent a causal speedup claim.',
         'fig:timing-segments','timing-segments-legend')
-    if full:
-        segments=segments.replace(r'STD proj.\ 100 repeats the ten-round mean, NOT 100 measured rounds.',
-            'STD 1--100 is the mean of 100 actually executed rounds; first-ten-round bars use the first ten observations of these full runs, not the older pilot.')
     phases = finish(phase_plot,
-        'Amortizing our actual 100-round cost: each segment is the TOTAL time of one round category divided by 100. These are event categories, NOT isolated training/detection/trap CPU costs. Full-cycle rounds include training as well as decisions; collection/features can occur in other rounds.',
-        'fig:timing-phases','timing-phase-legend')
+        r'Where our 100-round runtime is spent (non-IID FR3, seed 42, 40\% free riders). Rows separate MNIST and CIFAR-10. Left: mean duration of a complete round in each category. Right: summed duration for that category divided by 100; the five bars add to the full-run mean printed in the title. Labels give category counts $n$. Probe excludes cycle-decision rounds; Cycle includes the final cycle decision; Audit is a single audit round. Categories are mutually exclusive. A cycle bar includes client training, aggregation and evaluation: it is NOT detector-only time. Axes scale independently; all bars start at zero.',
+        'fig:timing-phases')
     traces = finish(trace_plot,
-        'Actual per-round durations. Our 100-round trajectories include changing active-client counts and probing schedules. STD-DAGMM has only ten measured rounds; its trace stops at round 10. Markers indicate full-cycle decisions, not their isolated computational cost. Axis scales differ by dataset.',
+        'Actual per-round durations over 100 executed rounds for both methods. Our trajectories include changing active-client counts and probing schedules; STD-DAGMM retains all 100 clients. Markers indicate full-cycle decisions, not their isolated computational cost. Axis scales differ by dataset.',
         'fig:timing-traces','timing-trace-legend')
-    if full:
-        traces=traces.replace('STD-DAGMM has only ten measured rounds; its trace stops at round 10.',
-                              'STD-DAGMM also has 100 measured rounds; neither trace is extrapolated.')
     for name, text in (('timing_segments_figure.tex',segments),('timing_phases_figure.tex',phases),('timing_timeline_figure.tex',traces)):
         atomic_write_text(generated/name,text)
     for filename, values in (('segments.csv',all_components),('phases.csv',all_phases),('totals.csv',totals),('ours_rounds.csv',timeline)):
@@ -240,9 +243,9 @@ def build(root=ROOT, out=PAPER):
 ''')
     atomic_write_json(target/'provenance.json',dict(inputs=provenance,
         ours_components='not recorded; total only',communication='no network experiment',
-        horizon='ours and STD: 100 actual measured rounds' if full else 'ours: 100 actual rounds; STD: 10 actual rounds, conditional 100-round projection',
+        horizon='ours and STD: 100 actual measured rounds',
         formulas=dict(amortized_phase='sum(round durations in phase) / 100',
-                      std='sum of actual 100 round durations' if full else '10-round mean * 100')))
+                      std='sum of actual 100 round durations')))
     return dict(totals=totals,phases=all_phases,data=data)
 
 
@@ -264,10 +267,9 @@ def make_tables(data, totals, phases):
         lines.append(title+' & '+' & '.join(cells)+r' \\')
     lines += [r'\bottomrule\end{tabular}',r'\par\smallskip\begin{minipage}{0.96\textwidth}\scriptsize Our historical training, aggregation, detection and trap-generation components: not separately recorded. Network transmission: not measured in either local simulator. STD has no traps. All detector work includes preparation, fitting, scoring and decisions; it overlaps those table rows and must not be added a second time.\end{minipage}\end{table*}',
         r'\begin{table*}[t]\centering\footnotesize',
-        r"\caption{Native-workflow elapsed compute, not a controlled speedup experiment. ``Projected'' rows are estimates.}\label{tab:timing-horizons}",
+        r'\caption{Native-workflow timing over 100 executed rounds per method and dataset. All entries are measured; this is not a controlled speedup experiment.}\label{tab:timing-horizons}',
         r'\begin{tabular}{llrrr}\toprule Dataset & Workflow / horizon & Rounds & Mean s/round & Sum (min) \\ \midrule']
-    names={'ours_first10':'Ours, measured warm-up','std_first10':'STD, measured',
-           'ours_100':'Ours, measured full horizon','std_100':'STD, measured full horizon','std_100_projection':'STD, projected fixed workload'}
+    names={'ours_100':'Ours, measured full horizon','std_100':'STD-DAGMM, measured full horizon'}
     for r in totals:
         lines.append(('MNIST' if r['dataset']=='mnist' else 'CIFAR-10')+' & '+names[r['method']]+f" & {r['rounds']} & {r['mean_s']:.2f} & {r['summed_s']/60:.2f}"+r' \\')
     lines += [r'\bottomrule\end{tabular}\end{table*}',r'\begin{table*}[t]\centering\footnotesize',
@@ -294,15 +296,11 @@ def standalone(root=ROOT,out=PAPER):
 \pgfplotsset{compat=1.18}
 \definecolor{riderorange}{HTML}{D66B27}
 \title{MNIST and CIFAR-10: native-workflow timing comparison}
-\author{}\date{18 October 2026}
+\author{}\date{20 October 2026}
 \makeatletter\setlength{\@fptop}{0pt}\makeatother
 '''
     body=(rf'\newcommand{{\TimingDataDir}}{{{relative}/generated/timing}}'+'\n'+r'\begin{document}\maketitle'+'\n'+
         r'Non-IID, seed 42, 100 initial clients, 40\% FR3. Our v15.4 data: 100 completed rounds per dataset. STD-DAGMM: 100 completed rounds per dataset, five fresh fitting epochs each, no removals. These totals are measured, not projected. Components absent from historical logs are not estimated. Network communication was not measured. Different native trajectories, hardware load, local attacker evaluation and timer boundaries preclude a causal speedup comparison. The CIFAR detector encountered near-zero available RAM, so paging may affect its timings; paging was not measured.'+'\n')
-    full=len(result['data']['mnist']['std'])==100
-    if not full:
-        body=body.replace('STD-DAGMM: 100 completed rounds per dataset','STD-DAGMM: ten completed rounds per dataset').replace(
-            'These totals are measured, not projected.','STD 100-round totals are conditional projections, not observations.')
     body+= (out/'generated/timing_tables.tex').read_text().replace('table*','table').replace('[t]','[!ht]')+'\n'+r'\FloatBarrier'+'\n'
     for name in ('timing_segments_figure.tex','timing_phases_figure.tex','timing_timeline_figure.tex'):
         body+=r'\clearpage'+'\n'+(out/'generated'/name).read_text().replace('figure*','figure').replace('[tp]','[!ht]')+'\n'+r'\FloatBarrier'+'\n'
@@ -318,7 +316,9 @@ See timing_report.pdf for enlarged vector charts and tables. Component CSVs,
 100 actual round records, phase summaries and input hashes are saved alongside
 this report and in the paper's generated/timing folder. Our gray totals cannot
 be split retrospectively.
-Phase-colored bars group whole rounds, not isolated detector/trap costs.
+The phase figure separates within-category round cost (left) from its weighted
+contribution to the full-run average (right); counts explain the difference.
+These are whole-round categories, not isolated detector/trap costs.
 STD's 100-round figures now use 100 actual measured rounds, not projections.
 No network transfer was timed. No new experiment or detector change was made.
 This is a native-workflow comparison, not a matched detector-only speedup test.

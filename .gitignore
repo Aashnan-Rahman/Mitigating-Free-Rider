@@ -11,6 +11,7 @@ latest_checkpoint.pt
 # Live monitor files remain local; completed experiment batches are retained.
 /results/experiment_status.json
 /results/scheduled_resume.log
+/results/**/.*.tmp
 
 # Recoverable historical-run cleanup; see result_check/cleanup_2026_10_15.json.
 /.local_cleanup/
@@ -26,5 +27,6 @@ previous_checkpoint.pt
 /results/std_dagmm_100_seed42_fr40/*/.runtime/
 /results/std_dagmm_100_seed42_fr40/.runtime/
 /results/std_dagmm_recovery.log
-# Live no-detection batch stays local until completion; metrics/models are retained.
-/results/fedavg_cifar10_baseline_seed42_fr30_fr40/
+# Completed no-detection records/final models are archived; runtime locks stay local.
+/results/fedavg_*_baseline_seed42_fr30_fr40/.runtime/
+/results/fedavg_*_baseline_seed42_fr30_fr40/*/.runtime/

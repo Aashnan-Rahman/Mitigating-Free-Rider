@@ -1,5 +1,5 @@
 \begin{figure*}[tp]\centering\begin{tikzpicture}
-\begin{groupplot}[group style={group size=2 by 1,horizontal sep=1.6cm},
+\begin{groupplot}[group style={group size=2 by 1,horizontal sep=1.6cm,vertical sep=1.6cm},
 width=0.43\textwidth,height=6.4cm,
 grid=major,grid style={black!8},axis line style={black!35},
 tick label style={font=\scriptsize},label style={font=\small},title style={font=\small},
@@ -17,5 +17,5 @@ legend style={font=\scriptsize,draw=none},scaled y ticks=false]
 \addplot[blue!70!black,thick] table[x=round,y=seconds] {\TimingDataDir/std_rounds_cifar10.dat};
 \end{groupplot}\end{tikzpicture}
 \par\ref{timing-trace-legend}
-\caption{Actual per-round durations. Our 100-round trajectories include changing active-client counts and probing schedules. STD-DAGMM also has 100 measured rounds; neither trace is extrapolated. Markers indicate full-cycle decisions, not their isolated computational cost. Axis scales differ by dataset.}\label{fig:timing-traces}
+\caption{Actual per-round durations over 100 executed rounds for both methods. Our trajectories include changing active-client counts and probing schedules; STD-DAGMM retains all 100 clients. Markers indicate full-cycle decisions, not their isolated computational cost. Axis scales differ by dataset.}\label{fig:timing-traces}
 \end{figure*}
