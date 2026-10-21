@@ -11,3 +11,28 @@ had they actually done their work, it would have yielded better result.[build it
 9. Dont explain Figures/Tables in Figure/Tables title, do it in some description and autoref the image
 10. In Tables, cant merge colns with same value?
 11. 
+
+
+Introduction
+---------------
+
+Introduce Federated Learning, make the first line relevant, something like something that will catch readers interest,
+just an example, like in old days devices would send the bulk of data to server, server used to train it and send back,
+the introduction of FL has taken the benefit of local processing, dont go into too technical details here, then say that federated learning allows
+local training, data remains private. [1st paragraph]
+
+[2nd] Though it is expected participants will honestly contribute to it, many clients may not have data or computtional resources or might be simply saving it for other works,
+It doesnt actively harm the global model like backdoor attacks [cite some], but think of it like a workplace where all are expected to work, but some workers are not working, so those who are working they are have are the only ones contributing, those are free riders. And had they also contributed the overall product would have been better.
+
+So, since it actively doesn't harm to model, its a little difficult to detect since its behavior doesn.t differ much from honest ones.
+
+Dont use too technical terms, maybe say they send back same model or with some noise,
+
+and dont say the whole soln "However, a statistical split is not sufficient to establish
+misconduct. We separate weak nomination, strong geometric
+evidence, temporary quarantine, and permanent removal, and
+require repeated fresh evidence from the same component." maybe hint that it will be different in terms of some properties, we audit them. Mention but dont make it obvious.
+
+The core contributions - TOo technical terms, make it natural 
+
+its informative it seems, and the contributions titles are weird, work on it.

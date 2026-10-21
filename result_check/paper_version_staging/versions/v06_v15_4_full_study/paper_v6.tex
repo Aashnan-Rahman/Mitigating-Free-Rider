@@ -23,7 +23,7 @@ Islamic University of Technology\\MSc Thesis}}
 \begin{document}
 \maketitle
 \begin{tikzpicture}[remember picture,overlay]
-\node[anchor=north east,font=\footnotesize] at ([xshift=-0.55in,yshift=-0.32in]current page.north east) {Last updated on 18 October 2026};
+\node[anchor=north east,font=\footnotesize] at ([xshift=-0.55in,yshift=-0.32in]current page.north east) {Last updated on 21 October 2026};
 \end{tikzpicture}
 
 \begin{abstract}
@@ -55,64 +55,81 @@ non-IID data, client auditing
 \end{IEEEkeywords}
 
 \section{Introduction}
-Federated learning (FL) allows multiple participants to build a shared model
-without collecting their raw training data at a single server. In each round,
-the server distributes a model, clients optimize it using local examples, and
-the server combines their returned contributions. Federated Averaging (FedAvg)
-provides a foundational implementation of this process~\cite{mcmahan2017communication}.
-Its collaborative benefit depends on local computation actually taking place:
-a returned parameter vector is observable, but the work that produced it is not.
+\section{Introduction}
 
-A participant may lack suitable data, face limited computing resources, or
-prefer to save computation while retaining access to the jointly trained model.
-Such a participant can return the received model, construct a random update, or
-imitate the trajectory of previously received models. These free-rider behaviors
-have been studied separately from deliberate model poisoning~\cite{lin2019freeriders,fraboni2021freerider}.
-Their central harm is omitted useful contribution and an unequal allocation of
-training effort; fabricated responses can also interfere with aggregation.
-The counterfactual value of the missing honest update is not directly observable.
+Picture a few thousand phones running the same keyboard app. Each one quietly
+learns from what its owner types -- new words, favorite phrases, the odd
+misspelling a particular person always makes -- and none of that typing
+history ever needs to leave the device. The app still gets better for
+everyone, because every phone periodically sends back a small update
+describing what it learned, and a server blends these updates into an
+improved model that is then sent back out. This is the basic idea behind
+federated learning (FL): instead of gathering everyone's data in one place to
+train a model, the model is sent to where the data already
+lives~\cite{mcmahan2017communication}. A server distributes the current
+model, each participant trains it briefly on local data, and the server
+combines the returned updates into the next version of the model.
 
-The detection problem is therefore not simply to identify the smallest update.
-An honest client can have a small update because its local objective is nearly
-satisfied, while another honest client can have an unusual layer profile because
-its label distribution differs from its peers. Conversely, a free rider can add
-noise to avoid exact equality or imitate geometric properties of training
-updates~\cite{zhu2021advanced}. A useful defense needs evidence stronger than one
-unusual norm, but should not require access to private datasets, trusted
-client-reported metrics, or a separately trained anomaly model.
+The arrangement only works if participants actually do the training they are
+asked to do. Suppose one phone in that keyboard example never really trains
+its copy of the model -- maybe a battery-saver setting quietly skips the
+background job, or maybe the app is simply configured to hand back whatever
+it was given. That phone still downloads every improved model the server
+produces. The server, with no way to look inside any device, has little
+reason to treat its response differently from an honest one. This is free
+riding: taking part in name only, collecting the benefit of a collaboration
+that other people are paying for~\cite{lin2019freeriders,fraboni2021freerider}.
+It is a different problem from an attacker trying to steer the model's
+predictions~\cite{bagdasaryan2020backdoor}; a free rider usually has nothing
+to gain from making the model worse. It just has nothing to contribute either.
 
-We examine a challenge-based alternative. The server occasionally sends a
-scale-aware perturbation of a frozen global model and compares only responses
-to that same challenge. These controlled inputs can make differences between
-genuine optimization and the evaluated fabrication strategies observable.
-However, a statistical split is not sufficient to establish misconduct. We
-separate weak nomination, strong geometric evidence, temporary quarantine, and
-permanent removal, and require repeated fresh evidence from the same component.
+The cost is easy to state and easy to underestimate. Had that phone trained
+honestly, its owner's particular habits and vocabulary could have added
+something the rest of the population did not already have. Multiply that by
+hundreds of silent participants, and the resulting model is simply worse than
+it could have been, even though every round of training appeared to go
+smoothly. Catching the problem is harder than it sounds, though, because a
+free rider's update does not have to look broken. Honest participants
+naturally differ from one another -- someone with little data, an older
+device, or an unusual vocabulary produces an update that looks atypical while
+training perfectly honestly. A server that flags anything unusual ends up
+punishing exactly the diversity that makes federated learning worth using in
+the first place, while one that is too forgiving lets a free rider blend in
+with the honest participants it is hiding among.
 
-The principal contributions are as follows:
+This paper asks whether occasional, targeted audits can tell the difference,
+without the server ever inspecting a participant's data or simply trusting
+what a participant says about its own effort. Instead of always sending out
+the true shared model, the server occasionally sends a participant a
+slightly altered version and observes what comes back. A client that is
+actually training responds in a way shaped by that alteration; a client that
+is not has a harder time producing a response that fits an alteration it was
+never told about. We turn this difference into a small set of lightweight
+checks run entirely at the server, so that catching free riders does not
+require training a detector of its own or asking clients to report on
+themselves.
+
+The main contributions of this work are as follows:
 \begin{itemize}[leftmargin=*,nosep]
-\item \textbf{Server-observable challenge protocol.} The method uses attributable
-model responses and server-generated traps, without client loss, sample-count
-claims, resource telemetry, or attacker labels as decision inputs.
-\item \textbf{Separation-gated confirmation.} Robust scalar screening nominates
-clients, but removal requires same-component evidence on two traps in distinct
-cycles. Low-norm evidence must pass a strict full-peer separation test rather
-than a compactness test alone.
-\item \textbf{Evidence memory with bounded disruption.} Strong evidence can
-survive ambiguous cycles, but stored evidence alone cannot renew quarantine.
-Clean cycles clear memory, and unconfirmed exclusion has a bounded review period.
-\item \textbf{Complete outcome accounting.} We report all 32 scheduled runs,
-including removal timing, model accuracy, honest candidate flags, temporary
-quarantine, withheld training responses, and whole-process execution cost.
+\item We present a server-side method for identifying participants that are
+not genuinely training, based only on the models they return -- with no
+access to private data, no reliance on a client's own report of its effort,
+and no separate detection model to train or maintain.
+\item We design a confirmation process so that a single odd-looking update
+is never enough to remove an honest client: participants under suspicion are
+checked again before anything permanent happens, and those that look unusual
+but keep training normally are cleared rather than punished indefinitely.
+\item We evaluate the approach against four different free-rider behaviors,
+ranging from doing nothing at all to carefully imitating what an honest
+update should look like, on MNIST and CIFAR-10, under both uniform and
+skewed data distributions, and at different proportions of free riders in
+the population.
 \end{itemize}
 
-The remainder of the paper reviews prior work, states the threat model, describes
-the method, and presents the completed experiments. Result analysis distinguishes
-successful removal from screening quality and utility. Security analysis then
-examines the protocol's invariants, evasion risks, privacy requirements, and
-limits of the evidence. Detailed per-run results and reproducibility information
-are provided in the appendices.
-
+The remainder of the paper reviews related work, defines the threat model
+and the free-rider behaviors evaluated, describes the auditing method in
+detail, and reports the resulting detection performance, computational cost,
+and limitations.
 \section{Literature Review}
 \subsection{Free-Rider Attacks and Observable Update Geometry}
 Lin \emph{et al.} introduced fabrication attacks in FL and proposed STD-DAGMM
