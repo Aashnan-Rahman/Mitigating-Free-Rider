@@ -1,0 +1,37 @@
+\begin{table*}[t]\centering\footnotesize
+\caption{Measured STD-DAGMM component times (seconds per round, mean $\pm$ sample SD, 100 rounds per dataset).}\label{tab:std-segments}
+\begin{tabular}{lrr}\toprule Component & MNIST & CIFAR-10 \\ \midrule
+Client training & 33.986 $\pm$ 1.539 & 76.208 $\pm$ 4.164 \\
+Simulated FR response & 0.062 $\pm$ 0.006 & 0.255 $\pm$ 0.055 \\
+Server aggregation & 0.042 $\pm$ 0.004 & 0.189 $\pm$ 0.043 \\
+Global evaluation & 2.144 $\pm$ 0.073 & 4.547 $\pm$ 0.227 \\
+Update preparation & 0.045 $\pm$ 0.004 & 0.127 $\pm$ 0.015 \\
+Detector fitting & 13.629 $\pm$ 0.467 & 45.029 $\pm$ 1.671 \\
+Detector scoring & 0.278 $\pm$ 0.011 & 0.856 $\pm$ 0.035 \\
+Flag decision & 0.000 $\pm$ 0.000 & 0.027 $\pm$ 0.024 \\
+All detector work & 13.952 $\pm$ 0.476 & 46.040 $\pm$ 1.695 \\
+Combined compute & 50.186 $\pm$ 1.943 & 127.239 $\pm$ 5.478 \\
+\bottomrule\end{tabular}
+\par\smallskip\begin{minipage}{0.96\textwidth}\scriptsize Our historical training, aggregation, detection and trap-generation components: not separately recorded. Network transmission: not measured in either local simulator. STD has no traps. All detector work includes preparation, fitting, scoring and decisions; it overlaps those table rows and must not be added a second time.\end{minipage}\end{table*}
+\begin{table*}[t]\centering\footnotesize
+\caption{Native-workflow timing over 100 executed rounds per method and dataset. All entries are measured; this is not a controlled speedup experiment.}\label{tab:timing-horizons}
+\begin{tabular}{llrrr}\toprule Dataset & Workflow / horizon & Rounds & Mean s/round & Sum (min) \\ \midrule
+MNIST & Ours, measured full horizon & 100 & 34.41 & 57.35 \\
+MNIST & STD-DAGMM, measured full horizon & 100 & 50.19 & 83.64 \\
+CIFAR-10 & Ours, measured full horizon & 100 & 84.85 & 141.41 \\
+CIFAR-10 & STD-DAGMM, measured full horizon & 100 & 127.24 & 212.06 \\
+\bottomrule\end{tabular}\end{table*}
+\begin{table*}[t]\centering\footnotesize
+\caption{Our 100 measured rounds grouped by events. Within-category mean is not detector-only overhead; amortized contribution is category sum / 100.}\label{tab:timing-phases}
+\begin{tabular}{llrrr}\toprule Dataset & Round category & Count & Within-category mean (s) & Contribution (s/round) \\ \midrule
+MNIST & Warm-up & 10 & 37.00 & 3.70 \\
+MNIST & Probe without cycle decision & 27 & 34.29 & 9.26 \\
+MNIST & Full-cycle decision & 3 & 34.45 & 1.03 \\
+MNIST & Single audit & 6 & 33.95 & 2.04 \\
+MNIST & Ordinary & 54 & 34.04 & 18.38 \\
+CIFAR-10 & Warm-up & 10 & 117.76 & 11.78 \\
+CIFAR-10 & Probe without cycle decision & 63 & 82.04 & 51.68 \\
+CIFAR-10 & Full-cycle decision & 7 & 84.26 & 5.90 \\
+CIFAR-10 & Single audit & 2 & 76.76 & 1.54 \\
+CIFAR-10 & Ordinary & 18 & 77.51 & 13.95 \\
+\bottomrule\end{tabular}\end{table*}

@@ -1,0 +1,8 @@
+\begin{table*}[t]\centering\footnotesize
+\caption{Calculated detector payload sizes at $N=100$, two traps, $B=1000$: architecture-derived estimates, NOT measured heap usage.}\label{tab:payload}
+\begin{tabular}{lrrrrrrr}\toprule
+Model & Parameters & $P$ & $L$ & Two traps (MiB) & Pair payload (KiB) & Index array (MiB) & Counts (MiB) \\ \midrule
+MNIST & 206922 & 206922 & 8 & 1.579 & 8.594 & 0.763 & 0.076 \\
+CIFAR-10 & 620810 & 621258 & 22 & 4.740 & 19.531 & 0.763 & 0.076 \\
+\bottomrule\end{tabular}
+\par\smallskip\begin{minipage}{0.96\textwidth}\scriptsize $P$ includes floating BatchNorm buffers; $L$ counts floating tensors. Pair payload assumes packed float32 profiles plus three scalar slots per trap/client. Bootstrap columns show two principal arrays, not peak scratch or an upper bound. No detector-only RSS was recorded.\end{minipage}\end{table*}

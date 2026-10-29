@@ -164,6 +164,124 @@ Additional timing/layout revision, 18 October 2026 (v06 working manuscript):
   histogram, score-trend and resource panels. Preserve data and detector code.
 - Standalone tables/vector charts: `analysis/timing_breakdown/timing_report.pdf`.
 
+## v07 — V6 content in the V5 template
+
+Date: 2026-10-30
+
+- Preserve v6's full v15.4 manuscript, results, figures, tables, references,
+  appendices, generated assets and evidence in a new independent directory.
+- Restore v5's IEEEtran conference layout and Times typography, default float
+  spacing, author block, and centered revision line. Make the abstract bold.
+- Remove the duplicated Introduction heading and update the revision's build
+  instructions. No experimental values or detector behavior are changed.
+- Source/PDF: `versions/v07_v6_content_v5_template/paper_v7.tex` and
+  `paper_v7.pdf`; rebuild with the accompanying `build.ps1`.
+- PDFLaTeX/BibTeX compilation passed (25 pages), with no unresolved citations,
+  references or overfull boxes. First page and an eight-panel figure were
+  visually inspected; copied assets and the scientific body were checked
+  against v6.
+
+BaitFL introduction revision, 30 October 2026:
+
+- Name the method BaitFL in the title, PDF metadata, abstract, and introduction.
+- Rewrite the introduction around federated training, sensitive-data use cases,
+  free riding, heterogeneous honest updates, and challenge-based auditing.
+  Distinguish data locality from guaranteed privacy and qualify communication
+  savings. Add Kairouz et al. (2021) and Rieke et al. (2020) as background sources.
+- State four contributions: lightweight server-side detection, repeated-evidence
+  confirmation, bounded mitigation/rehabilitation, and four-behavior evaluation.
+- Move code v15.4, paper v7, and the date to the first-page top right. Color the
+  bold abstract blue. Preserve the remaining study and experiment-derived assets.
+
+Author introduction follow-up, 30 October 2026:
+
+- Retain the author's revised introduction with small edits for claim precision
+  and grammar. Replace the detailed method transition with one summary sentence.
+- Bold the contribution lead-in and preserve bold labels. Add explicit TeX Gyre
+  font selection for LuaLaTeX/XeLaTeX after the editor's LuaLaTeX output lost
+  Times bold/italic styles through font substitution.
+- Mark sections from Literature Review onward red, retaining the blue abstract
+  and black introduction. Experimental text and values are unchanged.
+
+Citation and literature-review revision, 30 October 2026:
+
+- Sort/compress IEEE numerical citations; repair compound-author parsing,
+  proceedings metadata, article numbers, preprint classification, and source links.
+- Reorganize the red literature review into approach, contribution, and limitation
+  paragraphs covering attack evolution, STD-DAGMM, FRAD, PASS, FRIDA, and secure
+  aggregation. Link STD-DAGMM fitting cost to the later native-workflow experiment.
+- Distinguish peer-audit privacy exposure from a demonstrated breach, acknowledge
+  PASS's protections, and separate FRIDA's membership and property variants.
+  Record sources and review limits in the v7 `CITATION_REVIEW.md`.
+- Preserve the introduction, abstract, method, and experiment-derived assets.
+
+Threat-model revision and editor citation repair, 30 October 2026:
+
+- Preserve the author's literature-review edits and black text. Rewrite the
+  threat model in black with natural participant, server, scope, and attack
+  descriptions; keep later sections red.
+- Define persistent non-training clients, whether unable or unwilling to train;
+  explicitly exclude partial/on-off training, collusion, identity changes,
+  arrivals/dropouts, and audit-adaptive response strategies. Retain an honest
+  majority and fixed per-experiment fabrication strategy.
+- Remove simulator-label bookkeeping, previous-manuscript comparisons, and
+  parameter-generalization commentary from the threat model while preserving
+  the four attack equations and their numerical settings.
+- Diagnose direct editor builds missing `paper_v7.bbl`; publish the generated
+  bibliography and citation state beside the source through `build.ps1`.
+
+Methodology and algorithm revision, 30 October 2026:
+
+- Generalize FR3 to history length H and record H = 5 in the experiment setup.
+  Preserve the experimental data and other attack parameters.
+- Rewrite Proposed Methodology in natural prose without semicolons or prose
+  dashes. Remove commentary about unused features and earlier implementation
+  variants while retaining the operational definitions and numerical settings.
+- Add algorithms for warmup, paired coverage, confirmation/review, sparse audits,
+  and the overall procedure. Refer to the algorithms and selected line ranges
+  through labels. Check scheduling, component memory, exact replay, review expiry,
+  cooldown, and aggregation order against v15.4.
+- Keep methodology black and Results onward red. Flush methodology algorithms
+  before Results so the presentation follows the procedure's sequence.
+- PDFLaTeX/BibTeX validation passed (26 pages). All five algorithm references
+  and selected line references resolve, with no overfull boxes. Algorithm pages
+  and the black-to-red transition at Results were visually inspected.
+
+Threat-model precision follow-up, 30 October 2026:
+
+- Merge participation assumptions, explicitly exclude client sampling, distinguish
+  responses from aggregation, allow heterogeneous honest data, explain the
+  honest majority, and state the absence of secure aggregation.
+- Connect fabricated and returned-model notation, index noise and differences by
+  client, and state floating-state arithmetic with integer entries copied intact.
+- Replace the FR4 noise prose with the implemented vector scaling equation,
+  retaining the numerical floor in both norms and the distinct cold start.
+  Explain the effect of received traps on its history.
+- Reference the existing evasion subsection. Keep persistent non-training as a
+  scope assumption without asserting that trap construction cannot be known.
+
+Multiple-seed Table 1 and experimental setup revision, 30 October 2026:
+
+- Replace the informal setup/grid description with a formal account of two
+  datasets, four attack types, IID/non-IID partitions, two attacker proportions,
+  repeated seeds, and fixed training conditions. Omit seed values and total
+  execution count from the setup prose and Table 1 caption.
+- Validate the complete three-seed grid (42, 43, 73) using
+  `build_multiseed_table.ps1`. Check completed status, settings/policy, source
+  hashes, initial coverage, removal labels/counts, and utility/timing consistency.
+  Retain per-run values, means, accuracy SDs and provenance in `generated/multiseed/`.
+- Recalculate Table 1, group detection/accuracy columns, merge repeated dataset
+  and partition labels, and separate MNIST/CIFAR-10 blocks with a rule.
+- Include all three honest removals from added replications. Update study-wide
+  claims, latency range, and limitations. Label retained score plots, detailed
+  exclusion records and resource case studies as representative diagnostics.
+- Preserve raw experiment logs and previous paper versions. Snapshot source
+  hashes match the recorded implementation after LF normalization of checkout
+  line endings; retain raw and normalized hashes in the new provenance.
+- Compilation and citation/reference checks pass with no overfull boxes. The
+  setup and revised Table 1 were visually inspected. Table 1 precedes the
+  diagnostic figures and retains all three-seed outcomes, including false removals.
+
 For each substantive revision:
 
 1. Continue editing the working `Paper/paper.tex`.

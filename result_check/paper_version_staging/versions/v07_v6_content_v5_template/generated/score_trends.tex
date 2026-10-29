@@ -1,0 +1,50 @@
+\begin{figure*}[tp]\centering
+\begin{tikzpicture}
+\begin{groupplot}[group style={group size=2 by 2,horizontal sep=0.8cm,vertical sep=1.8cm},
+width=0.455\textwidth,height=5.2cm,
+axis line style={black!35},grid=major,grid style={black!8},
+tick label style={font=\scriptsize},title style={font=\small},
+label style={font=\scriptsize},legend style={font=\scriptsize,draw=none},
+scaled ticks=false,unbounded coords=jump]
+\nextgroupplot[title={CIFAR-10 non-IID FR3, 40\%},xlabel={Decision round},ylabel={Mean paired norm-z},xmin=18,xmax=82,xtick={20,40,60,80},legend to name=score-trend-legend,legend columns=2]
+\addplot[name path=lower0,draw=none,forget plot] table[x=round,y=q1] {generated/visuals/trend_norm_z_40_0.dat};
+\addplot[name path=upper0,draw=none,forget plot] table[x=round,y=q3] {generated/visuals/trend_norm_z_40_0.dat};
+\addplot[fill=honestblue,fill opacity=0.13,draw=none,forget plot] fill between[of=lower0 and upper0];
+\addplot[color=honestblue,thick,mark=o,mark size=2pt] table[x=round,y=mean] {generated/visuals/trend_norm_z_40_0.dat};
+\addlegendentry{Honest mean}
+\addplot[name path=lower1,draw=none,forget plot] table[x=round,y=q1] {generated/visuals/trend_norm_z_40_1.dat};
+\addplot[name path=upper1,draw=none,forget plot] table[x=round,y=q3] {generated/visuals/trend_norm_z_40_1.dat};
+\addplot[fill=riderorange,fill opacity=0.13,draw=none,forget plot] fill between[of=lower1 and upper1];
+\addplot[color=riderorange,thick,mark=triangle*,mark size=2pt] table[x=round,y=mean] {generated/visuals/trend_norm_z_40_1.dat};
+\addlegendentry{Free-rider mean}
+\nextgroupplot[title={CIFAR-10 non-IID FR3, 30\%},xlabel={Decision round},ylabel={Mean paired norm-z},xmin=18,xmax=82,xtick={20,40,60,80}]
+\addplot[name path=lower0,draw=none,forget plot] table[x=round,y=q1] {generated/visuals/trend_norm_z_30_0.dat};
+\addplot[name path=upper0,draw=none,forget plot] table[x=round,y=q3] {generated/visuals/trend_norm_z_30_0.dat};
+\addplot[fill=honestblue,fill opacity=0.13,draw=none,forget plot] fill between[of=lower0 and upper0];
+\addplot[color=honestblue,thick,mark=o,mark size=2pt] table[x=round,y=mean] {generated/visuals/trend_norm_z_30_0.dat};
+\addplot[name path=lower1,draw=none,forget plot] table[x=round,y=q1] {generated/visuals/trend_norm_z_30_1.dat};
+\addplot[name path=upper1,draw=none,forget plot] table[x=round,y=q3] {generated/visuals/trend_norm_z_30_1.dat};
+\addplot[fill=riderorange,fill opacity=0.13,draw=none,forget plot] fill between[of=lower1 and upper1];
+\addplot[color=riderorange,thick,mark=triangle*,mark size=2pt] table[x=round,y=mean] {generated/visuals/trend_norm_z_30_1.dat};
+\nextgroupplot[title={CIFAR-10 non-IID FR3, 40\%},xlabel={Decision round},ylabel={Mean paired profile-z},xmin=18,xmax=82,xtick={20,40,60,80}]
+\addplot[name path=lower0,draw=none,forget plot] table[x=round,y=q1] {generated/visuals/trend_profile_z_40_0.dat};
+\addplot[name path=upper0,draw=none,forget plot] table[x=round,y=q3] {generated/visuals/trend_profile_z_40_0.dat};
+\addplot[fill=honestblue,fill opacity=0.13,draw=none,forget plot] fill between[of=lower0 and upper0];
+\addplot[color=honestblue,thick,mark=o,mark size=2pt] table[x=round,y=mean] {generated/visuals/trend_profile_z_40_0.dat};
+\addplot[name path=lower1,draw=none,forget plot] table[x=round,y=q1] {generated/visuals/trend_profile_z_40_1.dat};
+\addplot[name path=upper1,draw=none,forget plot] table[x=round,y=q3] {generated/visuals/trend_profile_z_40_1.dat};
+\addplot[fill=riderorange,fill opacity=0.13,draw=none,forget plot] fill between[of=lower1 and upper1];
+\addplot[color=riderorange,thick,mark=triangle*,mark size=2pt] table[x=round,y=mean] {generated/visuals/trend_profile_z_40_1.dat};
+\nextgroupplot[title={CIFAR-10 non-IID FR3, 30\%},xlabel={Decision round},ylabel={Mean paired profile-z},xmin=18,xmax=82,xtick={20,40,60,80}]
+\addplot[name path=lower0,draw=none,forget plot] table[x=round,y=q1] {generated/visuals/trend_profile_z_30_0.dat};
+\addplot[name path=upper0,draw=none,forget plot] table[x=round,y=q3] {generated/visuals/trend_profile_z_30_0.dat};
+\addplot[fill=honestblue,fill opacity=0.13,draw=none,forget plot] fill between[of=lower0 and upper0];
+\addplot[color=honestblue,thick,mark=o,mark size=2pt] table[x=round,y=mean] {generated/visuals/trend_profile_z_30_0.dat};
+\addplot[name path=lower1,draw=none,forget plot] table[x=round,y=q1] {generated/visuals/trend_profile_z_30_1.dat};
+\addplot[name path=upper1,draw=none,forget plot] table[x=round,y=q3] {generated/visuals/trend_profile_z_30_1.dat};
+\addplot[fill=riderorange,fill opacity=0.13,draw=none,forget plot] fill between[of=lower1 and upper1];
+\addplot[color=riderorange,thick,mark=triangle*,mark size=2pt] table[x=round,y=mean] {generated/visuals/trend_profile_z_30_1.dat};
+\end{groupplot}\end{tikzpicture}
+\par\ref{score-trend-legend}
+\caption{CIFAR-10 non-IID FR3: mean paired scores over complete evidence cycles through round 80 (lines), with client interquartile intervals shaded. Scores are first averaged over A/B per client. Bands show client dispersion, NOT mean uncertainty. References/MAD scales change each cycle; z-score changes need not match raw-norm changes. Free-rider curves stop at removal, never zero-filled. Class colors are for evaluation only.}\label{fig:score-trends}
+\end{figure*}

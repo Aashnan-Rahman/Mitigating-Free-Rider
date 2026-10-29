@@ -1,0 +1,22 @@
+\begin{table*}[t]
+\centering\footnotesize\setlength{\tabcolsep}{4pt}
+\caption{Free-rider detection performance and global model utility.}\label{tab:performance}
+\begin{tabular}{llrrrrrrrr}
+\toprule
+\multirow{2}{*}{Dataset} & \multirow{2}{*}{Partition} & \multirow{2}{*}{FR (\%)} & \multicolumn{2}{c}{Detection (\%)} & \multicolumn{4}{c}{Final test accuracy (\%)} & \multirow{2}{*}{\shortstack{Round time\\(s)}} \\
+\cmidrule(lr){4-5}\cmidrule(lr){6-9}
+& & & Precision & Recall & FR1 & FR2 & FR3 & FR4 & \\
+\midrule
+\multirow{4}{*}{MNIST} & \multirow{2}{*}{IID} & 30 & 100.00 & 100.00 & 99.01 & 99.01 & 99.02 & 98.90 & 42.38 \\
+ &  & 40 & 100.00 & 100.00 & 98.93 & 98.94 & 98.92 & 98.83 & 37.05 \\
+ & \multirow{2}{*}{Non-IID} & 30 & 100.00 & 100.00 & 98.92 & 98.93 & 98.93 & 98.91 & 41.62 \\
+ &  & 40 & 99.39 & 100.00 & 98.91 & 98.91 & 98.90 & 98.88 & 36.08 \\
+\midrule
+\multirow{4}{*}{CIFAR-10} & \multirow{2}{*}{IID} & 30 & 100.00 & 100.00 & 77.84 & 77.84 & 77.76 & 77.77 & 99.35 \\
+ &  & 40 & 100.00 & 100.00 & 77.07 & 77.13 & 76.92 & 76.97 & 85.35 \\
+ & \multirow{2}{*}{Non-IID} & 30 & 100.00 & 100.00 & 75.94 & 75.86 & 75.77 & 75.78 & 92.30 \\
+ &  & 40 & 100.00 & 100.00 & 74.70 & 74.88 & 74.67 & 74.51 & 77.03 \\
+\bottomrule
+\end{tabular}
+\par\smallskip\begin{minipage}{0.96\textwidth}\scriptsize Values are averaged across seeds. Precision and recall pool permanent removals across FR1--FR4 within each seed. Test accuracy is averaged separately for each attack. Round time averages the four attack types and includes local training, aggregation, evaluation, and detection.\end{minipage}
+\end{table*}

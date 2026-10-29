@@ -1,0 +1,44 @@
+keep code version 15.4 and paper version 7 date on top right, mark the abstract with blue, at first introduction section
+
+Name it BaitFL: Lightweight Trap-Based Free-Rider Detection and Mitigation in Federated Learning
+
+Introduction
+--------
+
+Contribution
+1.Lightweight server-side detection. A challenge-based detector using update norms and tensor profiles, without training an auxiliary detection model or accessing clients’ private training data.
+
+2. Confirmation using repeated evidence. A decision mechanism that separates initial suspicion from permanent removal and requires fresh evidence of the same component across two challenges and distinct audit cycles.
+
+3. Bounded mitigation and rehabilitation. A mechanism that retains strong evidence across ambiguous cycles while allowing unconfirmed quarantine to expire and clearing statistical memory after repeated clean observations.
+
+4. Evaluation across four free-rider behaviors. An experimental study covering unchanged-model responses, random fabrication, history averaging, and trajectory imitation under IID/non-IID partitions and different attacker proportions.
+
+
+Start with something like emergence of federated learning has allowed multiple clients to collaborately learn something by only sharing local updates to a server where its aggregated and sent back. sharing local model has ensured privacy which is very important for fields like medical and ... where privacy is sensitive. Moreover, since local models are sent instead of data, less overhead [first paragraph maybe discuss a bit about fed learning]
+
+[2nd paragraph] like any other, Federated learnning has also been attacked with different sorts of attacks such as label flipping, model poisoning, and so on, where malicious clients with ill intentions tries to corrupt the overall system / global model by corrupting local data model and so on. But there exists another kind of passive attack, where attackers do not necessarily have an intention to corrupt the global model but to save its resources. 
+clients having no computational power or data or maybe trying to save its computational power do not train models locally rather sends back a calculated noisy version of previous global model or such. As a result they benefit from the system without any major contribution. And the perturbed model not being a model very different from the expected one evades any server based detection that explicitly looks for malicious updates. the main concern is, had they contributed, the global model would have been better.
+
+[Not sure what to write in 3rd paragraph help me],
+
+then the 4 contribution you mentioned
+
+make sure to make it human like, not too AI related, its for a paper so careful about the tone
+
+
+-------
+
+sentences that doesnt sound very natural
+
+1. This 'arrangement' is useful in healthcare and 'personal mobile
+services', where 'pooling' sensitive records at a central location
+may be impractical or undesirable [2], [1]. Keeping raw data
+at its 'source' reduces direct 'data exposure', although shared
+updates can still leak information [3]. Exchanging model
+updates also avoids transferring entire local datasets and can
+reduce data-transfer costs when those datasets are large relative
+to the updates. Repeated model exchange, however, remains a
+significant communication cost in FL [1].
+
+2. Free riding has a different objective

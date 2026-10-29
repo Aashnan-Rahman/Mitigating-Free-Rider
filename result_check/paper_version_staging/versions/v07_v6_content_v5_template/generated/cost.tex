@@ -1,0 +1,19 @@
+\begin{table*}[t]
+\centering\footnotesize\setlength{\tabcolsep}{4pt}
+\caption{CPU resources in representative executions: mean [minimum--maximum] across FR1--FR4. Execution is mean minutes per run.}\label{tab:cost}
+\begin{tabular}{llrrrr}
+\toprule
+Dataset & Partition & FR (\%) & s/round: mean [range] & Peak RSS GiB: mean [range] & min/run \\
+\midrule
+MNIST & IID & 30 & 43.0 [42.3--44.0] & 0.53 [0.29--0.72] & 75.9 \\
+MNIST & Non-IID & 30 & 41.3 [40.7--41.7] & 0.56 [0.30--0.75] & 73.2 \\
+MNIST & IID & 40 & 36.4 [35.3--39.6] & 0.59 [0.34--0.85] & 65.6 \\
+MNIST & Non-IID & 40 & 34.6 [34.3--34.9] & 0.61 [0.31--0.85] & 62.4 \\
+CIFAR-10 & IID & 30 & 101.2 [88.2--119.1] & 1.28 [0.76--1.75] & 178.6 \\
+CIFAR-10 & Non-IID & 30 & 97.1 [89.6--108.4] & 1.30 [0.74--1.76] & 170.4 \\
+CIFAR-10 & IID & 40 & 90.7 [77.4--104.2] & 1.38 [0.72--1.93] & 165.7 \\
+CIFAR-10 & Non-IID & 40 & 79.5 [75.8--84.8] & 1.50 [0.78--2.13] & 143.6 \\
+\bottomrule
+\end{tabular}
+\par\smallskip\begin{minipage}{0.96\textwidth}\scriptsize Peak RSS includes local training, aggregation, logged evidence and simulated attacker histories. Round timing ends before checkpoint/log publication. Neither column isolates detector overhead or controls machine load.\end{minipage}
+\end{table*}
