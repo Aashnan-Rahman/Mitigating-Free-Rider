@@ -1,0 +1,13 @@
+{
+  "description": "Preserve the four detection replication batches, then run 64 matched no-defense baselines: CIFAR-10 seed 73, CIFAR-10 seed 43, MNIST seed 73, MNIST seed 43. Each baseline covers FR1-FR4 x non-IID/IID x 40%/30%. Completion permits handoff; stops/failures block successors.",
+  "plans": [
+    "configs/v15_4_cifar10_seed73_fr30_fr40_plan.json",
+    "configs/v15_4_cifar10_seed43_fr30_fr40_plan.json",
+    "configs/v15_4_mnist_seed73_fr30_fr40_plan.json",
+    "configs/v15_4_mnist_seed43_fr30_fr40_plan.json",
+    "configs/fedavg_cifar10_baseline_seed73_fr30_fr40.json",
+    "configs/fedavg_cifar10_baseline_seed43_fr30_fr40.json",
+    "configs/fedavg_mnist_baseline_seed73_fr30_fr40.json",
+    "configs/fedavg_mnist_baseline_seed43_fr30_fr40.json"
+  ]
+}

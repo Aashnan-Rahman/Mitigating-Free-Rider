@@ -1,0 +1,9 @@
+{
+  "description": "Finish both existing CIFAR-10 seed-73/43 batches before MNIST seed 73, then MNIST seed 43. Each MNIST batch has 16 cases: FR1-FR4 x non-IID/IID x 40%/30%. Advance on completion, not detection success; stops/failures block successors.",
+  "plans": [
+    "configs/v15_4_cifar10_seed73_fr30_fr40_plan.json",
+    "configs/v15_4_cifar10_seed43_fr30_fr40_plan.json",
+    "configs/v15_4_mnist_seed73_fr30_fr40_plan.json",
+    "configs/v15_4_mnist_seed43_fr30_fr40_plan.json"
+  ]
+}

@@ -30,3 +30,8 @@ previous_checkpoint.pt
 # Completed no-detection records/final models are archived; runtime locks stay local.
 /results/fedavg_*_baseline_seed42_fr30_fr40/.runtime/
 /results/fedavg_*_baseline_seed42_fr30_fr40/*/.runtime/
+# Active/queued no-defense replications remain local until their batch completes.
+/results/fedavg_cifar10_baseline_seed73_fr30_fr40/
+/results/fedavg_cifar10_baseline_seed43_fr30_fr40/
+/results/fedavg_mnist_baseline_seed73_fr30_fr40/
+/results/fedavg_mnist_baseline_seed43_fr30_fr40/

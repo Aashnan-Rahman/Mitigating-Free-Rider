@@ -5,6 +5,33 @@ param(
 
 $ErrorActionPreference = "Stop"
 
+# An explicit active selection overrides historical native queues without changing
+# their frozen manifests or the existing Windows task credentials/action.
+$activeSchedule = $null
+$activeSchedulePath = Join-Path $PSScriptRoot 'configs\active_experiment_schedule.json'
+if (Test-Path -LiteralPath $activeSchedulePath) {
+    $selection = Get-Content -LiteralPath $activeSchedulePath -Raw | ConvertFrom-Json
+    if ($selection.auto_resume) {
+        if ($selection.workflow -ne 'v15_detection' -or -not $selection.plan) {
+            throw 'Active schedule must name a v15_detection plan.'
+        }
+        $activeSchedule = $selection
+        $Plan = $selection.plan
+        $Queue = if ($selection.queue) { [string]$selection.queue } else { '' }
+        if ($Queue) {
+            $selectedQueuePath = if ([IO.Path]::IsPathRooted($Queue)) { $Queue } else { Join-Path $PSScriptRoot $Queue }
+            if (-not (Test-Path -LiteralPath $selectedQueuePath)) {
+                throw "Active recovery queue is missing: $selectedQueuePath"
+            }
+        }
+        if ($null -ne $selection.cpu_threads) {
+            if ([int]$selection.cpu_threads -lt 1) { throw 'cpu_threads must be positive.' }
+            $env:OMP_NUM_THREADS = [string]$selection.cpu_threads
+            $env:MKL_NUM_THREADS = [string]$selection.cpu_threads
+        }
+    }
+}
+
 # Native batches run in order, never advancing on a duplicate runner's early
 # return, intentional stop, failure, or incomplete checkpoint. Keep the existing
 # Task Scheduler credentials/triggers; its watchdog also picks up newly queued
@@ -37,6 +64,7 @@ foreach ($nativeQueueRelative in @(
     'configs\fedavg_mnist_baseline_seed42_fr30_fr40.json',
     'configs\std_dagmm_100_queue.json'
 )) {
+    if ($activeSchedule) { break }
     $nativeQueuePath = Join-Path $PSScriptRoot $nativeQueueRelative
 if (Test-Path -LiteralPath $nativeQueuePath) {
     $nativeQueueConfig = Get-Content -LiteralPath $nativeQueuePath -Raw | ConvertFrom-Json
@@ -68,7 +96,7 @@ $resultsRoot = Join-Path $projectRoot "results"
 $python = Join-Path $projectRoot ".venv\Scripts\python.exe"
 $runner = Join-Path $projectRoot "run_experiments.py"
 $log = Join-Path $resultsRoot "scheduled_resume.log"
-$queuedSequence = $false
+$queuedSequence = [bool]$activeSchedule
 $scheduledBatches = @(
     [pscustomobject]@{
         Label = "v13 priority MNIST IID/non-IID, 40% free riders; hardest cases first"
@@ -141,6 +169,9 @@ if ($Plan) {
             if ($queuePlans.Count -eq 0 -or @($queuePlans | Select-Object -Unique).Count -ne $queuePlans.Count) {
                 throw "Recovery queue must contain nonempty, unique plan paths."
             }
+            if ($activeSchedule -and $planPath -notin $queuePlans) {
+                throw "Active plan must be present in its recovery queue."
+            }
             for ($index = 0; $index -lt $queuePlans.Count; $index++) {
                 if ($queuePlans[$index] -eq $planPath) {
                     $planPaths = @($queuePlans[$index..($queuePlans.Count - 1)])
@@ -153,6 +184,10 @@ if ($Plan) {
     $scheduledBatches = @($planPaths | ForEach-Object {
         $planConfig = Get-Content -LiteralPath $_ -Raw | ConvertFrom-Json
         if (-not $planConfig.batch_name) { throw "Recovery requires a fixed batch_name in each plan." }
+        $workflow = if ($planConfig.workflow) { [string]$planConfig.workflow } else { 'v15_detection' }
+        if ($workflow -notin @('v15_detection', 'fedavg_no_detection')) {
+            throw "Unsupported workflow in recovery queue: $workflow"
+        }
         $planResults = if ([IO.Path]::IsPathRooted($planConfig.results_root)) {
             $planConfig.results_root
         } else { Join-Path $projectRoot $planConfig.results_root }
@@ -160,6 +195,8 @@ if ($Plan) {
             Label = $planConfig.batch_name
             Plan = $_
             Batch = Join-Path $planResults $planConfig.batch_name
+            Workflow = $workflow
+            Config = $planConfig
             GateBatch = $null
             GateRun = $null
         }
@@ -217,6 +254,8 @@ function Test-BatchComplete([System.IO.DirectoryInfo]$Batch) {
 }
 
 function Update-PaperWhenReady {
+    # A replication run must not rebuild or change the manuscript being edited.
+    if ($activeSchedule -and -not $activeSchedule.auto_update_paper) { return }
     # CIFAR publication must not wait for the newly queued MNIST executions.
     $paperBuilder = Join-Path $projectRoot "build_paper_v5_v15_4.py"
     if (Test-Path -LiteralPath $paperBuilder) {
@@ -266,6 +305,20 @@ try {
         if (-not (Test-DetectionGate $scheduled.GateBatch $scheduled.GateRun)) {
             throw "Validation gate failed or is incomplete before: $($scheduled.Label)"
         }
+        if ($scheduled.Workflow -eq 'fedavg_no_detection') {
+            if (Test-NativeBatchComplete $scheduled.Config $scheduled.Batch) {
+                Write-Host "Scheduled baseline is complete: $($scheduled.Label)"
+                continue
+            }
+            Write-Host "Starting/resuming no-defense baseline: $($scheduled.Label)"
+            & $python (Join-Path $projectRoot 'run_std_dagmm_batch.py') --plan $scheduled.Plan
+            if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+            if (Test-Path -LiteralPath (Join-Path $scheduled.Batch 'STOP_REQUESTED')) { exit 0 }
+            if (-not (Test-NativeBatchComplete $scheduled.Config $scheduled.Batch)) {
+                throw "Baseline did not complete; later queued batches will not start: $($scheduled.Label)"
+            }
+            continue
+        }
         if (Test-Path -LiteralPath $scheduled.Batch) {
             $batchInfo = Get-Item -LiteralPath $scheduled.Batch
             if (Test-BatchComplete $batchInfo) {
@@ -273,8 +326,18 @@ try {
                 Update-PaperWhenReady
                 continue
             }
-            Write-Host "Resuming scheduled batch: $($scheduled.Label)"
-            & $python $runner --resume-batch $scheduled.Batch --stop-on-error
+            if (Test-Path -LiteralPath (Join-Path $scheduled.Batch 'experiment_manifest.json')) {
+                Write-Host "Resuming scheduled batch: $($scheduled.Label)"
+                & $python $runner --resume-batch $scheduled.Batch --stop-on-error
+            } else {
+                # A power loss may leave just the new directory / an unpublished
+                # manifest temp file. Never overwrite unidentified result files.
+                $unexpected = @(Get-ChildItem -LiteralPath $scheduled.Batch -Force |
+                    Where-Object { $_.Name -notlike '.experiment_manifest.json.*.tmp' })
+                if ($unexpected.Count) { throw "Batch has results but no manifest; refusing to overwrite: $($scheduled.Batch)" }
+                Write-Host "Retrying interrupted batch initialization: $($scheduled.Label)"
+                & $python $runner --plan $scheduled.Plan --stop-on-error
+            }
         } else {
             Write-Host "Starting scheduled batch: $($scheduled.Label)"
             & $python $runner --plan $scheduled.Plan --stop-on-error

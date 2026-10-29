@@ -1,0 +1,113 @@
+{
+  "auto_resume": true,
+  "workflow": "fedavg_no_detection",
+  "batch_name": "fedavg_mnist_baseline_seed43_fr30_fr40",
+  "results_root": "results",
+  "description": "16 actual 100-round mnist seed-43 no-defense baselines matched to v15.4: attacks remain, every response aggregates, no detection/traps/filtering/removal. Retain metrics, timings, partitions, provenance and final models.",
+  "defaults": {
+    "dataset": "mnist",
+    "rounds": 100,
+    "clients": 100,
+    "local_epochs": 3,
+    "seed": 43,
+    "threads": 6
+  },
+  "experiments": [
+    {
+      "id": "fedavg_mnist_noniid_FR3_fr40_seed43",
+      "distribution": "noniid",
+      "attack": "FR3",
+      "free_rider_pct": 0.4
+    },
+    {
+      "id": "fedavg_mnist_noniid_FR4_fr40_seed43",
+      "distribution": "noniid",
+      "attack": "FR4",
+      "free_rider_pct": 0.4
+    },
+    {
+      "id": "fedavg_mnist_noniid_FR2_fr40_seed43",
+      "distribution": "noniid",
+      "attack": "FR2",
+      "free_rider_pct": 0.4
+    },
+    {
+      "id": "fedavg_mnist_noniid_FR1_fr40_seed43",
+      "distribution": "noniid",
+      "attack": "FR1",
+      "free_rider_pct": 0.4
+    },
+    {
+      "id": "fedavg_mnist_noniid_FR3_fr30_seed43",
+      "distribution": "noniid",
+      "attack": "FR3",
+      "free_rider_pct": 0.3
+    },
+    {
+      "id": "fedavg_mnist_noniid_FR4_fr30_seed43",
+      "distribution": "noniid",
+      "attack": "FR4",
+      "free_rider_pct": 0.3
+    },
+    {
+      "id": "fedavg_mnist_noniid_FR2_fr30_seed43",
+      "distribution": "noniid",
+      "attack": "FR2",
+      "free_rider_pct": 0.3
+    },
+    {
+      "id": "fedavg_mnist_noniid_FR1_fr30_seed43",
+      "distribution": "noniid",
+      "attack": "FR1",
+      "free_rider_pct": 0.3
+    },
+    {
+      "id": "fedavg_mnist_iid_FR4_fr40_seed43",
+      "distribution": "iid",
+      "attack": "FR4",
+      "free_rider_pct": 0.4
+    },
+    {
+      "id": "fedavg_mnist_iid_FR3_fr40_seed43",
+      "distribution": "iid",
+      "attack": "FR3",
+      "free_rider_pct": 0.4
+    },
+    {
+      "id": "fedavg_mnist_iid_FR2_fr40_seed43",
+      "distribution": "iid",
+      "attack": "FR2",
+      "free_rider_pct": 0.4
+    },
+    {
+      "id": "fedavg_mnist_iid_FR1_fr40_seed43",
+      "distribution": "iid",
+      "attack": "FR1",
+      "free_rider_pct": 0.4
+    },
+    {
+      "id": "fedavg_mnist_iid_FR4_fr30_seed43",
+      "distribution": "iid",
+      "attack": "FR4",
+      "free_rider_pct": 0.3
+    },
+    {
+      "id": "fedavg_mnist_iid_FR3_fr30_seed43",
+      "distribution": "iid",
+      "attack": "FR3",
+      "free_rider_pct": 0.3
+    },
+    {
+      "id": "fedavg_mnist_iid_FR2_fr30_seed43",
+      "distribution": "iid",
+      "attack": "FR2",
+      "free_rider_pct": 0.3
+    },
+    {
+      "id": "fedavg_mnist_iid_FR1_fr30_seed43",
+      "distribution": "iid",
+      "attack": "FR1",
+      "free_rider_pct": 0.3
+    }
+  ]
+}

@@ -4,6 +4,8 @@
 #   & ([scriptblock]::Create((Get-Content .\check_status.txt -Raw)))
 # Use another refresh interval:
 #   & ([scriptblock]::Create((Get-Content .\check_status.txt -Raw))) -RefreshSeconds 10
+# Automatically follows configs/active_experiment_schedule.json when enabled.
+# Follows its ordered queue across seeds, including recovery/handoff gaps.
 
 param(
     [string]$StatusPath = "",
@@ -28,16 +30,80 @@ function Clear-Display {
     }
 }
 
+function Test-WatchBatchComplete([string]$Batch) {
+    if (Test-Path -LiteralPath (Join-Path $Batch 'STOP_REQUESTED')) { return $false }
+    try {
+        $manifest = Get-Content -LiteralPath (Join-Path $Batch 'experiment_manifest.json') -Raw | ConvertFrom-Json
+        $status = Get-Content -LiteralPath (Join-Path $Batch 'experiment_status.json') -Raw | ConvertFrom-Json
+        if ($status.state -ne 'completed' -or $status.failed_experiments -ne 0 -or
+            @($manifest.experiments).Count -eq 0) { return $false }
+        foreach ($entry in $manifest.experiments) {
+            if (-not $entry.id) { return $false }
+            if ($manifest.workflow -eq 'fedavg_no_detection') {
+                $output = Join-Path $Batch $entry.id
+                $horizon = if ($null -ne $entry.rounds) { [int]$entry.rounds } else { [int]$manifest.defaults.rounds }
+                $summary = Get-Content -LiteralPath (Join-Path $output 'summary.json') -Raw | ConvertFrom-Json
+                $runStatus = Get-Content -LiteralPath (Join-Path $output 'status.json') -Raw | ConvertFrom-Json
+                if ($summary.state -ne 'completed' -or $summary.completed_rounds -ne $horizon -or
+                    $runStatus.state -ne 'completed') { return $false }
+                $rows = @(Import-Csv -LiteralPath (Join-Path $output 'round_timings.csv'))
+                if ($rows.Count -ne $horizon) { return $false }
+                for ($round = 1; $round -le $horizon; $round++) {
+                    if ([int]$rows[$round - 1].round -ne $round) { return $false }
+                }
+                continue
+            }
+            $latest = Get-Content -LiteralPath (Join-Path (Join-Path $Batch $entry.id) 'latest_results.json') -Raw | ConvertFrom-Json
+            if (-not $latest.completed) { return $false }
+        }
+        return $true
+    } catch { return $false }
+}
+
 function Get-StatusPath {
+    $script:BatchSchedule = @()
     if ($StatusPath) {
-        return (Resolve-Path -LiteralPath $StatusPath).Path
+        return [IO.Path]::GetFullPath($StatusPath)
     }
 
     $scriptRoot = if ($PSScriptRoot) { $PSScriptRoot } else { (Get-Location).Path }
-    $root = if ((Split-Path -Leaf $scriptRoot) -eq "Mitigating-Free-Rider") {
+    $root = if (Test-Path -LiteralPath (Join-Path $scriptRoot 'configs')) {
         $scriptRoot
     } else {
-        Split-Path -Parent $scriptRoot
+        (Get-Location).Path
+    }
+    $selectionPath = Join-Path $root 'configs\active_experiment_schedule.json'
+    if (Test-Path -LiteralPath $selectionPath) {
+        $selection = Get-Content -LiteralPath $selectionPath -Raw | ConvertFrom-Json
+        if ($selection.auto_resume -and $selection.workflow -eq 'v15_detection') {
+            $anchor = [IO.Path]::GetFullPath((Join-Path $root $selection.plan))
+            $planPaths = @($anchor)
+            if ($selection.queue) {
+                $queue = Get-Content -LiteralPath (Join-Path $root $selection.queue) -Raw | ConvertFrom-Json
+                $planPaths = @($queue.plans | ForEach-Object { [IO.Path]::GetFullPath((Join-Path $root $_)) })
+                if ($planPaths.Count -eq 0 -or $anchor -notin $planPaths -or
+                    @($planPaths | Select-Object -Unique).Count -ne $planPaths.Count) {
+                    throw 'Active queue must contain unique plans including the active plan.'
+                }
+                $anchorIndex = [Array]::IndexOf($planPaths, $anchor)
+                $planPaths = @($planPaths[$anchorIndex..($planPaths.Count - 1)])
+            }
+            foreach ($planPath in $planPaths) {
+                $plan = Get-Content -LiteralPath $planPath -Raw | ConvertFrom-Json
+                if (-not $plan.batch_name) { throw "Unnamed plan: $planPath" }
+                $batch = Join-Path (Join-Path $root $plan.results_root) $plan.batch_name
+                $script:BatchSchedule += [pscustomobject]@{
+                    Batch = $batch
+                    Complete = (Test-WatchBatchComplete $batch)
+                }
+            }
+            if (@($script:BatchSchedule.Batch | Select-Object -Unique).Count -ne $script:BatchSchedule.Count) {
+                throw 'Recovery plans must use distinct batch directories.'
+            }
+            $selected = $script:BatchSchedule | Where-Object { -not $_.Complete } | Select-Object -First 1
+            if (-not $selected) { $selected = $script:BatchSchedule[-1] }
+            return (Join-Path $selected.Batch 'experiment_status.json')
+        }
     }
     $candidates = @(
         Get-ChildItem -LiteralPath (Join-Path $root "results") -Filter "experiment_status.json" -File -ErrorAction SilentlyContinue
@@ -53,8 +119,30 @@ function Get-StatusPath {
     return $candidates[0].FullName
 }
 
+function Show-BatchSchedule {
+    if ($script:BatchSchedule.Count -gt 0) {
+        Write-Host 'Batch schedule (in order):' -ForegroundColor Cyan
+        $pendingSeen = $false
+        foreach ($entry in $script:BatchSchedule) {
+            $label = if ($entry.Complete) { 'complete' } elseif (-not $pendingSeen) {
+                $pendingSeen = $true
+                'current / awaiting recovery'
+            } else { 'queued' }
+            Write-Host "  $(Split-Path -Leaf $entry.Batch): $label"
+        }
+        Write-Host ''
+    }
+}
+
 function Show-Status {
     $path = Get-StatusPath
+    if (-not (Test-Path -LiteralPath $path)) {
+        Clear-Display
+        Show-BatchSchedule
+        Write-Host "Waiting for status file: $path"
+        Write-Host 'Recovery checks every five minutes; watch follows the next batch automatically.'
+        return
+    }
     $status = Get-Content -LiteralPath $path -Raw | ConvertFrom-Json
     $experiments = @($status.experiments)
     $totalRoundsPerExperiment = if ($status.total_experiments -gt 0) {
@@ -82,6 +170,7 @@ function Show-Status {
 
     Clear-Display
     Write-Host "=== Free-Rider Experiment Status ===" -ForegroundColor Cyan
+    Show-BatchSchedule
     Write-Host "Batch:           $($status.batch_id)"
     Write-Host "State:           $($status.state)"
     Write-Host "Status file:     $path"
@@ -117,6 +206,7 @@ function Show-Status {
         Write-Host "ID:              $($current.id)"
         Write-Host "Attack:          $($current.config.attack_type)"
         Write-Host "Dataset:         $($current.config.dataset) / $($current.config.distribution)"
+        Write-Host "Seed:            $($current.config.seed)"
         Write-Host "Free riders:     $([math]::Round([double]$current.config.free_rider_pct * 100, 1))%"
         Write-Host "Round:           $round / $totalRoundsPerExperiment ($([math]::Round($roundPercent, 1))%)"
         Write-Host "Time/round:      $(Format-Duration $roundTime)"
@@ -137,6 +227,15 @@ function Show-Status {
                 }
             } else {
                 Write-Host "Suspected:       $($progress.suspected_clients)"
+                Write-Host "Candidates:      $($progress.candidate_clients)"
+                Write-Host "Quarantined:     $($progress.quarantined_clients)"
+                $runConfigPath = Join-Path (Join-Path (Split-Path -Parent $path) $current.id) 'run_config.json'
+                if (Test-Path -LiteralPath $runConfigPath) {
+                    $report = Get-Content -LiteralPath $runConfigPath -Raw | ConvertFrom-Json
+                    Write-Host "Removed FR / honest: $($report.removed_free_riders) / $($report.removed_honest_clients)"
+                    Write-Host "Free riders remaining: $($report.missed_free_riders)"
+                }
+                Write-Host "Progress updates after each complete round/checkpoint."
             }
             Write-Host "Phase:           $($progress.phase)"
         }

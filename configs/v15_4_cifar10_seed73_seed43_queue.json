@@ -1,0 +1,7 @@
+{
+  "description": "Finish all seed-73 CIFAR-10 v15.4 runs, then repeat the identical 16-case grid for seed 43. Completion, not detection success, permits handoff. Stops and failures block successors.",
+  "plans": [
+    "configs/v15_4_cifar10_seed73_fr30_fr40_plan.json",
+    "configs/v15_4_cifar10_seed43_fr30_fr40_plan.json"
+  ]
+}

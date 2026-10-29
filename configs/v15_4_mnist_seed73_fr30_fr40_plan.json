@@ -1,0 +1,78 @@
+{
+  "batch_name": "v15_4_mnist_seed73_fr30_fr40",
+  "results_root": "./results",
+  "description": "Unchanged v15.4 MNIST replication, seed 73: FR1-FR4, non-IID/IID, 40%/30%, 16 runs after the complete CIFAR-10 queue. Preserve every outcome.",
+  "defaults": {
+    "methodology_version": "swtcp_v15_4",
+    "dataset": "mnist",
+    "num_clients": 100,
+    "num_rounds": 100,
+    "warmup_rounds": 10,
+    "surveillance_groups": 10,
+    "v15_cycle_rounds": 10,
+    "v15_audit_interval_rounds": 10,
+    "v15_candidate_review_cycles": 2,
+    "v15_candidate_cooldown_audits": 2,
+    "cycle_strong_cycles_for_removal": 2,
+    "cycle_suspect_clean_cycles": 2,
+    "cycle_candidate_clean_cycles": 2,
+    "cycle_reference_probation_cycles": 1,
+    "free_rider_pct": 0.4,
+    "device": "auto",
+    "save_checkpoints": true,
+    "checkpoint_keep_last": 2,
+    "seed": 73
+  },
+  "stages": [
+    {
+      "id": "noniid_first",
+      "id_format": "v15_4_mnist_{distribution}_{attack_type}_fr{free_rider_percent}_seed{seed}",
+      "matrix": {
+        "dataset": [
+          "mnist"
+        ],
+        "distribution": [
+          "noniid"
+        ],
+        "free_rider_pct": [
+          0.4,
+          0.3
+        ],
+        "attack_type": [
+          "FR3",
+          "FR4",
+          "FR2",
+          "FR1"
+        ],
+        "seed": [
+          73
+        ]
+      }
+    },
+    {
+      "id": "iid",
+      "id_format": "v15_4_mnist_{distribution}_{attack_type}_fr{free_rider_percent}_seed{seed}",
+      "matrix": {
+        "dataset": [
+          "mnist"
+        ],
+        "distribution": [
+          "iid"
+        ],
+        "free_rider_pct": [
+          0.4,
+          0.3
+        ],
+        "attack_type": [
+          "FR4",
+          "FR3",
+          "FR2",
+          "FR1"
+        ],
+        "seed": [
+          73
+        ]
+      }
+    }
+  ]
+}

@@ -11,6 +11,88 @@ The rewritten full-study manuscript is
 with v2-style sections, all 32 completed v15.4 runs, separate result/security
 analysis, and per-run appendices. Rebuild with `build_paper_v6_full_study.py --compile`.
 
+## Matched no-defense replication baselines (29 October 2026)
+
+The existing detection queue is followed by **64 no-defense baseline runs**:
+CIFAR-10 seed 73, CIFAR-10 seed 43, MNIST seed 73, then MNIST seed 43. Each batch
+has 16 cases (FR1--FR4 x non-IID/IID x 40%/30%), with 100 clients, 100 rounds,
+three local SGD epochs and six CPU threads. Each partition runs 40% before 30%;
+non-IID goes first and uses FR3/FR4 priority. These are ordinary unweighted
+FedAvg baselines with attacks present, **not STD-DAGMM**: every response aggregates,
+with no detector, traps, filtering, quarantine or removals.
+
+`configs/replication_with_baselines_seed73_seed43_queue.json` preserves the
+four detection batches as prerequisites, then appends the four baseline plans
+`configs/fedavg_{dataset}_baseline_seed{seed}_fr30_fr40.json`. Results use their
+matching batch names under `results/`; earlier results and plans stay intact.
+The existing active schedule selects this mixed queue. Each baseline plan's
+`fedavg_no_detection` workflow dispatches the unchanged native baseline runner;
+it does not run the detector just because it shares the queue/watch harness.
+
+Startup/logon and five-minute recovery retain their existing credentials.
+Completed batches skip; partial baselines resume their latest/previous checkpoint
+and replay an unfinished round. Stops, failures and incomplete evidence block
+successors. Both watches follow the entire queue, checking baseline summaries
+and the complete round sequence before advancing. They show per-client training
+progress, accuracy, timing and the no-defense policy. No paper rebuild occurs.
+Metrics, partitions, source/config hashes, timings, final models and recovery
+states are retained; full client response tensors for every round are not.
+
+## MNIST follow-up queue (27 October 2026)
+
+After **both existing CIFAR-10 batches finish**, run MNIST with seed **73**, then
+seed **43**: 16 cases per seed, **32 additional runs**. Each covers FR1--FR4 under
+non-IID/IID at both 40% and 30% free riders, 100 clients and 100 rounds. Non-IID
+goes first (FR3/FR4 before FR2/FR1), then IID; each partition runs 40% then 30%.
+The v15.4 detector, training settings and six-thread recovery launcher are unchanged.
+
+The active selection now points to
+`configs/v15_4_replication_seed73_seed43_queue.json`: CIFAR seed 73 -> CIFAR seed 43
+-> MNIST seed 73 -> MNIST seed 43. New plans are
+`configs/v15_4_mnist_seed73_fr30_fr40_plan.json` and
+`configs/v15_4_mnist_seed43_fr30_fr40_plan.json`; results use matching batch folders
+under `results/`. Existing results are not overwritten. The current CIFAR run is
+not restarted; an older launcher hands off through the next five-minute watchdog
+invocation. Startup/logon recovery, checkpoint replay, stop/failure blocking and
+completed-case skipping remain in effect. Both watch implementations reread the
+active selection on each refresh and automatically follow the MNIST successors.
+The paper is not rebuilt or changed.
+
+## CIFAR-10 seed-73 / seed-43 replication queue (25 October 2026)
+
+`configs/v15_4_cifar10_seed73_fr30_fr40_plan.json` schedules **16 v15.4 detection
+runs**, not baselines: FR1--FR4, non-IID/IID, 40%/30% free riders, seed 73,
+100 clients and 100 rounds. Non-IID goes first, FR3/FR4 before FR2/FR1;
+IID follows. The detector policy and training settings are unchanged.
+All outcomes are retained regardless of detection success. Outputs use
+`results/v15_4_cifar10_seed73_fr30_fr40/`; seed-42 records are not overwritten.
+
+After the entire seed-73 batch completes, the identical 16-case grid runs with
+seed **43**, using `configs/v15_4_cifar10_seed43_fr30_fr40_plan.json` and a separate
+`results/v15_4_cifar10_seed43_fr30_fr40/` directory. The persistent order is in
+`configs/v15_4_cifar10_seed73_seed43_queue.json`. No current run is interrupted;
+the already-running launcher can finish before the five-minute watchdog picks
+up its successor. Detector/training settings are unchanged apart from the seed.
+
+`configs/active_experiment_schedule.json` selects the extended replication queue
+above (originally this CIFAR-only queue) for the existing
+password-based startup/logon/five-minute Windows recovery task. It overrides
+historical native queue priority without editing their frozen manifests or
+changing task credentials. Completed cases are skipped; an incomplete case
+resumes its last published checkpoint before the queue continues. An unfinished
+round is replayed. STOP_REQUESTED still blocks automatic recovery. Windows must
+boot and the E: volume must be available. No physical power-cut test is implied.
+Paper rebuilding is disabled for this replication so writing is not interrupted.
+
+Both `.\.venv\Scripts\python.exe monitor.py --watch` and the PowerShell watch
+in `check_status.txt` follow the first unfinished batch, automatically moving
+from seed 73 to seed 43. They show both batches' schedule and the setting/seed,
+completed rounds, accuracy, suspicion/quarantine and evaluation-only removal
+counts. Python watch stays open through failed/interrupted recovery states and
+the gap before the successor publishes its first status. Reopen an existing
+watch process once to load the updated monitor code.
+The published round advances only after a complete round/checkpoint.
+
 ## Completed CIFAR-10 no-detection baselines (20 October 2026)
 
 `configs/fedavg_cifar10_baseline_seed42_fr30_fr40.json` schedules 16 sequential

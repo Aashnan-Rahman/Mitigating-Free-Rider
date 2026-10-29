@@ -33,10 +33,9 @@ def main() -> None:
         batch_dir = args.resume_batch.resolve()
         manifest_path = batch_dir / "experiment_manifest.json"
         batch_status_path = batch_dir / "experiment_status.json"
-        if not manifest_path.is_file() or not batch_status_path.is_file():
+        if not manifest_path.is_file():
             raise FileNotFoundError(
-                "A resumable batch must contain experiment_manifest.json and "
-                f"experiment_status.json: {batch_dir}"
+                f"A resumable batch must contain experiment_manifest.json: {batch_dir}"
             )
         manifest = read_json(manifest_path)
         plan = {"defaults": manifest.get("defaults", {})}
@@ -45,7 +44,7 @@ def main() -> None:
         results_root = batch_dir.parent
         try:
             status = read_json(batch_status_path)
-        except (json.JSONDecodeError, UnicodeDecodeError):
+        except (FileNotFoundError, json.JSONDecodeError, UnicodeDecodeError):
             status = reconstruct_status(manifest)
         status_records = {item["id"]: item for item in status.get("experiments", [])}
         status["experiments"] = [
@@ -69,6 +68,11 @@ def main() -> None:
         status.pop("finished_at", None)
         for record in status["experiments"]:
             run_dir = batch_dir / record["id"]
+            # The round marker is authoritative if an outage lost the batch
+            # status or left it behind the already published per-run checkpoint.
+            published = published_latest_round(run_dir, record)
+            record["completed_rounds"] = published
+            record.setdefault("progress", {})["round"] = published
             if completed_run_exists(run_dir):
                 record["state"] = "completed"
                 record.pop("error", None)

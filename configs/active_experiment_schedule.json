@@ -1,0 +1,9 @@
+{
+  "auto_resume": true,
+  "workflow": "v15_detection",
+  "plan": "configs/v15_4_cifar10_seed73_fr30_fr40_plan.json",
+  "queue": "configs/replication_with_baselines_seed73_seed43_queue.json",
+  "cpu_threads": 6,
+  "auto_update_paper": false,
+  "description": "29 October 2026: preserve the four completed v15.4 replication batches, then 64 matched no-defense FedAvg baselines: CIFAR-10 seeds 73/43, then MNIST seeds 73/43, FR1-FR4 x non-IID/IID x 40%/30%. Keep startup/logon/five-minute checkpoint recovery, existing credentials, full records, watch handoff, and no paper rebuild."
+}
