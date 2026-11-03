@@ -127,6 +127,24 @@ foreach ($dataset in $datasets) {
                 Require ([math]::Abs($roundTime - $config.average_round_time_seconds) -lt 1e-7) "Round time mismatch $run"
                 $completion = if ($fn -eq 0) { [int](($removals | Where-Object { [int]$_.is_free_rider -eq 1 } | Measure-Object round -Maximum).Maximum) } else { $null }
                 $relative = $run.Substring($RepositoryRoot.Length + 1).Replace('\','/')
+                $honestActive = 0; $honestExcluded = 0; $honestTraps = 0; $nonTrapExcluded = 0; $quarantineRounds = 0
+                $quarantinedHonest = [Collections.Generic.HashSet[int]]::new()
+                Import-Csv -LiteralPath (Join-Path $run 'client_metrics.csv') | ForEach-Object {
+                    if ([int]$_.is_free_rider -eq 0 -and [int]$_.was_active -eq 1) {
+                        $honestActive++
+                        if ([int]$_.was_trapped -eq 1) { $honestTraps++ }
+                        if ([int]$_.was_quarantined -eq 1) {
+                            $quarantineRounds++; [void]$quarantinedHonest.Add([int]$_.client_id)
+                        }
+                        if ([int]$_.was_aggregated -eq 0) {
+                            $honestExcluded++
+                            if ([int]$_.was_trapped -eq 0) { $nonTrapExcluded++ }
+                        }
+                    }
+                }
+                Require ($honestExcluded -eq $config.honest_excluded_active_client_rounds) "Exclusion count mismatch $run"
+                Require ($honestTraps -eq $config.honest_trap_client_rounds) "Trap count mismatch $run"
+                Require ($quarantineRounds -eq $config.honest_quarantine_client_rounds -and $quarantinedHonest.Count -eq $config.honest_clients_ever_quarantined) "Quarantine count mismatch $run"
                 $records.Add([pscustomobject]@{
                     dataset=$dataset; split=$split; share=$share; attack=$attack; seed=$seed
                     tp=$tp; fp=$fp; fn=$fn; honest=100-$share
@@ -134,9 +152,15 @@ foreach ($dataset in $datasets) {
                     final_accuracy=$finalAccuracy; mean_round_seconds=$roundTime; completion_round=$completion
                     honest_ever_quarantined=$config.honest_clients_ever_quarantined
                     honest_quarantine_rounds=$config.honest_quarantine_client_rounds
+                    honest_active_rounds=$honestActive; honest_excluded_rounds=$honestExcluded
+                    honest_trap_rounds=$honestTraps; honest_nontrap_excluded=$nonTrapExcluded
+                    honest_excluded_pct=100*$honestExcluded/$honestActive
+                    final_quarantined=$config.quarantined_clients
+                    peak_rss_gib=$config.peak_process_rss_mb/1024
+                    wall_minutes=$config.total_wall_clock_seconds/60
                     final_honest_candidates=$config.final_honest_candidate_clients; source=$relative
                 })
-                foreach ($name in @('run_config.json','protocol.json','latest_results.json','global_metrics.csv','cycle_signals.csv','removals.csv','detection_summary.csv')) {
+                foreach ($name in @('run_config.json','protocol.json','latest_results.json','global_metrics.csv','cycle_signals.csv','removals.csv','detection_summary.csv','client_metrics.csv')) {
                     $inputs.Add([pscustomobject]@{path="$relative/$name"; sha256=(Get-FileHash -LiteralPath (Join-Path $run $name) -Algorithm SHA256).Hash.ToLowerInvariant()})
                 }
             }
@@ -189,6 +213,9 @@ $statistics = [ordered]@{
     precision=$totalTp/($totalTp+$totalFp);recall=$totalTp/($totalTp+$totalFn)
     f1=2*$totalTp/(2*$totalTp+$totalFp+$totalFn)
     honest_ever_quarantined=($records | Measure-Object honest_ever_quarantined -Sum).Sum
+    honest_quarantine_rounds=($records | Measure-Object honest_quarantine_rounds -Sum).Sum
+    final_honest_candidates=($records | Measure-Object final_honest_candidates -Sum).Sum
+    final_quarantined=($records | Measure-Object final_quarantined -Sum).Sum
     completion_min=($records | Measure-Object completion_round -Minimum).Minimum
     completion_max=($records | Measure-Object completion_round -Maximum).Maximum
     completion_exceptions=@($records | Where-Object completion_round -ne 30)
@@ -229,7 +256,6 @@ foreach ($dataset in $datasets) {
     }
 }
 @('\bottomrule', '\end{tabular}',
-'\par\smallskip\begin{minipage}{0.96\textwidth}\scriptsize Values are averaged across seeds. Precision and recall pool permanent removals across FR1--FR4 within each seed. Test accuracy is averaged separately for each attack. Round time averages the four attack types and includes local training, aggregation, evaluation, and detection.\end{minipage}',
 '\end{table*}') | ForEach-Object { $lines.Add($_) }
 [IO.File]::WriteAllLines((Join-Path $PSScriptRoot 'generated/performance.tex'), $lines, [Text.UTF8Encoding]::new($false))
 $macros = [Collections.Generic.List[string]]::new()
@@ -246,4 +272,6 @@ foreach ($dataset in $datasets) {
     $macros.Add('\newcommand{\' + $prefix + 'Max}{' + (FormatNumber (100*($values | Measure-Object -Maximum).Maximum)) + '}')
 }
 [IO.File]::WriteAllLines((Join-Path $exportDir 'summary.tex'), $macros, [Text.UTF8Encoding]::new($false))
-$statistics | ConvertTo-Json -Depth 12
+. (Join-Path $PSScriptRoot 'write_study_tables.ps1')
+. (Join-Path $PSScriptRoot 'refresh_context_tables.ps1')
+[pscustomobject]$statistics | Select-Object validated_runs,tp,fp,fn,honest_ever_quarantined,honest_quarantine_rounds,final_honest_candidates,final_quarantined | ConvertTo-Json

@@ -1,7 +1,7 @@
 \begin{figure*}[tp]\centering
 \begin{tikzpicture}
-\begin{groupplot}[group style={group size=2 by 2,horizontal sep=0.8cm,vertical sep=1.8cm},
-width=0.455\textwidth,height=5.2cm,
+\begin{groupplot}[group style={group size=2 by 2,horizontal sep=1.3cm,vertical sep=1.8cm},
+width=0.435\textwidth,height=5.2cm,
 axis line style={black!35},grid=major,grid style={black!8},
 tick label style={font=\scriptsize},title style={font=\small},
 label style={font=\scriptsize},legend style={font=\scriptsize,draw=none},
@@ -46,5 +46,5 @@ scaled ticks=false,unbounded coords=jump]
 \addplot[color=riderorange,thick,mark=triangle*,mark size=2pt] table[x=round,y=mean] {generated/visuals/trend_profile_z_30_1.dat};
 \end{groupplot}\end{tikzpicture}
 \par\ref{score-trend-legend}
-\caption{CIFAR-10 non-IID FR3: mean paired scores over complete evidence cycles through round 80 (lines), with client interquartile intervals shaded. Scores are first averaged over A/B per client. Bands show client dispersion, NOT mean uncertainty. References/MAD scales change each cycle; z-score changes need not match raw-norm changes. Free-rider curves stop at removal, never zero-filled. Class colors are for evaluation only.}\label{fig:score-trends}
+\caption{Evolution of paired response scores.}\label{fig:score-trends}
 \end{figure*}

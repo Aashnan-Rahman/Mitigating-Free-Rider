@@ -1,0 +1,16 @@
+\begin{table*}[t]\centering\footnotesize\setlength{\tabcolsep}{5pt}
+\caption{Comparison with federated averaging without a defense.}\label{tab:baseline}
+\begin{tabular}{llrrrrrrr}\toprule
+\multirow{2}{*}{Dataset} & \multirow{2}{*}{Partition} & \multirow{2}{*}{FR (\%)} & \multicolumn{3}{c}{Final accuracy (\%)} & \multicolumn{3}{c}{Mean round time (s)} \\
+\cmidrule(lr){4-6}\cmidrule(lr){7-9}
+& & & No defense & BaitFL & $\Delta$ (pp) & No defense & BaitFL & $\Delta$ (\%) \\ \midrule
+\multirow{4}{*}{MNIST} & \multirow{2}{*}{IID} & 30 & 98.92 & 98.96 & 0.04 & 44.37 & 42.99 & -3.10 \\
+ &  & 40 & 98.77 & 98.86 & 0.09 & 37.04 & 36.43 & -1.64 \\
+ & \multirow{2}{*}{Non-IID} & 30 & 98.90 & 98.99 & 0.09 & 44.91 & 41.28 & -8.08 \\
+ &  & 40 & 98.78 & 98.96 & 0.18 & 35.97 & 34.57 & -3.89 \\
+\midrule
+\multirow{4}{*}{CIFAR-10} & \multirow{2}{*}{IID} & 30 & 77.67 & 78.05 & 0.38 & 98.57 & 101.23 & 2.70 \\
+ &  & 40 & 76.61 & 77.44 & 0.83 & 82.83 & 90.66 & 9.46 \\
+ & \multirow{2}{*}{Non-IID} & 30 & 75.29 & 75.63 & 0.34 & 89.30 & 97.15 & 8.79 \\
+ &  & 40 & 74.17 & 75.19 & 1.02 & 70.84 & 79.46 & 12.18 \\
+\bottomrule\end{tabular}\end{table*}

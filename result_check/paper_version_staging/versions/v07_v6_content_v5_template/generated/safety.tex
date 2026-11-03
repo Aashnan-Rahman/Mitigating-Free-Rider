@@ -1,19 +1,23 @@
 \begin{table*}[t]
 \centering\footnotesize\setlength{\tabcolsep}{4pt}
-\caption{Honest-client exclusion in representative executions.}\label{tab:safety}
-\begin{tabular}{llrlrrrrrr}
+\caption{Honest-client screening and exclusion.}\label{tab:safety}
+\begin{tabular}{lll l rrr rrr r}
 \toprule
-Dataset & Partition & FR (\%) & Attack & \shortstack{Final honest\\candidates} & \shortstack{Ever\\quarantined} & \shortstack{Quarantine\\client-rounds} & \shortstack{Trap\\client-rounds} & \shortstack{Non-trap\\excluded} & \shortstack{All excluded\\(\%)} \\
+\multirow{2}{*}{Dataset} & \multirow{2}{*}{Partition} & \multirow{2}{*}{FR (\%)} & \multirow{2}{*}{Attack} & \multicolumn{3}{c}{Honest clients} & \multicolumn{3}{c}{Excluded client rounds} & \multirow{2}{*}{\shortstack{All excluded\\(\%)}} \\
+\cmidrule(lr){5-7}\cmidrule(lr){8-10}
+& & & & Candidates & Removed & Quarantined & Quarantine & Trap & Non-trap & \\
 \midrule
-MNIST & IID & 30 & FR3 & 8/70 & 0 & 0 & 770 & 0 & 11.00 \\
-MNIST & Non-IID & 30 & FR3 & 8/70 & 0 & 0 & 770 & 0 & 11.00 \\
-MNIST & IID & 40 & FR3 & 5/60 & 0 & 0 & 660 & 0 & 11.00 \\
-MNIST & Non-IID & 40 & FR3 & 34/60 & 1 & 20 & 736 & 1 & 12.28 \\
-CIFAR-10 & IID & 30 & FR3 & 2/70 & 0 & 0 & 770 & 0 & 11.00 \\
-CIFAR-10 & Non-IID & 30 & FR3 & 70/70 & 1 & 20 & 1160 & 0 & 16.57 \\
-CIFAR-10 & IID & 40 & FR3 & 4/60 & 0 & 0 & 660 & 0 & 11.00 \\
-CIFAR-10 & Non-IID & 40 & FR3 & 52/60 & 9 & 180 & 1104 & 5 & 18.48 \\
+\multirow{5}{*}{MNIST} & \multirow{2}{*}{IID} & 30 & FR3 & 6.33 & 0.00 & 0.00 & 0.00 & 770.00 & 0.00 & 11.00 \\
+ &  & 40 & FR3 & 4.33 & 0.00 & 0.00 & 0.00 & 660.00 & 0.00 & 11.00 \\
+ & \multirow{3}{*}{Non-IID} & 30 & FR3 & 41.67 & 0.00 & 1.33 & 26.67 & 861.33 & 1.00 & 12.32 \\
+ &  & \multirow{2}{*}{40} & FR3 & 37.00 & 0.67 & 3.33 & 60.00 & 762.67 & 2.67 & 12.86 \\
+ &  &  & FR4 & 35.00 & 0.33 & 1.00 & 20.00 & 872.67 & 0.67 & 14.57 \\
+\midrule
+\multirow{5}{*}{CIFAR-10} & \multirow{2}{*}{IID} & 30 & FR3 & 2.33 & 0.00 & 0.00 & 0.00 & 770.00 & 0.00 & 11.00 \\
+ &  & 40 & FR3 & 4.00 & 0.00 & 0.00 & 0.00 & 660.00 & 0.00 & 11.00 \\
+ & \multirow{3}{*}{Non-IID} & \multirow{2}{*}{30} & FR3 & 42.67 & 0.00 & 0.67 & 13.33 & 1051.33 & 0.00 & 15.02 \\
+ &  &  & FR4 & 27.33 & 0.00 & 0.67 & 13.33 & 850.67 & 0.67 & 12.16 \\
+ &  & 40 & FR3 & 43.00 & 0.00 & 3.67 & 73.33 & 1022.67 & 2.00 & 17.08 \\
 \bottomrule
 \end{tabular}
-\par\smallskip\begin{minipage}{0.96\textwidth}\scriptsize Candidate entries are unresolved honest clients / honest population. Quarantine client-rounds count clients times rounds, and can overlap trap client-rounds. Non-trap excluded counts only withheld honest responses not already explained by traps; the last column divides all withheld honest responses by active honest client-rounds. The complete per-run appendix retains the other attacks.\end{minipage}
 \end{table*}

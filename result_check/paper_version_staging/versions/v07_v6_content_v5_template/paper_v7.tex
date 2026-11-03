@@ -26,7 +26,7 @@ Islamic University of Technology\\MSc Thesis}}
 \maketitle
 \begin{tikzpicture}[remember picture,overlay]
 \node[anchor=north east,font=\footnotesize] at ([xshift=-0.55in,yshift=-0.30in]current page.north east)
-{Code v15.4 \textbar{} Paper v7 \textbar{} 30 October 2026};
+{Code v15.4 \textbar{} Paper v7 \textbar{} 1 November 2026};
 \end{tikzpicture}
 
 \begingroup\color{blue}
@@ -50,7 +50,9 @@ and 30\% and 40\% free riders over 100 training rounds. The method achieves
 complete removal at round 30, while difficult cases require up to
 \MultiCompletionMax{} rounds. There are \MultiFP{} permanent honest-client
 removals, and \MultiQuarantined{} honest client-cases experience temporary
-quarantine. The findings support the approach under the evaluated settings.
+quarantine. Matched comparisons with unprotected federated averaging improve
+mean final accuracy by 0.10 percentage points on MNIST and 0.64 on CIFAR-10.
+The findings support the approach under the evaluated settings.
 Adaptive adversaries and secure aggregation remain outside the study's scope.
 \end{abstract}
 \endgroup
@@ -278,9 +280,7 @@ fixed fabrication strategy for all free riders. The four strategies are defined
 below.
 
 \subsection{Evaluated Free-Rider Behaviors}
-For a free rider, the returned model is $w^{\rm ret}_{t,i}=\widehat w_{t,i}$.
-The following equations apply to floating entries of the model state, including
-floating buffers. Integer entries are copied unchanged from the received model.
+We denote the model returned by a free rider as $\widehat w_{t,i}$.
 
 \noindent\textbf{FR1: current-model sendback.}
 The client returns the received model unchanged,
@@ -660,8 +660,8 @@ audits until the training horizon is reached.
 \end{algorithm}
 
 \FloatBarrier
-% Results and later sections remain red for revision.
-\color{red}
+% Experimental setup is finalized in black. Later result segments remain red.
+\color{black}
 
 \section{Results}
 \subsection{Experimental Setup}
@@ -689,6 +689,12 @@ with BatchNorm and 32, 64, and 128 channels, followed by a 256-unit hidden
 classifier. Images are normalized without data augmentation, and all experiments
 use CPU execution.
 
+For utility and execution-time comparisons, we use completed runs of
+federated averaging without a defense and a measured STD-DAGMM implementation.
+The matched baseline settings are described in Section~\ref{sec:baseline},
+and the detector timing experiment in Section~\ref{sec:native-timing}.
+
+\color{red}
 \subsection{Evaluation Metrics}
 A positive detection is \emph{permanent removal}, not nomination or quarantine.
 For true positives $TP$, honest removals $FP$, and missed free riders $FN$,
@@ -710,7 +716,8 @@ Table~\ref{tab:performance} groups the results by dataset, partition, and
 free-rider proportion. Precision and recall are calculated over the four attack
 types within each seed and then averaged across seeds. Final test accuracy is
 averaged separately for FR1 to FR4, while round time averages all attack types
-and seeds with equal weight.
+and seeds with equal weight. Round time includes local training, aggregation,
+global evaluation, and detection.
 
 Every free rider is removed in the evaluated replications. Pooled over all
 replications, precision is \MultiPrecision\%, recall is \MultiRecall\%, and
@@ -722,42 +729,53 @@ FR4 and non-IID CIFAR-10 FR3 or FR4 executions require additional audit cycles.
 
 Mean final accuracy ranges from \MultiMnistAccuracyMin\% to
 \MultiMnistAccuracyMax\% on MNIST and from \MultiCifarAccuracyMin\% to
-\MultiCifarAccuracyMax\% on CIFAR-10. The diagnostic figures and detailed
-exclusion records below examine a representative replication. Its accuracy
-trajectories appear in Figure~\ref{fig:accuracy}, with full trajectories and
-removal curves retained in Appendix~\ref{app:trajectories}. These trajectories
-illustrate individual executions rather than averages across seeds.
+\MultiCifarAccuracyMax\% on CIFAR-10. The score diagnostics below examine
+a representative replication. The comparison with unprotected federated
+averaging uses matched executions and is reported separately in
+Table~\ref{tab:baseline} and Figure~\ref{fig:accuracy}.
 \input{generated/performance.tex}
 \FloatBarrier
 
 \subsection{Representative Score Geometry and Evidence Evolution}
-In the representative replication,
-Figures~\ref{fig:scatter-mnist-40} and~\ref{fig:scatter-cifar10-40} show every
-client's round-20 norm/profile position at 40\%, covering all four attacks and
-both partitions. The 30\% counterparts are retained in
-Appendix~\ref{app:trajectories}. Coordinates are paired averages over the two
-selected trap responses, transformed by $\operatorname{asinh}$ solely for display.
-This monotone transformation preserves ordering while keeping extreme profile-z
-outliers from flattening the central cloud. There is no clipping, jitter,
-label-based reference selection, or fitted decision line. Coincident points,
-particularly exact sendbacks, can conceal multiplicity. The actual decision
-continues to test each trap separately; a paired scatter point is a diagnostic,
-not a substitute for the full certificate.
-\input{generated/scatter_mnist_40.tex}
-\input{generated/scatter_cifar10_40.tex}
+Figures~\ref{fig:geometry-mnist} and~\ref{fig:geometry-cifar10} show round-20
+client response scores on MNIST and CIFAR-10. Each figure contains 16 panels.
+The four columns correspond to FR1 through FR4. From top to bottom, the rows
+show 30\% IID, 30\% non-IID, 40\% IID, and 40\% non-IID settings. Blue circles
+represent honest clients and orange triangles represent free riders. Each
+point averages one client's norm and profile scores over the two challenges.
+The displayed coordinates are $\operatorname{asinh}(\bar z_{\rm norm})$ and
+$\operatorname{asinh}(\bar z_{\rm profile})$, which preserve ordering while
+compressing extreme values. Panel axes follow their observed ranges.
 
-The more demanding CIFAR-10 non-IID FR3 executions are examined directly in
-Figure~\ref{fig:norm-hist}. Shared population bins expose raw trap-A norm
-distributions before and at confirming cycles, while annotations report the
-\emph{paired} fresh norm-certificate counts from the decision logs. The
-certificate can include honest clients: a visually compact low-norm population
-is not equivalent to a pure attacker cluster. At 40\%, nine honest clients
-receive the round-20 paired norm certificate, but none receives it at round 60.
-This explains why nomination quality and eventual removal quality differ.
-At 40\%, the round-20 and round-60
-certificates confirm all free riders; at 30\%, the relevant pair is round 40
-and round 80. The selected panels explain this recorded mechanism, not a new
-decision rule selected from the histograms.
+FR1 and FR2 generally form distinct response groups, whereas the separation
+of history-based responses depends more strongly on the dataset and partition.
+Overlapping points can represent several clients, particularly for exact
+sendbacks. Colors use evaluation labels after scoring. The server evaluates
+the two challenges separately, so the displayed average does not replace
+the paired confirmation rule.
+\input{generated/geometry_mnist.tex}
+\input{generated/geometry_cifar10.tex}
+\FloatBarrier
+
+Figure~\ref{fig:norm-hist} follows two CIFAR-10 non-IID FR3 executions through
+successive evidence cycles. The top row shows 40\% free riders, and the bottom
+row shows 30\%. Blue bars count honest clients and orange outlines count free
+riders. All panels use the same axis limits. Within each panel, both populations
+share bins derived from their combined trap-A update norms. The counts below
+each panel come from the decision logs and require a fresh norm certificate
+on both challenges. They therefore cannot be read from a single histogram
+or inferred from a visible gap alone.
+
+At 40\%, all 40 free riders and nine honest clients receive their first paired
+norm certificate at round 20. No client receives fresh norm evidence at round
+30, so that cycle adds no norm confirmation. The server retains the earlier
+evidence. At round 60, all 40 free riders receive a fresh matching certificate
+and are removed, while none of the nine honest clients receives that second
+norm certificate. At 30\%, the first norm certificates for all 30 free riders
+arrive at round 40 and are confirmed at round 80. One honest client receives
+a norm certificate at round 80, but it is insufficient for removal without
+earlier matching evidence. The diagram between the rows summarizes this
+distinction between initial suspicion and confirmed removal.
 \input{generated/norm_histograms.tex}
 
 Figure~\ref{fig:score-trends} supplements the raw distributions with class mean
@@ -771,117 +789,145 @@ fixed-unit measurements of model improvement. Undefined scores remain missing.
 The first ten warmup rounds do not provide these paired trap scores, and no
 warmup score trajectories are fabricated.
 \input{generated/score_trends.tex}
-\input{generated/accuracy_figure.tex}
+\FloatBarrier
 
 \subsection{Honest-Client Impact}
 Across the repeated experiments, \MultiFP{} honest client-cases are permanently
-removed and \MultiQuarantined{} experience temporary quarantine. To examine
-exclusion in detail, Table~\ref{tab:safety} retains representative executions
-and expands FR3 into individual dataset/partition/share
-rows rather than pooling it with the three easier attacks. It distinguishes
-distinct quarantined clients, quarantine duration, deliberate trap exclusion,
-and additional non-trap exclusion. In this representative replication there are
-\StudyQuarantined{} honest client-cases ever
-quarantined, totalling \StudyQuarantineRounds{} quarantine client-rounds. Nine
-occur in CIFAR-10 non-IID FR3 at 40\%, one in its 30\% counterpart, and one in
-MNIST non-IID FR3 at 40\%. None remains quarantined at completion.
+removed and \MultiQuarantined{} experience quarantine, totalling 620 honest
+quarantine client rounds. No client remains quarantined at completion.
+Table~\ref{tab:safety} reports means across seeds for every FR3 configuration
+and for the FR4 configurations in which honest clients experience quarantine
+or removal. Each count is averaged across seeds, so fractional values describe
+variation between executions rather than fractions of individual clients.
 
-There are \StudyCandidates{} final honest-candidate client-cases in this
-replication. Weak candidate labels persist in several completed runs. The most pronounced
-cases are 34 of 60 honest clients in MNIST non-IID FR3 at 40\%, 52 of 60 in
-CIFAR-10 non-IID FR3 at 40\%, and all 70 remaining clients in CIFAR-10 non-IID
-FR3 at 30\%. These are not counted as permanent false positives, but they are
-reported because screening and final-removal quality are different properties.
+The honest-client columns distinguish unresolved candidates at completion,
+permanent removals, and distinct clients ever quarantined. The client-round
+columns separate quarantine duration, deliberate trap exclusion, and withheld
+responses outside trap rounds. Quarantine and trap counts may overlap. The final
+column averages the per-execution percentage of active honest responses withheld
+from aggregation, counting each response once. The honest population is 70
+clients at 30\% free riders and 60 at 40\%.
+
+Weak candidate labels persist after free riders have been removed. For example,
+non-IID FR3 at 40\% ends with a mean of 37 honest candidates on MNIST and 43 on
+CIFAR-10. Candidates are not excluded from ordinary aggregation solely because
+of this label. Their counts are reported separately because initial screening
+and permanent-removal decisions have different consequences.
 \input{generated/safety.tex}
 
 \subsection{Execution Cost}
-For the representative replication,
-Table~\ref{tab:cost} reports means across the four attacks, giving each attack
-equal weight, with the attack-to-attack range of both round time and peak RSS.
-MNIST requires approximately 34.6--36.4 seconds per round at 40\%
-free riders and 41.3--43.0 seconds at 30\%. CIFAR-10 requires 79.5--90.7 and
-97.1--101.2 seconds, respectively. The measurements include serial client
+Table~\ref{tab:cost} reports means across all four attacks and seeds, with
+the minimum and maximum execution values in brackets. Execution duration in
+the last column is the mean number of minutes per run. MNIST averages
+36.08 to 37.05 seconds per round at 40\% free riders and 41.62 to 42.38 seconds
+at 30\%. CIFAR-10 averages 77.03 to 85.35 and 92.30 to 99.35 seconds,
+respectively. The measurements include serial client
 simulation, local training, aggregation, and evaluation. The logged round timer
 ends before checkpoint/log publication; reported execution duration additionally
 includes initialization, publication work, and recovery work represented by the
 resumed timer. Powered-off waiting is not a detector computation cost.
 
-Process RSS includes simulated attacker histories and training tensors, not
-only server-side detection state. Neither round duration nor peak RSS isolates
-the defense's incremental overhead. A detector-only profiler and controlled
-no-detector baseline are required before assigning an overhead percentage.
-Figure~\ref{fig:resources} keeps the per-attack breakdown behind the grouped
-table: the higher-memory FR3/FR4 executions include simulated attacker histories
-as well as training and detector tensors. It would be incorrect to attribute
-that entire difference to server-side detection.
+Process RSS includes training tensors, simulated attacker histories, and
+server state. It therefore measures the complete process. The measured
+baseline comparison below reports changes in execution time, while the
+operation counts in Section~\ref{sec:complexity} describe detector work.
 \input{generated/cost.tex}
+
+\subsection{Comparison with Federated Averaging without a Defense}\label{sec:baseline}
+We compare BaitFL with ordinary federated averaging in which all 100 clients
+participate throughout training and every returned response is aggregated.
+The baseline applies no traps, screening, quarantine, or removal. The main
+comparison uses the complete common replication across both datasets, both
+partitions, both free-rider proportions, and all four attacks. Each execution
+is paired with the same BaitFL configuration and random seed. Training and
+attack settings agree, and the first ten global accuracies match before
+challenge rounds begin. Three additional completed CIFAR-10 non-IID executions
+at 40\% provide a further replication check in Table~\ref{tab:baseline-extra}.
+
+Table~\ref{tab:baseline} averages the four attacks within each dataset,
+partition, and proportion. These matched values are separate from the
+multiple-seed means in Table~\ref{tab:performance}. Accuracy changes are
+percentage-point differences between BaitFL and the baseline. Round-time
+changes are $100(\bar t_{\rm BaitFL}/\bar t_{\rm base}-1)$, so a positive
+value indicates a longer round. Final accuracy improves in 24 matched
+conditions, remains unchanged in one, and decreases in seven. The average
+gain is 0.10 percentage points on MNIST and 0.64 on CIFAR-10. The largest
+gain is 2.34 percentage points for CIFAR-10 non-IID FR3 at 40\%.
+
+Figure~\ref{fig:accuracy} shows rounds 60 to 100. Each panel
+averages the eight matched attack and partition combinations for one dataset
+and free-rider proportion. Shading shows their interquartile range. It describes
+variation across configurations rather than uncertainty across random seeds.
+Figure~\ref{fig:accuracy-overview} provides the same comparison over all 100
+rounds. As a measure of late-round consistency, we calculate the standard
+deviation of accuracy within each execution's final 20 rounds and then average
+these values. It decreases from 0.034 to 0.028 percentage points on MNIST and
+from 0.244 to 0.213 on CIFAR-10.
+
+Figure~\ref{fig:baseline-effects} retains the individual attack results.
+Its upper panels show accuracy changes and its lower panels show round-time
+changes. The four colors distinguish attacker proportion and partition, and
+the zero line denotes equal performance. Grouped round time decreases by
+1.64\% to 8.08\% on MNIST and increases by 2.70\% to 12.18\% on CIFAR-10.
+These changes include response handling, aggregation, evaluation, and detection
+along the resulting trajectories. Host load and different timer coverage
+also affect the comparison, so the percentages do not isolate detector overhead.
+\input{generated/baseline_table.tex}
+\input{generated/accuracy_figure.tex}
 \input{generated/resource_figure.tex}
+\FloatBarrier
 
-Table~\ref{tab:historical-cost} compares the three completed same-setting
-v15.3 CIFAR-10 non-IID 40\% executions against v15.4. The unfinished FR1 is
-excluded explicitly, not treated as a completed measurement. This historical
-comparison is useful context for the concern that evidence memory might be
-expensive; it is not an isolated overhead experiment. Different detection
-trajectories, client work, restarts and host load prevent interpreting the
-differences as a causal speedup. Neither historical nor current logs measure
-network bytes or detector-only CPU time. Section~\ref{sec:complexity} therefore
-separates measured process resources from calculated algorithmic requirements.
-\input{generated/historical_cost.tex}
+\subsection{Timing Comparison with STD-DAGMM}\label{sec:native-timing}
+The timing study uses non-IID FR3 at 40\% on each dataset, with 100
+communication rounds, three local SGD epochs, and CPU execution. The
+STD-DAGMM and no-defense runs use six PyTorch threads. The STD-DAGMM
+implementation follows the published detection
+mechanism~\cite{lin2019freeriders} and fits its autoencoder and mixture model
+for five epochs in every round. Its flags are recorded while all 100 clients
+continue to participate. BaitFL follows its challenge and removal procedure.
+The no-defense execution retains and aggregates all responses.
 
-\subsection{Measured 100-Round Native-Workflow Timing}\label{sec:native-timing}
-We additionally execute 100 ordinary-update STD-DAGMM rounds per dataset:
-100 clients throughout, non-IID, 40\% FR3, three local SGD epochs,
-CPU and six PyTorch threads. This is a paper-guided implementation, not
-author code. Each round freshly fits the full-update autoencoder/mixture
-for a declared budget of five epochs and records fitting and scoring
-separately. This budget is not evidence of detector convergence or an exact
-replication of an unspecified published training schedule. Flags remain
-observational: no traps, our evidence gates, or permanent removal are added.
+Figure~\ref{fig:timing-segments} places the two timing breakdowns side by
+side for each dataset. The BaitFL panels distinguish warmup, trap-response
+rounds, screening rounds without removal, removal rounds, single audits, and
+ordinary rounds. The categories are mutually exclusive. A round with a
+removal is assigned to that category before the remaining screening rounds
+are counted. Parenthesized counts give each category's frequency.
+Table~\ref{tab:timing-phases} reports both its mean round time and its
+contribution to the full-horizon average. On MNIST, warmup averages 37.00
+seconds, trap-response rounds 34.29 seconds, screening rounds 34.36 seconds,
+and the removal round 34.63 seconds. The corresponding CIFAR-10 values are
+117.76, 82.04, 86.06, and 73.50 seconds.
 
-Table~\ref{tab:std-segments} and Figure~\ref{fig:timing-segments} distinguish
-measured components from missing measurements. Our completed study logged
-whole-round durations, not separate client-training, aggregation, trap-generation
-or detection timers; gray totals cannot retrospectively identify those costs.
-Our feature collection occurs during client responses, whereas complete-cycle
-scoring and state decisions occur at coverage boundaries; single audits are
-separate events. Therefore detection is not simply zero on every non-tenth round.
-Neither local simulator measures real network transmission. STD input serialization
-and worker startup are harness work, not network communication.
+These BaitFL measurements cover complete rounds, including the local work
+and evaluation performed in that phase. The existing logs do not separately
+time trap construction, statistical screening, and the removal operation.
+The STD-DAGMM panels instead show separately timed computation stages.
+Table~\ref{tab:std-segments} gives their means and sample standard deviations.
+Detector fitting contributes 13.63 seconds per round on MNIST and 45.03
+seconds on CIFAR-10. Preparation, scoring, and flag decisions bring total
+detector time to 13.95 and 46.04 seconds, respectively. The all-detector row
+includes these stages and is not an additional computation stage.
 
-For our actual horizon, the amortized time is
-$\overline t_{100}=\sum_{r=1}^{100}t_r/100$; summing all rounds includes expensive
-probing/decision rounds and lighter rounds without selecting either subset.
-Table~\ref{tab:timing-phases} and Figure~\ref{fig:timing-phases} explain how
-round frequency affects this average. The figure's left panels show the mean
-duration of a whole round in each category; its right panels multiply that
-mean by the category's round count and divide by 100. The five right-hand
-bars therefore sum to the observed full-run mean. For example, MNIST's three
-cycle-decision rounds average 34.45 seconds each and contribute 1.03 seconds
-to the 34.41-second full-run average. The 1.03 seconds is not an estimate of
-detector-only cost. All workflow comparisons use the full 100 executed rounds
-per method and dataset. Figure~\ref{fig:timing-traces} shows both complete
-trajectories.
+Figure~\ref{fig:timing-phases} and Table~\ref{tab:timing-horizons} compare
+the full-horizon averages, calculated as
+$\bar t=\sum_{r=1}^{100}t_r/100$. BaitFL averages 34.41 seconds per round
+on MNIST, compared with 50.19 for STD-DAGMM and 36.11 without a defense.
+On CIFAR-10, the corresponding values are 84.85, 127.24, and 76.29 seconds.
+BaitFL's measured mean is therefore 15.78 seconds lower than STD-DAGMM on
+MNIST and 42.39 seconds lower on CIFAR-10, reductions of 31.44\% and 33.32\%
+under these workflows and the stated fitting budget.
 
-These are native-workflow costs, not a controlled speedup experiment: our
-trajectory removes clients and changes probing/aggregation, while the STD
-execution retains all 100. Historical local attacker evaluation, timer coverage,
-machine load and data trajectories also differ. CIFAR's detector has a sampled
-peak worker RSS of about 3.66 GiB and minimum available system memory near zero;
-paging may confound timing, although paging itself was not measured. This experiment
-does not establish universal STD-DAGMM detection quality or end-to-end removal
-effectiveness. Per-round components, phase sums and input hashes are retained
-with the reporting artifacts.
-The measured mean round compute is 50.19 seconds on MNIST and 127.24 seconds
-on CIFAR-10; detector fitting contributes 13.63 and 45.03 seconds, respectively.
-In these selected non-IID FR3 runs, no free rider is ever flagged, whereas all
-60 honest clients are flagged at least once (not all in the same round).
-These observational flags are not removals and do not validate the chosen
-five-epoch recipe as an effective detector; neither do they establish a
-universal limitation of STD-DAGMM.
-Removing non-training free riders does not itself remove honest SGD jobs:
-the savings can concern response handling, simulated attacker diagnostics,
-aggregation and detection, rather than a proportional reduction of genuine
-local-training work. The observations cannot isolate those causes.
+Figure~\ref{fig:timing-traces} shows the measured round trajectories above
+their pointwise differences. A positive difference means that STD-DAGMM
+takes longer in that round. The dashed horizontal line gives the mean
+difference over all 100 rounds. This view separates a sustained timing gap
+from individual fluctuations and shows when the ordering changes.
+The measurements compare the executed workflows. Differences in response
+handling, local diagnostics, timer boundaries, and host load prevent assigning
+the entire gap to detector computation. In particular, removing a free rider
+does not remove an honest client's local SGD work. Communication and
+checkpoint publication are excluded from these round-time comparisons.
 \input{generated/timing_comparison.tex}
 
 \FloatBarrier
@@ -932,6 +978,15 @@ so the increase need not equal the 16.7\% change in honest-client count.
 The slightly higher achieved accuracies at 30\% are consistent with more honest
 training, but no causal effect is established without matched controls.
 
+The matched baseline comparison in Table~\ref{tab:baseline} adds a utility
+perspective. Its largest grouped gain occurs in CIFAR-10 non-IID at 40\%,
+where final accuracy increases by 1.02 percentage points. Figure~\ref{fig:baseline-effects}
+shows that the benefit varies across fabrication strategies. Removing
+noncontributing responses can improve the aggregation trajectory, but final
+accuracy also reflects the honest updates withheld during challenge rounds.
+The observed changes therefore describe the combined detection and mitigation
+procedure.
+
 \subsection{Screening Quality Versus Removal Safety}
 The evaluated procedure achieves high removal precision, but the additional
 replications show that repeated evidence does not eliminate false positives.
@@ -953,7 +1008,7 @@ than reporting permanent-removal precision alone.
 \subsection{What the Current Evidence Does Not Establish}
 The repeated experiments assess variation across the tested seeds. Wider
 validation should include honest-only populations, longer training horizons,
-matched ablations, and baseline comparisons under identical trajectories.
+matched ablations, and profiling under controlled workloads.
 Client observations within a run are correlated, and complete recall in these
 experiments does not establish universal detection. Variations of attacker history length, noise
 amplitude, trap strength, local epoch count, non-IID concentration, and model
@@ -964,12 +1019,13 @@ CIFAR BatchNorm buffers should be separated from trainable-weight evidence.
 \subsection{Operation Counts and Scaling}
 Let $N$ be active clients, $P$ floating model coordinates (including floating
 buffers), $L$ floating tensors, $T$ rounds, $B$ bootstrap replicates and
-$K=\lceil\sqrt{N}\rceil$ histogram bins. The following are implementation
-bounds, not measured wall-clock predictions. We count model scanning separately
-from local optimization and ordinary aggregation.
+$K=\lceil\sqrt{N}\rceil$ histogram bins. Table~\ref{tab:complexity} summarizes
+the implementation bounds. A cycle refers to complete coverage by both
+challenges. The bounds exclude ordinary aggregation, local training,
+simulated attacker histories, and persistent logging.
 
 \begin{table*}[t]\centering\footnotesize
-\caption{Incremental detector operations and working state. ``Cycle'' means a complete A/B evidence cycle; it does not mean every training round. Bounds exclude ordinary model aggregation, local training, simulator attack histories and persistent logging.}\label{tab:complexity}
+\caption{Incremental detector operations and working state.}\label{tab:complexity}
 \begin{tabular}{p{3.6cm}p{3.6cm}p{3.0cm}p{5.3cm}}\toprule
 Component & Work & Working state & Practical interpretation \\ \midrule
 Norm, profile, exact fingerprint & $O(NP)$ per round & $O(P)$ scratch, $O(N)$ fingerprints & Sequential model reads; no auxiliary training or gradients. \\
@@ -1006,7 +1062,10 @@ relative to repeated full-model training, but they do not measure its elapsed ti
 
 \subsection{Payload Sizes, Memory Boundaries and Communication}
 Table~\ref{tab:payload} derives concrete payload sizes from the implemented
-architectures. The compact float32 pair payload is
+architectures for 100 active clients, two challenges, and 1000 bootstrap
+replicates. Here $P$ includes floating buffers and $L$ counts floating tensors.
+These are calculated payload sizes rather than measured heap usage.
+The compact float32 pair payload is
 $2N(L+3)\cdot4$ bytes under the stated packed representation; the three scalar
 slots are an illustrative norm/round/flag allowance, not the actual Python object
 layout. The two trap models occupy $2P\cdot4$ floating bytes. Actual dictionaries,
@@ -1133,6 +1192,10 @@ removals show that repeated confirmation does not eliminate false positives.
 The results show useful separation under the evaluated
 training and attack configurations, while the candidate and quarantine results
 show why final recall and precision alone are insufficient.
+Matched comparisons with unprotected federated averaging improve mean final
+accuracy by 0.10 percentage points on MNIST and 0.64 on CIFAR-10. The measured
+STD-DAGMM comparison also shows lower average round time under the stated
+five-epoch fitting budget.
 
 Further validation should include broader client populations, honest-only
 training, and tests of
@@ -1143,54 +1206,65 @@ empirical screening mechanism, not a universal verifier of local computation.
 
 \FloatBarrier
 \appendices
-\section{Representative Per-Run Results}
+\section{Detection and Utility by Attack}
 Tables~\ref{tab:detail-mnist} and~\ref{tab:detail-cifar10} retain detailed outcomes
-from the representative replication. Full records for the repeated experiments,
+for each dataset, partition, free-rider proportion, and attack. Entries are
+means across seeds, including the counts and the complete-detection round
+$t_{\rm all}$. Here $C_H$ is the final honest-candidate count, $Q_H$ is the
+number of distinct honest clients ever quarantined, and $q_H$ is the number
+of honest quarantine client rounds. Full records for the repeated experiments,
 including the honest removals, are provided in
 \path{generated/multiseed/per_run.csv}. Group means and accuracy standard
 deviations are retained in \path{generated/multiseed/table1_means.csv}.
 \input{generated/details.tex}
 
-\section{Supporting Trajectories and Score Geometry}\label{app:trajectories}
+\section{Supporting Trajectories and Baseline Replication}\label{app:trajectories}
 Figure~\ref{fig:recall} retains the representative cumulative detection trajectories, including
 the delayed non-IID CIFAR-10 FR3 cases. Figure~\ref{fig:accuracy-overview} restores
-the full training horizon and shared 0--1 scale for interpreting the main-text
-accuracy zooms. Figures~\ref{fig:scatter-mnist-30} and
-\ref{fig:scatter-cifar10-30} show the complementary 30\% client clouds using
-the same paired-score definition and monotone display transformation.
+the full training horizon and shared 0 to 100\% scale for interpreting the
+matched accuracy comparison. Table~\ref{tab:baseline-extra} reports the
+additional completed CIFAR-10 non-IID replication at 40\%. It uses the same
+accuracy and timing differences as Table~\ref{tab:baseline}. These executions
+are retained separately because the additional baseline replication does not
+cover the complete experimental grid.
 \input{generated/recall_figure.tex}
 \input{generated/accuracy_overview_figure.tex}
-\input{generated/scatter_mnist_30.tex}
-\input{generated/scatter_cifar10_30.tex}
+\input{generated/baseline_extra.tex}
 
 \section{Reproducibility and Interpretation Notes}
-Table~\ref{tab:performance} is generated by
+Tables~\ref{tab:performance}, \ref{tab:safety}, \ref{tab:cost},
+\ref{tab:detail-mnist}, and~\ref{tab:detail-cifar10} are generated by
 \path{build_multiseed_table.ps1}. It validates completion markers, configuration
 coverage, training rounds, initial A/B coverage, removal identities and timing,
-summary counts, final accuracy, detector policy, and six recorded implementation
+summary counts, honest-client exclusion records, final accuracy, detector policy, and six recorded implementation
 hashes across all replications. Seed identifiers and input hashes are retained
 in \path{generated/multiseed/provenance.json}, with individual outcomes and
 grouped means in the accompanying CSV files. These records include failed
 detections and honest removals rather than selecting only favorable outcomes.
 
-The representative diagnostic assets are retained from the earlier development
-replication. Their input hashes are recorded in
+The score diagnostics use the representative replication. Their input hashes are recorded in
 \path{generated/provenance.json}, and the six matching source files are copied
 to \path{evidence/source/}. These hashes describe the recorded implementation
 and do not attest the complete historical environment.
 The score exports retain raw paired coordinates and per-class means, medians,
 quartiles, finite counts and undefined counts for every complete evidence cycle.
-Additional resource-comparison inputs and the architecture hash are recorded in
-\texttt{generated/visual\_provenance.json}. The historical v15.3 cost table is
-separate context and is never pooled with v15.4 detection totals.
+The architecture hash is recorded in
+\texttt{generated/visual\_provenance.json}.
 
-The diagnostic tables and figures are preserved from v6, with captions updated
-to distinguish individual executions from the averages in
-Table~\ref{tab:performance}. Compile \texttt{paper\_v7.tex} with PDFLaTeX and BibTeX, or
+The score diagnostics show individual executions. Figure~\ref{fig:norm-hist}
+is generated by \path{build_norm_figure.ps1}, which checks the plotted populations
+and paired norm-certificate counts against the recorded responses and decisions.
+The workflow timing tables retain their separately measured comparison cases.
+\path{build_baseline_comparison.ps1} validates the completed no-defense
+executions, matching configurations, complete participation, absence of
+filtering, and agreement during warmup. Paired outcomes, trajectories, and
+input hashes are retained under \path{generated/comparison/}.
+\path{build_review_figures.ps1} generates the combined score panels, baseline
+comparisons, and timing figures. Phase counts cover all 100 rounds, and the
+STD-DAGMM stage means sum to its reported computation time.
+Compile \texttt{paper\_v7.tex} with PDFLaTeX and BibTeX, or
 use the accompanying \texttt{build.ps1}. Previous paper versions and all
 experiment logs remain unchanged.
-The older v2/v8 results are not pooled with the current method: in particular,
-FR1 semantics, confirmation, reference construction, and screening policy differ.
 
 Interrupted runs resume their last published checkpoint with loader/RNG state,
 attack histories, selected probe positions, quarantine and confirmation memory.

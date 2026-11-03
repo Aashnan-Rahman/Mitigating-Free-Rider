@@ -1,32 +1,43 @@
 \begin{figure*}[tp]\centering
 \begin{tikzpicture}
-\begin{groupplot}[group style={group size=2 by 3,horizontal sep=0.8cm,vertical sep=1.8cm},
-width=0.455\textwidth,height=4.8cm,
-axis line style={black!35},grid=major,grid style={black!8},
-tick label style={font=\scriptsize},title style={font=\small},
-label style={font=\scriptsize},legend style={font=\scriptsize,draw=none},
-scaled ticks=false,unbounded coords=jump]
-\nextgroupplot[title={40\%, round 20},xlabel={Raw update norm, trap A},ylabel={Clients},ymin=0,xtick={0.18282,3.75925,7.33569,10.91212},xticklabel style={/pgf/number format/fixed,/pgf/number format/precision=1},extra description/.code={\node[anchor=north east,font=\scriptsize,align=right] at (rel axis cs:0.98,0.96) {Paired norm cert.\\H: 9, FR: 40};},legend to name=norm-hist-legend,legend columns=2]
-\addplot[const plot,fill=honestblue,draw=honestblue,fill opacity=0.24,thick] table[x=x,y=y] {generated/visuals/hist_40_20_0.dat} \closedcycle;
-\addlegendentry{Honest}
-\addplot[const plot,fill=riderorange,draw=riderorange,fill opacity=0.24,thick] table[x=x,y=y] {generated/visuals/hist_40_20_1.dat} \closedcycle;
-\addlegendentry{Free rider}
-\nextgroupplot[title={40\%, round 30},xlabel={Raw update norm, trap A},ylabel={Clients},ymin=0,xtick={0.08455,7.66122,15.23789,22.81457},xticklabel style={/pgf/number format/fixed,/pgf/number format/precision=1},extra description/.code={\node[anchor=north east,font=\scriptsize,align=right] at (rel axis cs:0.98,0.96) {Paired norm cert.\\H: 0, FR: 0};}]
-\addplot[const plot,fill=honestblue,draw=honestblue,fill opacity=0.24,thick] table[x=x,y=y] {generated/visuals/hist_40_30_0.dat} \closedcycle;
-\addplot[const plot,fill=riderorange,draw=riderorange,fill opacity=0.24,thick] table[x=x,y=y] {generated/visuals/hist_40_30_1.dat} \closedcycle;
-\nextgroupplot[title={40\%, round 60},xlabel={Raw update norm, trap A},ylabel={Clients},ymin=0,xtick={0.21688,7.48076,14.74463,22.00851},xticklabel style={/pgf/number format/fixed,/pgf/number format/precision=1},extra description/.code={\node[anchor=north east,font=\scriptsize,align=right] at (rel axis cs:0.98,0.96) {Paired norm cert.\\H: 0, FR: 40};}]
-\addplot[const plot,fill=honestblue,draw=honestblue,fill opacity=0.24,thick] table[x=x,y=y] {generated/visuals/hist_40_60_0.dat} \closedcycle;
-\addplot[const plot,fill=riderorange,draw=riderorange,fill opacity=0.24,thick] table[x=x,y=y] {generated/visuals/hist_40_60_1.dat} \closedcycle;
-\nextgroupplot[title={30\%, round 20},xlabel={Raw update norm, trap A},ylabel={Clients},ymin=0,xtick={0.19704,3.87053,7.54403,11.21753},xticklabel style={/pgf/number format/fixed,/pgf/number format/precision=1},extra description/.code={\node[anchor=north east,font=\scriptsize,align=right] at (rel axis cs:0.98,0.96) {Paired norm cert.\\H: 0, FR: 0};}]
-\addplot[const plot,fill=honestblue,draw=honestblue,fill opacity=0.24,thick] table[x=x,y=y] {generated/visuals/hist_30_20_0.dat} \closedcycle;
-\addplot[const plot,fill=riderorange,draw=riderorange,fill opacity=0.24,thick] table[x=x,y=y] {generated/visuals/hist_30_20_1.dat} \closedcycle;
-\nextgroupplot[title={30\%, round 40},xlabel={Raw update norm, trap A},ylabel={Clients},ymin=0,xtick={0.08835,7.61853,15.14871,22.67889},xticklabel style={/pgf/number format/fixed,/pgf/number format/precision=1},extra description/.code={\node[anchor=north east,font=\scriptsize,align=right] at (rel axis cs:0.98,0.96) {Paired norm cert.\\H: 0, FR: 30};}]
-\addplot[const plot,fill=honestblue,draw=honestblue,fill opacity=0.24,thick] table[x=x,y=y] {generated/visuals/hist_30_40_0.dat} \closedcycle;
-\addplot[const plot,fill=riderorange,draw=riderorange,fill opacity=0.24,thick] table[x=x,y=y] {generated/visuals/hist_30_40_1.dat} \closedcycle;
-\nextgroupplot[title={30\%, round 80},xlabel={Raw update norm, trap A},ylabel={Clients},ymin=0,xtick={0.16596,3.57403,6.98210,10.39016},xticklabel style={/pgf/number format/fixed,/pgf/number format/precision=1},extra description/.code={\node[anchor=north east,font=\scriptsize,align=right] at (rel axis cs:0.98,0.96) {Paired norm cert.\\H: 1, FR: 30};}]
-\addplot[const plot,fill=honestblue,draw=honestblue,fill opacity=0.24,thick] table[x=x,y=y] {generated/visuals/hist_30_80_0.dat} \closedcycle;
-\addplot[const plot,fill=riderorange,draw=riderorange,fill opacity=0.24,thick] table[x=x,y=y] {generated/visuals/hist_30_80_1.dat} \closedcycle;
-\end{groupplot}\end{tikzpicture}
-\par\ref{norm-hist-legend}
-\caption{CIFAR-10 non-IID FR3: raw selected trap-A norm distributions. Shared population-derived equal-width bins within each panel, independent axes across panels; colors may overlap. Annotations count FRESH norm certificates on BOTH traps (H: honest, FR: free rider). Confirming cycles are 20/60 at 40\% and 40/80 at 30\%; the other panels show ambiguity. A visual gap alone cannot authorize removal.}\label{fig:norm-hist}
+\pgfplotsset{normpanel/.style={width=0.31\textwidth,height=4.15cm,xmin=0,xmax=25,ymin=0,ymax=70,xtick={0,5,10,15,20,25},ytick={0,20,40,60},axis line style={black!40},ymajorgrids=true,grid style={black!10},tick label style={font=\scriptsize},title style={font=\small},label style={font=\scriptsize},xlabel={Update norm (trap A)},scaled ticks=false}}
+\begin{groupplot}[normpanel,group style={group name=upper,group size=3 by 1,horizontal sep=0.45cm}]
+\nextgroupplot[title={40\% free riders, round 20},ylabel={Client count}]
+\addplot[ybar interval,fill=honestblue!25,draw=honestblue,line width=0.6pt] table[x=x,y=y] {generated/visuals/hist_40_20_0.dat};
+\addplot[ybar interval,fill=none,draw=riderorange,line width=1.25pt] table[x=x,y=y] {generated/visuals/hist_40_20_1.dat};
+\nextgroupplot[title={40\% free riders, round 30}]
+\addplot[ybar interval,fill=honestblue!25,draw=honestblue,line width=0.6pt] table[x=x,y=y] {generated/visuals/hist_40_30_0.dat};
+\addplot[ybar interval,fill=none,draw=riderorange,line width=1.25pt] table[x=x,y=y] {generated/visuals/hist_40_30_1.dat};
+\nextgroupplot[title={40\% free riders, round 60}]
+\addplot[ybar interval,fill=honestblue!25,draw=honestblue,line width=0.6pt] table[x=x,y=y] {generated/visuals/hist_40_60_0.dat};
+\addplot[ybar interval,fill=none,draw=riderorange,line width=1.25pt] table[x=x,y=y] {generated/visuals/hist_40_60_1.dat};
+\end{groupplot}
+\node[font=\scriptsize,align=center] at ([yshift=-1.0cm]upper c1r1.south) {Fresh paired norm evidence\\9 honest, 40 free riders};
+\node[font=\scriptsize,align=center] at ([yshift=-1.0cm]upper c2r1.south) {Fresh paired norm evidence\\0 honest, 0 free riders};
+\node[font=\scriptsize,align=center] at ([yshift=-1.0cm]upper c3r1.south) {Fresh paired norm evidence\\0 honest, 40 free riders};
+\begin{scope}[yshift=-7.25cm]
+\begin{groupplot}[normpanel,group style={group name=lower,group size=3 by 1,horizontal sep=0.45cm}]
+\nextgroupplot[title={30\% free riders, round 20},ylabel={Client count}]
+\addplot[ybar interval,fill=honestblue!25,draw=honestblue,line width=0.6pt] table[x=x,y=y] {generated/visuals/hist_30_20_0.dat};
+\addplot[ybar interval,fill=none,draw=riderorange,line width=1.25pt] table[x=x,y=y] {generated/visuals/hist_30_20_1.dat};
+\nextgroupplot[title={30\% free riders, round 40}]
+\addplot[ybar interval,fill=honestblue!25,draw=honestblue,line width=0.6pt] table[x=x,y=y] {generated/visuals/hist_30_40_0.dat};
+\addplot[ybar interval,fill=none,draw=riderorange,line width=1.25pt] table[x=x,y=y] {generated/visuals/hist_30_40_1.dat};
+\nextgroupplot[title={30\% free riders, round 80}]
+\addplot[ybar interval,fill=honestblue!25,draw=honestblue,line width=0.6pt] table[x=x,y=y] {generated/visuals/hist_30_80_0.dat};
+\addplot[ybar interval,fill=none,draw=riderorange,line width=1.25pt] table[x=x,y=y] {generated/visuals/hist_30_80_1.dat};
+\end{groupplot}
+\end{scope}
+\node[font=\scriptsize,align=center] at ([yshift=-1.0cm]lower c1r1.south) {Fresh paired norm evidence\\0 honest, 0 free riders};
+\node[font=\scriptsize,align=center] at ([yshift=-1.0cm]lower c2r1.south) {Fresh paired norm evidence\\0 honest, 30 free riders};
+\node[font=\scriptsize,align=center] at ([yshift=-1.0cm]lower c3r1.south) {Fresh paired norm evidence\\1 honest, 30 free riders};
+\node[anchor=west,font=\small] at ([xshift=-3.6cm,yshift=1.0cm]upper c2r1.north) {\tikz\draw[draw=honestblue,fill=honestblue!25] (0,0) rectangle (0.36,0.16);\ Honest clients\qquad\tikz\draw[draw=riderorange,line width=1.25pt] (0,0) rectangle (0.36,0.16);\ Free riders};
+\node[font=\small\bfseries] at (7.5cm,-2.0cm) {How evidence leads to removal};
+\node[draw=honestblue!55,fill=honestblue!6,rounded corners=2pt,text width=3.0cm,minimum height=0.85cm,align=center,font=\scriptsize] (first) at (1.5cm,-2.9cm) {First certificate\\on both challenges};
+\node[draw=black!35,fill=black!3,rounded corners=2pt,text width=3.0cm,minimum height=0.85cm,align=center,font=\scriptsize] (retain) at (5.5cm,-2.9cm) {Retain evidence\\across ambiguous cycles};
+\node[draw=honestblue!55,fill=honestblue!6,rounded corners=2pt,text width=3.0cm,minimum height=0.85cm,align=center,font=\scriptsize] (fresh) at (9.5cm,-2.9cm) {Fresh certificate\\for the same component};
+\node[draw=riderorange!70,fill=riderorange!8,rounded corners=2pt,text width=2.3cm,minimum height=0.85cm,align=center,font=\scriptsize] (remove) at (13.2cm,-2.9cm) {Permanent\\removal};
+\draw[->,thick,black!55] (first) -- (retain);\draw[->,thick,black!55] (retain) -- (fresh);\draw[->,thick,black!55] (fresh) -- (remove);
+\end{tikzpicture}
+\caption{Update norm evolution and repeated confirmation in CIFAR-10 non-IID FR3.}\label{fig:norm-hist}
 \end{figure*}

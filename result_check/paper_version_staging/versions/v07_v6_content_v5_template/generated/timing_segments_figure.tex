@@ -1,36 +1,13 @@
 \begin{figure*}[tp]\centering\begin{tikzpicture}
-\begin{groupplot}[group style={group size=2 by 1,horizontal sep=1.6cm,vertical sep=1.6cm},
-width=0.43\textwidth,height=6.2cm,
-grid=major,grid style={black!8},axis line style={black!35},
-tick label style={font=\scriptsize},label style={font=\small},title style={font=\small},
-legend style={font=\scriptsize,draw=none},scaled y ticks=false]
-\nextgroupplot[title={MNIST: 100 measured rounds},ybar stacked,bar width=32pt,ymin=0,ylabel={Mean seconds per round},xtick={1,2},xticklabels={Ours,STD-DAGMM},enlarge x limits=0.7,legend to name=timing-segments-legend,legend columns=3]
-\addplot[fill=blue!65!black,draw=white] table[x=x,y=honest_training_seconds] {\TimingDataDir/segments_mnist.dat};
-\addlegendentry{Client training}
-\addplot[fill=cyan!65!black,draw=white] table[x=x,y=fabrication_seconds] {\TimingDataDir/segments_mnist.dat};
-\addlegendentry{Simulated FR response}
-\addplot[fill=teal!75!black,draw=white] table[x=x,y=aggregation_seconds] {\TimingDataDir/segments_mnist.dat};
-\addlegendentry{Server aggregation}
-\addplot[fill=yellow!70!orange,draw=white] table[x=x,y=evaluation_seconds] {\TimingDataDir/segments_mnist.dat};
-\addlegendentry{Global evaluation}
-\addplot[fill=violet!70,draw=white] table[x=x,y=preparation_seconds] {\TimingDataDir/segments_mnist.dat};
-\addlegendentry{Update preparation}
-\addplot[fill=riderorange,draw=white] table[x=x,y=fit_seconds] {\TimingDataDir/segments_mnist.dat};
-\addlegendentry{Detector fitting}
-\addplot[fill=red!70!black,draw=white] table[x=x,y=score_decision_seconds] {\TimingDataDir/segments_mnist.dat};
-\addlegendentry{Scoring + flag decision}
-\addplot[fill=black!45,draw=white] table[x=x,y=unsegmented_seconds] {\TimingDataDir/segments_mnist.dat};
-\addlegendentry{Ours: undivided round total}
-\nextgroupplot[title={CIFAR-10: 100 measured rounds},ybar stacked,bar width=32pt,ymin=0,ylabel={Mean seconds per round},xtick={1,2},xticklabels={Ours,STD-DAGMM},enlarge x limits=0.7]
-\addplot[fill=blue!65!black,draw=white] table[x=x,y=honest_training_seconds] {\TimingDataDir/segments_cifar10.dat};
-\addplot[fill=cyan!65!black,draw=white] table[x=x,y=fabrication_seconds] {\TimingDataDir/segments_cifar10.dat};
-\addplot[fill=teal!75!black,draw=white] table[x=x,y=aggregation_seconds] {\TimingDataDir/segments_cifar10.dat};
-\addplot[fill=yellow!70!orange,draw=white] table[x=x,y=evaluation_seconds] {\TimingDataDir/segments_cifar10.dat};
-\addplot[fill=violet!70,draw=white] table[x=x,y=preparation_seconds] {\TimingDataDir/segments_cifar10.dat};
-\addplot[fill=riderorange,draw=white] table[x=x,y=fit_seconds] {\TimingDataDir/segments_cifar10.dat};
-\addplot[fill=red!70!black,draw=white] table[x=x,y=score_decision_seconds] {\TimingDataDir/segments_cifar10.dat};
-\addplot[fill=black!45,draw=white] table[x=x,y=unsegmented_seconds] {\TimingDataDir/segments_cifar10.dat};
+\begin{groupplot}[group style={group size=2 by 2,horizontal sep=2.4cm,vertical sep=1.65cm},width=0.40\textwidth,height=7.2cm,xbar,/pgf/bar width=9pt,xmin=0,axis x line*=bottom,axis y line*=left,xmajorgrids=true,grid style={black!9},tick label style={font=\scriptsize},yticklabel style={font=\scriptsize,align=right},label style={font=\scriptsize},title style={font=\small},scaled x ticks=false,nodes near coords,every node near coord/.append style={font=\scriptsize,/pgf/number format/fixed,/pgf/number format/precision=2},enlarge y limits=0.13]
+\nextgroupplot[title={BaitFL: MNIST},xmax=46.2457,ytick={1,2,3,4,5,6},yticklabels={{Warmup ($n=10$)},{Trap response ($n=27$)},{Screening round ($n=2$)},{Removal round ($n=1$)},{Audit round ($n=6$)},{Ordinary round ($n=54$)}},y dir=reverse,xlabel={Mean seconds per phase round}]
+\addplot[fill=honestblue!75,draw=honestblue] coordinates {(36.996540,1) (34.288500,2) (34.362129,3) (34.627188,4) (33.951632,5) (34.036155,6)};
+\nextgroupplot[title={STD-DAGMM: MNIST},xmax=42.4823,ytick={1,2,3,4,5,6,7},yticklabels={{Local training},{FR responses},{Aggregation},{Evaluation},{Preparation},{Detector fitting},{Scoring and flags}},y dir=reverse,xlabel={Mean seconds per component}]
+\addplot[fill=riderorange!75,draw=riderorange] coordinates {(33.985844,1) (0.062138,2) (0.041707,3) (2.143647,4) (0.044717,5) (13.629330,6) (0.278405,7)};
+\nextgroupplot[title={BaitFL: CIFAR-10},xmax=147.2013,ytick={1,2,3,4,5,6},yticklabels={{Warmup ($n=10$)},{Trap response ($n=63$)},{Screening round ($n=6$)},{Removal round ($n=1$)},{Audit round ($n=2$)},{Ordinary round ($n=18$)}},y dir=reverse,xlabel={Mean seconds per phase round}]
+\addplot[fill=honestblue!75,draw=honestblue] coordinates {(117.761038,1) (82.037954,2) (86.055769,3) (73.498257,4) (76.756040,5) (77.510056,6)};
+\nextgroupplot[title={STD-DAGMM: CIFAR-10},xmax=95.2603,ytick={1,2,3,4,5,6,7},yticklabels={{Local training},{FR responses},{Aggregation},{Evaluation},{Preparation},{Detector fitting},{Scoring and flags}},y dir=reverse,xlabel={Mean seconds per component}]
+\addplot[fill=riderorange!75,draw=riderorange] coordinates {(76.208271,1) (0.254959,2) (0.188507,3) (4.546805,4) (0.127403,5) (45.029324,6) (0.883349,7)};
 \end{groupplot}\end{tikzpicture}
-\par\ref{timing-segments-legend}
-\caption{Mean timing over 100 executed rounds per method and dataset: non-IID FR3, seed 42, 100 initial clients, 40\% free riders. STD-DAGMM has measured task components; our gray bars are undivided whole-round totals, not zero-cost detection. Both means include rounds 1--100. Different trajectories, timer coverage and host load prevent a causal speedup claim.}\label{fig:timing-segments}
+\caption{BaitFL round phases and STD-DAGMM computation stages.}\label{fig:timing-segments}
 \end{figure*}

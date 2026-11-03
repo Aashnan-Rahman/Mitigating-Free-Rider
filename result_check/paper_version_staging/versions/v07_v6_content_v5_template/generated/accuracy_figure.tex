@@ -1,55 +1,42 @@
-\begin{figure*}[tp]\centering
-\begin{tikzpicture}
-\begin{groupplot}[group style={group size=2 by 4,horizontal sep=0.9cm,vertical sep=1.25cm},
-width=0.455\textwidth,height=4.6cm,xmin=60,xmax=100,
-grid=major,xtick={0,30,60,100},tick label style={font=\scriptsize},
-title style={font=\small},label style={font=\scriptsize},legend style={font=\scriptsize,draw=none},
-legend columns=4]
-\nextgroupplot[title={MNIST FR1},ylabel={Test accuracy (\%)},legend to name=fig:accuracy-legend,ymin=98.640,ymax=99.160,xtick={60,80,100},scaled y ticks=false,yticklabel style={/pgf/number format/fixed,/pgf/number format/precision=1}]
-\addplot[blue,solid,thick] table[x=round,y expr=100*\thisrow{accuracy}] {generated/mnist_iid_FR1_p30.dat};
-\addlegendentry{30\% IID}
-\addplot[red!80!black,dashed,thick] table[x=round,y expr=100*\thisrow{accuracy}] {generated/mnist_noniid_FR1_p30.dat};
-\addlegendentry{30\% Non-IID}
-\addplot[teal!70!black,dotted,thick] table[x=round,y expr=100*\thisrow{accuracy}] {generated/mnist_iid_FR1_p40.dat};
-\addlegendentry{40\% IID}
-\addplot[orange!90!black,dashdotted,thick] table[x=round,y expr=100*\thisrow{accuracy}] {generated/mnist_noniid_FR1_p40.dat};
-\addlegendentry{40\% Non-IID}
-\nextgroupplot[title={MNIST FR2},ymin=98.640,ymax=99.160,xtick={60,80,100},scaled y ticks=false,yticklabel style={/pgf/number format/fixed,/pgf/number format/precision=1}]
-\addplot[blue,solid,thick] table[x=round,y expr=100*\thisrow{accuracy}] {generated/mnist_iid_FR2_p30.dat};
-\addplot[red!80!black,dashed,thick] table[x=round,y expr=100*\thisrow{accuracy}] {generated/mnist_noniid_FR2_p30.dat};
-\addplot[teal!70!black,dotted,thick] table[x=round,y expr=100*\thisrow{accuracy}] {generated/mnist_iid_FR2_p40.dat};
-\addplot[orange!90!black,dashdotted,thick] table[x=round,y expr=100*\thisrow{accuracy}] {generated/mnist_noniid_FR2_p40.dat};
-\nextgroupplot[title={MNIST FR3},ymin=98.560,ymax=99.150,xtick={60,80,100},scaled y ticks=false,yticklabel style={/pgf/number format/fixed,/pgf/number format/precision=1}]
-\addplot[blue,solid,thick] table[x=round,y expr=100*\thisrow{accuracy}] {generated/mnist_iid_FR3_p30.dat};
-\addplot[red!80!black,dashed,thick] table[x=round,y expr=100*\thisrow{accuracy}] {generated/mnist_noniid_FR3_p30.dat};
-\addplot[teal!70!black,dotted,thick] table[x=round,y expr=100*\thisrow{accuracy}] {generated/mnist_iid_FR3_p40.dat};
-\addplot[orange!90!black,dashdotted,thick] table[x=round,y expr=100*\thisrow{accuracy}] {generated/mnist_noniid_FR3_p40.dat};
-\nextgroupplot[title={MNIST FR4},ymin=98.520,ymax=99.110,xtick={60,80,100},scaled y ticks=false,yticklabel style={/pgf/number format/fixed,/pgf/number format/precision=1}]
-\addplot[blue,solid,thick] table[x=round,y expr=100*\thisrow{accuracy}] {generated/mnist_iid_FR4_p30.dat};
-\addplot[red!80!black,dashed,thick] table[x=round,y expr=100*\thisrow{accuracy}] {generated/mnist_noniid_FR4_p30.dat};
-\addplot[teal!70!black,dotted,thick] table[x=round,y expr=100*\thisrow{accuracy}] {generated/mnist_iid_FR4_p40.dat};
-\addplot[orange!90!black,dashdotted,thick] table[x=round,y expr=100*\thisrow{accuracy}] {generated/mnist_noniid_FR4_p40.dat};
-\nextgroupplot[title={CIFAR-10 FR1},ylabel={Test accuracy (\%)},ymin=73.650,ymax=78.230,xtick={60,80,100},scaled y ticks=false,yticklabel style={/pgf/number format/fixed,/pgf/number format/precision=1}]
-\addplot[blue,solid,thick] table[x=round,y expr=100*\thisrow{accuracy}] {generated/cifar10_iid_FR1_p30.dat};
-\addplot[red!80!black,dashed,thick] table[x=round,y expr=100*\thisrow{accuracy}] {generated/cifar10_noniid_FR1_p30.dat};
-\addplot[teal!70!black,dotted,thick] table[x=round,y expr=100*\thisrow{accuracy}] {generated/cifar10_iid_FR1_p40.dat};
-\addplot[orange!90!black,dashdotted,thick] table[x=round,y expr=100*\thisrow{accuracy}] {generated/cifar10_noniid_FR1_p40.dat};
-\nextgroupplot[title={CIFAR-10 FR2},ymin=73.590,ymax=78.200,xtick={60,80,100},scaled y ticks=false,yticklabel style={/pgf/number format/fixed,/pgf/number format/precision=1}]
-\addplot[blue,solid,thick] table[x=round,y expr=100*\thisrow{accuracy}] {generated/cifar10_iid_FR2_p30.dat};
-\addplot[red!80!black,dashed,thick] table[x=round,y expr=100*\thisrow{accuracy}] {generated/cifar10_noniid_FR2_p30.dat};
-\addplot[teal!70!black,dotted,thick] table[x=round,y expr=100*\thisrow{accuracy}] {generated/cifar10_iid_FR2_p40.dat};
-\addplot[orange!90!black,dashdotted,thick] table[x=round,y expr=100*\thisrow{accuracy}] {generated/cifar10_noniid_FR2_p40.dat};
-\nextgroupplot[title={CIFAR-10 FR3},xlabel={Round},ymin=71.720,ymax=78.360,xtick={60,80,100},scaled y ticks=false,yticklabel style={/pgf/number format/fixed,/pgf/number format/precision=1}]
-\addplot[blue,solid,thick] table[x=round,y expr=100*\thisrow{accuracy}] {generated/cifar10_iid_FR3_p30.dat};
-\addplot[red!80!black,dashed,thick] table[x=round,y expr=100*\thisrow{accuracy}] {generated/cifar10_noniid_FR3_p30.dat};
-\addplot[teal!70!black,dotted,thick] table[x=round,y expr=100*\thisrow{accuracy}] {generated/cifar10_iid_FR3_p40.dat};
-\addplot[orange!90!black,dashdotted,thick] table[x=round,y expr=100*\thisrow{accuracy}] {generated/cifar10_noniid_FR3_p40.dat};
-\nextgroupplot[title={CIFAR-10 FR4},xlabel={Round},ymin=72.870,ymax=78.270,xtick={60,80,100},scaled y ticks=false,yticklabel style={/pgf/number format/fixed,/pgf/number format/precision=1}]
-\addplot[blue,solid,thick] table[x=round,y expr=100*\thisrow{accuracy}] {generated/cifar10_iid_FR4_p30.dat};
-\addplot[red!80!black,dashed,thick] table[x=round,y expr=100*\thisrow{accuracy}] {generated/cifar10_noniid_FR4_p30.dat};
-\addplot[teal!70!black,dotted,thick] table[x=round,y expr=100*\thisrow{accuracy}] {generated/cifar10_iid_FR4_p40.dat};
-\addplot[orange!90!black,dashdotted,thick] table[x=round,y expr=100*\thisrow{accuracy}] {generated/cifar10_noniid_FR4_p40.dat};
+\begin{figure*}[tp]\centering\begin{tikzpicture}
+\begin{groupplot}[group style={group size=2 by 2,horizontal sep=0.8cm,vertical sep=1.4cm},width=0.455\textwidth,height=5.25cm,axis line style={black!40},grid=major,grid style={black!8},tick label style={font=\scriptsize},label style={font=\scriptsize},title style={font=\small},scaled y ticks=false]
+\nextgroupplot[title={MNIST, 30\%},xmin=60,xmax=100,xtick={60,70,80,90,100},ylabel={Test accuracy (\%)},xlabel={Round}]
+\addplot[draw=none,name path=lower] table[col sep=comma,x=round,y=baseline_q1] {generated/comparison/accuracy_mnist_30.csv};
+\addplot[draw=none,name path=upper] table[col sep=comma,x=round,y=baseline_q3] {generated/comparison/accuracy_mnist_30.csv};
+\addplot[fill=riderorange,fill opacity=0.10,draw=none] fill between[of=lower and upper];
+\addplot[riderorange,thick,dashed] table[col sep=comma,x=round,y=baseline] {generated/comparison/accuracy_mnist_30.csv};
+\addplot[draw=none,name path=lower] table[col sep=comma,x=round,y=bait_q1] {generated/comparison/accuracy_mnist_30.csv};
+\addplot[draw=none,name path=upper] table[col sep=comma,x=round,y=bait_q3] {generated/comparison/accuracy_mnist_30.csv};
+\addplot[fill=honestblue,fill opacity=0.10,draw=none] fill between[of=lower and upper];
+\addplot[honestblue,thick] table[col sep=comma,x=round,y=bait] {generated/comparison/accuracy_mnist_30.csv};
+\nextgroupplot[title={MNIST, 40\%},xmin=60,xmax=100,xtick={60,70,80,90,100},xlabel={Round}]
+\addplot[draw=none,name path=lower] table[col sep=comma,x=round,y=baseline_q1] {generated/comparison/accuracy_mnist_40.csv};
+\addplot[draw=none,name path=upper] table[col sep=comma,x=round,y=baseline_q3] {generated/comparison/accuracy_mnist_40.csv};
+\addplot[fill=riderorange,fill opacity=0.10,draw=none] fill between[of=lower and upper];
+\addplot[riderorange,thick,dashed] table[col sep=comma,x=round,y=baseline] {generated/comparison/accuracy_mnist_40.csv};
+\addplot[draw=none,name path=lower] table[col sep=comma,x=round,y=bait_q1] {generated/comparison/accuracy_mnist_40.csv};
+\addplot[draw=none,name path=upper] table[col sep=comma,x=round,y=bait_q3] {generated/comparison/accuracy_mnist_40.csv};
+\addplot[fill=honestblue,fill opacity=0.10,draw=none] fill between[of=lower and upper];
+\addplot[honestblue,thick] table[col sep=comma,x=round,y=bait] {generated/comparison/accuracy_mnist_40.csv};
+\nextgroupplot[title={CIFAR-10, 30\%},xmin=60,xmax=100,xtick={60,70,80,90,100},ylabel={Test accuracy (\%)},xlabel={Round}]
+\addplot[draw=none,name path=lower] table[col sep=comma,x=round,y=baseline_q1] {generated/comparison/accuracy_cifar10_30.csv};
+\addplot[draw=none,name path=upper] table[col sep=comma,x=round,y=baseline_q3] {generated/comparison/accuracy_cifar10_30.csv};
+\addplot[fill=riderorange,fill opacity=0.10,draw=none] fill between[of=lower and upper];
+\addplot[riderorange,thick,dashed] table[col sep=comma,x=round,y=baseline] {generated/comparison/accuracy_cifar10_30.csv};
+\addplot[draw=none,name path=lower] table[col sep=comma,x=round,y=bait_q1] {generated/comparison/accuracy_cifar10_30.csv};
+\addplot[draw=none,name path=upper] table[col sep=comma,x=round,y=bait_q3] {generated/comparison/accuracy_cifar10_30.csv};
+\addplot[fill=honestblue,fill opacity=0.10,draw=none] fill between[of=lower and upper];
+\addplot[honestblue,thick] table[col sep=comma,x=round,y=bait] {generated/comparison/accuracy_cifar10_30.csv};
+\nextgroupplot[title={CIFAR-10, 40\%},xmin=60,xmax=100,xtick={60,70,80,90,100},xlabel={Round}]
+\addplot[draw=none,name path=lower] table[col sep=comma,x=round,y=baseline_q1] {generated/comparison/accuracy_cifar10_40.csv};
+\addplot[draw=none,name path=upper] table[col sep=comma,x=round,y=baseline_q3] {generated/comparison/accuracy_cifar10_40.csv};
+\addplot[fill=riderorange,fill opacity=0.10,draw=none] fill between[of=lower and upper];
+\addplot[riderorange,thick,dashed] table[col sep=comma,x=round,y=baseline] {generated/comparison/accuracy_cifar10_40.csv};
+\addplot[draw=none,name path=lower] table[col sep=comma,x=round,y=bait_q1] {generated/comparison/accuracy_cifar10_40.csv};
+\addplot[draw=none,name path=upper] table[col sep=comma,x=round,y=bait_q3] {generated/comparison/accuracy_cifar10_40.csv};
+\addplot[fill=honestblue,fill opacity=0.10,draw=none] fill between[of=lower and upper];
+\addplot[honestblue,thick] table[col sep=comma,x=round,y=bait] {generated/comparison/accuracy_cifar10_40.csv};
 \end{groupplot}\end{tikzpicture}
-\par\ref{fig:accuracy-legend}
-\caption{Late-training global test accuracy (rounds 60--100; the representative replication). Each panel uses its OWN data-derived vertical range in percentage points to expose differences hidden by a 0--100 percent scale. Compare numeric ticks, not apparent slope across panels. Full trajectories appear in the appendix; no smoothing or runs are omitted.}\label{fig:accuracy}
+\par\smallskip{\scriptsize\textcolor{honestblue}{\rule{0.45cm}{0.8pt}}\ BaitFL\qquad\textcolor{riderorange}{\textbf{-- --}}\ No defense}
+\caption{Late-training accuracy with and without BaitFL.}\label{fig:accuracy}
 \end{figure*}

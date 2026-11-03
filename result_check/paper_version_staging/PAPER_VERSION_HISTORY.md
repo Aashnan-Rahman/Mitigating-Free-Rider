@@ -282,6 +282,54 @@ Multiple-seed Table 1 and experimental setup revision, 30 October 2026:
   setup and revised Table 1 were visually inspected. Table 1 precedes the
   diagnostic figures and retains all three-seed outcomes, including false removals.
 
+Table reporting and Figure 3 revision, 31 October 2026:
+
+- Simplify the free-rider response preamble to its notation definition.
+- Remove explanations beneath numeric tables and integrate definitions and
+  aggregation rules into the relevant manuscript segments with table references.
+- Extend the validated three-seed reporting to honest-client exclusion, CPU
+  resources, and both detailed attack tables. Include all honest removals and
+  quarantine cases. Table 2 groups dataset/partition labels and separates client
+  counts from exclusion-duration columns.
+- Regenerate historical and native-workflow timing comparisons from their own
+  measured inputs, retaining matched single-case conditions. Recalculate the
+  architecture-derived payload table. Do not pool these comparisons into study
+  means or alter experimental source logs.
+- Redesign Figure 3 into chronological rows with common axes, a separate legend,
+  outside annotations, and an evidence-confirmation diagram. Verify histogram
+  population totals and paired norm-certificate counts. Preserve Figure 1.
+- Update the manuscript revision date to 31 October 2026.
+- PDFLaTeX/BibTeX compilation passes without unresolved citations/references,
+  overfull boxes, or oversized floats. Visually inspect the redesigned Figure 3
+  and grouped Table 2. All numeric table notes are removed from beneath tables.
+
+Baseline comparisons and figure revision, 1 November 2026:
+
+- Make Experimental Setup black. Keep subsequent result text red and retain
+  code v15.4 and paper v7 in the updated revision stamp.
+- Expand the two score figures to 16 panels per dataset with four columns,
+  both attacker proportions and partitions, short captions, and separate legends.
+  Explain the diagnostics in referenced prose. Add multirows to Table 3.
+- Replace Table 4's previous-version comparison with the completed no-defense
+  FedAvg baseline grid. Validate all 32 primary matched pairs and three additional
+  CIFAR-10 pairs, including identical warmup accuracies and all-client aggregation.
+  Keep the additional incomplete-grid replication separate in the appendix.
+- Add matched baseline accuracy trajectories, accuracy changes, timing changes,
+  and measured late-round variability. Preserve individual accuracy losses and
+  increases in execution time rather than reporting only improvements.
+- Replace the overlapping resource figure with baseline changes. Rebuild the
+  timing breakdown as BaitFL round phases beside STD-DAGMM computation stages,
+  followed by full-horizon mean round time and actual timing-difference plots.
+  Report missing BaitFL operation timers plainly in the text.
+- Retain all raw experiment logs and measured values. Add source-hashed paired
+  comparison exports and a reporting regeneration script. Remove the historical
+  code-version comparison from the manuscript and active table generator.
+- Compile the 28-page PDF with PDFLaTeX/BibTeX, resolving all references and
+  citations without overfull boxes or oversized floats. Visually inspect setup
+  color, grouped Tables 3/4, the expanded score figures, baseline effects, and
+  timing breakdowns. Widen plot separation to remove label collisions and keep
+  figure groups near their referenced discussions.
+
 For each substantive revision:
 
 1. Continue editing the working `Paper/paper.tex`.

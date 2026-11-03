@@ -1,21 +1,22 @@
 \begin{figure*}[tp]\centering\begin{tikzpicture}
-\begin{groupplot}[group style={group size=2 by 1,horizontal sep=1.6cm,vertical sep=1.6cm},
-width=0.43\textwidth,height=6.4cm,
-grid=major,grid style={black!8},axis line style={black!35},
-tick label style={font=\scriptsize},label style={font=\small},title style={font=\small},
-legend style={font=\scriptsize,draw=none},scaled y ticks=false]
-\nextgroupplot[title={MNIST},xmin=0,xmax=101,ymin=0,xlabel={Round},ylabel={Measured seconds},xtick={1,20,40,60,80,100},legend to name=timing-trace-legend,legend columns=3]
-\addplot[black!65,thick] table[x=round,y=seconds] {\TimingDataDir/timeline_mnist.dat};
-\addlegendentry{Ours: actual 100 rounds}
-\addplot[only marks,mark=*,mark size=2pt,color=riderorange] table[x=round,y=seconds] {\TimingDataDir/cycle_rounds_mnist.dat};
-\addlegendentry{Full-cycle decision rounds}
-\addplot[blue!70!black,thick] table[x=round,y=seconds] {\TimingDataDir/std_rounds_mnist.dat};
-\addlegendentry{STD: actual rounds 1--100}
-\nextgroupplot[title={CIFAR-10},xmin=0,xmax=101,ymin=0,xlabel={Round},ylabel={Measured seconds},xtick={1,20,40,60,80,100}]
-\addplot[black!65,thick] table[x=round,y=seconds] {\TimingDataDir/timeline_cifar10.dat};
-\addplot[only marks,mark=*,mark size=2pt,color=riderorange] table[x=round,y=seconds] {\TimingDataDir/cycle_rounds_cifar10.dat};
-\addplot[blue!70!black,thick] table[x=round,y=seconds] {\TimingDataDir/std_rounds_cifar10.dat};
+\begin{groupplot}[group style={group size=2 by 2,horizontal sep=1.1cm,vertical sep=1.5cm},width=0.44\textwidth,height=5.3cm,xmin=1,xmax=100,xtick={1,20,40,60,80,100},axis line style={black!40},grid=major,grid style={black!8},tick label style={font=\scriptsize},label style={font=\scriptsize},title style={font=\small},scaled y ticks=false]
+\nextgroupplot[title={MNIST},ymin=0,ylabel={Seconds per round}]
+\addplot[black!55,dashed,thin] table[col sep=comma,x=round,y=baseline] {generated/comparison/timing_mnist.csv};
+\addplot[honestblue,thick] table[col sep=comma,x=round,y=bait] {generated/comparison/timing_mnist.csv};
+\addplot[riderorange,thick] table[col sep=comma,x=round,y=std] {generated/comparison/timing_mnist.csv};
+\nextgroupplot[title={CIFAR-10},ymin=0]
+\addplot[black!55,dashed,thin] table[col sep=comma,x=round,y=baseline] {generated/comparison/timing_cifar10.csv};
+\addplot[honestblue,thick] table[col sep=comma,x=round,y=bait] {generated/comparison/timing_cifar10.csv};
+\addplot[riderorange,thick] table[col sep=comma,x=round,y=std] {generated/comparison/timing_cifar10.csv};
+\nextgroupplot[title={MNIST timing difference},ylabel={STD-DAGMM minus BaitFL (s)},ymin=0,xlabel={Round},extra y ticks={0},extra y tick style={grid=major}]
+\addplot[violet!75!black,thick] table[col sep=comma,x=round,y=gap] {generated/comparison/timing_mnist.csv};
+\addplot[black!65,dashed] coordinates {(1,15.778103) (100,15.778103)};
+\node[anchor=north east,font=\scriptsize,fill=white,inner sep=2pt] at (rel axis cs:0.98,0.98) {Mean gap: 15.78 s};
+\nextgroupplot[title={CIFAR-10 timing difference},xlabel={Round},extra y ticks={0},extra y tick style={grid=major}]
+\addplot[violet!75!black,thick] table[col sep=comma,x=round,y=gap] {generated/comparison/timing_cifar10.csv};
+\addplot[black!65,dashed] coordinates {(1,42.393344) (100,42.393344)};
+\node[anchor=north east,font=\scriptsize,fill=white,inner sep=2pt] at (rel axis cs:0.98,0.98) {Mean gap: 42.39 s};
 \end{groupplot}\end{tikzpicture}
-\par\ref{timing-trace-legend}
-\caption{Actual per-round durations over 100 executed rounds for both methods. Our trajectories include changing active-client counts and probing schedules; STD-DAGMM retains all 100 clients. Markers indicate full-cycle decisions, not their isolated computational cost. Axis scales differ by dataset.}\label{fig:timing-traces}
+\par\smallskip{\scriptsize\textcolor{honestblue}{\rule{0.4cm}{0.8pt}}\ BaitFL\qquad\textcolor{riderorange}{\rule{0.4cm}{0.8pt}}\ STD-DAGMM\qquad\textcolor{black!55}{\textbf{-- --}}\ No defense}
+\caption{Round timing trajectories and their measured differences.}\label{fig:timing-traces}
 \end{figure*}

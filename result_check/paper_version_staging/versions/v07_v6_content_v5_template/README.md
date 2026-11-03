@@ -10,8 +10,8 @@ The title is "BaitFL: Lightweight Trap-Based Free-Rider Detection and Mitigation
 in Federated Learning." The introduction was rewritten around federated
 learning, resource-saving free riders, detection under heterogeneity, and the
 BaitFL approach, followed by four contributions. Two supporting references were
-added for the background discussion. Diagnostic figures and detailed case tables
-are retained from v6. Table 1 and associated study claims now use all completed
+added for the background discussion. Diagnostic figures illustrate individual
+executions. All primary study tables and associated claims use all completed
 replications described below. The duplicated Introduction heading is removed
 and build notes are updated. Experiment logs are unchanged. V5 and v6 are preserved.
 
@@ -56,11 +56,16 @@ bibliography. Legacy generated status/provenance files describe the original
 diagnostic replication. The current primary summary is
 `generated/multiseed/summary.json` and its associated provenance.
 
-Table 1 uses three completed v15.4 replications for every configuration, with
+The detection, honest-client exclusion, CPU resource, and detailed attack tables
+use three completed v15.4 replications for every configuration, with
 recorded seeds 42, 43, and 73. Run `./build_multiseed_table.ps1` from this
-directory to validate and regenerate it. This checks 96 completed executions,
+directory to validate and regenerate them. This checks 96 completed executions,
 matching settings/policy and six recorded source hashes, initial paired coverage,
-removal identities/counts, and final accuracy and round-time consistency. The
+removal identities/counts, client-level exclusion records, and final accuracy
+and round-time consistency. It calls `write_study_tables.ps1` for the additional
+study tables and `refresh_context_tables.ps1` for measured STD-DAGMM component
+times and calculated payloads. Their existing comparison
+conditions remain separate from the replicated study. The
 source snapshots match recorded hashes after normalizing checkout line endings;
 both raw and normalized hashes are retained in the provenance file.
 
@@ -75,8 +80,55 @@ The repeated experiments remove all free riders but include three honest
 removals, two in MNIST non-IID FR3 at 40% and one in its FR4 counterpart.
 Overall pooled precision is 99.91%; the mean precision in Table 1's MNIST
 non-IID 40% group is 99.39%. Abstract, results, analysis, and conclusion claims
-are updated accordingly. Individual diagnostic plots and case tables remain
-explicitly identified as representative executions.
+are updated accordingly. Individual diagnostic plots remain explicitly
+identified as representative executions.
+
+The 31 October revision removes explanatory notes beneath tables and moves
+their definitions into the referenced result segments. Table 2 uses grouped
+client/client-round headers, merged dataset and partition labels, and separate
+dataset blocks. It includes all FR3 configurations and the FR4 configurations
+with honest quarantine or removal. Counts and per-execution exclusion percentages
+are averaged across seeds. All 32 honest quarantine cases, 620 quarantine
+client rounds, and three permanent honest removals are retained.
+
+Figure 3 is rebuilt with `./build_norm_figure.ps1`. It has one chronological row
+per attacker proportion, common axis limits, a separate color legend, counts
+below the axes, and a diagram showing evidence retention and later confirmation.
+The script verifies every plotted population and fresh paired norm-certificate
+count. The threat-model preamble now only introduces the free-rider response
+notation.
+
+The 1 November revision makes Experimental Setup black and expands Figures 1
+and 2 to 16 panels each, covering both shares, both partitions, and all attacks.
+Four panels appear per row, with a separate class legend and short captions.
+The manuscript text explains score averaging, the display transform, and axes.
+Table 3 now merges repeated dataset and partition labels.
+
+Table 4 replaces the previous-code-version comparison with actual no-defense
+FedAvg results. `build_baseline_comparison.ps1` validates the complete shared
+seed-42 grid (32 matched cases), plus three completed CIFAR-10 seed-73 cases.
+It checks matching configurations, exact warmup accuracy agreement, every
+round and client response, and absence of traps, filters, or removals. The
+primary table averages four attacks within each configuration. The additional
+three cases have a separate appendix table. These comparisons do not pool a
+single baseline seed with three BaitFL seeds. Paired records, trajectories,
+summary statistics, and input hashes are in `generated/comparison/`.
+
+Figure 5 adds no-defense accuracy curves with interquartile bands across
+matched attack/partition settings. Figure 6 replaces overlapping process-resource
+bars with accuracy and timing changes against that baseline. Figure 7 compares
+BaitFL's measured whole-round phase times with STD-DAGMM component timers.
+BaitFL trap generation, screening, and removal have no separate operation
+timers in the original logs, so those costs are not fabricated. Figure 8 shows
+full-horizon mean round times for all three workflows. Figure 9 shows both
+trajectories and the actual STD-DAGMM-minus-BaitFL difference. No timing values
+are altered to enlarge the gap.
+
+Run `./rebuild_reporting.ps1` to validate and regenerate the study tables,
+baseline comparisons, and figures in the required order. It calls
+`build_multiseed_table.ps1`, `build_baseline_comparison.ps1`,
+`build_norm_figure.ps1`, and `build_review_figures.ps1`. Run `./build.ps1`
+afterward to compile. The manuscript date is 1 November 2026.
 
 Build from any directory with:
 

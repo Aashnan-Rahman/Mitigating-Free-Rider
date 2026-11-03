@@ -1,0 +1,29 @@
+{
+  "matched_cases": 35,
+  "primary_cases": 32,
+  "primary_accuracy_wins": 24,
+  "primary_accuracy_ties": 1,
+  "primary_accuracy_losses": 7,
+  "dataset_summary": [
+    {
+      "dataset": "mnist",
+      "mean_accuracy_change_pp": 0.10062500000000141,
+      "min_accuracy_change_pp": -0.06999999999999229,
+      "max_accuracy_change_pp": 0.48999999999999044,
+      "baseline_late_sd_pp": 0.033695839603647915,
+      "bait_late_sd_pp": 0.027578462154459145,
+      "baseline_seconds": 40.571495876627274,
+      "bait_seconds": 38.81970028300002
+    },
+    {
+      "dataset": "cifar10",
+      "mean_accuracy_change_pp": 0.6418749999999981,
+      "min_accuracy_change_pp": -0.5000000000000004,
+      "max_accuracy_change_pp": 2.3399999999999976,
+      "baseline_late_sd_pp": 0.24430003592249172,
+      "bait_late_sd_pp": 0.21267650514090627,
+      "baseline_seconds": 85.38154147225103,
+      "bait_seconds": 92.12374985099994
+    }
+  ]
+}
