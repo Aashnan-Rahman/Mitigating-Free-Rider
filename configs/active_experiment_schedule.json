@@ -1,5 +1,7 @@
 {
   "auto_resume": true,
+  "priority_job": "configs/mnist_segment_timing_20261103.json",
+  "priority_status": "results/mnist_segment_timing_20261103/experiment_status.json",
   "workflow": "v15_detection",
   "plan": "configs/v15_4_cifar10_seed73_fr30_fr40_plan.json",
   "queue": "configs/replication_with_baselines_seed73_seed43_queue.json",

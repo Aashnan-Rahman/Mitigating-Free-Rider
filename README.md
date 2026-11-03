@@ -11,6 +11,42 @@ The rewritten full-study manuscript is
 with v2-style sections, all 32 completed v15.4 runs, separate result/security
 analysis, and per-run appendices. Rebuild with `build_paper_v6_full_study.py --compile`.
 
+## MNIST segmented timing interlude (3 November 2026)
+
+`configs/mnist_segment_timing_20261103.json` requests two sequential 100-round
+MNIST non-IID / FR3 / 40% runs, seed 42, 100 clients, three local SGD epochs and
+six CPU threads: first instrumented v15.4, then full-vector STD-DAGMM. The current
+CIFAR no-defense queue is temporarily stopped with round 85 durable, not discarded.
+The active selector's priority job is handled by the existing restart/watchdog
+task; after both measured runs and report validation it clears only its own
+pause marker, restores the original selector and immediately resumes that queue.
+Failures leave the original queue paused and are retried by the watchdog.
+
+`segment_timing.py` adds opt-in AST timing context managers to an in-memory copy
+of the canonical v15.4 function. It does not modify any detector/training source,
+RNG expression or decision. A synthetic 30-round equivalence test compares every
+aggregated model tensor, client record and decision record. Timers are exclusive:
+trap creation is separated from surrounding scheduling. Training, fabrication,
+client evaluation, feature extraction, decisions, aggregation, global evaluation,
+research reporting, checkpointing and unassigned work are recorded separately.
+
+STD uses the same full-update compression + reconstruction metrics + input STD,
+joint objective, mixture scoring mechanism described in
+[Lin et al.](https://arxiv.org/html/1911.12560). No verified author implementation
+or detector epoch/reset schedule was established. The existing FRIDA-described
+128/64/32, K=3 reproduction, Adam .001, batch20 and **five fresh epochs per round**
+are explicit experimental choices, not original-author settings or convergence
+claims. Epoch losses/times and mixture finalization are retained. Its parent
+instrumentation also measures reporting/checkpoints, while subprocess startup,
+serialization and other unassigned wall time remain separately visible.
+
+Outputs use `results/mnist_segment_timing_20261103/`: per-round CSVs, provenance,
+checkpoint recovery, a segment comparison CSV/PNG/PDF and conditional/amortized
+phase tables. Instrumentation CSV-publication cost is recorded separately and
+excluded from round totals. There is no actual network-communication measurement.
+Do not compare our canonical older `round_time_seconds` (which excluded checkpoint
+publication) with new full-wall totals; use the new aligned segment files.
+
 ## Matched no-defense replication baselines (29 October 2026)
 
 The existing detection queue is followed by **64 no-defense baseline runs**:
