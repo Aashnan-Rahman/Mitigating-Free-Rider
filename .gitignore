@@ -28,13 +28,13 @@ previous_checkpoint.pt
 /results/std_dagmm_100_seed42_fr40/.runtime/
 /results/std_dagmm_recovery.log
 # Completed no-detection records/final models are archived; runtime locks stay local.
-/results/fedavg_*_baseline_seed42_fr30_fr40/.runtime/
-/results/fedavg_*_baseline_seed42_fr30_fr40/*/.runtime/
+/results/fedavg_*_baseline_seed*_fr30_fr40/.runtime/
+/results/fedavg_*_baseline_seed*_fr30_fr40/*/.runtime/
 # Active/queued no-defense replications remain local until their batch completes.
-/results/fedavg_cifar10_baseline_seed73_fr30_fr40/
 /results/fedavg_cifar10_baseline_seed43_fr30_fr40/
 /results/fedavg_mnist_baseline_seed73_fr30_fr40/
 /results/fedavg_mnist_baseline_seed43_fr30_fr40/
-/results/mnist_segment_timing_20261103/
+/results/mnist_segment_timing_20261103/.runtime/
+/results/mnist_segment_timing_20261103/*/.runtime/
 /results/mnist_segment_timing_20261103_validation_attempt/
 /results/timing_interlude_recovery.log

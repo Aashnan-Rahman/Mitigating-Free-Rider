@@ -15,8 +15,9 @@ analysis, and per-run appendices. Rebuild with `build_paper_v6_full_study.py --c
 
 `configs/mnist_segment_timing_20261103.json` requests two sequential 100-round
 MNIST non-IID / FR3 / 40% runs, seed 42, 100 clients, three local SGD epochs and
-six CPU threads: first instrumented v15.4, then full-vector STD-DAGMM. The current
-CIFAR no-defense queue is temporarily stopped with round 85 durable, not discarded.
+six CPU threads: first instrumented v15.4, then full-vector STD-DAGMM. **Both runs
+completed all 100 measured rounds**, their reports were generated, and the CIFAR
+no-defense queue resumed from its round-85 checkpoint. The temporary pause is over.
 The active selector's priority job is handled by the existing restart/watchdog
 task; after both measured runs and report validation it clears only its own
 pause marker, restores the original selector and immediately resumes that queue.
@@ -46,6 +47,16 @@ phase tables. Instrumentation CSV-publication cost is recorded separately and
 excluded from round totals. There is no actual network-communication measurement.
 Do not compare our canonical older `round_time_seconds` (which excluded checkpoint
 publication) with new full-wall totals; use the new aligned segment files.
+
+The completed timing evidence is versioned in
+[`results/mnist_segment_timing_20261103/`](results/mnist_segment_timing_20261103/),
+including both runs' CSVs/protocols, per-round STD fitting records and logs,
+[`segment_comparison.csv`](results/mnist_segment_timing_20261103/segment_comparison.csv),
+[`segment_comparison.pdf`](results/mnist_segment_timing_20261103/segment_comparison.pdf)
+and phase tables. Measured full-wall averages are **40.924 s/round** for ours and
+**62.833 s/round** for this STD-DAGMM reproduction. These include checkpoint/logging
+and separately identified harness work; they are not detector-only timings.
+Locks, recovery checkpoints and the validation-overlap attempt remain local.
 
 ## Matched no-defense replication baselines (29 October 2026)
 
