@@ -1,40 +1,30 @@
+\input{generated/mnist_component_table.tex}
 \begin{table*}[t]\centering\footnotesize
-\caption{STD-DAGMM component execution time (s per round).}\label{tab:std-segments}
-\begin{tabular}{lrr}\toprule Component & MNIST & CIFAR-10 \\ \midrule
-Client training & 33.986 $\pm$ 1.539 & 76.208 $\pm$ 4.164 \\
-Simulated FR response & 0.062 $\pm$ 0.006 & 0.255 $\pm$ 0.055 \\
-Server aggregation & 0.042 $\pm$ 0.004 & 0.189 $\pm$ 0.043 \\
-Global evaluation & 2.144 $\pm$ 0.073 & 4.547 $\pm$ 0.227 \\
-Update preparation & 0.045 $\pm$ 0.004 & 0.127 $\pm$ 0.015 \\
-Detector fitting & 13.629 $\pm$ 0.467 & 45.029 $\pm$ 1.671 \\
-Detector scoring & 0.278 $\pm$ 0.011 & 0.856 $\pm$ 0.035 \\
-Flag decision & 0.000 $\pm$ 0.000 & 0.027 $\pm$ 0.024 \\
-All detector work & 13.952 $\pm$ 0.476 & 46.040 $\pm$ 1.695 \\
-Combined compute & 50.186 $\pm$ 1.943 & 127.239 $\pm$ 5.478 \\
-\bottomrule\end{tabular}\end{table*}
-\begin{table*}[t]\centering\footnotesize
-\caption{Native-workflow execution time over 100 rounds.}\label{tab:timing-horizons}
-\begin{tabular}{llrrr}\toprule Dataset & Workflow & Rounds & Mean s/round & Sum (min) \\ \midrule
-MNIST & No defense & 100 & 36.11 & 60.19 \\
-MNIST & BaitFL & 100 & 34.41 & 57.35 \\
-MNIST & STD-DAGMM & 100 & 50.19 & 83.64 \\
-CIFAR-10 & No defense & 100 & 76.29 & 127.15 \\
-CIFAR-10 & BaitFL & 100 & 84.85 & 141.41 \\
-CIFAR-10 & STD-DAGMM & 100 & 127.24 & 212.06 \\
+\caption{Round timing over 100 rounds.}\label{tab:timing-horizons}
+\begin{tabular}{llrrrr}\toprule
+\multirow{2}{*}{Dataset} & \multirow{2}{*}{Workflow} & \multicolumn{2}{c}{Mean round time (s)} & \multicolumn{2}{c}{Full horizon (min)} \\
+\cmidrule(lr){3-4}\cmidrule(lr){5-6}
+ & & Computation & Elapsed & Computation & Elapsed \\ \midrule
+\multirow{2}{*}{MNIST} & BaitFL & 36.92 & 40.92 & 61.53 & 68.21 \\
+ & STD-DAGMM & 52.26 & 62.83 & 87.10 & 104.72 \\
+\midrule
+\multirow{2}{*}{CIFAR-10} & BaitFL & 84.85 & -- & 141.41 & -- \\
+ & STD-DAGMM & 127.24 & -- & 212.06 & -- \\
 \bottomrule\end{tabular}\end{table*}
 \begin{table*}[t]\centering\footnotesize
 \caption{BaitFL execution time by round phase.}\label{tab:timing-phases}
-\begin{tabular}{llrrr}\toprule Dataset & Round phase & Count & Mean within phase (s) & Contribution (s/round) \\ \midrule
-MNIST & Warmup & 10 & 37.00 & 3.70 \\
-MNIST & Trap response & 27 & 34.29 & 9.26 \\
-MNIST & Screening round & 2 & 34.36 & 0.69 \\
-MNIST & Removal round & 1 & 34.63 & 0.35 \\
-MNIST & Audit round & 6 & 33.95 & 2.04 \\
-MNIST & Ordinary round & 54 & 34.04 & 18.38 \\
-CIFAR-10 & Warmup & 10 & 117.76 & 11.78 \\
-CIFAR-10 & Trap response & 63 & 82.04 & 51.68 \\
-CIFAR-10 & Screening round & 6 & 86.06 & 5.16 \\
-CIFAR-10 & Removal round & 1 & 73.50 & 0.73 \\
-CIFAR-10 & Audit round & 2 & 76.76 & 1.54 \\
-CIFAR-10 & Ordinary round & 18 & 77.51 & 13.95 \\
+\begin{tabular}{llrrrrr}\toprule Dataset & Round phase & Count & Computation (s) & Elapsed (s) & Decision (ms) & Contribution (s/round) \\ \midrule
+\multirow{6}{*}{MNIST} & Warmup & 10 & 38.03 & 41.15 & 0.002 & 3.80 \\
+ & Trap response & 27 & 37.40 & 41.42 & 0.002 & 10.10 \\
+ & Screening round & 2 & 37.46 & 41.53 & 373.03 & 0.75 \\
+ & Removal round & 1 & 37.52 & 41.71 & 395.91 & 0.38 \\
+ & Audit round & 6 & 36.41 & 40.45 & 68.57 & 2.18 \\
+ & Ordinary round & 54 & 36.50 & 40.65 & 0.002 & 19.71 \\
+\midrule
+\multirow{6}{*}{CIFAR-10} & Warmup & 10 & 117.76 & -- & -- & 11.78 \\
+ & Trap response & 63 & 82.04 & -- & -- & 51.68 \\
+ & Screening round & 6 & 86.06 & -- & -- & 5.16 \\
+ & Removal round & 1 & 73.50 & -- & -- & 0.73 \\
+ & Audit round & 2 & 76.76 & -- & -- & 1.54 \\
+ & Ordinary round & 18 & 77.51 & -- & -- & 13.95 \\
 \bottomrule\end{tabular}\end{table*}

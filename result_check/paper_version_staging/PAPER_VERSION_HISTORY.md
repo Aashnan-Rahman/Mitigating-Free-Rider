@@ -330,6 +330,32 @@ Baseline comparisons and figure revision, 1 November 2026:
   timing breakdowns. Widen plot separation to remove label collisions and keep
   figure groups near their referenced discussions.
 
+Instrumented MNIST timing integration, 3 November 2026:
+
+- Import 27 byte-verified evidence files from study commit
+  `8519fe180f337486e18dfc752cfedfcef64eaf53`, including the completed BaitFL
+  and STD-DAGMM timing records and instrumentation sources. Keep paper/code
+  versions at v7/v15.4 and update the revision stamp.
+- Validate both 100-round runs, matching experimental settings, the frozen
+  engine hash, component sums, elapsed accounting, fitting-substage bounds,
+  and complete phase coverage. Verify all 100 BaitFL accuracy observations
+  agree with the corresponding study run. Do not add these timing runs to
+  detection-study averages or mix them into the older no-defense comparison.
+- Rebuild Tables V–VII and Figures 7–9 using 36.92/52.26 s computation means
+  and 40.92/62.83 s elapsed means for MNIST. Report trap, scheduling, feature,
+  decision, logging, checkpoint, and harness costs with their actual boundaries.
+  Retain CIFAR-10's existing measurements and mark absent operation/wall timers.
+- Keep decision-block timing distinct from an isolated removal-operation cost.
+  Keep joint training and mixture finalization within STD fitting. Correctly
+  classify single audits separately from complete screening cycles.
+- Update the abstract, timing analysis, computational discussion, conclusion,
+  and reproducibility notes. Preserve the blue abstract, black setup, existing
+  baseline results, and all experimental source logs.
+- Regenerate the complete reporting pipeline and compile the 28-page PDF.
+  Component/wall accounting and phase coverage pass. Citations and references
+  resolve without overfull boxes or oversized floats. Visually inspect the
+  computation/elapsed tables, component plots, and timing-gap figures.
+
 For each substantive revision:
 
 1. Continue editing the working `Paper/paper.tex`.

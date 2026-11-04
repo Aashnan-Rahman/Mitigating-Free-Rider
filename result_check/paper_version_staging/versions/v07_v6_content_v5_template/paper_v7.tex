@@ -18,6 +18,7 @@
 \providecommand*{\algorithmautorefname}{Algorithm}
 \input{generated/numbers.tex}
 \input{generated/multiseed/summary.tex}
+\input{generated/comparison/instrumented_mnist_numbers.tex}
 \title{BaitFL: Lightweight Trap-Based Free-Rider Detection and Mitigation in Federated Learning}
 \author{\IEEEauthorblockN{Aashnan Rahman}
 \IEEEauthorblockA{Department of Computer Science and Engineering\\
@@ -26,7 +27,7 @@ Islamic University of Technology\\MSc Thesis}}
 \maketitle
 \begin{tikzpicture}[remember picture,overlay]
 \node[anchor=north east,font=\footnotesize] at ([xshift=-0.55in,yshift=-0.30in]current page.north east)
-{Code v15.4 \textbar{} Paper v7 \textbar{} 1 November 2026};
+{Code v15.4 \textbar{} Paper v7 \textbar{} 3 November 2026};
 \end{tikzpicture}
 
 \begingroup\color{blue}
@@ -52,7 +53,9 @@ complete removal at round 30, while difficult cases require up to
 removals, and \MultiQuarantined{} honest client-cases experience temporary
 quarantine. Matched comparisons with unprotected federated averaging improve
 mean final accuracy by 0.10 percentage points on MNIST and 0.64 on CIFAR-10.
-The findings support the approach under the evaluated settings.
+In a paired MNIST timing run, BaitFL's mean round computation time is
+\TimingMnistReduction\% lower than that of a STD-DAGMM implementation using
+five fitting epochs per round.
 Adaptive adversaries and secure aggregation remain outside the study's scope.
 \end{abstract}
 \endgroup
@@ -878,56 +881,79 @@ also affect the comparison, so the percentages do not isolate detector overhead.
 \FloatBarrier
 
 \subsection{Timing Comparison with STD-DAGMM}\label{sec:native-timing}
-The timing study uses non-IID FR3 at 40\% on each dataset, with 100
-communication rounds, three local SGD epochs, and CPU execution. The
-STD-DAGMM and no-defense runs use six PyTorch threads. The STD-DAGMM
-implementation follows the published detection
-mechanism~\cite{lin2019freeriders} and fits its autoencoder and mixture model
-for five epochs in every round. Its flags are recorded while all 100 clients
-continue to participate. BaitFL follows its challenge and removal procedure.
-The no-defense execution retains and aggregates all responses.
+The timing comparison uses non-IID FR3 at 40\%, with 100 clients, 100 rounds,
+three local SGD epochs, and CPU execution. Paired instrumented MNIST runs
+use six PyTorch threads and record individual operations as well as complete
+elapsed rounds. The BaitFL instrumentation preserves the study's training and
+detection code and reproduces its accuracy trajectory. These timing runs are
+reported separately from the multiple-seed detection results. STD-DAGMM
+follows the published mechanism~\cite{lin2019freeriders}, with a selected
+budget of five fitting epochs per round. All 100 clients remain in its
+workflow, while BaitFL follows its challenge and removal procedure.
 
-Figure~\ref{fig:timing-segments} places the two timing breakdowns side by
-side for each dataset. The BaitFL panels distinguish warmup, trap-response
-rounds, screening rounds without removal, removal rounds, single audits, and
-ordinary rounds. The categories are mutually exclusive. A round with a
-removal is assigned to that category before the remaining screening rounds
-are counted. Parenthesized counts give each category's frequency.
-Table~\ref{tab:timing-phases} reports both its mean round time and its
-contribution to the full-horizon average. On MNIST, warmup averages 37.00
-seconds, trap-response rounds 34.29 seconds, screening rounds 34.36 seconds,
-and the removal round 34.63 seconds. The corresponding CIFAR-10 values are
-117.76, 82.04, 86.06, and 73.50 seconds.
+Table~\ref{tab:std-segments} reports MNIST stage means and sample standard
+deviations over the 100 measured rounds. The upper panels of
+Figure~\ref{fig:timing-segments} show these stages side by side. BaitFL's
+trap construction and scheduling average \TimingMnistTrapsMs{} ms per round.
+Response features and model preparation require \TimingMnistFeaturesMs{} ms,
+and decision work requires \TimingMnistDecisionMs{} ms. Together, these
+timers account for \TimingMnistAuditingMs{} ms per round. The decision timer
+covers the screening, audit, and state-transition block, including removal
+when triggered. Evaluation of fabricated responses is a simulator diagnostic
+and does not supply detector evidence.
 
-These BaitFL measurements cover complete rounds, including the local work
-and evaluation performed in that phase. The existing logs do not separately
-time trap construction, statistical screening, and the removal operation.
-The STD-DAGMM panels instead show separately timed computation stages.
-Table~\ref{tab:std-segments} gives their means and sample standard deviations.
-Detector fitting contributes 13.63 seconds per round on MNIST and 45.03
-seconds on CIFAR-10. Preparation, scoring, and flag decisions bring total
-detector time to 13.95 and 46.04 seconds, respectively. The all-detector row
-includes these stages and is not an additional computation stage.
+STD-DAGMM fitting averages \TimingMnistFitting{} seconds per round.
+Its joint network training and mixture finalization average
+\TimingMnistJointTraining{} and \TimingMnistMixture{} seconds, respectively,
+and are included within that fitting time. Preparation, fitting, scoring,
+and flag decisions together require \TimingMnistDetector{} seconds per round.
+BaitFL has no auxiliary detector-fitting stage. CIFAR-10 retains its recorded
+BaitFL phase times and STD-DAGMM stage measurements in the lower panels of
+Figure~\ref{fig:timing-segments}. Its STD-DAGMM fitting and total detector
+times average 45.03 and 46.04 seconds per round.
 
-Figure~\ref{fig:timing-phases} and Table~\ref{tab:timing-horizons} compare
-the full-horizon averages, calculated as
-$\bar t=\sum_{r=1}^{100}t_r/100$. BaitFL averages 34.41 seconds per round
-on MNIST, compared with 50.19 for STD-DAGMM and 36.11 without a defense.
-On CIFAR-10, the corresponding values are 84.85, 127.24, and 76.29 seconds.
-BaitFL's measured mean is therefore 15.78 seconds lower than STD-DAGMM on
-MNIST and 42.39 seconds lower on CIFAR-10, reductions of 31.44\% and 33.32\%
-under these workflows and the stated fitting budget.
+Table~\ref{tab:timing-phases} distinguishes warmup, trap-response rounds,
+screening rounds without removal, removal rounds, single audits, and ordinary
+rounds. A removal round is counted separately from other screening rounds,
+and a single audit does not count as a complete paired cycle. The categories
+cover all 100 rounds. MNIST warmup averages 38.03 seconds of computation,
+trap-response rounds 37.40 seconds, screening rounds 37.46 seconds, and the
+removal round 37.52 seconds. The decision block averages 373.03 ms in screening
+rounds and takes 395.91 ms in the removal round. These are operation times
+within the corresponding rounds. The final column weights each phase by its
+frequency to obtain its contribution to the full-run computation mean.
 
-Figure~\ref{fig:timing-traces} shows the measured round trajectories above
-their pointwise differences. A positive difference means that STD-DAGMM
-takes longer in that round. The dashed horizontal line gives the mean
-difference over all 100 rounds. This view separates a sustained timing gap
-from individual fluctuations and shows when the ordering changes.
-The measurements compare the executed workflows. Differences in response
-handling, local diagnostics, timer boundaries, and host load prevent assigning
-the entire gap to detector computation. In particular, removing a free rider
-does not remove an honest client's local SGD work. Communication and
-checkpoint publication are excluded from these round-time comparisons.
+Figure~\ref{fig:timing-phases} and Table~\ref{tab:timing-horizons} separate
+round computation from elapsed round time. Computation adds the exclusive
+training, response, challenge, feature, decision, aggregation, and evaluation
+timers. Elapsed time also includes research logging, checkpoints, and
+unassigned or harness work. For MNIST, mean computation is
+\TimingMnistBait{} seconds for BaitFL and \TimingMnistStd{} seconds for
+STD-DAGMM, a difference of \TimingMnistGap{} seconds or
+\TimingMnistReduction\%. Mean elapsed time is \TimingMnistBaitWall{} and
+\TimingMnistStdWall{} seconds, respectively, a difference of
+\TimingMnistWallGap{} seconds or \TimingMnistWallReduction\%. All averages
+use $\bar t=\sum_{r=1}^{100}t_r/100$. CIFAR-10 retains its logged computation
+comparison of 84.85 and 127.24 seconds per round. Its separate BaitFL operation
+and elapsed-round measurements are not available, as indicated by dashes in
+the tables.
+
+On MNIST, research logging and checkpoints average \TimingMnistOursLogs{}
+seconds per round for BaitFL and \TimingMnistStdLogs{} seconds for STD-DAGMM.
+STD-DAGMM additionally records \TimingMnistStdHarness{} seconds of unassigned
+or harness time. These costs are included in elapsed time and explain why
+the elapsed difference exceeds the computation difference. Setup and timing-CSV
+publication are recorded separately outside the round timers. Network
+communication is not measured in the local simulation.
+
+Figure~\ref{fig:timing-traces} shows the computation trajectories and their
+pointwise differences. The additional dashed MNIST curve shows the elapsed-time
+difference. A positive difference means that STD-DAGMM takes longer, and the
+horizontal dotted line gives the mean computation difference. The comparison
+describes the measured workflows under the stated fitting budget. Differences
+in response handling, diagnostics, and host load prevent attributing the entire
+gap to detector computation. Removing a free rider also does not remove an
+honest client's local SGD work.
 \input{generated/timing_comparison.tex}
 
 \FloatBarrier
@@ -1178,8 +1204,9 @@ The bounds in Section~\ref{sec:complexity} expose quadratic-in-population
 leave-one-out work and transient bootstrap memory. A large population or model
 can make auditing expensive even without learned detector training. Deliberately
 withheld trap responses and repeated honest follow-up are an availability and
-utility cost, not merely an implementation detail. Communication bytes, time to
-target utility, energy, and isolated detector work remain unmeasured.
+utility cost, not merely an implementation detail. The MNIST operation timers
+in Section~\ref{sec:native-timing} quantify measured feature and decision work.
+Communication bytes, time to target utility, and energy remain unmeasured.
 
 \section{Conclusion}
 This study evaluates a lightweight, server-observable challenge approach to
@@ -1194,8 +1221,10 @@ training and attack configurations, while the candidate and quarantine results
 show why final recall and precision alone are insufficient.
 Matched comparisons with unprotected federated averaging improve mean final
 accuracy by 0.10 percentage points on MNIST and 0.64 on CIFAR-10. The measured
-STD-DAGMM comparison also shows lower average round time under the stated
-five-epoch fitting budget.
+STD-DAGMM comparison also shows lower average round computation under the stated
+five-epoch fitting budget. The instrumented MNIST comparison measures
+\TimingMnistBait{} versus \TimingMnistStd{} seconds per round and separates
+the cost of response checks from logging and checkpoint publication.
 
 Further validation should include broader client populations, honest-only
 training, and tests of
@@ -1262,6 +1291,14 @@ input hashes are retained under \path{generated/comparison/}.
 \path{build_review_figures.ps1} generates the combined score panels, baseline
 comparisons, and timing figures. Phase counts cover all 100 rounds, and the
 STD-DAGMM stage means sum to its reported computation time.
+The instrumented MNIST evidence is preserved under
+\path{evidence/timing_mnist_20261103/}. Its import manifest records the study
+commit, original Git object identifiers, and SHA-256 hashes.
+\path{build_instrumented_mnist_timing.ps1} validates completion, matching
+settings, instrumentation sources, exclusive timer sums, elapsed-time accounting,
+and phase coverage. Nested joint-training and mixture timers are checked as
+parts of fitting and are not added again to total computation. The accuracy
+trajectory agrees with the corresponding study execution in all 100 rounds.
 Compile \texttt{paper\_v7.tex} with PDFLaTeX and BibTeX, or
 use the accompanying \texttt{build.ps1}. Previous paper versions and all
 experiment logs remain unchanged.

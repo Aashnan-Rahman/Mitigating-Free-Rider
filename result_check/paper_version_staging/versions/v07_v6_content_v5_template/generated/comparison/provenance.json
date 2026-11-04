@@ -1,5 +1,5 @@
 {
-  "primary_selection": "Complete seed-matched grid common to both datasets; additional completed CIFAR-10 cases exported separately",
+  "timing_basis": "BaitFL logged whole-round timer; baseline and STD summed component compute timers; excludes checkpoint publication; different host load and simulator instrumentation",
   "inputs": [
     {
       "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_noniid_FR3_fr40_seed42/summary.json",
@@ -702,6 +702,6 @@
       "sha256": "723aff155b512896edaff1a5da4a50a35e42e3457ee7be0a31c87c7b7b14f56a"
     }
   ],
-  "timing_basis": "BaitFL logged whole-round timer; baseline and STD summed component compute timers; excludes checkpoint publication; different host load and simulator instrumentation",
-  "warmup_validation": "First ten global accuracies agree exactly in every pair"
+  "warmup_validation": "First ten global accuracies agree exactly in every pair",
+  "primary_selection": "Complete seed-matched grid common to both datasets; additional completed CIFAR-10 cases exported separately"
 }

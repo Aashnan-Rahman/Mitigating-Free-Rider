@@ -116,38 +116,51 @@ foreach ($condition in $conditions) {$lines.Add('\textcolor{'+$condition.color+'
 AddLines $lines @('}', '\caption{Changes relative to federated averaging without a defense.}\label{fig:baseline-effects}', '\end{figure*}')
 WriteFigure 'resource_figure' $lines
 
-# Timing panels are generated from the matched FR3, non-IID, 40% executions.
+# Validate and use the separately instrumented MNIST pair; retain the recorded CIFAR-10 study case.
+& (Join-Path $PSScriptRoot 'build_instrumented_mnist_timing.ps1') | Out-Null
+if (-not $?) {throw 'Instrumented MNIST timing validation failed'}
+$mnistEvidence=Join-Path $PSScriptRoot 'evidence/timing_mnist_20261103'
+$mnistStages=@(Import-Csv (Join-Path $export 'mnist_stage_statistics.csv'))
+$mnistPhases=@(Import-Csv (Join-Path $export 'instrumented_mnist_phases.csv'))
 $phaseNames=@{warmup='Warmup';trap='Trap response';screen='Screening round';removal='Removal round';audit='Audit round';ordinary='Ordinary round'}
 $phaseOrder=@('warmup','trap','screen','removal','audit','ordinary')
 $phaseRows=[Collections.Generic.List[object]]::new()
 $stdRows=@{}; $timeSeries=@{}; $timingSummary=[Collections.Generic.List[object]]::new()
 foreach ($dataset in @('mnist','cifar10')) {
     $match=@($pairs | Where-Object {$_.dataset -eq $dataset -and $_.split -eq 'noniid' -and [int]$_.share -eq 40 -and $_.attack -eq 'FR3'})[0]
-    $baitDir=Join-Path $repository $match.bait_source
+    $baitDir=if ($dataset -eq 'mnist') {Join-Path $mnistEvidence 'ours'} else {Join-Path $repository $match.bait_source}
     $baitRows=@(Import-Csv (Join-Path $baitDir 'global_metrics.csv'))
     $decisions=@(Import-Csv (Join-Path $baitDir 'cycle_decisions.csv'))
     $decisionRounds=@($decisions.round | Select-Object -Unique)
     $buckets=@{};foreach ($phase in $phaseOrder) {$buckets[$phase]=[Collections.Generic.List[double]]::new()}
     foreach ($round in $baitRows) {
         $phase=if ($round.phase -eq 'warmup') {'warmup'} elseif ([int]$round.new_removals -gt 0) {'removal'} elseif ($round.round -in $decisionRounds) {'screen'} elseif ($round.phase -eq 'single_audit') {'audit'} elseif ($round.phase -in @('double_probe','confirmation')) {'trap'} else {'ordinary'}
-        $buckets[$phase].Add((Num $round.round_time_seconds))
+        if ($dataset -ne 'mnist') {$buckets[$phase].Add((Num $round.round_time_seconds))}
     }
     foreach ($phase in $phaseOrder) {
-        $values=$buckets[$phase]
-        if ($values.Count -gt 0) { $phaseRows.Add([pscustomobject]@{dataset=$dataset;phase=$phase;label=$phaseNames[$phase];rounds=$values.Count;mean_seconds=Mean $values;total_seconds=($values | Measure-Object -Sum).Sum;amortized_seconds=($values | Measure-Object -Sum).Sum/100}) }
+        if ($dataset -eq 'mnist') {
+            $measured=$mnistPhases | Where-Object phase -eq $phase
+            if ($measured) {$phaseRows.Add([pscustomobject]@{dataset=$dataset;phase=$phase;label=$phaseNames[$phase];rounds=[int]$measured.rounds;mean_seconds=Num $measured.mean_seconds;mean_wall_seconds=Num $measured.mean_wall_seconds;mean_decision_seconds=Num $measured.mean_decision_seconds;total_seconds=Num $measured.total_seconds;amortized_seconds=Num $measured.amortized_seconds})}
+        } else {
+            $values=$buckets[$phase]
+            if ($values.Count -gt 0) { $phaseRows.Add([pscustomobject]@{dataset=$dataset;phase=$phase;label=$phaseNames[$phase];rounds=$values.Count;mean_seconds=Mean $values;mean_wall_seconds=$null;mean_decision_seconds=$null;total_seconds=($values | Measure-Object -Sum).Sum;amortized_seconds=($values | Measure-Object -Sum).Sum/100}) }
+        }
     }
-    $stdDir=Join-Path $repository "results/std_dagmm_100_seed42_fr40/std_dagmm_${dataset}_noniid_FR3_seed42"
-    $stdRows[$dataset]=@(Import-Csv (Join-Path $stdDir 'round_timings.csv'))
+    $stdPath=if ($dataset -eq 'mnist') {Join-Path $mnistEvidence 'std/segment_timings.csv'} else {Join-Path $repository "results/std_dagmm_100_seed42_fr40/std_dagmm_${dataset}_noniid_FR3_seed42/round_timings.csv"}
+    $stdRows[$dataset]=@(Import-Csv $stdPath)
     Require ($stdRows[$dataset].Count -eq 100) 'Incomplete STD timing'
-    $baseRows=@(Import-Csv (Join-Path (Join-Path $repository $match.baseline_source) 'round_timings.csv'))
+    if ($dataset -eq 'mnist') {$baitSegments=@(Import-Csv (Join-Path $mnistEvidence 'ours/round_timings.csv'))}
     $series=[Collections.Generic.List[object]]::new()
     for ($index=0;$index -lt 100;$index++) {
-        $std=Num $stdRows[$dataset][$index].round_compute_seconds; $bait=Num $baitRows[$index].round_time_seconds
-        $series.Add([pscustomobject]@{round=$index+1;bait=$bait;std=$std;baseline=Num $baseRows[$index].round_compute_seconds;gap=$std-$bait})
+        $std=Num $stdRows[$dataset][$index].round_compute_seconds
+        $bait=if ($dataset -eq 'mnist') {Num $baitSegments[$index].round_compute_seconds} else {Num $baitRows[$index].round_time_seconds}
+        $baitWall=if ($dataset -eq 'mnist') {Num $baitSegments[$index].observed_round_wall_seconds} else {$null}
+        $stdWall=if ($dataset -eq 'mnist') {Num $stdRows[$dataset][$index].observed_round_wall_seconds} else {$null}
+        $series.Add([pscustomobject]@{round=$index+1;bait=$bait;std=$std;gap=$std-$bait;bait_wall=$baitWall;std_wall=$stdWall;wall_gap=$(if ($dataset -eq 'mnist') {$stdWall-$baitWall} else {$null})})
     }
     $timeSeries[$dataset]=$series
     $series | Export-Csv (Join-Path $export "timing_${dataset}.csv") -NoTypeInformation -UseQuotes Never -Encoding utf8
-    $timingSummary.Add([pscustomobject]@{dataset=$dataset;bait_mean=Mean $series.bait;std_mean=Mean $series.std;baseline_mean=Mean $series.baseline;gap_mean=Mean $series.gap;bait_reduction_pct=100*(1-(Mean $series.bait)/(Mean $series.std))})
+    $timingSummary.Add([pscustomobject]@{dataset=$dataset;bait_mean=Mean $series.bait;std_mean=Mean $series.std;bait_wall_mean=$(if ($dataset -eq 'mnist') {Mean $series.bait_wall} else {$null});std_wall_mean=$(if ($dataset -eq 'mnist') {Mean $series.std_wall} else {$null});gap_mean=Mean $series.gap;wall_gap_mean=$(if ($dataset -eq 'mnist') {Mean $series.wall_gap} else {$null});bait_reduction_pct=100*(1-(Mean $series.bait)/(Mean $series.std))})
 }
 $phaseRows | Export-Csv (Join-Path $export 'bait_phase_times.csv') -NoTypeInformation -Encoding utf8
 $timingSummary | Export-Csv (Join-Path $export 'timing_means.csv') -NoTypeInformation -Encoding utf8
@@ -155,40 +168,55 @@ $timingSummary | Export-Csv (Join-Path $export 'timing_means.csv') -NoTypeInform
 $stdComponents=@(@{name='Local training';fields=@('honest_training_seconds')},@{name='FR responses';fields=@('fabrication_seconds')},@{name='Aggregation';fields=@('aggregation_seconds')},@{name='Evaluation';fields=@('evaluation_seconds')},@{name='Preparation';fields=@('preparation_seconds')},@{name='Detector fitting';fields=@('fit_seconds')},@{name='Scoring and flags';fields=@('inference_seconds','decision_seconds')})
 $lines=[Collections.Generic.List[string]]::new()
 AddLines $lines @('\begin{figure*}[tp]\centering\begin{tikzpicture}',
-'\begin{groupplot}[group style={group size=2 by 2,horizontal sep=2.4cm,vertical sep=1.65cm},width=0.40\textwidth,height=7.2cm,xbar,bar width=9pt,xmin=0,axis x line*=bottom,axis y line*=left,xmajorgrids=true,grid style={black!9},tick label style={font=\scriptsize},yticklabel style={font=\scriptsize,align=right},label style={font=\scriptsize},title style={font=\small},scaled x ticks=false,nodes near coords,every node near coord/.append style={font=\scriptsize,/pgf/number format/fixed,/pgf/number format/precision=2},enlarge y limits=0.13]')
+'\begin{groupplot}[group style={group size=2 by 2,horizontal sep=2.4cm,vertical sep=1.65cm},width=0.40\textwidth,height=7.8cm,xbar,bar width=8pt,xmin=0,axis x line*=bottom,axis y line*=left,xmajorgrids=true,grid style={black!9},tick label style={font=\scriptsize},yticklabel style={font=\scriptsize,align=right},label style={font=\scriptsize},title style={font=\small},scaled x ticks=false,nodes near coords,every node near coord/.append style={font=\scriptsize,/pgf/number format/fixed,/pgf/number format/precision=4},enlarge y limits=0.10]')
 foreach ($dataset in @('mnist','cifar10')) {
     $datasetLabel=if ($dataset -eq 'mnist') {'MNIST'} else {'CIFAR-10'}
-    $rows=@($phaseRows | Where-Object dataset -eq $dataset)
+    $rows=if ($dataset -eq 'mnist') {@($mnistStages | Where-Object {$_.method -eq 'ours' -and $_.kind -eq 'compute'})} else {@($phaseRows | Where-Object dataset -eq $dataset)}
     $ticks=@();$labels=@();$coordinates=@()
-    for ($index=0;$index -lt $rows.Count;$index++) {$ticks+=$index+1;$labels+='{'+$rows[$index].label+' ($n='+$rows[$index].rounds+'$)}';$coordinates+='('+(F $rows[$index].mean_seconds 6)+','+($index+1)+')'}
+    for ($index=0;$index -lt $rows.Count;$index++) {
+        $ticks+=$index+1
+        $label=$rows[$index].label.Replace('Honest training','Local training').Replace('Fabricated responses','FR responses').Replace('Features and preparation','Features/preparation').Replace('Decisions and scoring','Decision/scoring')
+        $labels+='{'+$label+$(if ($dataset -eq 'cifar10') {' ($n='+$rows[$index].rounds+'$)'} else {''})+'}'
+        $coordinates+='('+(F (Num $rows[$index].mean_seconds) 6)+','+($index+1)+')'
+    }
     $max=1.25*($rows | Measure-Object mean_seconds -Maximum).Maximum
-    $lines.Add('\nextgroupplot[title={BaitFL: '+$datasetLabel+'},xmax='+(F $max 4)+',ytick={'+($ticks -join ',')+'},yticklabels={'+($labels -join ',')+'},y dir=reverse,xlabel={Mean seconds per phase round}]')
+    $kind=if ($dataset -eq 'mnist') {'stages'} else {'phases'}
+    $axisLabel=if ($dataset -eq 'mnist') {'Mean seconds per round'} else {'Mean seconds per phase round'}
+    $precisionOption=if ($dataset -eq 'cifar10') {',every node near coord/.append style={/pgf/number format/precision=2}'} else {''}
+    $lines.Add('\nextgroupplot[title={BaitFL: '+$datasetLabel+' '+$kind+'},xmax='+(F $max 4)+',ytick={'+($ticks -join ',')+'},yticklabels={'+($labels -join ',')+'},y dir=reverse,xlabel={'+$axisLabel+'}'+$precisionOption+']')
     $lines.Add('\addplot[fill=honestblue!75,draw=honestblue] coordinates {'+($coordinates -join ' ')+'};')
     $ticks=@();$labels=@();$coordinates=@();$means=@()
-    for ($index=0;$index -lt $stdComponents.Count;$index++) {
+    if ($dataset -eq 'mnist') {
+        $rows=@($mnistStages | Where-Object {$_.method -eq 'std' -and $_.kind -eq 'compute'})
+        for ($index=0;$index -lt $rows.Count;$index++) {
+            $label=$rows[$index].label.Replace('Honest training','Local training').Replace('Fabricated responses','FR responses').Replace('Features and preparation','Features/preparation').Replace('Decisions and scoring','Decision/scoring')
+            $mean=Num $rows[$index].mean_seconds;$means+=$mean;$ticks+=$index+1;$labels+='{'+$label+'}';$coordinates+='('+(F $mean 6)+','+($index+1)+')'
+        }
+    } else { for ($index=0;$index -lt $stdComponents.Count;$index++) {
         $component=$stdComponents[$index]
         $values=foreach ($round in $stdRows[$dataset]) {$total=0.;foreach ($field in $component.fields) {$total+=Num $round.$field};$total}
         $mean=Mean $values;$means+=$mean;$ticks+=$index+1;$labels+='{'+$component.name+'}';$coordinates+='('+(F $mean 6)+','+($index+1)+')'
-    }
+    } }
     $max=1.25*($means | Measure-Object -Maximum).Maximum
     Require ([math]::Abs(($means | Measure-Object -Sum).Sum-($timingSummary | Where-Object dataset -eq $dataset).std_mean) -lt 1e-7) 'STD components do not sum to round compute'
-    $lines.Add('\nextgroupplot[title={STD-DAGMM: '+$datasetLabel+'},xmax='+(F $max 4)+',ytick={'+($ticks -join ',')+'},yticklabels={'+($labels -join ',')+'},y dir=reverse,xlabel={Mean seconds per component}]')
+    $lines.Add('\nextgroupplot[title={STD-DAGMM: '+$datasetLabel+'},xmax='+(F $max 4)+',ytick={'+($ticks -join ',')+'},yticklabels={'+($labels -join ',')+'},y dir=reverse,xlabel={Mean seconds per component}'+$precisionOption+']')
     $lines.Add('\addplot[fill=riderorange!75,draw=riderorange] coordinates {'+($coordinates -join ' ')+'};')
 }
-AddLines $lines @('\end{groupplot}\end{tikzpicture}', '\caption{BaitFL round phases and STD-DAGMM computation stages.}\label{fig:timing-segments}', '\end{figure*}')
+AddLines $lines @('\end{groupplot}\end{tikzpicture}', '\caption{Measured timing breakdowns.}\label{fig:timing-segments}', '\end{figure*}')
 WriteFigure 'timing_segments_figure' $lines
 
 $lines=[Collections.Generic.List[string]]::new()
 AddLines $lines @('\begin{figure*}[tp]\centering\begin{tikzpicture}',
-'\begin{groupplot}[group style={group size=2 by 1,horizontal sep=1.0cm},width=0.445\textwidth,height=5.8cm,ybar,bar width=24pt,bar shift=0pt,xmin=0.4,xmax=3.6,ymin=0,xtick={1,2,3},xticklabels={{No defense},{BaitFL},{STD-DAGMM}},axis x line*=bottom,axis y line*=left,ymajorgrids=true,grid style={black!9},tick label style={font=\scriptsize},label style={font=\scriptsize},title style={font=\small},scaled y ticks=false,nodes near coords,every node near coord/.append style={font=\small,/pgf/number format/fixed,/pgf/number format/precision=2}]')
+'\begin{groupplot}[group style={group size=2 by 1,horizontal sep=1.0cm},width=0.445\textwidth,height=5.8cm,ybar,bar width=17pt,xmin=0.4,xmax=2.6,ymin=0,xtick={1,2},xticklabels={{BaitFL},{STD-DAGMM}},axis x line*=bottom,axis y line*=left,ymajorgrids=true,grid style={black!9},tick label style={font=\scriptsize},label style={font=\scriptsize},title style={font=\small},scaled y ticks=false,nodes near coords,every node near coord/.append style={font=\small,/pgf/number format/fixed,/pgf/number format/precision=2}]')
 foreach ($row in $timingSummary) {
     $datasetLabel=if ($row.dataset -eq 'mnist') {'MNIST'} else {'CIFAR-10'}
-    $lines.Add('\nextgroupplot[title={'+$datasetLabel+'},ylabel={Mean seconds per round},ymax='+(F (1.2*$row.std_mean) 4)+']')
-    $lines.Add('\addplot[fill=black!35,draw=black!50] coordinates {(1,'+(F $row.baseline_mean 6)+')};')
-    $lines.Add('\addplot[fill=honestblue!75,draw=honestblue] coordinates {(2,'+(F $row.bait_mean 6)+')};')
-    $lines.Add('\addplot[fill=riderorange!75,draw=riderorange] coordinates {(3,'+(F $row.std_mean 6)+')};')
+    $maximum=if ($row.dataset -eq 'mnist') {$row.std_wall_mean} else {$row.std_mean}
+    $shift=if ($row.dataset -eq 'mnist') {-13} else {0}
+    $lines.Add('\nextgroupplot[title={'+$datasetLabel+'},ylabel={Mean seconds per round},ymax='+(F (1.2*$maximum) 4)+']')
+    $lines.Add('\addplot[bar shift='+$shift+'pt,fill=honestblue!75,draw=honestblue] coordinates {(1,'+(F $row.bait_mean 6)+') (2,'+(F $row.std_mean 6)+')};')
+    if ($row.dataset -eq 'mnist') {$lines.Add('\addplot[bar shift=13pt,fill=black!35,draw=black!50] coordinates {(1,'+(F $row.bait_wall_mean 6)+') (2,'+(F $row.std_wall_mean 6)+')};')}
 }
-AddLines $lines @('\end{groupplot}\end{tikzpicture}', '\caption{Average round time over the complete training horizon.}\label{fig:timing-phases}', '\end{figure*}')
+AddLines $lines @('\end{groupplot}\end{tikzpicture}', '\par\smallskip{\scriptsize\textcolor{honestblue}{\rule{0.25cm}{0.15cm}}\ Computation\qquad\textcolor{black!45}{\rule{0.25cm}{0.15cm}}\ Elapsed round time}', '\caption{Average round computation and elapsed time.}\label{fig:timing-phases}', '\end{figure*}')
 WriteFigure 'timing_phases_figure' $lines
 
 $lines=[Collections.Generic.List[string]]::new()
@@ -199,7 +227,6 @@ foreach ($dataset in @('mnist','cifar10')) {
     $path="generated/comparison/timing_${dataset}.csv"
     $ylabelOption=if ($dataset -eq 'mnist') {',ylabel={Seconds per round}'} else {''}
     $lines.Add('\nextgroupplot[title={'+$datasetLabel+'},ymin=0'+$ylabelOption+']')
-    $lines.Add('\addplot[black!55,dashed,thin] table[col sep=comma,x=round,y=baseline] {'+$path+'};')
     $lines.Add('\addplot[honestblue,thick] table[col sep=comma,x=round,y=bait] {'+$path+'};')
     $lines.Add('\addplot[riderorange,thick] table[col sep=comma,x=round,y=std] {'+$path+'};')
 }
@@ -209,29 +236,45 @@ foreach ($row in $timingSummary) {
     $ylabelOption=if ($row.dataset -eq 'mnist') {',ylabel={STD-DAGMM minus BaitFL (s)},ymin=0'} else {''}
     $lines.Add('\nextgroupplot[title={'+$datasetLabel+' timing difference}'+$ylabelOption+',xlabel={Round},extra y ticks={0},extra y tick style={grid=major}]')
     $lines.Add('\addplot[violet!75!black,thick] table[col sep=comma,x=round,y=gap] {'+$path+'};')
-    $lines.Add('\addplot[black!65,dashed] coordinates {(1,'+(F $row.gap_mean 6)+') (100,'+(F $row.gap_mean 6)+')};')
-    $lines.Add('\node[anchor=north east,font=\scriptsize,fill=white,inner sep=2pt] at (rel axis cs:0.98,0.98) {Mean gap: '+(F $row.gap_mean)+' s};')
+    if ($row.dataset -eq 'mnist') {$lines.Add('\addplot[black!55,dashed] table[col sep=comma,x=round,y=wall_gap] {'+$path+'};')}
+    $lines.Add('\addplot[violet!75!black,densely dotted] coordinates {(1,'+(F $row.gap_mean 6)+') (100,'+(F $row.gap_mean 6)+')};')
+    $annotation='Mean computation gap: '+(F $row.gap_mean)+' s'
+    if ($row.dataset -eq 'mnist') {$annotation+='\\Mean elapsed gap: '+(F $row.wall_gap_mean)+' s'}
+    $lines.Add('\node[anchor=north east,font=\scriptsize,align=right,fill=white,inner sep=2pt] at (rel axis cs:0.98,0.98) {'+$annotation+'};')
 }
 AddLines $lines @('\end{groupplot}\end{tikzpicture}',
-'\par\smallskip{\scriptsize\textcolor{honestblue}{\rule{0.4cm}{0.8pt}}\ BaitFL\qquad\textcolor{riderorange}{\rule{0.4cm}{0.8pt}}\ STD-DAGMM\qquad\textcolor{black!55}{\textbf{-- --}}\ No defense}',
+'\par\smallskip{\scriptsize\textcolor{honestblue}{\rule{0.4cm}{0.8pt}}\ BaitFL\qquad\textcolor{riderorange}{\rule{0.4cm}{0.8pt}}\ STD-DAGMM\qquad\textcolor{black!55}{\textbf{-- --}}\ Elapsed-time gap (MNIST)}',
 '\caption{Round timing trajectories and their measured differences.}\label{fig:timing-traces}', '\end{figure*}')
 WriteFigure 'timing_timeline_figure' $lines
 
-# Retain the source-derived STD component table, then rebuild horizon/phase tables.
-$existing=[IO.File]::ReadAllText((Join-Path $PSScriptRoot 'generated/timing_tables.tex'))
-$firstTable=$existing.Substring(0,$existing.IndexOf('\end{table*}')+'\end{table*}'.Length)
-$lines=[Collections.Generic.List[string]]::new();$lines.Add($firstTable)
-AddLines $lines @('\begin{table*}[t]\centering\footnotesize', '\caption{Native-workflow execution time over 100 rounds.}\label{tab:timing-horizons}', '\begin{tabular}{llrrr}\toprule Dataset & Workflow & Rounds & Mean s/round & Sum (min) \\ \midrule')
+$lines=[Collections.Generic.List[string]]::new();$lines.Add('\input{generated/mnist_component_table.tex}')
+AddLines $lines @('\begin{table*}[t]\centering\footnotesize', '\caption{Round timing over 100 rounds.}\label{tab:timing-horizons}', '\begin{tabular}{llrrrr}\toprule', '\multirow{2}{*}{Dataset} & \multirow{2}{*}{Workflow} & \multicolumn{2}{c}{Mean round time (s)} & \multicolumn{2}{c}{Full horizon (min)} \\', '\cmidrule(lr){3-4}\cmidrule(lr){5-6}', ' & & Computation & Elapsed & Computation & Elapsed \\ \midrule')
 foreach ($row in $timingSummary) {
     $datasetLabel=if ($row.dataset -eq 'mnist') {'MNIST'} else {'CIFAR-10'}
-    foreach ($method in @(@('No defense','baseline_mean'),@('BaitFL','bait_mean'),@('STD-DAGMM','std_mean'))) {
-        $lines.Add(($datasetLabel,$method[0],'100',(F $row.($method[1])),(F ($row.($method[1])*100/60)) -join ' & ')+' \\')
+    if ($row.dataset -eq 'cifar10') {$lines.Add('\midrule')}
+    $firstMethod=$true
+    foreach ($method in @(@('BaitFL','bait_mean','bait_wall_mean'),@('STD-DAGMM','std_mean','std_wall_mean'))) {
+        $elapsed=if ($row.dataset -eq 'mnist') {F $row.($method[2])} else {'--'}
+        $elapsedMinutes=if ($row.dataset -eq 'mnist') {F ($row.($method[2])*100/60)} else {'--'}
+        $datasetCell=if ($firstMethod) {'\multirow{2}{*}{'+$datasetLabel+'}'} else {''}
+        $lines.Add(($datasetCell,$method[0],(F $row.($method[1])),$elapsed,(F ($row.($method[1])*100/60)),$elapsedMinutes -join ' & ')+' \\')
+        $firstMethod=$false
     }
 }
-AddLines $lines @('\bottomrule\end{tabular}\end{table*}', '\begin{table*}[t]\centering\footnotesize', '\caption{BaitFL execution time by round phase.}\label{tab:timing-phases}', '\begin{tabular}{llrrr}\toprule Dataset & Round phase & Count & Mean within phase (s) & Contribution (s/round) \\ \midrule')
+AddLines $lines @('\bottomrule\end{tabular}\end{table*}', '\begin{table*}[t]\centering\footnotesize', '\caption{BaitFL execution time by round phase.}\label{tab:timing-phases}', '\begin{tabular}{llrrrrr}\toprule Dataset & Round phase & Count & Computation (s) & Elapsed (s) & Decision (ms) & Contribution (s/round) \\ \midrule')
+$previousDataset=''
 foreach ($row in $phaseRows) {
     $datasetLabel=if ($row.dataset -eq 'mnist') {'MNIST'} else {'CIFAR-10'}
-    $lines.Add(($datasetLabel,$row.label,$row.rounds,(F $row.mean_seconds),(F $row.amortized_seconds) -join ' & ')+' \\')
+    $datasetCell=''
+    if ($row.dataset -ne $previousDataset) {
+        if ($previousDataset) {$lines.Add('\midrule')}
+        $span=@($phaseRows | Where-Object dataset -eq $row.dataset).Count
+        $datasetCell='\multirow{'+$span+'}{*}{'+$datasetLabel+'}'
+        $previousDataset=$row.dataset
+    }
+    $elapsed=if ($row.dataset -eq 'mnist') {F $row.mean_wall_seconds} else {'--'}
+    $decision=if ($row.dataset -eq 'mnist') {$milliseconds=1000*$row.mean_decision_seconds;F $milliseconds $(if ($milliseconds -lt .01) {3} else {2})} else {'--'}
+    $lines.Add(($datasetCell,$row.label,$row.rounds,(F $row.mean_seconds),$elapsed,$decision,(F $row.amortized_seconds) -join ' & ')+' \\')
 }
 AddLines $lines @('\bottomrule\end{tabular}\end{table*}')
 WriteFigure 'timing_tables' $lines

@@ -116,19 +116,46 @@ summary statistics, and input hashes are in `generated/comparison/`.
 
 Figure 5 adds no-defense accuracy curves with interquartile bands across
 matched attack/partition settings. Figure 6 replaces overlapping process-resource
-bars with accuracy and timing changes against that baseline. Figure 7 compares
-BaitFL's measured whole-round phase times with STD-DAGMM component timers.
-BaitFL trap generation, screening, and removal have no separate operation
-timers in the original logs, so those costs are not fabricated. Figure 8 shows
-full-horizon mean round times for all three workflows. Figure 9 shows both
-trajectories and the actual STD-DAGMM-minus-BaitFL difference. No timing values
-are altered to enlarge the gap.
+bars with accuracy and timing changes against that baseline.
+
+The 3 November revision incorporates the completed paired MNIST segment-timing
+experiment from `v15.4-completed-study`, pinned to commit
+`8519fe180f337486e18dfc752cfedfcef64eaf53`. A byte-verified snapshot and its
+import manifest are in `evidence/timing_mnist_20261103/`. The snapshot includes
+both timing CSVs, completion/configuration records, and the instrumentation
+sources. `import_mnist_timing.ps1` can reproduce it from the local Git object
+database without switching branches. The paper-local `.gitattributes` preserves
+its original bytes across checkouts.
+
+`build_instrumented_mnist_timing.ps1` checks the snapshot hashes, completed
+100-round runs, matching settings, frozen engine hash, instrumentation sources,
+exclusive component sums, nested fitting timers, elapsed accounting, and phase
+coverage. All 100 MNIST accuracies match the corresponding study execution.
+The instrumented pair is not added as another detection replication or pooled
+with the three-seed study means and matched no-defense cases.
+
+Table V now reports both MNIST workflows by stage, including separate trap
+construction, scheduling, features/preparation, decisions, and research I/O.
+Tables VI/VII and Figures 7–9 distinguish computation from elapsed time and
+show the measured phase/decision-block costs. The decision block includes
+screening, audits, and state changes, including removal. It is not a timer for
+the removal operation alone. Nested STD joint-training and mixture-finalization
+times remain inside fitting and are not added twice.
+
+Mean MNIST computation is 36.92 s for BaitFL and 52.26 s for STD-DAGMM.
+Elapsed round means are 40.92 and 62.83 s. The 15.34 s computation gap and
+21.91 s elapsed gap are reported separately. CIFAR-10 retains its existing
+logged round/phase comparison and STD stage measurements; absent operation
+and wall-time measurements are not fabricated. No-defense comparisons remain
+in Table IV and Figures 5/6, using their original matched executions.
 
 Run `./rebuild_reporting.ps1` to validate and regenerate the study tables,
 baseline comparisons, and figures in the required order. It calls
 `build_multiseed_table.ps1`, `build_baseline_comparison.ps1`,
-`build_norm_figure.ps1`, and `build_review_figures.ps1`. Run `./build.ps1`
-afterward to compile. The manuscript date is 1 November 2026.
+`build_norm_figure.ps1`, and `build_review_figures.ps1`. The figure builder
+validates the instrumented MNIST evidence and regenerates the timing tables
+and macros. Run `./build.ps1` afterward to compile. The manuscript date is
+3 November 2026.
 
 Build from any directory with:
 

@@ -1,13 +1,11 @@
 \begin{figure*}[tp]\centering\begin{tikzpicture}
-\begin{groupplot}[group style={group size=2 by 1,horizontal sep=1.0cm},width=0.445\textwidth,height=5.8cm,ybar,/pgf/bar width=24pt,/pgf/bar shift=0pt,xmin=0.4,xmax=3.6,ymin=0,xtick={1,2,3},xticklabels={{No defense},{BaitFL},{STD-DAGMM}},axis x line*=bottom,axis y line*=left,ymajorgrids=true,grid style={black!9},tick label style={font=\scriptsize},label style={font=\scriptsize},title style={font=\small},scaled y ticks=false,nodes near coords,every node near coord/.append style={font=\small,/pgf/number format/fixed,/pgf/number format/precision=2}]
-\nextgroupplot[title={MNIST},ylabel={Mean seconds per round},ymax=60.2229]
-\addplot[fill=black!35,draw=black!50] coordinates {(1,36.114161)};
-\addplot[fill=honestblue!75,draw=honestblue] coordinates {(2,34.407685)};
-\addplot[fill=riderorange!75,draw=riderorange] coordinates {(3,50.185788)};
+\begin{groupplot}[group style={group size=2 by 1,horizontal sep=1.0cm},width=0.445\textwidth,height=5.8cm,ybar,/pgf/bar width=17pt,xmin=0.4,xmax=2.6,ymin=0,xtick={1,2},xticklabels={{BaitFL},{STD-DAGMM}},axis x line*=bottom,axis y line*=left,ymajorgrids=true,grid style={black!9},tick label style={font=\scriptsize},label style={font=\scriptsize},title style={font=\small},scaled y ticks=false,nodes near coords,every node near coord/.append style={font=\small,/pgf/number format/fixed,/pgf/number format/precision=2}]
+\nextgroupplot[title={MNIST},ylabel={Mean seconds per round},ymax=75.4000]
+\addplot[/pgf/bar shift=-13pt,fill=honestblue!75,draw=honestblue] coordinates {(1,36.920542) (2,52.261755)};
+\addplot[/pgf/bar shift=13pt,fill=black!35,draw=black!50] coordinates {(1,40.923968) (2,62.833304)};
 \nextgroupplot[title={CIFAR-10},ylabel={Mean seconds per round},ymax=152.6863]
-\addplot[fill=black!35,draw=black!50] coordinates {(1,76.291567)};
-\addplot[fill=honestblue!75,draw=honestblue] coordinates {(2,84.845274)};
-\addplot[fill=riderorange!75,draw=riderorange] coordinates {(3,127.238619)};
+\addplot[/pgf/bar shift=0pt,fill=honestblue!75,draw=honestblue] coordinates {(1,84.845274) (2,127.238619)};
 \end{groupplot}\end{tikzpicture}
-\caption{Average round time over the complete training horizon.}\label{fig:timing-phases}
+\par\smallskip{\scriptsize\textcolor{honestblue}{\rule{0.25cm}{0.15cm}}\ Computation\qquad\textcolor{black!45}{\rule{0.25cm}{0.15cm}}\ Elapsed round time}
+\caption{Average round computation and elapsed time.}\label{fig:timing-phases}
 \end{figure*}
