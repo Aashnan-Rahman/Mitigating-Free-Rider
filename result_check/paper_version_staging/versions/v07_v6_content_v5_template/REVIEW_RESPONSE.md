@@ -1,5 +1,9 @@
 # Response to the supplied BaitFL review
 
+For the subsequent `v7 update 2.txt` review, see
+`REVIEW_RESPONSE_UPDATE_2.md`. It supersedes this document's audit-clock
+disposition with a conditional equivalence check of all 622 recorded audits.
+
 Review: `BaitFL Paper Review Fixes, Graphs, Reviewer Report and Venues.pdf`.
 Revision date: 4 November 2026. The study remains at three seeds (42, 43, 73).
 No experiment engine, attack implementation, detector setting or running job

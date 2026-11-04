@@ -1,10 +1,4 @@
 {
-  "baseline_provenance": "generated/comparison/provenance.json",
-  "baseline_runs": 63,
-  "comparison_scope": "Descriptive unbalanced-coverage curves; paired utility estimates remain in baseline table",
-  "averaging": "Mean replications within attack, then four attacks equally; primary uses all three, baseline all completed matched records",
-  "primary_replications_per_attack": 3,
-  "primary_runs": 96,
   "primary_inputs": [
     {
       "path": "results/v15_4_mnist_seed42_fr30/v15_4_mnist_noniid_FR3_seed42/global_metrics.csv",
@@ -391,7 +385,8 @@
       "sha256": "a726097d5d3dfddb7662f94c70860d89748b6d1b6495a4a368d3cfa39c55aa27"
     }
   ],
-  "display_rounds": "20-100",
+  "primary_runs": 96,
+  "primary_replications_per_attack": 3,
   "baseline_coverage": [
     {
       "dataset": "cifar10",
@@ -617,5 +612,10 @@
       "attack": "FR4",
       "replications": 1
     }
-  ]
+  ],
+  "display_rounds": "20-100",
+  "baseline_provenance": "generated/comparison/provenance.json",
+  "averaging": "Mean replications within attack, then four attacks equally; primary uses all three, baseline all completed matched records",
+  "baseline_runs": 63,
+  "comparison_scope": "Descriptive unbalanced-coverage curves; paired utility estimates remain in baseline table"
 }

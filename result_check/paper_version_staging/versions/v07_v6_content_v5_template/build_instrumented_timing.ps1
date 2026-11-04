@@ -76,7 +76,7 @@ $definitions=@(
     @{id='decision';label='Decisions and scoring';kind='compute';ours=@('decision_seconds');std=@('inference_seconds','decision_seconds')},
     @{id='aggregation';label='Aggregation';kind='compute';ours=@('aggregation_seconds');std=@('aggregation_seconds')},
     @{id='evaluation';label='Global evaluation';kind='compute';ours=@('evaluation_seconds');std=@('evaluation_seconds')},
-    @{id='publication';label='Research logs and checkpoints';kind='other';ours=@('response_bookkeeping_seconds','reporting_seconds','checkpoint_seconds');std=@('reporting_seconds','checkpoint_seconds')},
+    @{id='publication';label='Logging and checkpoints';kind='other';ours=@('response_bookkeeping_seconds','reporting_seconds','checkpoint_seconds');std=@('reporting_seconds','checkpoint_seconds')},
     @{id='unassigned';label='Unassigned and harness';kind='other';ours=@('unassigned_seconds');std=@('unassigned_seconds')},
     @{id='compute';label='Total computation';kind='total';ours=@('round_compute_seconds');std=@('round_compute_seconds')},
     @{id='wall';label='Elapsed round time';kind='total';ours=@('observed_round_wall_seconds');std=@('observed_round_wall_seconds')}

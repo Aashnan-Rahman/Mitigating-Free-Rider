@@ -193,7 +193,10 @@ foreach ($dataset in $datasets) {
                 $fn = ($replication | Measure-Object fn -Sum).Sum
                 [pscustomobject]@{precision=$tp/($tp+$fp);recall=$tp/($tp+$fn)}
             }
-            $group = [ordered]@{dataset=$dataset;split=$split;share=$share;seed_count=$seeds.Count;precision=Mean $perSeed.precision;recall=Mean $perSeed.recall;precision_sd=SampleSd $perSeed.precision;recall_sd=SampleSd $perSeed.recall;mean_round_seconds=Mean $runs.mean_round_seconds}
+            $groupTp = ($runs | Measure-Object tp -Sum).Sum
+            $groupFp = ($runs | Measure-Object fp -Sum).Sum
+            $groupFn = ($runs | Measure-Object fn -Sum).Sum
+            $group = [ordered]@{dataset=$dataset;split=$split;share=$share;seed_count=$seeds.Count;tp=$groupTp;fp=$groupFp;fn=$groupFn;precision=$groupTp/($groupTp+$groupFp);recall=$groupTp/($groupTp+$groupFn);precision_seed_mean=Mean $perSeed.precision;recall_seed_mean=Mean $perSeed.recall;precision_sd=SampleSd $perSeed.precision;recall_sd=SampleSd $perSeed.recall;mean_round_seconds=Mean $runs.mean_round_seconds}
             foreach ($attack in $attacks) {
                 $values = @($runs | Where-Object attack -eq $attack | ForEach-Object final_accuracy)
                 Require ($values.Count -eq 3) 'Incomplete accuracy replication'
@@ -228,7 +231,7 @@ $groups | Export-Csv -LiteralPath (Join-Path $exportDir 'table1_means.csv') -NoT
 $statistics | ConvertTo-Json -Depth 12 | Set-Content -LiteralPath (Join-Path $exportDir 'summary.json') -Encoding utf8
 @{inputs=$inputs;implementation_sha256=$referenceHashes;evidence_snapshot_hashes=$snapshotHashes;policy=($referencePolicy | ConvertFrom-Json)} | ConvertTo-Json -Depth 35 | Set-Content -LiteralPath (Join-Path $exportDir 'provenance.json') -Encoding utf8
 $lines = [Collections.Generic.List[string]]::new()
-@('\begin{table*}[!t]', '\centering\footnotesize\setlength{\tabcolsep}{3.5pt}',
+@('\begin{table*}[!tp]', '\centering\footnotesize\setlength{\tabcolsep}{3.5pt}',
 '\caption{Detection performance and final model accuracy.}\label{tab:performance}',
 '\begin{tabular}{llrrrrrrr}', '\toprule',
 '\multirow{2}{*}{Dataset} & \multirow{2}{*}{Partition} & \multirow{2}{*}{FR (\%)} & \multicolumn{2}{c}{Detection (\%)} & \multicolumn{4}{c}{Final test accuracy (\%)} \\',

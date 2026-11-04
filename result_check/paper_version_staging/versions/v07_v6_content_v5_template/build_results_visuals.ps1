@@ -153,7 +153,7 @@ $definitions=@(
  @('Client diagnostic evaluation',@('client_eval')),@('Traps and scheduling',@('traps','scheduling')),
  @('Response features and preparation',@('features')),@('Auxiliary detector fitting',@('fitting')),
  @('Scoring and state decisions',@('decision')),@('Aggregation',@('aggregation')),@('Global evaluation',@('evaluation')),
- @('Research logs and checkpoints',@('publication')),@('Unassigned runtime',@('unassigned')))
+ @('Logging and checkpoints',@('publication')),@('Unassigned runtime',@('unassigned')))
 $tableStats=[Collections.Generic.List[object]]::new()
 $lines=[Collections.Generic.List[string]]::new()
 Add $lines @('\begin{table*}[t]\centering\footnotesize\setlength{\tabcolsep}{4pt}',
@@ -163,7 +163,7 @@ Add $lines @('\begin{table*}[t]\centering\footnotesize\setlength{\tabcolsep}{4pt
 '\cmidrule(lr){2-3}\cmidrule(lr){4-5}',
 ' & BaitFL & STD-DAGMM & BaitFL & STD-DAGMM \\ \midrule')
 foreach($definition in $definitions){
- if($definition[0] -eq 'Research logs and checkpoints'){$lines.Add('\midrule')}
+ if($definition[0] -eq 'Logging and checkpoints'){$lines.Add('\midrule')}
  $cells=@($definition[0])
  foreach($dataset in @('mnist','cifar10')){foreach($method in @('ours','std')){
   $sumFields=@();$expected=0.
@@ -214,7 +214,7 @@ $tableStats|Export-Csv (Join-Path $export 'timing_table_statistics.csv') -NoType
 
 # Compare methods within each metric, using adjacent bars and method colors.
 $lines=[Collections.Generic.List[string]]::new()
-Add $lines @('\begin{figure*}[tp]\centering\begin{tikzpicture}',
+Add $lines @('\begin{figure*}[t]\centering\begin{tikzpicture}',
 '\begin{groupplot}[group style={group size=2 by 1,horizontal sep=1.1cm},scale only axis,width=0.405\textwidth,height=4.6cm,ybar,/pgf/bar width=15pt,xmin=0.5,xmax=2.5,ymin=0,xtick={1,2},xticklabels={{Computation},{Elapsed}},axis x line*=bottom,axis y line*=left,ymajorgrids=true,grid style={black!8},tick label style={font=\small},label style={font=\small},title style={font=\small},scaled y ticks=false,nodes near coords,every node near coord/.append style={font=\scriptsize,/pgf/number format/fixed,/pgf/number format/precision=2,/pgf/number format/fixed zerofill}]')
 foreach($dataset in @('mnist','cifar10')){
  $s=$summaries[$dataset];$d=if($dataset -eq 'mnist'){'MNIST'}else{'CIFAR-10'}
@@ -224,7 +224,7 @@ foreach($dataset in @('mnist','cifar10')){
  $lines.Add('\addplot[/pgf/bar shift=9pt,fill=stdorange!85,draw=stdorange] coordinates {(1,'+(F $s.std_mean 6)+') (2,'+(F $s.std_wall_mean 6)+')};')
 }
 Add $lines @('\end{groupplot}\end{tikzpicture}',
-'\par\medskip{\small\textcolor{baitteal}{\rule{0.35cm}{0.18cm}}\ BaitFL\qquad\textcolor{stdorange}{\rule{0.35cm}{0.18cm}}\ STD-DAGMM}',
+'\par\smallskip{\small\textcolor{baitteal}{\rule{0.35cm}{0.18cm}}\ BaitFL\qquad\textcolor{stdorange}{\rule{0.35cm}{0.18cm}}\ STD-DAGMM}',
 '\caption{Average computation and elapsed time per round.}\label{fig:timing-phases}',
 '\end{figure*}')
 SaveTex 'timing_phases_figure' $lines
@@ -258,7 +258,7 @@ foreach($dataset in @('mnist','cifar10')){
  }
 }
 Add $lines @('\end{groupplot}\end{tikzpicture}',
-'\par\medskip{\small\textcolor{baitteal}{$\circ$}\ 30\% IID\quad\textcolor{baitteal}{$\blacksquare$}\ 40\% IID\quad\textcolor{violet!80!black}{$\circ$}\ 30\% non-IID\quad\textcolor{violet!80!black}{$\blacksquare$}\ 40\% non-IID}',
+'\par\smallskip{\small\textcolor{baitteal}{$\circ$}\ 30\% IID\quad\textcolor{baitteal}{$\blacksquare$}\ 40\% IID\quad\textcolor{violet!80!black}{$\circ$}\ 30\% non-IID\quad\textcolor{violet!80!black}{$\blacksquare$}\ 40\% non-IID}',
 '\caption{Free-rider removal completion rounds.}\label{fig:completion-rounds}',
 '\end{figure*}')
 SaveTex 'completion_rounds_figure' $lines

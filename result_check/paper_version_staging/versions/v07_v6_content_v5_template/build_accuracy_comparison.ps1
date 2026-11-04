@@ -61,7 +61,7 @@ foreach($dataset in @('mnist','cifar10')){
  $labels[$dataset]=if($min -eq $max){[string]$min}else{"$min--$max"}
 }
 $lines=[Collections.Generic.List[string]]::new()
-$lines.Add('\begin{figure*}[tp]\centering\begin{tikzpicture}')
+$lines.Add('\begin{figure*}[!t]\centering\begin{tikzpicture}')
 $lines.Add('\begin{groupplot}[group style={group size=4 by 2,horizontal sep=0.7cm,vertical sep=1.1cm},scale only axis,width=0.195\textwidth,height=0.195\textwidth,xmin=20,xmax=100,xtick={20,60,100},grid=major,grid style={black!8},axis line style={black!45},tick label style={font=\scriptsize},title style={font=\small},label style={font=\scriptsize},scaled ticks=false,yticklabel style={/pgf/number format/fixed,/pgf/number format/precision=1}]')
 foreach($dataset in @('mnist','cifar10')){
  $range=@($curves|Where-Object {$_.dataset -eq $dataset -and $_.round -ge 20}|ForEach-Object accuracy)
@@ -83,8 +83,8 @@ foreach($dataset in @('mnist','cifar10')){
  }}
 }
 $lines.Add('\end{groupplot}\end{tikzpicture}')
-$lines.Add('\par\medskip{\small\textcolor{baitteal}{\rule{0.4cm}{0.8pt}}\ BaitFL\qquad\textcolor{stdorange}{-- --}\ No defense}')
-$lines.Add('\caption{Global test accuracy during training.}\label{fig:accuracy-comparison}')
+$lines.Add('\par\smallskip{\small\textcolor{baitteal}{\rule{0.4cm}{0.8pt}}\ BaitFL\qquad\textcolor{stdorange}{-- --}\ No defense}')
+$lines.Add('\caption{Mean global test accuracy during training. BaitFL uses three replications per setting. No-defense coverage is one replication per setting on MNIST and two to three on CIFAR-10.}\label{fig:accuracy-comparison}')
 $lines.Add('\end{figure*}')
 [IO.File]::WriteAllLines((Join-Path $out 'accuracy_comparison.tex'),$lines,[Text.UTF8Encoding]::new($false))
 @{primary_runs=$study.Count;baseline_runs=$matchedCases.Count;primary_replications_per_attack=3;baseline_coverage=$coverage;averaging='Mean replications within attack, then four attacks equally; primary uses all three, baseline all completed matched records';display_rounds='20-100';comparison_scope='Descriptive unbalanced-coverage curves; paired utility estimates remain in baseline table';primary_inputs=$hashes;baseline_provenance='generated/comparison/provenance.json'}|ConvertTo-Json -Depth 7|Set-Content (Join-Path $export 'accuracy_population_provenance.json') -Encoding utf8

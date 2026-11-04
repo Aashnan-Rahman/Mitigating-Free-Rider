@@ -560,6 +560,86 @@ Aggregate accuracy alternative for Figure 5, 4 November 2026:
 - Add `build_accuracy_comparison.ps1` to reporting, validate endpoint/table
   agreement and source hashes, and refresh the standalone figure preview.
 
+Second review revision, 4 November 2026:
+
+- Address `v7 update 2.txt` using the existing records only. Preserve the current
+  black manuscript, diagrams, 31-reference literature review, updated CIFAR-10
+  timings, 63 matched baseline records, and commented appendices.
+- Lead with 100% recall across 96 runs and three honest removals in two runs.
+  Retain pooled precision as descriptive. Replace systematic accuracy-gain
+  wording with comparable/slightly higher paired means and state coverage limits.
+- Clarify candidate labels and their limited diagnostic value. Resolve notation
+  conflicts, restore concise round/axis/coverage context in captions, and rename
+  the timing I/O row. Keep the repository URL clickable and compact.
+- Verify the cooldown-aware clock guard against all 622 logged audits. Both
+  guards agree in all 609 empty and 13 nonempty cases. Correct the pseudocode,
+  disclose its conditional equivalence, and provide an unapplied engine patch.
+  Do not change the frozen engine, raw results, or protocol settings.
+- Report STD-DAGMM's existing roundwise flags under its declared timing recipe,
+  without treating them as a matched permanent-removal benchmark. Defer new
+  experiments and public DOI release. Record dispositions and trace hashes in
+  `REVIEW_RESPONSE_UPDATE_2.md` and `generated/review2/`.
+- Compile and inspect the 20-page PDF. Citation/reference checks pass without
+  overfull boxes or oversized floats. The proposed engine patch passes a dry-run
+  application check and remains unapplied; all six study source hashes match.
+
+### v07 layout follow-up — 4 November 2026
+
+- Reorganize Table IV into a complete eight-row overview of all 32 settings and
+  six rows of exclusion details. State explicitly that omitted event counts are
+  zero. Retain the means and observed ranges, remove redundant decimal zeros,
+  and move the table definitions into the results text.
+- Remove the unnecessary pre-plot float barrier, prevent stretched gaps on float
+  pages, and adjust placements so Tables III–IV precede the score panels and the
+  accuracy/timing figures share pages with other content.
+- Revalidate all 96 study runs and retain the original totals of three honest
+  removals, 32 quarantine client-cases and 620 quarantine client-rounds. Compile
+  and visually inspect the revised 19-page PDF. No overfull boxes, oversized
+  floats or undefined citations/references remain. No new experiments are run.
+
+### v07 subsequent review corrections — 4 November 2026
+
+- Move the audit-clock trace account to Appendix A and state agreement on all
+  622 recorded audits only. Resolve state/outcome and evidence/eligibility
+  notation clashes and Algorithm 4 line references.
+- Restrict the abstract's lightweightness claim to server computation and
+  acknowledge the roughly 11% honest-response cost in IID settings.
+- Use pooled detection counts consistently in Table III. MNIST non-IID 40%
+  precision is 480/483 = 99.38%. Retain the previous seed-level mean separately.
+- Add Figure 6 for descriptive time to first target crossing from 63 saved
+  matched exports. Record 121 verified underlying logs and five missing baseline
+  logs explicitly in provenance. No new training runs or engine changes.
+- Revalidate the 96-run study, trace agreement and target-time calculations.
+  Compile and inspect the 20-page PDF without undefined references/citations,
+  overfull boxes or oversized floats. See `REVIEW_RESPONSE_UPDATE_3.md`.
+
+### v07 spacing pass — 4 November 2026
+
+- Allow text beneath the MNIST and CIFAR-10 score panels, replacing their
+  dedicated float-page placement. Keep the inputs beside the score discussion.
+- Use consistent 8-point spacing around floats and in-text algorithms, removing
+  the results-only spacing override. Retain readable panel sizes and labels.
+- Reduce the PDF from 20 to 19 pages. Verify that manuscript content is unchanged
+  after excluding layout settings and moved figure inputs. Inspect all pages
+  and larger score-panel/methodology previews. No undefined citations/references,
+  overfull boxes or oversized floats are reported. No data or experiments change.
+
+### v07 vocabulary and implementation alignment — 4 November 2026
+
+- Unify Figure 2, Table IV and live prose under strong/unresolved/clear. State
+  Figure 6's bar order in the caption and update Section VII-E for controlled
+  target-accuracy comparisons with an honest-only oracle.
+- Align Algorithm 4's clock assignment with the raw-finding guard used in the
+  experiments. Appendix A describes its cooldown edge case and distinguishes
+  the eligible-set alternative, which has not been rerun. The Python command
+  available in this session is an unusable Windows alias.
+- Explain that Figure 6 combines removal effects and auditing costs. Retain the
+  controlled-advantage caution and keep target timing out of the abstract.
+- Verify all 622 saved audits and the six study source hashes, retain all five
+  checked measurement-export hashes, and inspect the rebuilt 19-page PDF.
+  Compilation, citation/reference and overflow checks pass. No new training.
+  See `REVIEW_RESPONSE_UPDATE_4.md` for dispositions.
+
 For each substantive revision:
 
 1. Continue editing the working `Paper/paper.tex`.

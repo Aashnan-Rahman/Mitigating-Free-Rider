@@ -93,8 +93,9 @@
 \@writefile{loa}{\contentsline {algorithm}{\numberline {4}{\ignorespaces Phase IV: ordinary rounds and sparse audits}}{8}{algorithm.4}\protected@file@percent }
 \newlabel{alg:sparse}{{4}{8}{Phase IV: Ordinary Training and Sparse Audits}{algorithm.4}{}}
 \newlabel{ln:sparse:measure}{{5}{8}{Phase IV: Ordinary Training and Sparse Audits}{algorithm.4}{}}
-\newlabel{ln:sparse:enroll}{{10}{8}{Phase IV: Ordinary Training and Sparse Audits}{algorithm.4}{}}
-\newlabel{ln:sparse:clock}{{13}{8}{Phase IV: Ordinary Training and Sparse Audits}{algorithm.4}{}}
+\newlabel{ln:sparse:eligible}{{8}{8}{Phase IV: Ordinary Training and Sparse Audits}{algorithm.4}{}}
+\newlabel{ln:sparse:enroll}{{11}{8}{Phase IV: Ordinary Training and Sparse Audits}{algorithm.4}{}}
+\newlabel{ln:sparse:clock}{{14}{8}{Phase IV: Ordinary Training and Sparse Audits}{algorithm.4}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-F}}Choice of Protocol Settings}{8}{subsection.4.6}\protected@file@percent }
 \citation{lecun1998gradient,krizhevsky2009learning}
 \@writefile{toc}{\contentsline {section}{\numberline {V}Results and Discussion}{9}{section.5}\protected@file@percent }
@@ -102,50 +103,52 @@
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-A}}Experimental Setup}{9}{subsection.5.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-B}}Evaluation Metrics}{9}{subsection.5.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-C}}Permanent Detection and Model Utility}{9}{subsection.5.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-D}}Honest-Client Impact}{9}{subsection.5.4}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {III}{\ignorespaces Detection performance and final model accuracy.}}{10}{table.3}\protected@file@percent }
-\newlabel{tab:performance}{{III}{10}{Detection performance and final model accuracy}{table.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-D}}Honest-Client Impact}{10}{subsection.5.4}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-E}}Score Separation and Confirmation}{10}{subsection.5.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-F}}Execution Time and Memory}{10}{subsection.5.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-G}}Comparison with No-Defense Federated Averaging}{10}{subsection.5.7}\protected@file@percent }
+\newlabel{sec:baseline}{{\mbox  {V-G}}{10}{Comparison with No-Defense Federated Averaging}{subsection.5.7}{}}
+\citation{lin2019freeriders,zong2018dagmm}
+\@writefile{lot}{\contentsline {table}{\numberline {III}{\ignorespaces Detection performance and final model accuracy.}}{11}{table.3}\protected@file@percent }
+\newlabel{tab:performance}{{III}{11}{Detection performance and final model accuracy}{table.3}{}}
 \@writefile{lot}{\contentsline {table}{\numberline {IV}{\ignorespaces Honest-client impact.}}{11}{table.4}\protected@file@percent }
 \newlabel{tab:safety}{{IV}{11}{Honest-client impact}{table.4}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-F}}Execution Time and Memory}{11}{subsection.5.6}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-G}}Comparison with No-Defense Federated Averaging}{11}{subsection.5.7}\protected@file@percent }
-\newlabel{sec:baseline}{{\mbox  {V-G}}{11}{Comparison with No-Defense Federated Averaging}{subsection.5.7}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces MNIST client response scores.}}{12}{figure.3}\protected@file@percent }
-\newlabel{fig:geometry-mnist}{{3}{12}{MNIST client response scores}{figure.3}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces CIFAR-10 client response scores.}}{13}{figure.4}\protected@file@percent }
-\newlabel{fig:geometry-cifar10}{{4}{13}{CIFAR-10 client response scores}{figure.4}{}}
-\citation{lin2019freeriders,zong2018dagmm}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Representative round-20 MNIST responses. Axes show $\operatorname  {asinh}$ of paired mean norm and profile $z$-scores.}}{12}{figure.3}\protected@file@percent }
+\newlabel{fig:geometry-mnist}{{3}{12}{Representative round-20 MNIST responses. Axes show $\operatorname {asinh}$ of paired mean norm and profile $z$-scores}{figure.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-H}}Instrumented Timing and Lightweight Operation}{12}{subsection.5.8}\protected@file@percent }
+\newlabel{sec:native-timing}{{\mbox  {V-H}}{12}{Instrumented Timing and Lightweight Operation}{subsection.5.8}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Representative round-20 CIFAR-10 responses. Axes show $\operatorname  {asinh}$ of paired mean norm and profile $z$-scores.}}{13}{figure.4}\protected@file@percent }
+\newlabel{fig:geometry-cifar10}{{4}{13}{Representative round-20 CIFAR-10 responses. Axes show $\operatorname {asinh}$ of paired mean norm and profile $z$-scores}{figure.4}{}}
 \@writefile{lot}{\contentsline {table}{\numberline {V}{\ignorespaces Execution time and process memory.}}{14}{table.5}\protected@file@percent }
 \newlabel{tab:cost}{{V}{14}{Execution time and process memory}{table.5}{}}
 \@writefile{lot}{\contentsline {table}{\numberline {VI}{\ignorespaces Comparison with no-defense aggregation.}}{14}{table.6}\protected@file@percent }
 \newlabel{tab:baseline}{{VI}{14}{Comparison with no-defense aggregation}{table.6}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-H}}Instrumented Timing and Lightweight Operation}{14}{subsection.5.8}\protected@file@percent }
-\newlabel{sec:native-timing}{{\mbox  {V-H}}{14}{Instrumented Timing and Lightweight Operation}{subsection.5.8}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Global test accuracy during training.}}{15}{figure.5}\protected@file@percent }
-\newlabel{fig:accuracy-comparison}{{5}{15}{Global test accuracy during training}{figure.5}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Mean global test accuracy during training. BaitFL uses three replications per setting. No-defense coverage is one replication per setting on MNIST and two to three on CIFAR-10.}}{14}{figure.5}\protected@file@percent }
+\newlabel{fig:accuracy-comparison}{{5}{14}{Mean global test accuracy during training. BaitFL uses three replications per setting. No-defense coverage is one replication per setting on MNIST and two to three on CIFAR-10}{figure.5}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Time to first target-accuracy crossing in matched runs. BaitFL is the left bar and no defense the right bar in each pair.}}{15}{figure.6}\protected@file@percent }
+\newlabel{fig:time-target}{{6}{15}{Time to first target-accuracy crossing in matched runs. BaitFL is the left bar and no defense the right bar in each pair}{figure.6}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {VII}{\ignorespaces Round-time breakdown.}}{15}{table.7}\protected@file@percent }
+\newlabel{tab:std-segments}{{VII}{15}{Round-time breakdown}{table.7}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {VI}Complexity and Lightweight Design}{15}{section.6}\protected@file@percent }
 \newlabel{sec:complexity}{{VI}{15}{Complexity and Lightweight Design}{section.6}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-A}}Computational Cost}{15}{subsection.6.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-B}}Memory and Communication}{15}{subsection.6.2}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {VII}{\ignorespaces Round-time breakdown.}}{16}{table.7}\protected@file@percent }
-\newlabel{tab:std-segments}{{VII}{16}{Round-time breakdown}{table.7}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Average computation and elapsed time per round.}}{16}{figure.6}\protected@file@percent }
-\newlabel{fig:timing-phases}{{6}{16}{Average computation and elapsed time per round}{figure.6}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {VII}Discussion and Limitations}{16}{section.7}\protected@file@percent }
-\newlabel{sec:discussion}{{VII}{16}{Discussion and Limitations}{section.7}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VII-A}}Information Available to the Server}{16}{subsection.7.1}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Free-rider removal completion rounds.}}{17}{figure.7}\protected@file@percent }
-\newlabel{fig:completion-rounds}{{7}{17}{Free-rider removal completion rounds}{figure.7}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Average computation and elapsed time per round.}}{16}{figure.7}\protected@file@percent }
+\newlabel{fig:timing-phases}{{7}{16}{Average computation and elapsed time per round}{figure.7}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces Free-rider removal completion rounds.}}{16}{figure.8}\protected@file@percent }
+\newlabel{fig:completion-rounds}{{8}{16}{Free-rider removal completion rounds}{figure.8}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-B}}Memory and Communication}{16}{subsection.6.2}\protected@file@percent }
+\citation{bonawitz2017practical}
+\citation{kairouz2021advances,zhu2019leakage,melis2019leakage}
 \@writefile{lot}{\contentsline {table}{\numberline {VIII}{\ignorespaces Incremental detector computation and working state.}}{17}{table.8}\protected@file@percent }
 \newlabel{tab:complexity}{{VIII}{17}{Incremental detector computation and working state}{table.8}{}}
 \@writefile{lot}{\contentsline {table}{\numberline {IX}{\ignorespaces Calculated detector payload sizes.}}{17}{table.9}\protected@file@percent }
 \newlabel{tab:payload}{{IX}{17}{Calculated detector payload sizes}{table.9}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {VII}Discussion and Limitations}{17}{section.7}\protected@file@percent }
+\newlabel{sec:discussion}{{VII}{17}{Discussion and Limitations}{section.7}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VII-A}}Information Available to the Server}{17}{subsection.7.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VII-B}}Confirmation and Honest-Client Safety}{17}{subsection.7.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VII-C}}Adaptive Attacks and Identifiability}{17}{subsection.7.3}\protected@file@percent }
 \newlabel{sec:evasion}{{\mbox  {VII-C}}{17}{Adaptive Attacks and Identifiability}{subsection.7.3}{}}
-\citation{bonawitz2017practical}
-\citation{kairouz2021advances,zhu2019leakage,melis2019leakage}
 \citation{fraboni2021freerider,zhu2021advanced}
 \citation{caldas2018leaf,lai2022fedscale}
 \bibstyle{IEEEtran}
@@ -154,13 +157,15 @@
 \bibcite{kairouz2021advances}{2}
 \bibcite{zhu2019leakage}{3}
 \bibcite{melis2019leakage}{4}
-\bibcite{bagdasaryan2020backdoor}{5}
-\bibcite{lin2019freeriders}{6}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VII-D}}Privacy and Participation Limits}{18}{subsection.7.4}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VII-E}}Evaluation Scope and Future Work}{18}{subsection.7.5}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VII-F}}Code and Evidence Availability}{18}{subsection.7.6}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {VIII}Conclusion}{18}{section.8}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{References}{18}{section*.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{Appendix\nobreakspace  A: Audit-Clock Check}{18}{section*.1}\protected@file@percent }
+\newlabel{app:audit-clock}{{A}{18}{\appendixname \nobreakspace \thesectiondis \\* Audit-Clock Check}{section*.1}{}}
+\@writefile{toc}{\contentsline {section}{References}{18}{section*.2}\protected@file@percent }
+\bibcite{bagdasaryan2020backdoor}{5}
+\bibcite{lin2019freeriders}{6}
 \bibcite{fraboni2021freerider}{7}
 \bibcite{wang2024pass}{8}
 \bibcite{recasens2026frida}{9}

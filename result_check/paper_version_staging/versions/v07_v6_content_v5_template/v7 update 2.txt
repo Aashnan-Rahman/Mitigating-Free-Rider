@@ -1,0 +1,39 @@
+The revision is a real improvement. It's still not ready to submit, though, because the gaps left are the ones reviewers will weigh most.
+
+## What you fixed
+
+- **Tone and framing.** The thesis and lab-notebook language is gone, the abstract is shorter, the intro has a results teaser, and the roadmap is updated.
+- **Literature review.** It now covers robust aggregation, proof-of-learning and Shapley valuation, and Table I compares the methods. That brings the reference list to 31.
+- **Method.** You added the notation table (Table II), a paragraph on why a perturbed starting point reveals free riders, and a section on protocol settings that admits the geometric tests are heuristics.
+- **Results and honesty.** Table III has ± standard deviations, Table IV covers FR1-FR4, and the pooled-precision caveat is explicit. The timing section now explains the "unassigned runtime" gap. The code link, the sparse-audit clock bug and the evaluation scope are all disclosed.
+
+## Still blocking
+
+1. **Honest-only and low-proportion runs (0%, 5%, 10%, 20%).** Still listed as future work. This is the biggest gap, since it gives you the false-positive rate and tests the cohort gate (|C| ≥ 10).
+2. **No ablation against passive screening.** Nothing yet shows the traps matter. Run the same norm/profile pipeline on ordinary rounds only, which is the cheapest way to answer "why traps?".
+3. **No detection baseline.** You already run STD-DAGMM for timing. If it logs its flags, report its precision and recall on that configuration. A simple MAD-on-norm baseline is also cheap.
+4. **Matched no-defense baselines are still partial.** MNIST has one baseline seed per setting. An honest-only oracle run is also missing.
+5. **The published attacks are still untested.** Fraboni's decaying noise and Zhu's scaled-delta attacks appear only in the future-work list.
+
+## New problems in this version
+
+- **The accuracy claim is within noise.** "Improve mean final accuracy by 0.10 / 0.60 points" rests on MNIST gains of 0.04-0.18 against run SDs of 0.05-0.09, with one baseline seed. CIFAR gains of 0.4-0.8 sit inside SDs of 0.3-1.2. Say "comparable or slightly higher" until you have paired differences across seeds with an interval.
+- **Pooled precision leads the abstract, intro and conclusion,** yet Section V-B says it isn't a confidence bound. Lead with "100% recall, 3 honest removals in 96 runs (two runs affected)". That is about 3 in 6,240 honest client-cases, but those cases aren't independent, so use a run-level bootstrap if you want an interval.
+- **Candidate labels at the end of non-IID FR3 at 40% (62% and 72% of honest clients).** A label this widespread isn't informative. Say what it means operationally, or tighten the rule.
+- **Publishing a known bug.** Section VII-D describes the Algorithm 4 line-13 availability bug and says fixing it needs a new evaluation. A reviewer will ask why you didn't fix it. Either fix it and rerun a subset, or show the logged decisions are unchanged under the corrected rule.
+- **Notation clashes.** W is both warmup length and total work in Eq. 16. P is both the number of coordinates and the non-nominated peer set. C is both the nominated cohort and the Candidate state.
+- **Captions got too terse.** "Fig. 3. MNIST client response scores" doesn't say what the axes are (asinh of the mean z-scores), that round 20 is shown, or that the runs are representative. Fig. 5 should note the baseline coverage.
+- **Housekeeping.** Make an immutable archive (e.g. Zenodo DOI) before submitting, and use `\url` for the GitHub link so it doesn't break mid-word. The "research logs" row in Table VII reads like a lab artifact.
+- **Held-out check.** You now admit defaults were set during development. A cheap fix is to run frozen parameters on unseen seeds, or on one new dataset such as Fashion-MNIST or a MedMNIST subset.
+
+## Suggested order
+
+1. Fix the cheap things: the accuracy wording, the headline numbers, notation, captions and the DOI.
+2. Run honest-only and 5/10/20% free riders (add 5 seeds on the non-IID FR3/FR4 configs if you can).
+3. Run the passive-screening ablation and log STD-DAGMM's detection results.
+4. Finish the matched baselines and add the oracle.
+5. Add the Fraboni and Zhu attacks.
+
+After steps 1-4, the realistic-tier journals I listed (IEEE IoT Journal, JISA, Computers & Security) become a reasonable target. Step 5 and an adaptive attacker would be needed for the stretch tier.
+
+I haven't updated the Claude Doc for this version. If you'd like, I can redo it as a v7.1 review, or draft the experiment plan for steps 2-4.

@@ -1,0 +1,12 @@
+diff --git a/train_v15_4.py b/train_v15_4.py
+--- a/train_v15_4.py
++++ b/train_v15_4.py
+@@ -233,7 +233,7 @@
+             state.escalate_audit(anomalies)
+             logger.cycle_signal_rows.extend({**r, "is_free_rider": int(r["client_id"] in truth)} for r in signals)
+             logger.cycle_policy_rows.append(dict(round=round_index, cycle=cycle,
+                 policy=json.dumps({"mode": "single_audit", "reason": reason, "escalations": len(anomalies)})))
+-            quiet_since = round_index if not anomalies else None
++            quiet_since = round_index if not state.monitored and not state.pending_probation else None
+             selected, trap_states = {}, {}
+         for row in logger.client_rows[-len(active_start):] if active_start else []:

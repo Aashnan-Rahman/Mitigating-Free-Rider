@@ -20,7 +20,7 @@ Require (Test-Path (Join-Path $export 'paired_results.csv')) 'Run baseline valid
 foreach ($dataset in @('mnist','cifar10')) {
     $datasetLabel=if ($dataset -eq 'mnist') {'MNIST'} else {'CIFAR-10'}
     $lines=[Collections.Generic.List[string]]::new()
-    AddLines $lines @('\begin{figure*}[p]\centering', '\begin{tikzpicture}',
+    AddLines $lines @('\begin{figure*}[!t]\centering', '\begin{tikzpicture}',
     '\begin{groupplot}[group style={group name=geometry,group size=4 by 4,horizontal sep=0.45cm,vertical sep=1.05cm},scale only axis,width=0.212\textwidth,height=3.55cm,axis line style={black!40},grid=major,grid style={black!8},tick label style={font=\scriptsize},title style={font=\scriptsize},label style={font=\scriptsize},scaled ticks=false,unbounded coords=jump]')
     foreach ($share in @(30,40)) {
         foreach ($split in @('iid','noniid')) {
@@ -41,8 +41,8 @@ foreach ($dataset in @('mnist','cifar10')) {
         }
     }
     AddLines $lines @('\end{groupplot}',
-    '\node[font=\small] at ([yshift=0.85cm]current bounding box.north) {\textcolor{honestblue}{$\circ$}\ Honest clients\qquad\textcolor{riderorange}{$\blacktriangle$}\ Free riders};',
-    '\end{tikzpicture}', ('\caption{'+$datasetLabel+' client response scores.}\label{fig:geometry-'+$dataset+'}'), '\end{figure*}')
+    '\node[font=\small] at ([yshift=0.4cm]current bounding box.north) {\textcolor{honestblue}{$\circ$}\ Honest clients\qquad\textcolor{riderorange}{$\blacktriangle$}\ Free riders};',
+    '\end{tikzpicture}', ('\caption{Representative round-20 '+$datasetLabel+' responses. Axes show $\operatorname{asinh}$ of paired mean norm and profile $z$-scores.}\label{fig:geometry-'+$dataset+'}'), '\end{figure*}')
     WriteFigure "geometry_$dataset" $lines
 }
 

@@ -1,5 +1,14 @@
 # Section IV code review — 4 November 2026
 
+Current manuscript follow-up: `REVIEW_RESPONSE_UPDATE_4.md` aligns Algorithm 4
+with the raw-finding guard used in the evaluated implementation. Review
+enrollment still uses eligible findings. Appendix A documents the case where
+all findings are in cooldown and the quiet clock remains unset. The
+`check_review2_evidence.ps1` check finds agreement between the implemented and
+alternative guards on all 622 recorded audits only. The eligible-set alternative
+has not been rerun. `AUDIT_CLOCK_CORRECTION.patch` remains unapplied, and the six
+study source hashes are unchanged. Earlier audit details below are historical.
+
 Scope: manuscript, diagrams and reporting assets only. The experimental
 implementation and stored results are unchanged. All six implementation hashes
 in `generated/multiseed/provenance.json` match the working source after LF

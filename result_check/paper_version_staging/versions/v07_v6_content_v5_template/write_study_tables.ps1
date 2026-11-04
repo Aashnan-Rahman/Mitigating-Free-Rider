@@ -27,26 +27,64 @@ $detailRows | Export-Csv (Join-Path $exportDir 'attack_means.csv') -NoTypeInform
 
 $safetyRows = @($detailRows)
 $safetyRows | Export-Csv (Join-Path $exportDir 'table2_means.csv') -NoTypeInformation -Encoding utf8
+function SafetyNumber([double]$Value) { return $Value.ToString('0.##', $culture) }
 $lines = [Collections.Generic.List[string]]::new()
-@('\begin{table*}[!t]', '\centering\footnotesize\setlength{\tabcolsep}{3.5pt}',
+@('\begin{table*}[!tp]', '\centering\footnotesize\setlength{\tabcolsep}{5pt}',
 '\caption{Honest-client impact.}\label{tab:safety}',
-'\begin{tabular}{llllrrrrrr}', '\toprule',
-'\multirow{2}{*}{Dataset} & \multirow{2}{*}{Partition} & \multirow{2}{*}{FR (\%)} & \multirow{2}{*}{Attack} & \multicolumn{3}{c}{Mean honest clients per run} & \multicolumn{2}{c}{Excluded client-rounds} & \multirow{2}{*}{\shortstack{Responses\\withheld (\%)}} \\',
-'\cmidrule(lr){5-7}\cmidrule(lr){8-9}',
-'& & & & \shortstack{Final\\candidates} & \shortstack{Permanent\\removals [range]} & \shortstack{Ever\\quarantined [range]} & Quarantine & \shortstack{Ordinary\\responses} & \\', '\midrule') | ForEach-Object { $lines.Add($_) }
+'(a) Final unresolved clients and withheld responses\par\smallskip',
+'\begin{tabular}{lllrrrrrrrr}', '\toprule',
+'\multirow{2}{*}{Dataset} & \multirow{2}{*}{Partition} & \multirow{2}{*}{FR (\%)} & \multicolumn{4}{c}{Unresolved honest clients} & \multicolumn{4}{c}{Honest responses withheld (\%)} \\',
+'\cmidrule(lr){4-7}\cmidrule(lr){8-11}',
+'& & & FR1 & FR2 & FR3 & FR4 & FR1 & FR2 & FR3 & FR4 \\', '\midrule') | ForEach-Object { $lines.Add($_) }
 foreach ($dataset in $datasets) {
     if ($dataset -eq 'cifar10') { $lines.Add('\midrule') }
-    $datasetRows = @($safetyRows | Where-Object dataset -eq $dataset)
+    $datasetLabel = if ($dataset -eq 'mnist') { 'MNIST' } else { 'CIFAR-10' }
+    $firstDatasetRow = $true
+    foreach ($split in @('iid','noniid')) {
+        if ($split -eq 'noniid') { $lines.Add('\cmidrule(lr){2-11}') }
+        $partitionLabel = if ($split -eq 'iid') { 'IID' } else { 'Non-IID' }
+        $firstPartitionRow = $true
+        foreach ($share in @(30,40)) {
+            $groupRows = @($safetyRows | Where-Object { $_.dataset -eq $dataset -and $_.split -eq $split -and $_.share -eq $share })
+            $cells = @(
+                $(if ($firstDatasetRow) { '\multirow{4}{*}{' + $datasetLabel + '}' } else { '' }),
+                $(if ($firstPartitionRow) { '\multirow{2}{*}{' + $partitionLabel + '}' } else { '' }),
+                [string]$share
+            )
+            foreach ($field in @('final_honest_candidates','honest_excluded_pct')) {
+                foreach ($attack in $attacks) {
+                    $row = @($groupRows | Where-Object attack -eq $attack)
+                    Require ($row.Count -eq 1) 'Missing honest-impact overview cell'
+                    $cells += SafetyNumber $row[0].$field
+                }
+            }
+            $lines.Add(($cells -join ' & ') + ' \\')
+            $firstDatasetRow = $false; $firstPartitionRow = $false
+        }
+    }
+}
+@('\bottomrule','\end{tabular}',
+'\par\medskip',
+'(b) Honest-client exclusions\par\smallskip',
+'\begin{tabular}{llllrrrr}', '\toprule',
+'\multirow{2}{*}{Dataset} & \multirow{2}{*}{Partition} & \multirow{2}{*}{FR (\%)} & \multirow{2}{*}{Attack} & \multicolumn{2}{c}{Honest clients [range]} & \multicolumn{2}{c}{Excluded client-rounds} \\',
+'\cmidrule(lr){5-6}\cmidrule(lr){7-8}',
+'& & & & \shortstack{Permanent\\removals} & \shortstack{Ever\\quarantined} & Quarantine & \shortstack{Ordinary\\responses} \\', '\midrule') | ForEach-Object { $lines.Add($_) }
+$eventRows = @($safetyRows | Where-Object { $_.fp -gt 0 -or $_.honest_ever_quarantined -gt 0 -or $_.honest_quarantine_rounds -gt 0 -or $_.honest_nontrap_excluded -gt 0 })
+foreach ($dataset in $datasets) {
+    $datasetRows = @($eventRows | Where-Object dataset -eq $dataset)
+    if ($datasetRows.Count -eq 0) { continue }
+    if ($dataset -eq 'cifar10') { $lines.Add('\midrule') }
     $datasetLabel = if ($dataset -eq 'mnist') { 'MNIST' } else { 'CIFAR-10' }
     $firstDatasetRow = $true
     foreach ($split in @('iid','noniid')) {
         $partitionRows = @($datasetRows | Where-Object split -eq $split)
-        if ($split -eq 'noniid' -and $partitionRows.Count -gt 0) { $lines.Add('\cmidrule(lr){2-10}') }
+        if ($partitionRows.Count -eq 0) { continue }
         $partitionLabel = if ($split -eq 'iid') { 'IID' } else { 'Non-IID' }
         $firstPartitionRow = $true
         $previousShare = -1
         foreach ($row in $partitionRows) {
-            if ($previousShare -ge 0 -and $previousShare -ne $row.share) { $lines.Add('\cmidrule(lr){3-10}') }
+            if ($previousShare -ge 0 -and $previousShare -ne $row.share) { $lines.Add('\cmidrule(lr){3-8}') }
             $shareRows = @($partitionRows | Where-Object share -eq $row.share).Count
             $shareCell = if ($previousShare -eq $row.share) { '' } elseif ($shareRows -gt 1) { '\multirow{' + $shareRows + '}{*}{' + $row.share + '}' } else { [string]$row.share }
             $cells = @(
@@ -54,12 +92,11 @@ foreach ($dataset in $datasets) {
                 $(if ($firstPartitionRow) { '\multirow{' + $partitionRows.Count + '}{*}{' + $partitionLabel + '}' } else { '' }),
                 $shareCell, $row.attack
             )
-            $cells += FormatNumber $row.final_honest_candidates
             foreach ($field in @('fp','honest_ever_quarantined')) {
                 $minimum=[int]$row.("${field}_min");$maximum=[int]$row.("${field}_max")
-                $cells += $(if($minimum -eq $maximum){[string]$minimum}else{(FormatNumber $row.$field)+' ['+$minimum+'--'+$maximum+']'})
+                $cells += $(if($minimum -eq $maximum){[string]$minimum}else{(SafetyNumber $row.$field)+' ['+$minimum+'--'+$maximum+']'})
             }
-            foreach ($field in @('honest_quarantine_rounds','honest_nontrap_excluded','honest_excluded_pct')) { $cells += FormatNumber $row.$field }
+            foreach ($field in @('honest_quarantine_rounds','honest_nontrap_excluded')) { $cells += SafetyNumber $row.$field }
             $lines.Add(($cells -join ' & ') + ' \\')
             $firstDatasetRow = $false; $firstPartitionRow = $false
             $previousShare = $row.share
@@ -67,7 +104,6 @@ foreach ($dataset in $datasets) {
     }
 }
 @('\bottomrule','\end{tabular}',
-'\par\smallskip\parbox{0.97\textwidth}{\scriptsize Entries are per-run means; brackets give observed minimum--maximum counts. A client-round is one honest client in one round. Withheld responses include traps and quarantine without double counting, as a percentage of active honest client-rounds. Ordinary exclusions count non-trap responses.}',
 '\end{table*}') | ForEach-Object { $lines.Add($_) }
 WriteTable 'safety' $lines
 

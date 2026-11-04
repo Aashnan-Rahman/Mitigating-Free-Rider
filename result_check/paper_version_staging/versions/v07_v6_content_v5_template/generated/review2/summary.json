@@ -1,0 +1,42 @@
+{
+  "runs": 96,
+  "honest_removals": 3.0,
+  "affected_runs": 2,
+  "honest_client_cases": 6240.0,
+  "audits": 622,
+  "empty_audits": 609,
+  "nonempty_audits": 13,
+  "unproven_audits": 0,
+  "correction": "Restart quiet clock when no finding survives pre-decrement cooldown filtering",
+  "scope": "Agreement on all recorded audits only; no new training, screening or attack responses generated",
+  "std_flags": [
+    {
+      "dataset": "mnist",
+      "rounds": 100,
+      "attacker_responses": 4000,
+      "honest_responses": 6000,
+      "tp": 0.0,
+      "fp": 2200.0,
+      "fn": 4000.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "endpoint": "per-round observational flags",
+      "detector_epochs": 5,
+      "source": "evidence/timing_mnist_20261103/std/segment_timings.csv"
+    },
+    {
+      "dataset": "cifar10",
+      "rounds": 100,
+      "attacker_responses": 4000,
+      "honest_responses": 6000,
+      "tp": 0.0,
+      "fp": 2196.0,
+      "fn": 4000.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "endpoint": "per-round observational flags",
+      "detector_epochs": 5,
+      "source": "evidence/timing_cifar10_20261103/std/segment_timings.csv"
+    }
+  ]
+}

@@ -1,4 +1,4 @@
-\begin{figure*}[tp]\centering\begin{tikzpicture}
+\begin{figure*}[t]\centering\begin{tikzpicture}
 \begin{groupplot}[group style={group size=2 by 1,horizontal sep=1.1cm},scale only axis,width=0.405\textwidth,height=4.6cm,ybar,/pgf/bar width=15pt,xmin=0.5,xmax=2.5,ymin=0,xtick={1,2},xticklabels={{Computation},{Elapsed}},axis x line*=bottom,axis y line*=left,ymajorgrids=true,grid style={black!8},tick label style={font=\small},label style={font=\small},title style={font=\small},scaled y ticks=false,nodes near coords,every node near coord/.append style={font=\scriptsize,/pgf/number format/fixed,/pgf/number format/precision=2,/pgf/number format/fixed zerofill}]
 \nextgroupplot[title={MNIST},ylabel={Mean seconds per round},ymax=74.1433]
 \addplot[/pgf/bar shift=-9pt,fill=baitteal!85,draw=baitteal] coordinates {(1,36.920542) (2,40.923968)};
@@ -7,6 +7,6 @@
 \addplot[/pgf/bar shift=-9pt,fill=baitteal!85,draw=baitteal] coordinates {(1,88.558552) (2,99.952120)};
 \addplot[/pgf/bar shift=9pt,fill=stdorange!85,draw=stdorange] coordinates {(1,120.053736) (2,137.299553)};
 \end{groupplot}\end{tikzpicture}
-\par\medskip{\small\textcolor{baitteal}{\rule{0.35cm}{0.18cm}}\ BaitFL\qquad\textcolor{stdorange}{\rule{0.35cm}{0.18cm}}\ STD-DAGMM}
+\par\smallskip{\small\textcolor{baitteal}{\rule{0.35cm}{0.18cm}}\ BaitFL\qquad\textcolor{stdorange}{\rule{0.35cm}{0.18cm}}\ STD-DAGMM}
 \caption{Average computation and elapsed time per round.}\label{fig:timing-phases}
 \end{figure*}
