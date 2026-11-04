@@ -1,4 +1,4 @@
-\documentclass[tikz,border=12pt]{standalone}
+\documentclass[tikz,border=6pt]{standalone}
 \usepackage[T1]{fontenc}
 \usepackage{tgheros}
 \renewcommand{\familydefault}{\sfdefault}
@@ -49,15 +49,15 @@
 \draw[arrow] (measure) -- (verify);
 
 \node[state,draw=safe!65,fill=safefill] (clear) at (3,-3.9)
- {\textcolor{safe}{\textbf{Clear (R)}}\\[5pt]
+ {\textcolor{safe}{\textbf{Clear}}\\[5pt]
  Clear result in this cycle\\
  Ordinary participation};
 \node[state,draw=candidate!65,fill=candidatefill] (uncertain) at (10.5,-3.9)
- {\textcolor{candidate}{\textbf{Candidate (C)}}\\[5pt]
+ {\textcolor{candidate}{\textbf{Unresolved}}\\[5pt]
  Ambiguous or incomplete\\
  Needs further checks};
 \node[state,draw=suspect!65,fill=suspectfill] (strong) at (18,-3.9)
- {\textcolor{suspect}{\textbf{Suspected (S)}}\\[5pt]
+ {\textcolor{suspect}{\textbf{Strong}}\\[5pt]
  Strong paired evidence\\
  Temporary quarantine};
 
@@ -79,7 +79,7 @@
  {\textbf{Phase III: confirmation}\\[5pt]
  Separate norm/profile counts\\
  Ambiguity retains evidence\\
- Clean cycles clear evidence};
+ Clear cycles reset evidence};
 \draw[arrow] (clear) -- (routine);
 \draw[arrow] (uncertain) -- (review);
 \draw[arrow] (strong) -- (memory);
@@ -113,7 +113,7 @@
  {\textbf{Aggregation continues alongside auditing}\\[5pt]
  Update the global model using eligible ordinary responses.\\
  Exclude trap responses, quarantined clients and removed clients.\\
- An unresolved candidate may contribute when not quarantined.};
+ An unresolved client may contribute when not quarantined.};
 \draw[arrow,draw=safe!65] (routine.south) -- (3,-9.05) -- (aggregation.north -| 3,0);
 \draw[arrow,draw=candidate!65] (review.south) -- (10.5,-9.05) -- (aggregation.north -| 10.5,0);
 

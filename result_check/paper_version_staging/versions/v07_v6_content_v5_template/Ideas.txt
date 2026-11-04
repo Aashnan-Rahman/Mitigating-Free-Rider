@@ -42,3 +42,144 @@ to the updates. Repeated model exchange, however, remains a
 significant communication cost in FL [1].
 
 2. Free riding has a different objective
+
+
+3 seeds is common in federated learning papers, and it's often all the compute allows. Your CIFAR-10 runs take about 2.5 to 3 hours each, so I understand the limit. I'd still expect a reviewer to push on it, for these reasons:
+
+- **The claims are about rare events.** "100% recall" and "99.91% precision" depend on a handful of honest removals (3 in total). Table II shows that honest quarantines vary a lot between seeds, for example [1-9] on CIFAR-10 non-IID FR3 at 40%. With so much spread, 3 seeds can't tell you whether the true honest-removal rate is near zero or a few percent.
+- **The pooled numbers overstate the sample.** The 99.91% comes from roughly 3,360 removals, but those are not independent. They come from only 96 runs, and they share partitions and seeds.
+- **No uncertainty is shown.** Even with 3 seeds, the main tables report means without standard deviations or intervals.
+
+A cheaper fix than the 5-10 seeds I suggested:
+
+1. Run **5 seeds** on the configurations that carry your claims: non-IID at 30% and 40%, for FR3 and FR4. These are the only ones with honest errors. FR1 and FR2 are removed at the earliest round every time, so they can stay at 3.
+2. Report **mean ± std** in the tables, and a Wilson or Clopper-Pearson interval for the honest-removal rate, counted per honest client.
+3. If you keep 3 seeds, drop "100%" and "99.91%" as headline numbers, report per-run results, and state in the paper that the seed count is small. That is weaker, but it won't read as overclaiming.
+
+The honest-only (0% free rider) runs and the 5-10% free-rider runs matter more than extra seeds on the settings you already have.
+
+I can update the doc to soften this point to "at least 5 seeds on the non-IID FR3/FR4 configurations" if you'd like.
+
+
+
+
+The revision is a real improvement. It's still not ready to submit, though, because the gaps left are the ones reviewers will weigh most.
+
+## What you fixed
+
+- **Tone and framing.** The thesis and lab-notebook language is gone, the abstract is shorter, the intro has a results teaser, and the roadmap is updated.
+- **Literature review.** It now covers robust aggregation, proof-of-learning and Shapley valuation, and Table I compares the methods. That brings the reference list to 31.
+- **Method.** You added the notation table (Table II), a paragraph on why a perturbed starting point reveals free riders, and a section on protocol settings that admits the geometric tests are heuristics.
+- **Results and honesty.** Table III has ± standard deviations, Table IV covers FR1-FR4, and the pooled-precision caveat is explicit. The timing section now explains the "unassigned runtime" gap. The code link, the sparse-audit clock bug and the evaluation scope are all disclosed.
+
+## Still blocking
+
+1. **Honest-only and low-proportion runs (0%, 5%, 10%, 20%).** Still listed as future work. This is the biggest gap, since it gives you the false-positive rate and tests the cohort gate (|C| ≥ 10).
+2. **No ablation against passive screening.** Nothing yet shows the traps matter. Run the same norm/profile pipeline on ordinary rounds only, which is the cheapest way to answer "why traps?".
+3. **No detection baseline.** You already run STD-DAGMM for timing. If it logs its flags, report its precision and recall on that configuration. A simple MAD-on-norm baseline is also cheap.
+4. **Matched no-defense baselines are still partial.** MNIST has one baseline seed per setting. An honest-only oracle run is also missing.
+5. **The published attacks are still untested.** Fraboni's decaying noise and Zhu's scaled-delta attacks appear only in the future-work list.
+
+## New problems in this version
+
+- **The accuracy claim is within noise.** "Improve mean final accuracy by 0.10 / 0.60 points" rests on MNIST gains of 0.04-0.18 against run SDs of 0.05-0.09, with one baseline seed. CIFAR gains of 0.4-0.8 sit inside SDs of 0.3-1.2. Say "comparable or slightly higher" until you have paired differences across seeds with an interval.
+- **Pooled precision leads the abstract, intro and conclusion,** yet Section V-B says it isn't a confidence bound. Lead with "100% recall, 3 honest removals in 96 runs (two runs affected)". That is about 3 in 6,240 honest client-cases, but those cases aren't independent, so use a run-level bootstrap if you want an interval.
+- **Candidate labels at the end of non-IID FR3 at 40% (62% and 72% of honest clients).** A label this widespread isn't informative. Say what it means operationally, or tighten the rule.
+- **Publishing a known bug.** Section VII-D describes the Algorithm 4 line-13 availability bug and says fixing it needs a new evaluation. A reviewer will ask why you didn't fix it. Either fix it and rerun a subset, or show the logged decisions are unchanged under the corrected rule.
+- **Notation clashes.** W is both warmup length and total work in Eq. 16. P is both the number of coordinates and the non-nominated peer set. C is both the nominated cohort and the Candidate state.
+- **Captions got too terse.** "Fig. 3. MNIST client response scores" doesn't say what the axes are (asinh of the mean z-scores), that round 20 is shown, or that the runs are representative. Fig. 5 should note the baseline coverage.
+- **Housekeeping.** Make an immutable archive (e.g. Zenodo DOI) before submitting, and use `\url` for the GitHub link so it doesn't break mid-word. The "research logs" row in Table VII reads like a lab artifact.
+- **Held-out check.** You now admit defaults were set during development. A cheap fix is to run frozen parameters on unseen seeds, or on one new dataset such as Fashion-MNIST or a MedMNIST subset.
+
+## Suggested order
+
+1. Fix the cheap things: the accuracy wording, the headline numbers, notation, captions and the DOI.
+2. Run honest-only and 5/10/20% free riders (add 5 seeds on the non-IID FR3/FR4 configs if you can).
+3. Run the passive-screening ablation and log STD-DAGMM's detection results.
+4. Finish the matched baselines and add the oracle.
+5. Add the Fraboni and Zhu attacks.
+
+After steps 1-4, the realistic-tier journals I listed (IEEE IoT Journal, JISA, Computers & Security) become a reasonable target. Step 5 and an adaptive attacker would be needed for the stretch tier.
+
+I haven't updated the Claude Doc for this version. If you'd like, I can redo it as a v7.1 review, or draft the experiment plan for steps 2-4.
+
+
+Yes, it's much better. The wording is now honest and consistent, but it's still not ready to submit, because the experiments haven't changed.
+
+**What you fixed well**
+- The accuracy claim now says "comparable or slightly higher" and admits it isn't a systematic gain.
+- The headline is now recall, with honest removals stated as "3 in 2 runs among 6,240 honest client-cases". Pooled precision is no longer the lead number.
+- Notation is mostly cleaned up (Twarm, U/V, Wdet), and the captions for Figs. 3-5 are informative.
+- The Algorithm 4 clock issue is fixed, with a trace check across all 622 audits.
+- Table IV is split into (a) and (b), and candidate labels are explained.
+
+**New concerns**
+1. **STD-DAGMM flagged 0 of 4,000 free-rider responses** (and about 37% of honest ones). A reviewer will read that as a broken or undertrained reimplementation, not as a result. Before this goes in, show your STD-DAGMM works in Lin et al.'s own setting (IID MNIST, random-weights attack), or tune it until it does. Otherwise the 29%/26% time savings compare against a non-functional detector. I'm glad they're kept out of the abstract and conclusion.
+2. **The Algorithm 4 fix reads like a changelog.** "The recorded engine" and "Section VII establishes its equivalence" are lab-notebook language, and a trace check on 622 audits shows equivalence on those traces only. Say "agrees on all recorded audits". The cleaner option is to move the discussion to an appendix, or rerun a small subset with the corrected code.
+3. **Notation clashes remain.** S means both the client-record state and the "Strong" outcome. E means both the evidence set (Alg. 2) and the eligible set (Alg. 4). Also, "lines 5-11" in Section IV-E no longer matches the new Algorithm 4 numbering.
+4. **The real cost is understated.** Table IV(a) shows about 11% of honest responses withheld even in clean IID runs. "Lightweight" is true for server computation, so say "lightweight in server computation" in the abstract. If you can, add a time-to-target-accuracy figure.
+5. **A precision figure to recheck.** For MNIST non-IID 40% I get 480/(480+3) = 99.38%, not 99.39%. Please verify the counts.
+
+**Still blocking submission** (all still listed under future work)
+- Honest-only (0%) and 5-20% free-rider runs.
+- The passive-screening ablation, which shows whether the traps matter.
+- A functioning detection baseline (see point 1).
+- Complete matched no-defense baselines, plus an honest-only oracle.
+- The Fraboni and Zhu attacks.
+- More than 3 seeds on the non-IID FR3/FR4 configurations, as a cheaper middle option.
+
+Section VII-E now lists most of these as future work, and a reviewer will read that list as the revision request. Each item you name there and don't run costs you more than leaving it out would. The honest-only and low-proportion runs are the cheapest and most valuable, so I'd start there.
+
+For a thesis chapter or preprint, this version is fine. For the journals I listed earlier, run the blocking items first.
+
+I can redo the Claude Doc as a review of this version, or draft the experiment plan if you'd like.
+
+
+Yes, this works as a draft. It's honest, consistent and readable, and I'd be comfortable sending it to a supervisor or putting it on arXiv. It isn't ready for a journal submission, because the experiments are still the same.
+
+**What improved**
+- The notation clashes are gone (S/E, strong/unresolved/clear, and F/D/F_elig).
+- The 99.38% figure is fixed and the arithmetic is shown (480/483).
+- The clock bug is now handled cleanly in Appendix A.
+- The abstract states the ~11% withheld-response cost up front.
+- Fig. 6 (time to target accuracy) is a good addition.
+
+**Small fixes**
+1. **Fig. 2 still uses the old labels.** It shows Clear (R), Candidate (C) and Suspected (S), while the text now says strong/unresolved/clear. The rehabilitation paragraph also still says "suspected or candidate client". Make the figure and text use one vocabulary.
+2. **Label the bars in Fig. 6.** The legend says "BaitFL, No defense", and I'm assuming BaitFL is the first bar of each pair. State that in the caption.
+3. **Section VII-E is out of date.** It still lists "time to a target model accuracy" as future work, which Fig. 6 now partly covers. Update that sentence.
+4. **Appendix A admits Algorithm 4 isn't the code that ran.** A reviewer will ask why you didn't run the corrected version. The best fix is to rerun a small subset with the eligible-set guard and say so. Otherwise, describe Algorithm 4 as the implemented rule.
+
+**One interpretation caution**
+BaitFL reaches the target 30-40% sooner than no-defense (for example 16.5 vs 24.2 minutes on MNIST at 40% IID). That is mostly the benefit of removing free riders, whose responses dilute the average. It doesn't measure the cost of auditing. An honest-only oracle run would separate the two, and it is also the missing baseline from before. Keep your current wording ("do not establish a controlled advantage"), and don't promote this figure to the abstract yet.
+
+**Still blocking for a journal** (unchanged)
+- Honest-only (0%) and 5-20% free-rider runs.
+- The passive-screening ablation.
+- A working detection baseline. STD-DAGMM flagging 0 of 4,000 free-rider responses still reads as a broken reimplementation.
+- Complete matched no-defense runs.
+- The Fraboni and Zhu attacks.
+- More seeds on the non-IID FR3/FR4 configurations.
+
+For next steps, I'd run the honest-only and low-proportion experiments first, since they answer the most reviewer questions for the least compute.
+
+
+Saved the detailed [experiment plan](</D:/Code/Mitigating Free Rider/result_check/paper_version_staging/versions/v07_v6_content_v5_template/EXPERIMENT_PLAN.md>).
+
+Use **one fixed seed per new setting initially**, in this order:
+
+| Priority | Experiment | Main purpose |
+|---|---|---|
+| Prerequisite | Corrected audit-clock tests and a small matched rerun | Validate the guard before expanding experiments |
+| 1 | **Honest-only: 0% free riders** | Measure false removals, quarantine and auditing costs |
+| 2 | **Low proportions: 5%, 10%, 20%** | Test detection near the cohort-support boundary |
+| 3 | **Passive-screening ablation** | Establish what traps add beyond ordinary-update statistics |
+| 4 | **Validate STD-DAGMM; add a MAD baseline** | Obtain a functioning, comparable detection baseline |
+| 5 | **Honest-only oracle and matched no-defense comparisons** | Distinguish removal benefits from auditing costs |
+| 6 | **Published attacks** | Evaluate Fraboni’s decaying-noise and Zhu’s scaled-delta strategies |
+| 7 | **Held-out dataset with frozen settings** | Test generalization, starting with Fashion-MNIST |
+| 8 — later | **Targeted multi-seed expansion** | Replicate important findings and finish missing matched baseline seeds |
+
+Adaptive attackers can remain an optional extension beyond the current threat model.
+
+**Start with priorities 1–2 after the guard check.** Extra seeds should follow coverage of the missing experiments.
