@@ -11,6 +11,37 @@ The rewritten full-study manuscript is
 with v2-style sections, all 32 completed v15.4 runs, separate result/security
 analysis, and per-run appendices. Rebuild with `build_paper_v6_full_study.py --compile`.
 
+## CIFAR-10 segmented timing interlude (3 November 2026)
+
+Both 100-round runs completed on 4 November, and the original baseline queue
+resumed automatically. The [completed comparison](results/cifar10_segment_timing_20261103/README.md)
+includes raw per-round measurements, detector fitting records, source provenance,
+phase tables and [the segment chart](results/cifar10_segment_timing_20261103/segment_comparison.pdf).
+Recovery checkpoints and runtime locks remain local.
+
+`configs/cifar10_segment_timing_20261103.json` temporarily pauses the active
+no-defense queue for a separate **CIFAR-10 non-IID / FR3 / 40% / seed-42** timing
+comparison: our unchanged v15.4, then the same STD-DAGMM reproduction, **100 actual
+rounds each**, 100 clients, three local SGD epochs and six CPU threads. Both
+runners explicitly receive the dataset; report labels also follow the job.
+The canonical training, attacks and detector files stay unchanged so the paused
+baseline's source hashes and checkpoints remain valid.
+
+Restart/logon/five-minute recovery and watch cover this priority job. After both
+runs and report validation, the controller clears only its own stop marker,
+restores the saved original selector, and resumes that queue immediately.
+Separate outputs use `results/cifar10_segment_timing_20261103/`; the completed
+MNIST timing evidence is not overwritten. CSV/PDF/PNG segment comparisons and
+conditional/amortized phase tables are generated automatically.
+
+To avoid repeating the memory-paging caveat of the older CIFAR comparison, this
+job requires 2 GiB available RAM before ours and 5 GiB before STD (the earlier
+STD worker alone reached about 3.7 GiB RSS). These are operational memory guards,
+not detector thresholds. If memory is insufficient, watch reports a recovery
+wait and the scheduler retries; closing memory-heavy apps permits progress.
+The original queue stays paused until the comparison succeeds. No other apps
+are closed automatically, and no network-communication time is claimed.
+
 ## MNIST segmented timing interlude (3 November 2026)
 
 `configs/mnist_segment_timing_20261103.json` requests two sequential 100-round

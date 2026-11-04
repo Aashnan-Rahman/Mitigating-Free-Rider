@@ -1,4 +1,4 @@
-"""Fresh/recoverable instrumented v15.4 MNIST run; no frozen source edits."""
+"""Fresh/recoverable v15.4 MNIST/CIFAR-10 timing run; no frozen source edits."""
 from __future__ import annotations
 import argparse
 import hashlib
@@ -47,16 +47,23 @@ def run(config, output):
         measured=True, protocol=provenance))
 
 
+def timing_config(dataset, output, rounds=100, seed=42):
+    if dataset not in ('mnist', 'cifar10'):
+        raise ValueError('Unsupported timing dataset')
+    return ExperimentConfig(methodology_version='swtcp_v15_4', dataset=dataset, distribution='noniid',
+        attack_type='FR3', free_rider_pct=.4, num_clients=100, num_rounds=rounds,
+        seed=seed, device='cpu', local_epochs=3, save_checkpoints=True,
+        checkpoint_keep_last=2, run_name=output.name, output_dir=str(output.parent))
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--rounds', type=int, default=100)
     parser.add_argument('--seed', type=int, default=42)
+    parser.add_argument('--dataset', choices=('mnist', 'cifar10'), default='mnist')
     args = parser.parse_args()
     torch.set_num_threads(6)
     torch.set_num_interop_threads(1)
-    cfg = ExperimentConfig(methodology_version='swtcp_v15_4', dataset='mnist', distribution='noniid',
-        attack_type='FR3', free_rider_pct=.4, num_clients=100, num_rounds=args.rounds,
-        seed=args.seed, device='cpu', local_epochs=3, save_checkpoints=True,
-        checkpoint_keep_last=2, run_name=args.output.name, output_dir=str(args.output.parent))
+    cfg = timing_config(args.dataset, args.output, args.rounds, args.seed)
     run(cfg, args.output.resolve())

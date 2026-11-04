@@ -80,6 +80,11 @@ def test_std_measures_real_worker_and_checkpoint_without_overlapping(monkeypatch
     from argparse import Namespace
     import train as shared
     from run_std_segment_timing import StdTimer, instrumented_std
+    import psutil
+    memory=psutil.virtual_memory()
+    # This tiny four-client/50-coordinate fixture does not need the full-model
+    # runner's 2-GiB preflight. Production runs retain their real memory checks.
+    monkeypatch.setattr(psutil,'virtual_memory',lambda:memory._replace(available=8*2**30))
     data=TensorDataset(torch.arange(32,dtype=torch.float32).reshape(8,4)/32,torch.arange(8)%10)
     monkeypatch.setattr(shared,'get_datasets',lambda cfg:(data,data))
     monkeypatch.setattr(shared,'partition_dataset',lambda data,cfg:[[2*c,2*c+1] for c in range(4)])

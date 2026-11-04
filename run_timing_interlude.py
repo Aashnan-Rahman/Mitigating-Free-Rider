@@ -48,22 +48,26 @@ def publish(job, batch, current=None, state='running', error=None):
             global_accuracy=last.get('global_accuracy'), round_time_seconds=last.get('observed_round_wall_seconds'),
             fit_seconds=last.get('fit_seconds'), inference_seconds=last.get('inference_seconds'),
             suspected_clients=latest.get('num_suspected_clients'), candidate_clients=latest.get('num_candidate_clients'))
-        entries.append(dict(id=name, config=dict(dataset='mnist', distribution='noniid', attack_type='FR3',
+        entries.append(dict(id=name, config=dict(dataset=job.get('dataset','mnist'), distribution='noniid', attack_type='FR3',
             free_rider_pct=.4, seed=job['seed'], num_rounds=job['rounds'], methodology_version=method),
             progress=progress, completed_rounds=len(rows),
             state='completed' if complete else (state if current==name else 'pending')))
     value = dict(batch_id=batch.name, state=state, total_experiments=2,
-        completed_experiments=sum(e['state']=='completed' for e in entries), failed_experiments=int(bool(error)),
+        completed_experiments=sum(e['state']=='completed' for e in entries), failed_experiments=int(bool(error) and state=='failed'),
         total_rounds=2*job['rounds'], completed_rounds=sum(e['completed_rounds'] for e in entries),
         current_experiment=current, experiments=entries, updated_at=time.strftime('%Y-%m-%dT%H:%M:%S'),
         estimated_remaining_seconds=None, error=error)
     atomic_write_json(batch/'experiment_status.json', value)
 
 
-def report(batch):
+def report(batch, job=None):
     import matplotlib
     matplotlib.use('Agg')
     import matplotlib.pyplot as plt
+    job = job or read(batch/'experiment_manifest.json').get('job',{})
+    dataset = 'CIFAR-10' if job.get('dataset','mnist') == 'cifar10' else 'MNIST'
+    horizon = job.get('rounds',100)
+    seed = job.get('seed',42)
     methods = [('Ours',read_rows(batch/'ours/round_timings.csv')),
                ('STD-DAGMM',read_rows(batch/'std/segment_timings.csv'))]
     groups = {
@@ -89,9 +93,9 @@ def report(batch):
         ax.barh([0,1], values, left=offsets, label=label)
         offsets = [a+b for a,b in zip(offsets,values)]
     ax.set_yticks([0,1], ['Our v15.4','STD-DAGMM reproduction'])
-    ax.set_xlabel('Measured seconds per round, amortized over 100 rounds')
+    ax.set_xlabel(f'Measured seconds per round, amortized over {horizon} rounds')
     ax.legend(bbox_to_anchor=(1.02,1), loc='upper left', frameon=False)
-    ax.set_title('MNIST non-IID · FR3 40% · seed 42 · CPU / 6 threads')
+    ax.set_title(f'{dataset} non-IID · FR3 40% · seed {seed} · CPU / 6 threads')
     fig.tight_layout()
     fig.savefig(batch/'segment_comparison.png', dpi=180)
     fig.savefig(batch/'segment_comparison.pdf')
@@ -106,8 +110,8 @@ def report(batch):
             phase_rows.append(dict(phase=phase, measured_rounds=len(subset), segment=label,
                 conditional_mean_seconds=total/len(subset), contribution_to_full_run_mean_seconds=total/len(ours)))
     write_rows(batch/'ours_phase_segments.csv',phase_rows)
-    lines = ['# Measured MNIST segment timing comparison','',
-        '100 clients, 100 rounds, non-IID, FR3 40%, seed 42, CPU/6 threads, three local SGD epochs.',
+    lines = [f'# Measured {dataset} segment timing comparison','',
+        f'100 clients, {horizon} rounds, non-IID, FR3 40%, seed {seed}, CPU/6 threads, three local SGD epochs.',
         'No network communication is measured. Paired sequential workflows are not a detector-only controlled speedup test.',
         'Our active-client/trap workload changes; STD retains all clients and freshly fits five epochs per round.',
         'Five epochs/reset frequency are declared reproduction choices, not settings established by Lin et al.',
@@ -138,6 +142,11 @@ def restore(job, job_path):
 
 def run(job_path):
     job = read(job_path)
+    if job.get('dataset','mnist') not in ('mnist','cifar10'):
+        raise ValueError('Unsupported timing dataset')
+    # Validate reporting availability before starting hours of computation.
+    import matplotlib
+    matplotlib.use('Agg')
     batch = ROOT/job['output']
     batch.mkdir(parents=True, exist_ok=True)
     with exclusive_lock(batch/'.runtime/interlude.lock'):
@@ -155,6 +164,11 @@ def run(job_path):
             output = batch/name
             if done(output,job['rounds']):
                 continue
+            minimum = float(job.get('minimum_available_gib',{}).get(name,0))
+            available = psutil.virtual_memory().available/2**30
+            if available < minimum:
+                raise MemoryError(f'Waiting for {minimum:g} GiB available RAM for {name}; currently {available:.2f} GiB. '
+                                  'Close memory-heavy apps; the recovery task will retry. Original queue remains paused.')
             # Do not overlap a worker orphaned by a crashed parent/launcher.
             for process in psutil.process_iter(['pid','cmdline']):
                 try:
@@ -165,7 +179,7 @@ def run(job_path):
                     continue
             output.mkdir(exist_ok=True)
             publish(job,batch,name)
-            command = [sys.executable,str(ROOT/script),'--output',str(output),'--rounds',str(job['rounds']),'--seed',str(job['seed'])]
+            command = timing_command(job,script,output)
             with (output/'console.log').open('a',encoding='utf-8') as log:
                 child = subprocess.Popen(command,cwd=ROOT,stdout=log,stderr=subprocess.STDOUT,
                     creationflags=subprocess.CREATE_NO_WINDOW if sys.platform=='win32' else 0)
@@ -183,10 +197,15 @@ def run(job_path):
                 publish(job,batch,name,state='failed',error=message)
                 raise RuntimeError(message)
         atomic_write_json(batch/'std/latest_results.json',dict(completed=True,latest_round=job['rounds']))
-        report(batch)
+        report(batch,job)
         publish(job,batch,state='completed')
         restore(job,job_path)
         print('Timing comparison complete; original baseline queue restored for immediate resumption.',flush=True)
+
+
+def timing_command(job, script, output):
+    return [sys.executable,str(ROOT/script),'--output',str(output),'--rounds',str(job['rounds']),
+            '--seed',str(job['seed']),'--dataset',job.get('dataset','mnist')]
 
 
 if __name__ == '__main__':
@@ -200,5 +219,5 @@ if __name__ == '__main__':
         if job.get('output') and (ROOT/job['output']).is_dir():
             batch = ROOT/job['output']
             current = read(batch/'experiment_status.json').get('current_experiment')
-            publish(job,batch,current,state='failed',error=str(error))
+            publish(job,batch,current,state='recovering' if isinstance(error,MemoryError) else 'failed',error=str(error))
         raise
