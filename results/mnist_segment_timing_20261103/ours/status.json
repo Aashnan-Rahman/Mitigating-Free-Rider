@@ -1,0 +1,27 @@
+{
+  "completed_rounds": 100,
+  "latest_round": {
+    "active_clients": 60,
+    "candidate_clients": 34,
+    "cpu_percent": 0.0,
+    "cuda_allocated_mb": "",
+    "cuda_peak_allocated_mb": "",
+    "cuda_reserved_mb": "",
+    "device": "cpu",
+    "global_accuracy": 0.9893,
+    "global_loss": 0.03279231040629092,
+    "methodology_version": "swtcp_v15_4",
+    "new_flags": 0,
+    "new_rehabilitations": 0,
+    "new_removals": 0,
+    "phase": "single_audit",
+    "process_rss_mb": 674.62109375,
+    "quarantined_clients": 0,
+    "round": 100,
+    "round_time_seconds": 36.273254600000655,
+    "suspected_clients": 0,
+    "system_memory_percent": 81.0,
+    "total_rounds": 100
+  },
+  "state": "running"
+}

@@ -11,6 +11,84 @@ The rewritten full-study manuscript is
 with v2-style sections, all 32 completed v15.4 runs, separate result/security
 analysis, and per-run appendices. Rebuild with `build_paper_v6_full_study.py --compile`.
 
+## CIFAR-10 segmented timing interlude (3 November 2026)
+
+Both 100-round runs completed on 4 November, and the original baseline queue
+resumed automatically. The [completed comparison](results/cifar10_segment_timing_20261103/README.md)
+includes raw per-round measurements, detector fitting records, source provenance,
+phase tables and [the segment chart](results/cifar10_segment_timing_20261103/segment_comparison.pdf).
+Recovery checkpoints and runtime locks remain local.
+
+`configs/cifar10_segment_timing_20261103.json` temporarily pauses the active
+no-defense queue for a separate **CIFAR-10 non-IID / FR3 / 40% / seed-42** timing
+comparison: our unchanged v15.4, then the same STD-DAGMM reproduction, **100 actual
+rounds each**, 100 clients, three local SGD epochs and six CPU threads. Both
+runners explicitly receive the dataset; report labels also follow the job.
+The canonical training, attacks and detector files stay unchanged so the paused
+baseline's source hashes and checkpoints remain valid.
+
+Restart/logon/five-minute recovery and watch cover this priority job. After both
+runs and report validation, the controller clears only its own stop marker,
+restores the saved original selector, and resumes that queue immediately.
+Separate outputs use `results/cifar10_segment_timing_20261103/`; the completed
+MNIST timing evidence is not overwritten. CSV/PDF/PNG segment comparisons and
+conditional/amortized phase tables are generated automatically.
+
+To avoid repeating the memory-paging caveat of the older CIFAR comparison, this
+job requires 2 GiB available RAM before ours and 5 GiB before STD (the earlier
+STD worker alone reached about 3.7 GiB RSS). These are operational memory guards,
+not detector thresholds. If memory is insufficient, watch reports a recovery
+wait and the scheduler retries; closing memory-heavy apps permits progress.
+The original queue stays paused until the comparison succeeds. No other apps
+are closed automatically, and no network-communication time is claimed.
+
+## MNIST segmented timing interlude (3 November 2026)
+
+`configs/mnist_segment_timing_20261103.json` requests two sequential 100-round
+MNIST non-IID / FR3 / 40% runs, seed 42, 100 clients, three local SGD epochs and
+six CPU threads: first instrumented v15.4, then full-vector STD-DAGMM. **Both runs
+completed all 100 measured rounds**, their reports were generated, and the CIFAR
+no-defense queue resumed from its round-85 checkpoint. The temporary pause is over.
+The active selector's priority job is handled by the existing restart/watchdog
+task; after both measured runs and report validation it clears only its own
+pause marker, restores the original selector and immediately resumes that queue.
+Failures leave the original queue paused and are retried by the watchdog.
+
+`segment_timing.py` adds opt-in AST timing context managers to an in-memory copy
+of the canonical v15.4 function. It does not modify any detector/training source,
+RNG expression or decision. A synthetic 30-round equivalence test compares every
+aggregated model tensor, client record and decision record. Timers are exclusive:
+trap creation is separated from surrounding scheduling. Training, fabrication,
+client evaluation, feature extraction, decisions, aggregation, global evaluation,
+research reporting, checkpointing and unassigned work are recorded separately.
+
+STD uses the same full-update compression + reconstruction metrics + input STD,
+joint objective, mixture scoring mechanism described in
+[Lin et al.](https://arxiv.org/html/1911.12560). No verified author implementation
+or detector epoch/reset schedule was established. The existing FRIDA-described
+128/64/32, K=3 reproduction, Adam .001, batch20 and **five fresh epochs per round**
+are explicit experimental choices, not original-author settings or convergence
+claims. Epoch losses/times and mixture finalization are retained. Its parent
+instrumentation also measures reporting/checkpoints, while subprocess startup,
+serialization and other unassigned wall time remain separately visible.
+
+Outputs use `results/mnist_segment_timing_20261103/`: per-round CSVs, provenance,
+checkpoint recovery, a segment comparison CSV/PNG/PDF and conditional/amortized
+phase tables. Instrumentation CSV-publication cost is recorded separately and
+excluded from round totals. There is no actual network-communication measurement.
+Do not compare our canonical older `round_time_seconds` (which excluded checkpoint
+publication) with new full-wall totals; use the new aligned segment files.
+
+The completed timing evidence is versioned in
+[`results/mnist_segment_timing_20261103/`](results/mnist_segment_timing_20261103/),
+including both runs' CSVs/protocols, per-round STD fitting records and logs,
+[`segment_comparison.csv`](results/mnist_segment_timing_20261103/segment_comparison.csv),
+[`segment_comparison.pdf`](results/mnist_segment_timing_20261103/segment_comparison.pdf)
+and phase tables. Measured full-wall averages are **40.924 s/round** for ours and
+**62.833 s/round** for this STD-DAGMM reproduction. These include checkpoint/logging
+and separately identified harness work; they are not detector-only timings.
+Locks, recovery checkpoints and the validation-overlap attempt remain local.
+
 ## Matched no-defense replication baselines (29 October 2026)
 
 The existing detection queue is followed by **64 no-defense baseline runs**:

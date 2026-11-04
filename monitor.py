@@ -132,7 +132,7 @@ def scheduled_status_paths() -> list[Path]:
                 or Path(anchor).resolve() not in normalized):
             raise ValueError("Active recovery queue must contain unique plans including the active plan")
         plans = plans[normalized.index(Path(anchor).resolve()):]
-    paths = []
+    paths = [Path(active['priority_status'])] if active.get('priority_job') and active.get('priority_status') else []
     for name in plans:
         plan = read_status(Path(name)) or {}
         if not plan.get("batch_name"):

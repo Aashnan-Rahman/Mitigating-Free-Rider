@@ -97,6 +97,13 @@ function Get-StatusPath {
                     Complete = (Test-WatchBatchComplete $batch)
                 }
             }
+            if ($selection.priority_job -and $selection.priority_status) {
+                $priorityBatch = Split-Path -Parent (Join-Path $root $selection.priority_status)
+                $script:BatchSchedule = @([pscustomobject]@{
+                    Batch = $priorityBatch
+                    Complete = (Test-WatchBatchComplete $priorityBatch)
+                }) + $script:BatchSchedule
+            }
             if (@($script:BatchSchedule.Batch | Select-Object -Unique).Count -ne $script:BatchSchedule.Count) {
                 throw 'Recovery plans must use distinct batch directories.'
             }

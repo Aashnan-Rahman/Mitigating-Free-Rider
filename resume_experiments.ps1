@@ -11,6 +11,21 @@ $activeSchedule = $null
 $activeSchedulePath = Join-Path $PSScriptRoot 'configs\active_experiment_schedule.json'
 if (Test-Path -LiteralPath $activeSchedulePath) {
     $selection = Get-Content -LiteralPath $activeSchedulePath -Raw | ConvertFrom-Json
+    if ($selection.auto_resume -and $selection.priority_job) {
+        $timingPython = Join-Path $PSScriptRoot '.venv\Scripts\python.exe'
+        Start-Transcript -Path (Join-Path $PSScriptRoot 'results\timing_interlude_recovery.log') -Append | Out-Null
+        try {
+            & $timingPython (Join-Path $PSScriptRoot 'run_timing_interlude.py') --job (Join-Path $PSScriptRoot $selection.priority_job)
+            $timingExitCode = $LASTEXITCODE
+        } finally {
+            Stop-Transcript -ErrorAction SilentlyContinue | Out-Null
+        }
+        if ($timingExitCode -ne 0) { exit $timingExitCode }
+        # A successful interlude atomically restores the original selector and
+        # releases only its own temporary pause marker. Continue it immediately.
+        $selection = Get-Content -LiteralPath $activeSchedulePath -Raw | ConvertFrom-Json
+        if ($selection.priority_job) { throw 'Priority job returned without restoring the original queue.' }
+    }
     if ($selection.auto_resume) {
         if ($selection.workflow -ne 'v15_detection' -or -not $selection.plan) {
             throw 'Active schedule must name a v15_detection plan.'
