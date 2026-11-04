@@ -1,9 +1,9 @@
 \begin{table*}[t]
 \centering\footnotesize\setlength{\tabcolsep}{4pt}
-\caption{CPU execution time and process memory.}\label{tab:cost}
+\caption{Execution time and process memory.}\label{tab:cost}
 \begin{tabular}{llrrrr}
 \toprule
-Dataset & Partition & FR (\%) & s/round: mean [range] & Peak RSS GiB: mean [range] & min/run \\
+Dataset & Partition & FR (\%) & \shortstack{Round time (s)\\mean [range]} & \shortstack{Peak process RSS (GiB)\\mean [range]} & \shortstack{Execution duration\\(min/run)} \\
 \midrule
 \multirow{4}{*}{MNIST} & \multirow{2}{*}{IID} & 30 & 42.38 [39.78--48.57] & 0.54 [0.29--0.78] & 75.02 \\
  &  & 40 & 37.05 [35.35--42.68] & 0.60 [0.30--0.88] & 66.71 \\

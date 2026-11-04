@@ -1,0 +1,28 @@
+\begin{table*}[t]\centering\footnotesize\setlength{\tabcolsep}{4pt}
+\caption{Round-time breakdown.}\label{tab:std-segments}
+\begin{tabular}{lrrrr}\toprule
+\multirow{2}{*}{Stage} & \multicolumn{2}{c}{MNIST} & \multicolumn{2}{c}{CIFAR-10} \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}
+ & BaitFL & STD-DAGMM & BaitFL & STD-DAGMM \\ \midrule
+Honest local training & $34.30 \pm 0.94$ & $33.89 \pm 0.66$ & $81.37 \pm 5.40$ & $72.42 \pm 3.68$ \\
+Fabricated responses & $0.018 \pm 0.029$ & $0.066 \pm 0.011$ & $0.188 \pm 0.172$ & $0.224 \pm 0.022$ \\
+Client diagnostic evaluation & $0.161 \pm 0.248$ & $0$ & $0.899 \pm 0.752$ & $0$ \\
+Traps and scheduling & $0.0018 \pm 0.0055$ & $0$ & $0.018 \pm 0.058$ & $0$ \\
+Response features and preparation & $0.198 \pm 0.050$ & $0.045 \pm 0.003$ & $0.729 \pm 0.179$ & $0.115 \pm 0.012$ \\
+Auxiliary detector fitting & $0$ & $15.76 \pm 1.25$ & $0$ & $42.09 \pm 1.87$ \\
+Scoring and state decisions & $0.016 \pm 0.071$ & $0.335 \pm 0.039$ & $0.043 \pm 0.145$ & $0.827 \pm 0.057$ \\
+Aggregation & $0.030 \pm 0.013$ & $0.043 \pm 0.003$ & $0.096 \pm 0.039$ & $0.136 \pm 0.014$ \\
+Global evaluation & $2.20 \pm 0.10$ & $2.13 \pm 0.04$ & $5.21 \pm 0.44$ & $4.24 \pm 0.20$ \\
+\midrule
+Research logs and checkpoints & $3.99 \pm 0.61$ & $3.75 \pm 0.54$ & $11.34 \pm 1.79$ & $9.76 \pm 1.30$ \\
+Unassigned runtime & $0.0088 \pm 0.0026$ & $6.82 \pm 2.33$ & $0.054 \pm 0.044$ & $7.49 \pm 2.08$ \\
+\midrule
+Checking subtotal (included above) & $0.215 \pm 0.093$ & $16.14 \pm 1.25$ & $0.791 \pm 0.244$ & $43.03 \pm 1.91$ \\
+Checking share of computation (\%) & 0.58 & 30.89 & 0.89 & 35.84 \\
+\midrule
+\multicolumn{5}{l}{\textit{BaitFL time saved relative to STD-DAGMM}} \\
+Computation saved: s/round (\%) & \multicolumn{2}{c}{15.34 (29.35\%)} & \multicolumn{2}{c}{31.50 (26.23\%)} \\
+Elapsed saved: s/round (\%) & \multicolumn{2}{c}{21.91 (34.87\%)} & \multicolumn{2}{c}{37.35 (27.20\%)} \\
+\bottomrule\end{tabular}
+\par\smallskip\parbox{0.94\textwidth}{\scriptsize Times are mean $\pm$ sample SD in seconds per round over 100 rounds. Combined stages are summed per round before calculating SD. Checking subtotals are included in the preceding stages. Shares and savings use complete-horizon means, relative to STD-DAGMM for savings.}
+\end{table*}

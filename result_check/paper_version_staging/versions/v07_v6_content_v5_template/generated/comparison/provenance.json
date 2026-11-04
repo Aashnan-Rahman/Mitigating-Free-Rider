@@ -1,545 +1,489 @@
 {
-  "timing_basis": "BaitFL logged whole-round timer; baseline and STD summed component compute timers; excludes checkpoint publication; different host load and simulator instrumentation",
+  "provisional": true,
+  "averaging": "Average matched seeds within each attack/configuration, then weight attack configurations equally",
+  "timing_basis": "BaitFL logged round timer versus baseline summed component compute, excluding checkpoint publication; host load/timer boundaries differ",
+  "warmup_validation": "First ten global accuracies agree exactly in every pair",
+  "selection": "Every available completed seed-matched case; published snapshots fill branch-local gaps; active/incomplete runs excluded",
   "inputs": [
     {
-      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_noniid_FR3_fr40_seed42/summary.json",
-      "sha256": "18d0cab288eadc54eccb21bb2090f3abdc4f741efd20835a1b087ea04785d739"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_iid_FR3_fr40_seed43/summary.json",
+      "sha256": "6f4b0df4a5433f9523ca878d1e5c2a4ff2adb38988d633e1dc61c69e8b8e9c16"
     },
     {
-      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_noniid_FR3_fr40_seed42/protocol.json",
-      "sha256": "46c14d9820b92c3da5e0bb800195ac9467bd10d950d5a022e9503ec321d6b72c"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_iid_FR3_fr40_seed43/protocol.json",
+      "sha256": "a412c7c01664d14aef832c93f5733117193c32a14af1718c2a7427d8859c4cde"
     },
     {
-      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_noniid_FR3_fr40_seed42/round_timings.csv",
-      "sha256": "852f55d635b53396d757ddddde58f919612a43d91b63054824053dced853a9ba"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_iid_FR3_fr40_seed43/round_timings.csv",
+      "sha256": "efca4768637057e45614ef08a56606350f85d93ff952131033d8f63afbc1b105"
     },
     {
-      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_noniid_FR3_fr40_seed42/client_metrics.csv",
-      "sha256": "73283d21e1e67345627bd649d5f5f668af5075bdc8f81112dcad13b4d45552dc"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_iid_FR3_fr40_seed43/client_metrics.csv",
+      "sha256": "871b88465f3f5a36f6a9fa63f315e73fc1e2f4c93bae7b6050ba9692779f6726"
     },
     {
-      "path": "results/v15_4_mnist_seed42_fr40/v15_4_mnist_noniid_FR3_seed42/global_metrics.csv",
-      "sha256": "5ee5696a94892a6c9e447ca26312dd3d4f17db87721c1477416bad55fc6e1ea7"
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_iid_FR3_fr40_seed43/global_metrics.csv",
+      "sha256": "1b771fafe43378b2415e08c258573ac93e0bc5c952f2d93d9527bad63207e98d"
     },
     {
-      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_noniid_FR4_fr40_seed42/summary.json",
-      "sha256": "f12ff9e374d515156a1a74f9b99f44479c7e80f67f82f10956e50dbbe5be7437"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_iid_FR4_fr40_seed43/summary.json",
+      "sha256": "fabd0ee309d677b32e6dbe5a1e5f31abc7424b406ed976768ebb3f2089b1efd8"
     },
     {
-      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_noniid_FR4_fr40_seed42/protocol.json",
-      "sha256": "1149b9b86e6ad14738a1ed9560cb45bbd00d96eedc95d724b877921fdbbcaba6"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_iid_FR4_fr40_seed43/protocol.json",
+      "sha256": "79ba96e1329d08aec9c5963cae641483293596882b0daa0a0295c15bd15cc1c1"
     },
     {
-      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_noniid_FR4_fr40_seed42/round_timings.csv",
-      "sha256": "51a1cf2b00be1f4711bdd9dcd157bef5087acb7ab13bd39a33a78578300ebef1"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_iid_FR4_fr40_seed43/round_timings.csv",
+      "sha256": "e3859640cfee79c80afaeea138022e4b9b2b4ae5f8a2ab4e76905083821a153d"
     },
     {
-      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_noniid_FR4_fr40_seed42/client_metrics.csv",
-      "sha256": "4e7ae712476f80737707c6121215ebe6a7b778cb36b3f59b562f5f1e177d391c"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_iid_FR4_fr40_seed43/client_metrics.csv",
+      "sha256": "5ff8466a93a0a34a71249f60c2d6162ce9e451a3fb681656f60532b313e8416b"
     },
     {
-      "path": "results/v15_4_mnist_seed42_fr40/v15_4_mnist_noniid_FR4_seed42/global_metrics.csv",
-      "sha256": "ed5e67af5a1e28f3dcd67ab58230e7e476755731e7521dd36ae568ca70601456"
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_iid_FR4_fr40_seed43/global_metrics.csv",
+      "sha256": "0d31f7981b04a3bf2f63d979fe45592311ac88236a0db5322771e60272fd2ae9"
     },
     {
-      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_noniid_FR2_fr40_seed42/summary.json",
-      "sha256": "d497be8a6e527824d5ea1a9856c3c3a97ecad0efe3b2f29ee4d11c436093a988"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR1_fr30_seed43/summary.json",
+      "sha256": "1bd1b6376950f3fa2e925384251a799b895949e2f66a218c0fddd23f91bbc2ac"
     },
     {
-      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_noniid_FR2_fr40_seed42/protocol.json",
-      "sha256": "624af9937d2f20a3cc2ab6d309f696217860fa583aadc9b7e8c06287c5fd4506"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR1_fr30_seed43/protocol.json",
+      "sha256": "bc1cac4f3625e10c9856b262f18353e6128cc9cf5ad5c8c62153c12bcf4a09cb"
     },
     {
-      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_noniid_FR2_fr40_seed42/round_timings.csv",
-      "sha256": "0712a14449925e1bcead5abd5885d9d26820c46089c6910985ab046e8d6b4c88"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR1_fr30_seed43/round_timings.csv",
+      "sha256": "6247467c9ba8944b254a8b49865a911e290603eaec4943578c0e6aad5e525418"
     },
     {
-      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_noniid_FR2_fr40_seed42/client_metrics.csv",
-      "sha256": "400d8e36987f408c752f66bde481f14fc5570b27bf59607aa7cec76f7ba50487"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR1_fr30_seed43/client_metrics.csv",
+      "sha256": "7f29ec3845518edbd42f834de5ce95657b9d45eeae25480721e62ac0d85595fe"
     },
     {
-      "path": "results/v15_4_mnist_seed42_fr40/v15_4_mnist_noniid_FR2_seed42/global_metrics.csv",
-      "sha256": "20c3b01abdd0805c267cfabfb0e74e5845de8e2b0aa2f78e638b1908cb46cb1b"
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_noniid_FR1_fr30_seed43/global_metrics.csv",
+      "sha256": "b15bef85a038a0fb7783cb8e4964087cf5ab80bd9eff6216a0b2b632ac370fde"
     },
     {
-      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_noniid_FR1_fr40_seed42/summary.json",
-      "sha256": "191355803704c182a342dffad0690dc4e809d8ad77eaad6e56526e8eb446e2c2"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR1_fr40_seed43/summary.json",
+      "sha256": "882e23cf0724b17584cd251dcbfffd6637f643b75df2955c6e7fe353e6a73e6b"
     },
     {
-      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_noniid_FR1_fr40_seed42/protocol.json",
-      "sha256": "bc49fdee72aacd1c348edb2af07a98d405685f02fcf73da4d480ac08cf332ff2"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR1_fr40_seed43/protocol.json",
+      "sha256": "6335240d0abbd6ae86d938eb8ad388dbf6baa376bd5d7fd0d40f367ca288fe28"
     },
     {
-      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_noniid_FR1_fr40_seed42/round_timings.csv",
-      "sha256": "736e8e57a490519bf4b1d4f94eba17fa72346469df9c02a6aae92bfc14b21c11"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR1_fr40_seed43/round_timings.csv",
+      "sha256": "57d52bd891caa96cc463387510c6e8bb3d8a6b5c618954fdcfa4e3d7e80597e4"
     },
     {
-      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_noniid_FR1_fr40_seed42/client_metrics.csv",
-      "sha256": "2564ae20eb3e17858a476b3ae1f47adcb6e9a0b83d56c43e79c1a40bc066c940"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR1_fr40_seed43/client_metrics.csv",
+      "sha256": "b9318d6c1488698556045ae5fad2e6f6ec070ed46d504eaa0c6a09bed22a6838"
     },
     {
-      "path": "results/v15_4_mnist_seed42_fr40/v15_4_mnist_noniid_FR1_seed42/global_metrics.csv",
-      "sha256": "4acd9e3e8f3a2749df4ff2f7592f76e8e1150417ef04fb0431fb94312de5e1c2"
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_noniid_FR1_fr40_seed43/global_metrics.csv",
+      "sha256": "9ce684ab93fb1e3039043fdc69e56ad2bc954533b01e4a9bd5e6c4fb40843a13"
     },
     {
-      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_iid_FR3_fr40_seed42/summary.json",
-      "sha256": "4f4e7c58b8c8d1eadd04cb19aff5c0df71a68133a76a2563bd6f49c5391c9d9e"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR2_fr30_seed43/summary.json",
+      "sha256": "850e4a47121ba3de24de5d2bacebf84795932771cecf7d1f6e9c565712576b04"
     },
     {
-      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_iid_FR3_fr40_seed42/protocol.json",
-      "sha256": "7525c2648a2f58abb9617bc0bb465b8a0207842b7db74dbe421c7151475c5982"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR2_fr30_seed43/protocol.json",
+      "sha256": "c6dbba4da4dc417b55c71c0d41009b999a0f2807525ee31e9f89c7ea04fb7296"
     },
     {
-      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_iid_FR3_fr40_seed42/round_timings.csv",
-      "sha256": "63419aea829a33ee6b5fe6a7f253156f8ba572fcde173a27c716e7df6ea99252"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR2_fr30_seed43/round_timings.csv",
+      "sha256": "bc93748b2965c2582eb0b28aba8fd0d67b1b681499e609591e93b1090caa6f40"
     },
     {
-      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_iid_FR3_fr40_seed42/client_metrics.csv",
-      "sha256": "1730c0f9864ebedbf626f5daab5a362c6e5b489893ab7385a91e8f911da21218"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR2_fr30_seed43/client_metrics.csv",
+      "sha256": "63818fe76cb00c51255d0b6e2ec784363d0f2acf53cd1f16d0cb616df4bc4188"
     },
     {
-      "path": "results/v15_4_mnist_seed42_fr40/v15_4_mnist_iid_FR3_seed42/global_metrics.csv",
-      "sha256": "fa7c6db6874598460a63d2456ac0cda25f13d58048c55b014b4b9c6d6f5ba3d7"
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_noniid_FR2_fr30_seed43/global_metrics.csv",
+      "sha256": "bf1f3e7a4a951b17e8524baeda98cdc7b99ec174763af0042832dda5cb4c52ed"
     },
     {
-      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_iid_FR4_fr40_seed42/summary.json",
-      "sha256": "68197826f26d538b28710168da3b95bc7c017e2594729c2a650e006931dad242"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR2_fr40_seed43/summary.json",
+      "sha256": "d81658f61225e12f4a756ca7d9bb45ac696983074fa4b94e280a40b7ec5036b7"
     },
     {
-      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_iid_FR4_fr40_seed42/protocol.json",
-      "sha256": "78cb8d69adf7b724f2ec9c1a5c264a8cbb9e7720f4a0627e1e82047263b0fe1f"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR2_fr40_seed43/protocol.json",
+      "sha256": "115b1ba85c6b498b0b7f4e7c99b8593eb4d42eb81ae94c66b2f459d494bba184"
     },
     {
-      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_iid_FR4_fr40_seed42/round_timings.csv",
-      "sha256": "985e198affdb0ce91e50291aaf2f0ed1dab7c63349ce0813b2df8dc26b4ef4e5"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR2_fr40_seed43/round_timings.csv",
+      "sha256": "0c28664d869b041bd60d1aef171b40b2f73ef2f5947d95b01a6cfaf8e872126d"
     },
     {
-      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_iid_FR4_fr40_seed42/client_metrics.csv",
-      "sha256": "05b525f1a49bcd24727ab533a1da568679d3e759cec9c20a93244d97331b4eea"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR2_fr40_seed43/client_metrics.csv",
+      "sha256": "fb9150dceb6ea4e28a82386d8d2dda9d9e93475d7a87bdcf8fc830949a9d8924"
     },
     {
-      "path": "results/v15_4_mnist_seed42_fr40/v15_4_mnist_iid_FR4_seed42/global_metrics.csv",
-      "sha256": "040d7dce8a683f1d18fc33fd0a2750e617196b9e55efb46be06007468ea3fb5e"
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_noniid_FR2_fr40_seed43/global_metrics.csv",
+      "sha256": "aac826c9013f6d36fb86dc511df939a7e2fcb62176cc1163ae1a3a9217696b4e"
     },
     {
-      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_iid_FR2_fr40_seed42/summary.json",
-      "sha256": "bd94bd02f92219e1e8eb1d525133ecc8201a62dea896107a1dffa46e95a96a19"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR3_fr30_seed43/summary.json",
+      "sha256": "f98eea67197b26fa20bc5bf20f766825ed8d32109100cc259782d5544b9076d7"
     },
     {
-      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_iid_FR2_fr40_seed42/protocol.json",
-      "sha256": "06e20cc44ad404557126ff0e9fbee7d4743659d7da192969ddcbf0650f5f39b0"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR3_fr30_seed43/protocol.json",
+      "sha256": "d7dfa7f13e2bc0d8a26c4b2ca0c406d493546146baf48f3a925f17dbdb50b7df"
     },
     {
-      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_iid_FR2_fr40_seed42/round_timings.csv",
-      "sha256": "e4f64338bbbea42c31504def1c76c5f49f262cdfc8c768156dbceadd0ef705ee"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR3_fr30_seed43/round_timings.csv",
+      "sha256": "0976e22ab13c2eb5035563102a21179c7cce136e8dc358299fd9bf78cbe4e715"
     },
     {
-      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_iid_FR2_fr40_seed42/client_metrics.csv",
-      "sha256": "a9d49d2c986fb4be7d95334402835aaecaad25cf0bcd9b5977f704c343001e87"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR3_fr30_seed43/client_metrics.csv",
+      "sha256": "ee6dca76038c3b2e54eef5c34fb5cd449ee5710a8cf7701f42cc4848402c029b"
     },
     {
-      "path": "results/v15_4_mnist_seed42_fr40/v15_4_mnist_iid_FR2_seed42/global_metrics.csv",
-      "sha256": "57077e21b2bc2cb3a878efb40e7c3e148ba92fe62988bab2681a1067f4c2924a"
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_noniid_FR3_fr30_seed43/global_metrics.csv",
+      "sha256": "97cfa7384a48be686904913b9c00f91980b4a358c6886ab25ac15942fc54d5c4"
     },
     {
-      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_iid_FR1_fr40_seed42/summary.json",
-      "sha256": "26494d11b6a644723e83663fae7220e603e53e44e083fb9662354dc890bee7cf"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR3_fr40_seed43/summary.json",
+      "sha256": "ef37be566df41ee871e722331c78d968ebfc31910c9b2c056b3f7a002e1a7cd7"
     },
     {
-      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_iid_FR1_fr40_seed42/protocol.json",
-      "sha256": "c733b36ce774280183eaf4239588c2f073fab8bc768c9adbfa4a0d0e5528dead"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR3_fr40_seed43/protocol.json",
+      "sha256": "9f14157290ffa18871ec2253f3c8ff922a4c6b05bff67bf24ed0984d78229ee1"
     },
     {
-      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_iid_FR1_fr40_seed42/round_timings.csv",
-      "sha256": "0ecb323fe7665ab1dc48f6f2d463c18f7796dfe16b287bf3b84015ac89c80827"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR3_fr40_seed43/round_timings.csv",
+      "sha256": "cb36adfc7d06d17e3c8eb6fffb7c8dffe12d8f164d8400e149ccf6764d0b3e6c"
     },
     {
-      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_iid_FR1_fr40_seed42/client_metrics.csv",
-      "sha256": "4a493e5a9edc3017867f7f3d81f0043e16b87340a908e4befc0c8c53fcfc8ad7"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR3_fr40_seed43/client_metrics.csv",
+      "sha256": "fa2ca58fe7cf75737705278234596884cdef8908bbc84db12b4657e9c167b855"
     },
     {
-      "path": "results/v15_4_mnist_seed42_fr40/v15_4_mnist_iid_FR1_seed42/global_metrics.csv",
-      "sha256": "67044fc04fff07934bfaf944917bc82942427cb6cc7aedeeec93401bb9d908c1"
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_noniid_FR3_fr40_seed43/global_metrics.csv",
+      "sha256": "d3c7dd4d3ecd518a7a7b7f5a0b932e00989c63be8425a5ba4f13dcf969704978"
     },
     {
-      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_noniid_FR3_fr30_seed42/summary.json",
-      "sha256": "dfe65d11f842b2e565f95ab50e74548ee15c6e1fb73ed4e877d73a8ecd9a6f06"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR4_fr30_seed43/summary.json",
+      "sha256": "131bb375fd6e7d32943a790dd66d0a9a79bc723ece92a4fa5f8e55b250bcdd72"
     },
     {
-      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_noniid_FR3_fr30_seed42/protocol.json",
-      "sha256": "f6445edc2e34a151f2c00a1bc2103d6ee5e4066cd04ad9e59b1911d839a8ab01"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR4_fr30_seed43/protocol.json",
+      "sha256": "334fd1c9c209f5d53d49bc3d04f98984aa45bd40dbd78f655b5646ff75ca26bf"
     },
     {
-      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_noniid_FR3_fr30_seed42/round_timings.csv",
-      "sha256": "073245c093e7a773e0f2b1096c002e6b5c358ffa39ab1330a5af596d22e886cd"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR4_fr30_seed43/round_timings.csv",
+      "sha256": "61f779f5c52b459628a3d3ad3c043e38b21c3904b0c42de9b2a581b7be577e2e"
     },
     {
-      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_noniid_FR3_fr30_seed42/client_metrics.csv",
-      "sha256": "bcd753fc540c847f9fa02f6a72ff0a4f6ee76c12a76f8c486e3db8a057ce6661"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR4_fr30_seed43/client_metrics.csv",
+      "sha256": "eaeefc93e634d8eb978116e15c2d016fb8aa99576526f18709adb5e6e04db06f"
     },
     {
-      "path": "results/v15_4_mnist_seed42_fr30/v15_4_mnist_noniid_FR3_seed42/global_metrics.csv",
-      "sha256": "b44a09f0dc6206c97058b9887f83bbae02bf5f7bea92fdafcfc3de10b36f24d8"
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_noniid_FR4_fr30_seed43/global_metrics.csv",
+      "sha256": "ede81a60ee43424f062353db32cdd7f5f33eedd9885f923150981ee30e17782b"
     },
     {
-      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_noniid_FR4_fr30_seed42/summary.json",
-      "sha256": "23a5235245988f8bc64181089cb1a27982e0167c591d35dcde81cca9654746f8"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR4_fr40_seed43/summary.json",
+      "sha256": "21a70f9411719f98a337a87bb32fd4cd055fbb5d89d866e98fca07ffa4f3f170"
     },
     {
-      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_noniid_FR4_fr30_seed42/protocol.json",
-      "sha256": "437cc51b867a2988570b3467c844f1b0d71f7f11ed9891fe0ab42838dc22dd86"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR4_fr40_seed43/protocol.json",
+      "sha256": "2e387edf7165f06d2a32a4f1b43031ff9498a601250a02d054160e7472470578"
     },
     {
-      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_noniid_FR4_fr30_seed42/round_timings.csv",
-      "sha256": "92c633673951c3366a6f816b456125d87a65e3bda140aed98516683e36bb425b"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR4_fr40_seed43/round_timings.csv",
+      "sha256": "c2450c90be8be786c495740f5f1d74f10174ef5c1f91369a38c9f1388871da01"
     },
     {
-      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_noniid_FR4_fr30_seed42/client_metrics.csv",
-      "sha256": "706a088478f3102cf6fbf239222ff7d33c3b695ced20f4241d66b17256dc3c55"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR4_fr40_seed43/client_metrics.csv",
+      "sha256": "5030ff3d958d0f1330b933c2846c39eb7e6a108a553db46ddb35de31823c0847"
     },
     {
-      "path": "results/v15_4_mnist_seed42_fr30/v15_4_mnist_noniid_FR4_seed42/global_metrics.csv",
-      "sha256": "c3d9a86eb151d077d8e2c4d32ff482644025a06df7abb44394cd7e2bf322de06"
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_noniid_FR4_fr40_seed43/global_metrics.csv",
+      "sha256": "50829b4dbcccd6d8f0b3c0e3fcf1f0ade3250dd9f52c555935af7e9e70646d8a"
     },
     {
-      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_noniid_FR2_fr30_seed42/summary.json",
-      "sha256": "78f61b6788e696170f4061b715cce08323d1692146c7649a50b3958870c463db"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR1_fr30_seed73/summary.json",
+      "sha256": "a960cdecba151a4fb99e5c81e33bcd0be37c0d135ddfa71bbba62d4c10b8ff37"
     },
     {
-      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_noniid_FR2_fr30_seed42/protocol.json",
-      "sha256": "0b7bf20b4765a65b6a05eefbda21400acea45d27db59ba365c0af077af6d214e"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR1_fr30_seed73/protocol.json",
+      "sha256": "9f539b983e28e447fd984770b344e3c44462568f4f564f812fe9979e4d3d0085"
     },
     {
-      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_noniid_FR2_fr30_seed42/round_timings.csv",
-      "sha256": "a4e8ec9d56977b97cec7398bb425718d569162cc99f694f88cc6ab92253d15a2"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR1_fr30_seed73/round_timings.csv",
+      "sha256": "48d446609d1171d6dee4c75fbc7b96b4062bfc322c022a579cef8a440cbe79c1"
     },
     {
-      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_noniid_FR2_fr30_seed42/client_metrics.csv",
-      "sha256": "79159afb6c735188ca174b38abbb52e162bdce2e0e1f3565f4a15045c3a7cd29"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR1_fr30_seed73/client_metrics.csv",
+      "sha256": "dbc83a9a040565cfec2d38910b40f0554d0ee02a4d76067596669f087d153365"
     },
     {
-      "path": "results/v15_4_mnist_seed42_fr30/v15_4_mnist_noniid_FR2_seed42/global_metrics.csv",
-      "sha256": "6c5e8a6e3b6931e65cf9160b06afb76babb81188e1c9bfb1ee2f7b0b41c9ab17"
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_iid_FR1_fr30_seed73/global_metrics.csv",
+      "sha256": "a726097d5d3dfddb7662f94c70860d89748b6d1b6495a4a368d3cfa39c55aa27"
     },
     {
-      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_noniid_FR1_fr30_seed42/summary.json",
-      "sha256": "2834906bd46a209f4a8d9bdb26cb3d94b8097f380116d8903f64dbd0e041a50d"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR1_fr40_seed73/summary.json",
+      "sha256": "ba9b3a46350ce8af84dc8ae80deba43c0f943e3962ae718584032fb7194920c6"
     },
     {
-      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_noniid_FR1_fr30_seed42/protocol.json",
-      "sha256": "1ea3de08df1f0c3e49d4d50935466276ab053f5262fb604a5d19af01a7308058"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR1_fr40_seed73/protocol.json",
+      "sha256": "d3dfd51fdcf9ec1e1def1f0ced824dd51a44a307bbc5f977b42bb806fb106d60"
     },
     {
-      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_noniid_FR1_fr30_seed42/round_timings.csv",
-      "sha256": "687482a9dcc38ced9f0b007bc74f1d0c22a82677fa847e77cd80c7f169fe9bb8"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR1_fr40_seed73/round_timings.csv",
+      "sha256": "5e9c9e43c4d64762f63e2c46bcb93803a155f21e9ae664113e9886399046460e"
     },
     {
-      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_noniid_FR1_fr30_seed42/client_metrics.csv",
-      "sha256": "d28e2db9c96fb8d2455dbdf3810c03004ee6a7fc90441cefbbc6a2d15d257f4c"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR1_fr40_seed73/client_metrics.csv",
+      "sha256": "9af524686f85eea090943bcf2d2783dcd2db94fc118f1996cd9dd2b0796cac90"
     },
     {
-      "path": "results/v15_4_mnist_seed42_fr30/v15_4_mnist_noniid_FR1_seed42/global_metrics.csv",
-      "sha256": "9dbadbedc49a817a1dd1ca71628a378a945050f22b612f89e94f258d3b50cfc2"
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_iid_FR1_fr40_seed73/global_metrics.csv",
+      "sha256": "2d2823f8dc51c8567ac382e1d04d6477c02624346dcc972b6172aa20baa0922b"
     },
     {
-      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_iid_FR3_fr30_seed42/summary.json",
-      "sha256": "e97503ed93502cdad4d2425b4f451fe1fa55282e80daee4cc138e7bc8ff6a2b2"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR2_fr30_seed73/summary.json",
+      "sha256": "6ddb16127861879e9d88905643c1f7a0c6875fdd95d4a5d4aa794ef4d47e7537"
     },
     {
-      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_iid_FR3_fr30_seed42/protocol.json",
-      "sha256": "7b6596a21073e5aabb2f55e955b487925da1d61e58f67ae17ec7ae8917814963"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR2_fr30_seed73/protocol.json",
+      "sha256": "70e5b4c401b89772538bfb94222658334775c81c487ac9c3905bd91c1a9378cc"
     },
     {
-      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_iid_FR3_fr30_seed42/round_timings.csv",
-      "sha256": "aeb2a165e6ff6cfa7b961c831e058ab97f7973a9537e4339bb99612e3333cc5f"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR2_fr30_seed73/round_timings.csv",
+      "sha256": "279e6132286b232f8c73f6e951e57e4cf5d97e306d41a07d006a36c1118417ac"
     },
     {
-      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_iid_FR3_fr30_seed42/client_metrics.csv",
-      "sha256": "3cd97aa430178e35a568d5e8cc413ec6883b47c24061e54f53daed5a82fbcb81"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR2_fr30_seed73/client_metrics.csv",
+      "sha256": "31d0cf450aece732e2d6c4398f547f5b46951ff663c3aab436a6edac5083f85e"
     },
     {
-      "path": "results/v15_4_mnist_seed42_fr30/v15_4_mnist_iid_FR3_seed42/global_metrics.csv",
-      "sha256": "1a38b59a5f19deceff8cfb96fd942897814de248a6a07ebc548941afa6dda7cc"
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_iid_FR2_fr30_seed73/global_metrics.csv",
+      "sha256": "8ee2a702e9abac74271baadd2d68ee0013061499b41dd046aa3aa4cae4fc7480"
     },
     {
-      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_iid_FR4_fr30_seed42/summary.json",
-      "sha256": "89bb4659bf4ca4ad819899bafe1ca31a76d5588860ac35767caa8ac4f422506f"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR2_fr40_seed73/summary.json",
+      "sha256": "149af3a87f05f611bd7b2b1b7371a36fa9c2cf81e2f4bcff3159c31ab0f5abff"
     },
     {
-      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_iid_FR4_fr30_seed42/protocol.json",
-      "sha256": "3aeabedac799ab17fe582b59244a4e49028fb426fedc75b447bdee8f4a9afecf"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR2_fr40_seed73/protocol.json",
+      "sha256": "e6a773b590e731108fc8a44369ab29c965e17747d7b5d53a5d0af92ff05381ed"
     },
     {
-      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_iid_FR4_fr30_seed42/round_timings.csv",
-      "sha256": "2d394f2dfdb03e71995aa959cb9c1f6a34c818d7026103308f33aad8c9f0892d"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR2_fr40_seed73/round_timings.csv",
+      "sha256": "068fe2904c85f5df541bb9ca6a83a0858bc4c5a32156acecdecb5ab7a3d01c7d"
     },
     {
-      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_iid_FR4_fr30_seed42/client_metrics.csv",
-      "sha256": "6a201a4852eb2527f14da2db85edb103af4fc8ca2c55648b125fbab7a0f0a004"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR2_fr40_seed73/client_metrics.csv",
+      "sha256": "745a7897d00eb9fe385b7c28ecca9698f1555fa0d2967998e49d3d467b32726c"
     },
     {
-      "path": "results/v15_4_mnist_seed42_fr30/v15_4_mnist_iid_FR4_seed42/global_metrics.csv",
-      "sha256": "1671641b6a7e30e6718fd3d3213263fe5dfacb9cf3a63fa2be93e75b1b2ed83a"
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_iid_FR2_fr40_seed73/global_metrics.csv",
+      "sha256": "cbd648d37cb193bb39df5cec59966a5222ce46cd270d373aa5a02cc53734a823"
     },
     {
-      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_iid_FR2_fr30_seed42/summary.json",
-      "sha256": "47d3b38905eda1d83b859b45857f8cd249a4004a5486e3e830a166f37781a20c"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR3_fr30_seed73/summary.json",
+      "sha256": "01772eafd96ddb9c9e965649d075d56dca7f75305e479ee7aaf4aa825e2891e4"
     },
     {
-      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_iid_FR2_fr30_seed42/protocol.json",
-      "sha256": "ba36adda5d465d8c3deec0288076d4d9021b76badcf67a3568e5abbc4c5235f0"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR3_fr30_seed73/protocol.json",
+      "sha256": "6443185b61220e898c4b9ba2cf5890215ed0b17637983ecedc78441a54cb4f96"
     },
     {
-      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_iid_FR2_fr30_seed42/round_timings.csv",
-      "sha256": "62245e50f35984630471b4d7053a24cc3a0dc524c5fe62e84554a942f816f883"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR3_fr30_seed73/round_timings.csv",
+      "sha256": "f5c1422c684ae81775bdbced6cfac07b12a6dcdc57450a443b43e94fa0a1b7ac"
     },
     {
-      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_iid_FR2_fr30_seed42/client_metrics.csv",
-      "sha256": "3f8ddca46d33cbbdb2f88edc2948b87e9287c6f164d47dabb19564e0cef6d680"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR3_fr30_seed73/client_metrics.csv",
+      "sha256": "342e6f26ee4b1729b492b0722730b34ec4ff1b5f745243ed66d6ee58c90bcf49"
     },
     {
-      "path": "results/v15_4_mnist_seed42_fr30/v15_4_mnist_iid_FR2_seed42/global_metrics.csv",
-      "sha256": "214e39b8e22f27f05d3864303187826a333efafd9005ad359149f4a4db9bc060"
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_iid_FR3_fr30_seed73/global_metrics.csv",
+      "sha256": "3815accfed1bad769d6722fa766214da292e46f7aac573b376f7211b4c93b7f8"
     },
     {
-      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_iid_FR1_fr30_seed42/summary.json",
-      "sha256": "1d7a3076ee2d683582537cc53437d72b4532244df33f0eb6569a8a67895d3a1e"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR3_fr40_seed73/summary.json",
+      "sha256": "dd74af05a318f5308d58aa005b73b5f27f0ed322543bee9f046a181b35f52abf"
     },
     {
-      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_iid_FR1_fr30_seed42/protocol.json",
-      "sha256": "4e5ec29338273b439d8f95155c7d91ba1d7644c8682394677f2838a10b2462ee"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR3_fr40_seed73/protocol.json",
+      "sha256": "10f86872ab427b74f5b59f1f7cc50369b546159b270a468446efa6a66b813063"
     },
     {
-      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_iid_FR1_fr30_seed42/round_timings.csv",
-      "sha256": "5188f8801a4f215785ab841516a4731b57d52f1d586592302ccdcafc88690863"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR3_fr40_seed73/round_timings.csv",
+      "sha256": "fc73b42c6f04bd9104647c14890d5526f248a591351ec606169c99a33da99f6d"
     },
     {
-      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_iid_FR1_fr30_seed42/client_metrics.csv",
-      "sha256": "aaedbed2a4f0cc1f7ba766d79db189f71e2c8c7b62164fe7112adc8cd2b06159"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR3_fr40_seed73/client_metrics.csv",
+      "sha256": "4ef15a7de5c53e818635cf92cceaab5e4b96b3af31c3dd55986636a49ea0713c"
     },
     {
-      "path": "results/v15_4_mnist_seed42_fr30/v15_4_mnist_iid_FR1_seed42/global_metrics.csv",
-      "sha256": "5715f361139c312d410ab3006efc5100c1cd58f570cf17414834ceed521da96e"
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_iid_FR3_fr40_seed73/global_metrics.csv",
+      "sha256": "d6d2c415c45e2cf185319bb98a5c1ae29b665051ea67ebaa4916cce0c4616a21"
     },
     {
-      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_noniid_FR3_fr40_seed42/summary.json",
-      "sha256": "559385715dbe9fa694d62a628f0b88f60bb232ea080f20be371be4982af39bc5"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR4_fr30_seed73/summary.json",
+      "sha256": "b6af89361989171ab09b9784bebe7df9b72e3adfba40941ed1d3a2201c93424e"
     },
     {
-      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_noniid_FR3_fr40_seed42/protocol.json",
-      "sha256": "6f29ac793f3c4b82df657a7467d8932bc7f291d4bf939aadf55ed01e90458bb6"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR4_fr30_seed73/protocol.json",
+      "sha256": "b396bdfc51c8c2077c806abdb80ea13ac7f78854b5d1248323efd6ac5ad38802"
     },
     {
-      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_noniid_FR3_fr40_seed42/round_timings.csv",
-      "sha256": "f8448a058136c7ae9b6741d0c748ff21e8bd8e47cd21aa37de9bd39345c6d140"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR4_fr30_seed73/round_timings.csv",
+      "sha256": "064efc4d0c04716b3a74e352769a65b840a9989cdab2a03ac131d7101489d03f"
     },
     {
-      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_noniid_FR3_fr40_seed42/client_metrics.csv",
-      "sha256": "0c4c01eec2fd73945921e52cf0784111dfd6cfbf93f3f0719aa174ac62798766"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR4_fr30_seed73/client_metrics.csv",
+      "sha256": "7ad16881546751af381d161f6af138982aa8224e64023bf698e4019cf6f347c5"
     },
     {
-      "path": "results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_noniid_FR3_seed42/global_metrics.csv",
-      "sha256": "618c9c94e63f51b6c554df579b608d22c0f32c3ba5ebda225d2ee99d006f771c"
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_iid_FR4_fr30_seed73/global_metrics.csv",
+      "sha256": "ff96246351622772b6869bf0b4523172ed249fb0f67cf9b689206acb2622a3cf"
     },
     {
-      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_noniid_FR4_fr40_seed42/summary.json",
-      "sha256": "0217e05a981ae1412ef019e0e9651726e183867c58a5f92eda15b94b4d3f1f68"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR4_fr40_seed73/summary.json",
+      "sha256": "3abb03b28f20edbc52afdf22ee3a9af5ee93f12fee7af62868c2289657a39b4d"
     },
     {
-      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_noniid_FR4_fr40_seed42/protocol.json",
-      "sha256": "4bde235635e0be05bda9b2923a0a51fd2cffc83b50f3e92c8d76d51f9c7fb487"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR4_fr40_seed73/protocol.json",
+      "sha256": "1bd8bf986a80619a221f522e9e1e581d5ef410e95a6d429ee8dc7a6c0810ab30"
     },
     {
-      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_noniid_FR4_fr40_seed42/round_timings.csv",
-      "sha256": "36918e234a7e8fa67d6d478d551b38526a43dd01318c3dfdd2488e474ec2faf3"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR4_fr40_seed73/round_timings.csv",
+      "sha256": "4a0c270d0878cf11c2f737da584317e5054b09a518b4164fed44bdb4ec1ab94f"
     },
     {
-      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_noniid_FR4_fr40_seed42/client_metrics.csv",
-      "sha256": "4e7fc0e2484e38a3c436584741345a0d5bc3f213a260b24ffa65f147fa3eadf5"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR4_fr40_seed73/client_metrics.csv",
+      "sha256": "ecf97e8a2af9b0f8d5382b60c7ed5ccb8b79a0ba67cb0a2d46e137a4604a1310"
     },
     {
-      "path": "results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_noniid_FR4_seed42/global_metrics.csv",
-      "sha256": "adcd6c8a390431df25afb64a1d2fc6bb75ac470a2c51358324d62a088bcd2be8"
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_iid_FR4_fr40_seed73/global_metrics.csv",
+      "sha256": "8ad1de890ac513662f739e5fee230b3bd489a92079ce8ea612c41b6ca2c0effb"
     },
     {
-      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_noniid_FR2_fr40_seed42/summary.json",
-      "sha256": "0b75928cc6169a71ad1d2c0aa0a9fb84753f954bc78d458749d628e6c55829d2"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_noniid_FR1_fr30_seed73/summary.json",
+      "sha256": "3f13f77ef34cd09bc86e1a8ded23466d0bae34113f7080b45075eaeb2db5e42c"
     },
     {
-      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_noniid_FR2_fr40_seed42/protocol.json",
-      "sha256": "977125181dd963473568192dec5bf72c6c91000bfa223fbd57b5b8cc3cd676ca"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_noniid_FR1_fr30_seed73/protocol.json",
+      "sha256": "5b3846e1bd7cb7989de7e95bcfebf935854f783a2721514b24baf39ccfbd0952"
     },
     {
-      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_noniid_FR2_fr40_seed42/round_timings.csv",
-      "sha256": "19f8ea673e79c3622c2edf3c2b314ab5368d49b69516c844a885dd8700e05ec0"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_noniid_FR1_fr30_seed73/round_timings.csv",
+      "sha256": "5f3ea6ffcf5935a40bd5329dff0d317e307fc44ce65b4fb79e8cbd71f6afa7c2"
     },
     {
-      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_noniid_FR2_fr40_seed42/client_metrics.csv",
-      "sha256": "4805c6d6e10b9904450f4e63c3cb83219ca28f5e2bdc671abb90283e5727e126"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_noniid_FR1_fr30_seed73/client_metrics.csv",
+      "sha256": "13b097368450ab290e49c5aa65f53a960570778685c46d5b0667d210e58ecc13"
     },
     {
-      "path": "results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_noniid_FR2_seed42/global_metrics.csv",
-      "sha256": "5795ef392b3088bdbd9ea45f2fd76b9ef7446c04ea6ed2c597bc941f46ca19c2"
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_noniid_FR1_fr30_seed73/global_metrics.csv",
+      "sha256": "0cebf5eb70198d1ecbee8adb6bcf90a173f0bd768e912fdce74e375a63824f6d"
     },
     {
-      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_noniid_FR1_fr40_seed42/summary.json",
-      "sha256": "edbb44a0da2b7a663fc909fbe0f6a69d4a8d76f02466784406e1499f8103a845"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_noniid_FR1_fr40_seed73/summary.json",
+      "sha256": "49c5f89e870a5b0780dac64bb1318a0cf3b91b8d4de17226ec066ccc96250beb"
     },
     {
-      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_noniid_FR1_fr40_seed42/protocol.json",
-      "sha256": "a579dabcbe2a6881f4202b68f741c689e6e1037c367dc184b3a611b82018c7a9"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_noniid_FR1_fr40_seed73/protocol.json",
+      "sha256": "a609d2457d7062faf13ef1af02ac23044163bde980e39dd52ae73f3651651ed3"
     },
     {
-      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_noniid_FR1_fr40_seed42/round_timings.csv",
-      "sha256": "697c6a8407eb94c7dc9ba388f645aadcdeb9cbc0a2644f5509dde764b2b5cdf7"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_noniid_FR1_fr40_seed73/round_timings.csv",
+      "sha256": "90a26a67b5fdaf017bc71884a3e00480b46fe5a872c1f16dcd034ccbaa889250"
     },
     {
-      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_noniid_FR1_fr40_seed42/client_metrics.csv",
-      "sha256": "f99ec110a06e707cc9e4d87a7dd7111328549a88e82bbc195262b3e7c909e4ab"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_noniid_FR1_fr40_seed73/client_metrics.csv",
+      "sha256": "bffd1f3ba25755660c9f1ac07922922ff5b1779dc01803d5e69fdccca31bf0d7"
     },
     {
-      "path": "results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_noniid_FR1_seed42/global_metrics.csv",
-      "sha256": "16470b2c69c6335e2be590a2d69798fec2ed8f8735c55cecda0706d30eb2a7ef"
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_noniid_FR1_fr40_seed73/global_metrics.csv",
+      "sha256": "9224e871dddcbacfac551ffc6a185d20612a6550bbda08698d3c5fba93265948"
     },
     {
-      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_noniid_FR3_fr30_seed42/summary.json",
-      "sha256": "4b3887b772f0b77d88df6e096f5c915ec4996e34520f8bf01682a015d90c351b"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_noniid_FR2_fr30_seed73/summary.json",
+      "sha256": "1abcdbc8049a5db673c346d091da6938558b1aa3faf6e5d38acc42b52d9b2317"
     },
     {
-      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_noniid_FR3_fr30_seed42/protocol.json",
-      "sha256": "5c2d5fdd18314035308ade161d4f352fb455285d2867c742016f399c6eab070e"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_noniid_FR2_fr30_seed73/protocol.json",
+      "sha256": "dc225302a371af72bec352e776eaae0ba22c2be0b09da5d4115d6d18c5eb491e"
     },
     {
-      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_noniid_FR3_fr30_seed42/round_timings.csv",
-      "sha256": "924cff05ca87eea8ab984f6bb5247c679e21f3dc1fed1957d32b7d2b206ed134"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_noniid_FR2_fr30_seed73/round_timings.csv",
+      "sha256": "8fc42d79a412d92af042b6993b46d22bea1bf895a3dc6775ad34878062bfbc95"
     },
     {
-      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_noniid_FR3_fr30_seed42/client_metrics.csv",
-      "sha256": "17a8a7d6341fa02fe5cd59dd68fe7e5991ae9b3eeeaeb959bdfc8b0782667812"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_noniid_FR2_fr30_seed73/client_metrics.csv",
+      "sha256": "079410a89c55dc5e4f26c72e43803808afe2625792a9af3ec9f1c0e621e92add"
     },
     {
-      "path": "results/v15_4_cifar10_seed42_fr30/v15_4_cifar10_noniid_FR3_seed42/global_metrics.csv",
-      "sha256": "b8a365e947477bd20c6b2860bba1d137a69a4350e24985a04c7f539a593bb728"
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_noniid_FR2_fr30_seed73/global_metrics.csv",
+      "sha256": "c7f03b5ae8fefc2f0a93e5614ab55625080633864dade209585719ff98f621da"
     },
     {
-      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_noniid_FR4_fr30_seed42/summary.json",
-      "sha256": "6564a1e8c2a59925ef12c4bafaf274506807b09a4b0728682e23544c1d2d8507"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_noniid_FR3_fr30_seed73/summary.json",
+      "sha256": "b98320da1e1ac148101db5c19f14450492b645599e4c483d93d747614bce55d3"
     },
     {
-      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_noniid_FR4_fr30_seed42/protocol.json",
-      "sha256": "cecce9c8912681f6dbe7117e83a72d68558678379f7afd38a6c6404c622813de"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_noniid_FR3_fr30_seed73/protocol.json",
+      "sha256": "366f2299c3b43a55a7755b1ef2709096bcef6f0c65b66234656c29cd09d891ae"
     },
     {
-      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_noniid_FR4_fr30_seed42/round_timings.csv",
-      "sha256": "92fa06c5c2c7d823e2863267097c5e1a452060a0adf628e973983d69308b9fc6"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_noniid_FR3_fr30_seed73/round_timings.csv",
+      "sha256": "304e2a5f650d157d9f6040ae24f0f7e998b42c84a0c0db94dc369f291c1ad482"
     },
     {
-      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_noniid_FR4_fr30_seed42/client_metrics.csv",
-      "sha256": "6a9d1d1c9d1bf9f648770f7de706f49addd42c756f9a9505cd57d4c42a874283"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_noniid_FR3_fr30_seed73/client_metrics.csv",
+      "sha256": "2537bf685c3de24a25db59ca4717ebeaab00255363035d941659d00fcacb68d5"
     },
     {
-      "path": "results/v15_4_cifar10_seed42_fr30/v15_4_cifar10_noniid_FR4_seed42/global_metrics.csv",
-      "sha256": "8f53f95378de33bc0e7254a2942b31dd17934dc59b37093dc7b4733ceffc80b1"
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_noniid_FR3_fr30_seed73/global_metrics.csv",
+      "sha256": "28ac2ce36a750fe168c5e6d53a14e990790dc3a6952fe5bb5a42499c4d3e4c3e"
     },
     {
-      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_noniid_FR2_fr30_seed42/summary.json",
-      "sha256": "8373f4ccae7bc1e6fc686da808aa0609adc09e0d79a8395559d761e7034b11c8"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_noniid_FR4_fr30_seed73/summary.json",
+      "sha256": "fd772c31f0af3d6fe9accee9cadda2111ea0f09c1fc8c69f3843e71162c5a3ad"
     },
     {
-      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_noniid_FR2_fr30_seed42/protocol.json",
-      "sha256": "d1cf9b6aa66f3843ae1491e01a7fad109254d20a1db49847d07104db8c0f50fb"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_noniid_FR4_fr30_seed73/protocol.json",
+      "sha256": "601988e90aadac69850325dea5e3d83e4a055e5552aff9d88e9d82c4a5b115bb"
     },
     {
-      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_noniid_FR2_fr30_seed42/round_timings.csv",
-      "sha256": "97315171fca05791fbda3048ad3f8870751bf52db6e2e971f4ec622612399f8d"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_noniid_FR4_fr30_seed73/round_timings.csv",
+      "sha256": "9f059091128f1830c8caf98397c314c32c78aa989f6a431bc721f4966911ac0e"
     },
     {
-      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_noniid_FR2_fr30_seed42/client_metrics.csv",
-      "sha256": "e9176d84891c8d8b17385f60dc0d8dbb42dc0c8498c2410e613a8c2277ac14d7"
+      "path": "result_check/paper_version_staging/versions/v07_v6_content_v5_template/evidence/completed_baselines/results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_noniid_FR4_fr30_seed73/client_metrics.csv",
+      "sha256": "0e913225f778ddcf3920e45fd53ef3366767fd8e052e2783fdc88112722dc862"
     },
     {
-      "path": "results/v15_4_cifar10_seed42_fr30/v15_4_cifar10_noniid_FR2_seed42/global_metrics.csv",
-      "sha256": "f6e17270e1736aa82a2b24d7444fe3616047755b254b980be46a312b04793652"
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_noniid_FR4_fr30_seed73/global_metrics.csv",
+      "sha256": "5b589dff9c560c9bfe3fb47184d04ba4d80e79b95df10a0c46eba377631d07ee"
     },
     {
-      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_noniid_FR1_fr30_seed42/summary.json",
-      "sha256": "5b20d6a99f9f5e5c7d6855dca8d2bb07700c3dbfbe4669e960cecb664dde5378"
+      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_iid_FR1_fr30_seed42/summary.json",
+      "sha256": "a9a62f3b7c721596220a1806d1c94b4c9d8d323a454d5dd34db0192e24262bc5"
     },
     {
-      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_noniid_FR1_fr30_seed42/protocol.json",
-      "sha256": "c112fde2934d8cbd62b95b10b38954dea5777ad124ffe545f6ff70da34f8ed89"
+      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_iid_FR1_fr30_seed42/protocol.json",
+      "sha256": "f97c436734b8023c504969390f8818f6207736b0f7cc06c079aa9c24ccbc1328"
     },
     {
-      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_noniid_FR1_fr30_seed42/round_timings.csv",
-      "sha256": "8a67f24dd2ef24636ddca54979541da3bdab0202133aa9d8f9bcb0efe18c98f7"
+      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_iid_FR1_fr30_seed42/round_timings.csv",
+      "sha256": "eae84b83fde78aeba791018a54d0d594d874baff1605d2b1115e39cb5975ba93"
     },
     {
-      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_noniid_FR1_fr30_seed42/client_metrics.csv",
-      "sha256": "751e6fa906b681a9968bbc7d7ce0603716e3346f03a00d6d050ea139c8a4b208"
+      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_iid_FR1_fr30_seed42/client_metrics.csv",
+      "sha256": "4ba2a0ba67eb41d5c2ed199db467dbb8e5ee127f6df3f11f2791f65f8d6d5c77"
     },
     {
-      "path": "results/v15_4_cifar10_seed42_fr30/v15_4_cifar10_noniid_FR1_seed42/global_metrics.csv",
-      "sha256": "90a67d403d9e81c8f6f465588e84d99e2b673446010b0be7f5b2206c1c5c279e"
-    },
-    {
-      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_iid_FR3_fr40_seed42/summary.json",
-      "sha256": "a0b0527b7bd665a67f16dd5cd046f54fdb6d3b23890ee63cbce981e3078cf7d2"
-    },
-    {
-      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_iid_FR3_fr40_seed42/protocol.json",
-      "sha256": "fac655e4d86f0dcf520cf851e7fe4e18fe63f1d4292c91b27bd01f5a1024c3f0"
-    },
-    {
-      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_iid_FR3_fr40_seed42/round_timings.csv",
-      "sha256": "d9d2d23fbfa326541ca60d8e71a4dd98ae940747b5175693625524fb19dcd0b4"
-    },
-    {
-      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_iid_FR3_fr40_seed42/client_metrics.csv",
-      "sha256": "a1eaf9bbe286abafd7ed05af893e8a283e4ec655b553ae58046d60d16420f164"
-    },
-    {
-      "path": "results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_iid_FR3_seed42/global_metrics.csv",
-      "sha256": "5314fadacd507bdce1081bbd22763b68a209173436ec1e017abfdf3303b65a7c"
-    },
-    {
-      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_iid_FR4_fr40_seed42/summary.json",
-      "sha256": "e4d678c69d6f87a683ea95ae675e237084f187c538f03ce200a8d4c76e4b98b4"
-    },
-    {
-      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_iid_FR4_fr40_seed42/protocol.json",
-      "sha256": "1f2b24ab2f994d2061ca48526d382d17f488d43cb210391ed8b8068481392ae2"
-    },
-    {
-      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_iid_FR4_fr40_seed42/round_timings.csv",
-      "sha256": "d89fbb46db096b8e1e275897371e3adb0d9ef574d8704d31e173a828baa023f8"
-    },
-    {
-      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_iid_FR4_fr40_seed42/client_metrics.csv",
-      "sha256": "1f09a575a08ae049fc83fff8068ece75d2e4ece1867e88c87670f08e4feac570"
-    },
-    {
-      "path": "results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_iid_FR4_seed42/global_metrics.csv",
-      "sha256": "abd0a60f56b31332761526e4b571f6dc3192621880554a3c913d24c35489c7d1"
-    },
-    {
-      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_iid_FR2_fr40_seed42/summary.json",
-      "sha256": "aaf49938c19c0de09e9bea238cc90b681d66c1a7744be060429cdff485a32bd7"
-    },
-    {
-      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_iid_FR2_fr40_seed42/protocol.json",
-      "sha256": "3e9aea14b1719099115225f7557a939cc970c793872634cd48d1eb1448dfc7c6"
-    },
-    {
-      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_iid_FR2_fr40_seed42/round_timings.csv",
-      "sha256": "72656defe11f59050029bd45be494d068515ab750768bdb897dd3b7758b8a994"
-    },
-    {
-      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_iid_FR2_fr40_seed42/client_metrics.csv",
-      "sha256": "9a5b66cbf014fdeeadf2c63931cc36b4714be8b6966af7cbe4f116daa62babb3"
-    },
-    {
-      "path": "results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_iid_FR2_seed42/global_metrics.csv",
-      "sha256": "54cb3f7fbcef025f4fc0466dc0cd0c3037fa819389b95da37fd72739dd64b5d1"
+      "path": "results/v15_4_cifar10_seed42_fr30/v15_4_cifar10_iid_FR1_seed42/global_metrics.csv",
+      "sha256": "58293b264252cf875dc4cba4b0b3895040e240b8e6d6b6d2fa7c136306f69d6c"
     },
     {
       "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_iid_FR1_fr40_seed42/summary.json",
@@ -562,6 +506,46 @@
       "sha256": "84b6491f0bfa3740de880592af9ffc22001f058e58c5381ac1d9f1aedcc3c3be"
     },
     {
+      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_iid_FR2_fr30_seed42/summary.json",
+      "sha256": "e11cc7b650d210e929a7b50e10f57deda9da0c930b08947db4a6365997c59e9f"
+    },
+    {
+      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_iid_FR2_fr30_seed42/protocol.json",
+      "sha256": "add39ddd71f87e96cbfec8fb01ce150ef6d057868ec8a6d35d0d34406c2c8e1b"
+    },
+    {
+      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_iid_FR2_fr30_seed42/round_timings.csv",
+      "sha256": "dd51ed80b8b979150790472c4bab8c009cba08221a1dd9b68ffb6b99ab9112ad"
+    },
+    {
+      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_iid_FR2_fr30_seed42/client_metrics.csv",
+      "sha256": "df93e1a7395a41c7deedfea6dca2665133ca02fea8e6d7122f44432b86767382"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr30/v15_4_cifar10_iid_FR2_seed42/global_metrics.csv",
+      "sha256": "e948e2a5cd36edb3b2adc13ac36e0df37a031ac01cd01370fb3f504bb2475cbd"
+    },
+    {
+      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_iid_FR2_fr40_seed42/summary.json",
+      "sha256": "aaf49938c19c0de09e9bea238cc90b681d66c1a7744be060429cdff485a32bd7"
+    },
+    {
+      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_iid_FR2_fr40_seed42/protocol.json",
+      "sha256": "3e9aea14b1719099115225f7557a939cc970c793872634cd48d1eb1448dfc7c6"
+    },
+    {
+      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_iid_FR2_fr40_seed42/round_timings.csv",
+      "sha256": "72656defe11f59050029bd45be494d068515ab750768bdb897dd3b7758b8a994"
+    },
+    {
+      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_iid_FR2_fr40_seed42/client_metrics.csv",
+      "sha256": "9a5b66cbf014fdeeadf2c63931cc36b4714be8b6966af7cbe4f116daa62babb3"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_iid_FR2_seed42/global_metrics.csv",
+      "sha256": "54cb3f7fbcef025f4fc0466dc0cd0c3037fa819389b95da37fd72739dd64b5d1"
+    },
+    {
       "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_iid_FR3_fr30_seed42/summary.json",
       "sha256": "7f0c2abb4eb02293fd86fbb35cce5f10ab83c34f93a1be7434a99e7cc5a0062d"
     },
@@ -580,6 +564,26 @@
     {
       "path": "results/v15_4_cifar10_seed42_fr30/v15_4_cifar10_iid_FR3_seed42/global_metrics.csv",
       "sha256": "9e5b52b48dd4f4c65c9ddb5aef23822e12148f9ee011cca5164e6de5c498ee4a"
+    },
+    {
+      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_iid_FR3_fr40_seed42/summary.json",
+      "sha256": "a0b0527b7bd665a67f16dd5cd046f54fdb6d3b23890ee63cbce981e3078cf7d2"
+    },
+    {
+      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_iid_FR3_fr40_seed42/protocol.json",
+      "sha256": "fac655e4d86f0dcf520cf851e7fe4e18fe63f1d4292c91b27bd01f5a1024c3f0"
+    },
+    {
+      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_iid_FR3_fr40_seed42/round_timings.csv",
+      "sha256": "d9d2d23fbfa326541ca60d8e71a4dd98ae940747b5175693625524fb19dcd0b4"
+    },
+    {
+      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_iid_FR3_fr40_seed42/client_metrics.csv",
+      "sha256": "a1eaf9bbe286abafd7ed05af893e8a283e4ec655b553ae58046d60d16420f164"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_iid_FR3_seed42/global_metrics.csv",
+      "sha256": "5314fadacd507bdce1081bbd22763b68a209173436ec1e017abfdf3303b65a7c"
     },
     {
       "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_iid_FR4_fr30_seed42/summary.json",
@@ -602,44 +606,284 @@
       "sha256": "0b63fd2b6ada1ecef63021230e893c805336a878daa48ce6eeaf1442bd453cff"
     },
     {
-      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_iid_FR2_fr30_seed42/summary.json",
-      "sha256": "e11cc7b650d210e929a7b50e10f57deda9da0c930b08947db4a6365997c59e9f"
+      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_iid_FR4_fr40_seed42/summary.json",
+      "sha256": "e4d678c69d6f87a683ea95ae675e237084f187c538f03ce200a8d4c76e4b98b4"
     },
     {
-      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_iid_FR2_fr30_seed42/protocol.json",
-      "sha256": "add39ddd71f87e96cbfec8fb01ce150ef6d057868ec8a6d35d0d34406c2c8e1b"
+      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_iid_FR4_fr40_seed42/protocol.json",
+      "sha256": "1f2b24ab2f994d2061ca48526d382d17f488d43cb210391ed8b8068481392ae2"
     },
     {
-      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_iid_FR2_fr30_seed42/round_timings.csv",
-      "sha256": "dd51ed80b8b979150790472c4bab8c009cba08221a1dd9b68ffb6b99ab9112ad"
+      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_iid_FR4_fr40_seed42/round_timings.csv",
+      "sha256": "d89fbb46db096b8e1e275897371e3adb0d9ef574d8704d31e173a828baa023f8"
     },
     {
-      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_iid_FR2_fr30_seed42/client_metrics.csv",
-      "sha256": "df93e1a7395a41c7deedfea6dca2665133ca02fea8e6d7122f44432b86767382"
+      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_iid_FR4_fr40_seed42/client_metrics.csv",
+      "sha256": "1f09a575a08ae049fc83fff8068ece75d2e4ece1867e88c87670f08e4feac570"
     },
     {
-      "path": "results/v15_4_cifar10_seed42_fr30/v15_4_cifar10_iid_FR2_seed42/global_metrics.csv",
-      "sha256": "e948e2a5cd36edb3b2adc13ac36e0df37a031ac01cd01370fb3f504bb2475cbd"
+      "path": "results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_iid_FR4_seed42/global_metrics.csv",
+      "sha256": "abd0a60f56b31332761526e4b571f6dc3192621880554a3c913d24c35489c7d1"
     },
     {
-      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_iid_FR1_fr30_seed42/summary.json",
-      "sha256": "a9a62f3b7c721596220a1806d1c94b4c9d8d323a454d5dd34db0192e24262bc5"
+      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_noniid_FR1_fr30_seed42/summary.json",
+      "sha256": "5b20d6a99f9f5e5c7d6855dca8d2bb07700c3dbfbe4669e960cecb664dde5378"
     },
     {
-      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_iid_FR1_fr30_seed42/protocol.json",
-      "sha256": "f97c436734b8023c504969390f8818f6207736b0f7cc06c079aa9c24ccbc1328"
+      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_noniid_FR1_fr30_seed42/protocol.json",
+      "sha256": "c112fde2934d8cbd62b95b10b38954dea5777ad124ffe545f6ff70da34f8ed89"
     },
     {
-      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_iid_FR1_fr30_seed42/round_timings.csv",
-      "sha256": "eae84b83fde78aeba791018a54d0d594d874baff1605d2b1115e39cb5975ba93"
+      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_noniid_FR1_fr30_seed42/round_timings.csv",
+      "sha256": "8a67f24dd2ef24636ddca54979541da3bdab0202133aa9d8f9bcb0efe18c98f7"
     },
     {
-      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_iid_FR1_fr30_seed42/client_metrics.csv",
-      "sha256": "4ba2a0ba67eb41d5c2ed199db467dbb8e5ee127f6df3f11f2791f65f8d6d5c77"
+      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_noniid_FR1_fr30_seed42/client_metrics.csv",
+      "sha256": "751e6fa906b681a9968bbc7d7ce0603716e3346f03a00d6d050ea139c8a4b208"
     },
     {
-      "path": "results/v15_4_cifar10_seed42_fr30/v15_4_cifar10_iid_FR1_seed42/global_metrics.csv",
-      "sha256": "58293b264252cf875dc4cba4b0b3895040e240b8e6d6b6d2fa7c136306f69d6c"
+      "path": "results/v15_4_cifar10_seed42_fr30/v15_4_cifar10_noniid_FR1_seed42/global_metrics.csv",
+      "sha256": "90a67d403d9e81c8f6f465588e84d99e2b673446010b0be7f5b2206c1c5c279e"
+    },
+    {
+      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_noniid_FR1_fr40_seed42/summary.json",
+      "sha256": "edbb44a0da2b7a663fc909fbe0f6a69d4a8d76f02466784406e1499f8103a845"
+    },
+    {
+      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_noniid_FR1_fr40_seed42/protocol.json",
+      "sha256": "a579dabcbe2a6881f4202b68f741c689e6e1037c367dc184b3a611b82018c7a9"
+    },
+    {
+      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_noniid_FR1_fr40_seed42/round_timings.csv",
+      "sha256": "697c6a8407eb94c7dc9ba388f645aadcdeb9cbc0a2644f5509dde764b2b5cdf7"
+    },
+    {
+      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_noniid_FR1_fr40_seed42/client_metrics.csv",
+      "sha256": "f99ec110a06e707cc9e4d87a7dd7111328549a88e82bbc195262b3e7c909e4ab"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_noniid_FR1_seed42/global_metrics.csv",
+      "sha256": "16470b2c69c6335e2be590a2d69798fec2ed8f8735c55cecda0706d30eb2a7ef"
+    },
+    {
+      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_noniid_FR2_fr30_seed42/summary.json",
+      "sha256": "8373f4ccae7bc1e6fc686da808aa0609adc09e0d79a8395559d761e7034b11c8"
+    },
+    {
+      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_noniid_FR2_fr30_seed42/protocol.json",
+      "sha256": "d1cf9b6aa66f3843ae1491e01a7fad109254d20a1db49847d07104db8c0f50fb"
+    },
+    {
+      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_noniid_FR2_fr30_seed42/round_timings.csv",
+      "sha256": "97315171fca05791fbda3048ad3f8870751bf52db6e2e971f4ec622612399f8d"
+    },
+    {
+      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_noniid_FR2_fr30_seed42/client_metrics.csv",
+      "sha256": "e9176d84891c8d8b17385f60dc0d8dbb42dc0c8498c2410e613a8c2277ac14d7"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr30/v15_4_cifar10_noniid_FR2_seed42/global_metrics.csv",
+      "sha256": "f6e17270e1736aa82a2b24d7444fe3616047755b254b980be46a312b04793652"
+    },
+    {
+      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_noniid_FR2_fr40_seed42/summary.json",
+      "sha256": "0b75928cc6169a71ad1d2c0aa0a9fb84753f954bc78d458749d628e6c55829d2"
+    },
+    {
+      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_noniid_FR2_fr40_seed42/protocol.json",
+      "sha256": "977125181dd963473568192dec5bf72c6c91000bfa223fbd57b5b8cc3cd676ca"
+    },
+    {
+      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_noniid_FR2_fr40_seed42/round_timings.csv",
+      "sha256": "19f8ea673e79c3622c2edf3c2b314ab5368d49b69516c844a885dd8700e05ec0"
+    },
+    {
+      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_noniid_FR2_fr40_seed42/client_metrics.csv",
+      "sha256": "4805c6d6e10b9904450f4e63c3cb83219ca28f5e2bdc671abb90283e5727e126"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_noniid_FR2_seed42/global_metrics.csv",
+      "sha256": "5795ef392b3088bdbd9ea45f2fd76b9ef7446c04ea6ed2c597bc941f46ca19c2"
+    },
+    {
+      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_noniid_FR3_fr30_seed42/summary.json",
+      "sha256": "4b3887b772f0b77d88df6e096f5c915ec4996e34520f8bf01682a015d90c351b"
+    },
+    {
+      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_noniid_FR3_fr30_seed42/protocol.json",
+      "sha256": "5c2d5fdd18314035308ade161d4f352fb455285d2867c742016f399c6eab070e"
+    },
+    {
+      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_noniid_FR3_fr30_seed42/round_timings.csv",
+      "sha256": "924cff05ca87eea8ab984f6bb5247c679e21f3dc1fed1957d32b7d2b206ed134"
+    },
+    {
+      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_noniid_FR3_fr30_seed42/client_metrics.csv",
+      "sha256": "17a8a7d6341fa02fe5cd59dd68fe7e5991ae9b3eeeaeb959bdfc8b0782667812"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr30/v15_4_cifar10_noniid_FR3_seed42/global_metrics.csv",
+      "sha256": "b8a365e947477bd20c6b2860bba1d137a69a4350e24985a04c7f539a593bb728"
+    },
+    {
+      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_noniid_FR3_fr40_seed42/summary.json",
+      "sha256": "559385715dbe9fa694d62a628f0b88f60bb232ea080f20be371be4982af39bc5"
+    },
+    {
+      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_noniid_FR3_fr40_seed42/protocol.json",
+      "sha256": "6f29ac793f3c4b82df657a7467d8932bc7f291d4bf939aadf55ed01e90458bb6"
+    },
+    {
+      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_noniid_FR3_fr40_seed42/round_timings.csv",
+      "sha256": "f8448a058136c7ae9b6741d0c748ff21e8bd8e47cd21aa37de9bd39345c6d140"
+    },
+    {
+      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_noniid_FR3_fr40_seed42/client_metrics.csv",
+      "sha256": "0c4c01eec2fd73945921e52cf0784111dfd6cfbf93f3f0719aa174ac62798766"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_noniid_FR3_seed42/global_metrics.csv",
+      "sha256": "618c9c94e63f51b6c554df579b608d22c0f32c3ba5ebda225d2ee99d006f771c"
+    },
+    {
+      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_noniid_FR4_fr30_seed42/summary.json",
+      "sha256": "6564a1e8c2a59925ef12c4bafaf274506807b09a4b0728682e23544c1d2d8507"
+    },
+    {
+      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_noniid_FR4_fr30_seed42/protocol.json",
+      "sha256": "cecce9c8912681f6dbe7117e83a72d68558678379f7afd38a6c6404c622813de"
+    },
+    {
+      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_noniid_FR4_fr30_seed42/round_timings.csv",
+      "sha256": "92fa06c5c2c7d823e2863267097c5e1a452060a0adf628e973983d69308b9fc6"
+    },
+    {
+      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_noniid_FR4_fr30_seed42/client_metrics.csv",
+      "sha256": "6a9d1d1c9d1bf9f648770f7de706f49addd42c756f9a9505cd57d4c42a874283"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr30/v15_4_cifar10_noniid_FR4_seed42/global_metrics.csv",
+      "sha256": "8f53f95378de33bc0e7254a2942b31dd17934dc59b37093dc7b4733ceffc80b1"
+    },
+    {
+      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_noniid_FR4_fr40_seed42/summary.json",
+      "sha256": "0217e05a981ae1412ef019e0e9651726e183867c58a5f92eda15b94b4d3f1f68"
+    },
+    {
+      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_noniid_FR4_fr40_seed42/protocol.json",
+      "sha256": "4bde235635e0be05bda9b2923a0a51fd2cffc83b50f3e92c8d76d51f9c7fb487"
+    },
+    {
+      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_noniid_FR4_fr40_seed42/round_timings.csv",
+      "sha256": "36918e234a7e8fa67d6d478d551b38526a43dd01318c3dfdd2488e474ec2faf3"
+    },
+    {
+      "path": "results/fedavg_cifar10_baseline_seed42_fr30_fr40/fedavg_cifar10_noniid_FR4_fr40_seed42/client_metrics.csv",
+      "sha256": "4e7fc0e2484e38a3c436584741345a0d5bc3f213a260b24ffa65f147fa3eadf5"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_noniid_FR4_seed42/global_metrics.csv",
+      "sha256": "adcd6c8a390431df25afb64a1d2fc6bb75ac470a2c51358324d62a088bcd2be8"
+    },
+    {
+      "path": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_iid_FR1_fr40_seed43/summary.json",
+      "sha256": "aad5bce7bacc0e2baa1951d38f633aed89de0510de718b4ca1843e91c20f7dbd"
+    },
+    {
+      "path": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_iid_FR1_fr40_seed43/protocol.json",
+      "sha256": "2e97a6307ecab4b15172c8fbd77f768caa732adddf8db5d698b2a79f564693ab"
+    },
+    {
+      "path": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_iid_FR1_fr40_seed43/round_timings.csv",
+      "sha256": "f32942881b7be6f46b127168a2b6882e1c34b151485532e0fafddf5b6f3ec001"
+    },
+    {
+      "path": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_iid_FR1_fr40_seed43/client_metrics.csv",
+      "sha256": "dcef6137bd470f7befee6e9764b2192b463268a64a3f0877093718cf9f2c2f82"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_iid_FR1_fr40_seed43/global_metrics.csv",
+      "sha256": "860d15c61756efd0a6b204bb04e186d0d9116e6e804a87c59d550e2012d3039b"
+    },
+    {
+      "path": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_iid_FR2_fr30_seed43/summary.json",
+      "sha256": "2e5145ead5ba758444c54a09aebc58133c978afebe1d00f09c366e325dbe0c35"
+    },
+    {
+      "path": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_iid_FR2_fr30_seed43/protocol.json",
+      "sha256": "202f96aacbb420347db1b34e65a78ef9194878348aba7fc980c25cb965b45f5a"
+    },
+    {
+      "path": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_iid_FR2_fr30_seed43/round_timings.csv",
+      "sha256": "1e26c6d69147c9a3491b19c33215d2bf596c66692bd00b6ed6fc45620e7f77d6"
+    },
+    {
+      "path": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_iid_FR2_fr30_seed43/client_metrics.csv",
+      "sha256": "e4536370c25371c7d4bfd12530a995c83d050f048d9fd80e030183406e12acab"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_iid_FR2_fr30_seed43/global_metrics.csv",
+      "sha256": "f79feed591208f5ace1dba9280b2cfeb8280fed74552779d9a325b557529f932"
+    },
+    {
+      "path": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_iid_FR2_fr40_seed43/summary.json",
+      "sha256": "f5a50eebbbf3b8d46c3ddb4fe5ca252c1d61385ca84f1c2ae269fa297cc1e7bd"
+    },
+    {
+      "path": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_iid_FR2_fr40_seed43/protocol.json",
+      "sha256": "32c1d31064ffbcfbed5c7e57312e276b8c824836634f9e873ab1e35a5ecba7b0"
+    },
+    {
+      "path": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_iid_FR2_fr40_seed43/round_timings.csv",
+      "sha256": "7ba78daa8773af8b9934f28725c7e6883fd1cd9d26ea4d415fdfc3303c4e2aea"
+    },
+    {
+      "path": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_iid_FR2_fr40_seed43/client_metrics.csv",
+      "sha256": "27443f457d0aff811a729253ed002daf0b2e50e1952590631b5a0dd8e4e5f0e7"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_iid_FR2_fr40_seed43/global_metrics.csv",
+      "sha256": "12d863b07f44fddc645954404e98e581e95906a2a544395b77c392e2677c20b7"
+    },
+    {
+      "path": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_iid_FR3_fr30_seed43/summary.json",
+      "sha256": "3cf395f73ea76adf052b09dce151f81b604f6fdc63fa5daeb004cf0a7a98a695"
+    },
+    {
+      "path": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_iid_FR3_fr30_seed43/protocol.json",
+      "sha256": "83bf46d2203fb0c7ad2356c01ee9ab85ee0b4c69fe614cf01de4a990735d61b1"
+    },
+    {
+      "path": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_iid_FR3_fr30_seed43/round_timings.csv",
+      "sha256": "a81a2c0e14010282ff23460557b41a54a64f98cec9e3b4a09bf10bd81c303d23"
+    },
+    {
+      "path": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_iid_FR3_fr30_seed43/client_metrics.csv",
+      "sha256": "3ce054f48bf63255588d1dee1d0b4989911868f315e1e9426a9cca87bccc348b"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_iid_FR3_fr30_seed43/global_metrics.csv",
+      "sha256": "61b12c82af1b5dc4b3ec60df09467bb7075bfca0a05742bb91ca07fe9ef46c12"
+    },
+    {
+      "path": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_iid_FR4_fr30_seed43/summary.json",
+      "sha256": "9895be8214cde5d01612e2c370844d7dd872b0d9a5c4a71cc040627549e67984"
+    },
+    {
+      "path": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_iid_FR4_fr30_seed43/protocol.json",
+      "sha256": "c09fa8a78ae74630a77fb4e4af719be4bb3d72fb1edcf89f5e1fc7353125803e"
+    },
+    {
+      "path": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_iid_FR4_fr30_seed43/round_timings.csv",
+      "sha256": "65174702d4a03af5a8af2cf5f30e63c4cc25bcb882775ad25d16af7e74c21535"
+    },
+    {
+      "path": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_iid_FR4_fr30_seed43/client_metrics.csv",
+      "sha256": "edb5b6f8a25da9e3c2387e5be9299a2b0a02ea5f6a8064be9e1307ac24e53b16"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_iid_FR4_fr30_seed43/global_metrics.csv",
+      "sha256": "5155fb1663bce35f289cd868026cc5f3c847279c41e4a88b8d586b158cbc7b4e"
     },
     {
       "path": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_noniid_FR2_fr40_seed73/summary.json",
@@ -700,8 +944,326 @@
     {
       "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_noniid_FR4_fr40_seed73/global_metrics.csv",
       "sha256": "723aff155b512896edaff1a5da4a50a35e42e3457ee7be0a31c87c7b7b14f56a"
+    },
+    {
+      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_iid_FR1_fr30_seed42/summary.json",
+      "sha256": "1d7a3076ee2d683582537cc53437d72b4532244df33f0eb6569a8a67895d3a1e"
+    },
+    {
+      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_iid_FR1_fr30_seed42/protocol.json",
+      "sha256": "4e5ec29338273b439d8f95155c7d91ba1d7644c8682394677f2838a10b2462ee"
+    },
+    {
+      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_iid_FR1_fr30_seed42/round_timings.csv",
+      "sha256": "5188f8801a4f215785ab841516a4731b57d52f1d586592302ccdcafc88690863"
+    },
+    {
+      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_iid_FR1_fr30_seed42/client_metrics.csv",
+      "sha256": "aaedbed2a4f0cc1f7ba766d79db189f71e2c8c7b62164fe7112adc8cd2b06159"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr30/v15_4_mnist_iid_FR1_seed42/global_metrics.csv",
+      "sha256": "5715f361139c312d410ab3006efc5100c1cd58f570cf17414834ceed521da96e"
+    },
+    {
+      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_iid_FR1_fr40_seed42/summary.json",
+      "sha256": "26494d11b6a644723e83663fae7220e603e53e44e083fb9662354dc890bee7cf"
+    },
+    {
+      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_iid_FR1_fr40_seed42/protocol.json",
+      "sha256": "c733b36ce774280183eaf4239588c2f073fab8bc768c9adbfa4a0d0e5528dead"
+    },
+    {
+      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_iid_FR1_fr40_seed42/round_timings.csv",
+      "sha256": "0ecb323fe7665ab1dc48f6f2d463c18f7796dfe16b287bf3b84015ac89c80827"
+    },
+    {
+      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_iid_FR1_fr40_seed42/client_metrics.csv",
+      "sha256": "4a493e5a9edc3017867f7f3d81f0043e16b87340a908e4befc0c8c53fcfc8ad7"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr40/v15_4_mnist_iid_FR1_seed42/global_metrics.csv",
+      "sha256": "67044fc04fff07934bfaf944917bc82942427cb6cc7aedeeec93401bb9d908c1"
+    },
+    {
+      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_iid_FR2_fr30_seed42/summary.json",
+      "sha256": "47d3b38905eda1d83b859b45857f8cd249a4004a5486e3e830a166f37781a20c"
+    },
+    {
+      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_iid_FR2_fr30_seed42/protocol.json",
+      "sha256": "ba36adda5d465d8c3deec0288076d4d9021b76badcf67a3568e5abbc4c5235f0"
+    },
+    {
+      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_iid_FR2_fr30_seed42/round_timings.csv",
+      "sha256": "62245e50f35984630471b4d7053a24cc3a0dc524c5fe62e84554a942f816f883"
+    },
+    {
+      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_iid_FR2_fr30_seed42/client_metrics.csv",
+      "sha256": "3f8ddca46d33cbbdb2f88edc2948b87e9287c6f164d47dabb19564e0cef6d680"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr30/v15_4_mnist_iid_FR2_seed42/global_metrics.csv",
+      "sha256": "214e39b8e22f27f05d3864303187826a333efafd9005ad359149f4a4db9bc060"
+    },
+    {
+      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_iid_FR2_fr40_seed42/summary.json",
+      "sha256": "bd94bd02f92219e1e8eb1d525133ecc8201a62dea896107a1dffa46e95a96a19"
+    },
+    {
+      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_iid_FR2_fr40_seed42/protocol.json",
+      "sha256": "06e20cc44ad404557126ff0e9fbee7d4743659d7da192969ddcbf0650f5f39b0"
+    },
+    {
+      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_iid_FR2_fr40_seed42/round_timings.csv",
+      "sha256": "e4f64338bbbea42c31504def1c76c5f49f262cdfc8c768156dbceadd0ef705ee"
+    },
+    {
+      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_iid_FR2_fr40_seed42/client_metrics.csv",
+      "sha256": "a9d49d2c986fb4be7d95334402835aaecaad25cf0bcd9b5977f704c343001e87"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr40/v15_4_mnist_iid_FR2_seed42/global_metrics.csv",
+      "sha256": "57077e21b2bc2cb3a878efb40e7c3e148ba92fe62988bab2681a1067f4c2924a"
+    },
+    {
+      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_iid_FR3_fr30_seed42/summary.json",
+      "sha256": "e97503ed93502cdad4d2425b4f451fe1fa55282e80daee4cc138e7bc8ff6a2b2"
+    },
+    {
+      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_iid_FR3_fr30_seed42/protocol.json",
+      "sha256": "7b6596a21073e5aabb2f55e955b487925da1d61e58f67ae17ec7ae8917814963"
+    },
+    {
+      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_iid_FR3_fr30_seed42/round_timings.csv",
+      "sha256": "aeb2a165e6ff6cfa7b961c831e058ab97f7973a9537e4339bb99612e3333cc5f"
+    },
+    {
+      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_iid_FR3_fr30_seed42/client_metrics.csv",
+      "sha256": "3cd97aa430178e35a568d5e8cc413ec6883b47c24061e54f53daed5a82fbcb81"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr30/v15_4_mnist_iid_FR3_seed42/global_metrics.csv",
+      "sha256": "1a38b59a5f19deceff8cfb96fd942897814de248a6a07ebc548941afa6dda7cc"
+    },
+    {
+      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_iid_FR3_fr40_seed42/summary.json",
+      "sha256": "4f4e7c58b8c8d1eadd04cb19aff5c0df71a68133a76a2563bd6f49c5391c9d9e"
+    },
+    {
+      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_iid_FR3_fr40_seed42/protocol.json",
+      "sha256": "7525c2648a2f58abb9617bc0bb465b8a0207842b7db74dbe421c7151475c5982"
+    },
+    {
+      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_iid_FR3_fr40_seed42/round_timings.csv",
+      "sha256": "63419aea829a33ee6b5fe6a7f253156f8ba572fcde173a27c716e7df6ea99252"
+    },
+    {
+      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_iid_FR3_fr40_seed42/client_metrics.csv",
+      "sha256": "1730c0f9864ebedbf626f5daab5a362c6e5b489893ab7385a91e8f911da21218"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr40/v15_4_mnist_iid_FR3_seed42/global_metrics.csv",
+      "sha256": "fa7c6db6874598460a63d2456ac0cda25f13d58048c55b014b4b9c6d6f5ba3d7"
+    },
+    {
+      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_iid_FR4_fr30_seed42/summary.json",
+      "sha256": "89bb4659bf4ca4ad819899bafe1ca31a76d5588860ac35767caa8ac4f422506f"
+    },
+    {
+      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_iid_FR4_fr30_seed42/protocol.json",
+      "sha256": "3aeabedac799ab17fe582b59244a4e49028fb426fedc75b447bdee8f4a9afecf"
+    },
+    {
+      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_iid_FR4_fr30_seed42/round_timings.csv",
+      "sha256": "2d394f2dfdb03e71995aa959cb9c1f6a34c818d7026103308f33aad8c9f0892d"
+    },
+    {
+      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_iid_FR4_fr30_seed42/client_metrics.csv",
+      "sha256": "6a201a4852eb2527f14da2db85edb103af4fc8ca2c55648b125fbab7a0f0a004"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr30/v15_4_mnist_iid_FR4_seed42/global_metrics.csv",
+      "sha256": "1671641b6a7e30e6718fd3d3213263fe5dfacb9cf3a63fa2be93e75b1b2ed83a"
+    },
+    {
+      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_iid_FR4_fr40_seed42/summary.json",
+      "sha256": "68197826f26d538b28710168da3b95bc7c017e2594729c2a650e006931dad242"
+    },
+    {
+      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_iid_FR4_fr40_seed42/protocol.json",
+      "sha256": "78cb8d69adf7b724f2ec9c1a5c264a8cbb9e7720f4a0627e1e82047263b0fe1f"
+    },
+    {
+      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_iid_FR4_fr40_seed42/round_timings.csv",
+      "sha256": "985e198affdb0ce91e50291aaf2f0ed1dab7c63349ce0813b2df8dc26b4ef4e5"
+    },
+    {
+      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_iid_FR4_fr40_seed42/client_metrics.csv",
+      "sha256": "05b525f1a49bcd24727ab533a1da568679d3e759cec9c20a93244d97331b4eea"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr40/v15_4_mnist_iid_FR4_seed42/global_metrics.csv",
+      "sha256": "040d7dce8a683f1d18fc33fd0a2750e617196b9e55efb46be06007468ea3fb5e"
+    },
+    {
+      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_noniid_FR1_fr30_seed42/summary.json",
+      "sha256": "2834906bd46a209f4a8d9bdb26cb3d94b8097f380116d8903f64dbd0e041a50d"
+    },
+    {
+      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_noniid_FR1_fr30_seed42/protocol.json",
+      "sha256": "1ea3de08df1f0c3e49d4d50935466276ab053f5262fb604a5d19af01a7308058"
+    },
+    {
+      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_noniid_FR1_fr30_seed42/round_timings.csv",
+      "sha256": "687482a9dcc38ced9f0b007bc74f1d0c22a82677fa847e77cd80c7f169fe9bb8"
+    },
+    {
+      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_noniid_FR1_fr30_seed42/client_metrics.csv",
+      "sha256": "d28e2db9c96fb8d2455dbdf3810c03004ee6a7fc90441cefbbc6a2d15d257f4c"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr30/v15_4_mnist_noniid_FR1_seed42/global_metrics.csv",
+      "sha256": "9dbadbedc49a817a1dd1ca71628a378a945050f22b612f89e94f258d3b50cfc2"
+    },
+    {
+      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_noniid_FR1_fr40_seed42/summary.json",
+      "sha256": "191355803704c182a342dffad0690dc4e809d8ad77eaad6e56526e8eb446e2c2"
+    },
+    {
+      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_noniid_FR1_fr40_seed42/protocol.json",
+      "sha256": "bc49fdee72aacd1c348edb2af07a98d405685f02fcf73da4d480ac08cf332ff2"
+    },
+    {
+      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_noniid_FR1_fr40_seed42/round_timings.csv",
+      "sha256": "736e8e57a490519bf4b1d4f94eba17fa72346469df9c02a6aae92bfc14b21c11"
+    },
+    {
+      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_noniid_FR1_fr40_seed42/client_metrics.csv",
+      "sha256": "2564ae20eb3e17858a476b3ae1f47adcb6e9a0b83d56c43e79c1a40bc066c940"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr40/v15_4_mnist_noniid_FR1_seed42/global_metrics.csv",
+      "sha256": "4acd9e3e8f3a2749df4ff2f7592f76e8e1150417ef04fb0431fb94312de5e1c2"
+    },
+    {
+      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_noniid_FR2_fr30_seed42/summary.json",
+      "sha256": "78f61b6788e696170f4061b715cce08323d1692146c7649a50b3958870c463db"
+    },
+    {
+      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_noniid_FR2_fr30_seed42/protocol.json",
+      "sha256": "0b7bf20b4765a65b6a05eefbda21400acea45d27db59ba365c0af077af6d214e"
+    },
+    {
+      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_noniid_FR2_fr30_seed42/round_timings.csv",
+      "sha256": "a4e8ec9d56977b97cec7398bb425718d569162cc99f694f88cc6ab92253d15a2"
+    },
+    {
+      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_noniid_FR2_fr30_seed42/client_metrics.csv",
+      "sha256": "79159afb6c735188ca174b38abbb52e162bdce2e0e1f3565f4a15045c3a7cd29"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr30/v15_4_mnist_noniid_FR2_seed42/global_metrics.csv",
+      "sha256": "6c5e8a6e3b6931e65cf9160b06afb76babb81188e1c9bfb1ee2f7b0b41c9ab17"
+    },
+    {
+      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_noniid_FR2_fr40_seed42/summary.json",
+      "sha256": "d497be8a6e527824d5ea1a9856c3c3a97ecad0efe3b2f29ee4d11c436093a988"
+    },
+    {
+      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_noniid_FR2_fr40_seed42/protocol.json",
+      "sha256": "624af9937d2f20a3cc2ab6d309f696217860fa583aadc9b7e8c06287c5fd4506"
+    },
+    {
+      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_noniid_FR2_fr40_seed42/round_timings.csv",
+      "sha256": "0712a14449925e1bcead5abd5885d9d26820c46089c6910985ab046e8d6b4c88"
+    },
+    {
+      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_noniid_FR2_fr40_seed42/client_metrics.csv",
+      "sha256": "400d8e36987f408c752f66bde481f14fc5570b27bf59607aa7cec76f7ba50487"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr40/v15_4_mnist_noniid_FR2_seed42/global_metrics.csv",
+      "sha256": "20c3b01abdd0805c267cfabfb0e74e5845de8e2b0aa2f78e638b1908cb46cb1b"
+    },
+    {
+      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_noniid_FR3_fr30_seed42/summary.json",
+      "sha256": "dfe65d11f842b2e565f95ab50e74548ee15c6e1fb73ed4e877d73a8ecd9a6f06"
+    },
+    {
+      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_noniid_FR3_fr30_seed42/protocol.json",
+      "sha256": "f6445edc2e34a151f2c00a1bc2103d6ee5e4066cd04ad9e59b1911d839a8ab01"
+    },
+    {
+      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_noniid_FR3_fr30_seed42/round_timings.csv",
+      "sha256": "073245c093e7a773e0f2b1096c002e6b5c358ffa39ab1330a5af596d22e886cd"
+    },
+    {
+      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_noniid_FR3_fr30_seed42/client_metrics.csv",
+      "sha256": "bcd753fc540c847f9fa02f6a72ff0a4f6ee76c12a76f8c486e3db8a057ce6661"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr30/v15_4_mnist_noniid_FR3_seed42/global_metrics.csv",
+      "sha256": "b44a09f0dc6206c97058b9887f83bbae02bf5f7bea92fdafcfc3de10b36f24d8"
+    },
+    {
+      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_noniid_FR3_fr40_seed42/summary.json",
+      "sha256": "18d0cab288eadc54eccb21bb2090f3abdc4f741efd20835a1b087ea04785d739"
+    },
+    {
+      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_noniid_FR3_fr40_seed42/protocol.json",
+      "sha256": "46c14d9820b92c3da5e0bb800195ac9467bd10d950d5a022e9503ec321d6b72c"
+    },
+    {
+      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_noniid_FR3_fr40_seed42/round_timings.csv",
+      "sha256": "852f55d635b53396d757ddddde58f919612a43d91b63054824053dced853a9ba"
+    },
+    {
+      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_noniid_FR3_fr40_seed42/client_metrics.csv",
+      "sha256": "73283d21e1e67345627bd649d5f5f668af5075bdc8f81112dcad13b4d45552dc"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr40/v15_4_mnist_noniid_FR3_seed42/global_metrics.csv",
+      "sha256": "5ee5696a94892a6c9e447ca26312dd3d4f17db87721c1477416bad55fc6e1ea7"
+    },
+    {
+      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_noniid_FR4_fr30_seed42/summary.json",
+      "sha256": "23a5235245988f8bc64181089cb1a27982e0167c591d35dcde81cca9654746f8"
+    },
+    {
+      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_noniid_FR4_fr30_seed42/protocol.json",
+      "sha256": "437cc51b867a2988570b3467c844f1b0d71f7f11ed9891fe0ab42838dc22dd86"
+    },
+    {
+      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_noniid_FR4_fr30_seed42/round_timings.csv",
+      "sha256": "92c633673951c3366a6f816b456125d87a65e3bda140aed98516683e36bb425b"
+    },
+    {
+      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_noniid_FR4_fr30_seed42/client_metrics.csv",
+      "sha256": "706a088478f3102cf6fbf239222ff7d33c3b695ced20f4241d66b17256dc3c55"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr30/v15_4_mnist_noniid_FR4_seed42/global_metrics.csv",
+      "sha256": "c3d9a86eb151d077d8e2c4d32ff482644025a06df7abb44394cd7e2bf322de06"
+    },
+    {
+      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_noniid_FR4_fr40_seed42/summary.json",
+      "sha256": "f12ff9e374d515156a1a74f9b99f44479c7e80f67f82f10956e50dbbe5be7437"
+    },
+    {
+      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_noniid_FR4_fr40_seed42/protocol.json",
+      "sha256": "1149b9b86e6ad14738a1ed9560cb45bbd00d96eedc95d724b877921fdbbcaba6"
+    },
+    {
+      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_noniid_FR4_fr40_seed42/round_timings.csv",
+      "sha256": "51a1cf2b00be1f4711bdd9dcd157bef5087acb7ab13bd39a33a78578300ebef1"
+    },
+    {
+      "path": "results/fedavg_mnist_baseline_seed42_fr30_fr40/fedavg_mnist_noniid_FR4_fr40_seed42/client_metrics.csv",
+      "sha256": "4e7ae712476f80737707c6121215ebe6a7b778cb36b3f59b562f5f1e177d391c"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr40/v15_4_mnist_noniid_FR4_seed42/global_metrics.csv",
+      "sha256": "ed5e67af5a1e28f3dcd67ab58230e7e476755731e7521dd36ae568ca70601456"
     }
-  ],
-  "warmup_validation": "First ten global accuracies agree exactly in every pair",
-  "primary_selection": "Complete seed-matched grid common to both datasets; additional completed CIFAR-10 cases exported separately"
+  ]
 }

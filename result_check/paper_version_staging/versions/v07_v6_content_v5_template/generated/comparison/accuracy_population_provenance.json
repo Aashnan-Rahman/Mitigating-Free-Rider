@@ -1,0 +1,621 @@
+{
+  "baseline_provenance": "generated/comparison/provenance.json",
+  "baseline_runs": 63,
+  "comparison_scope": "Descriptive unbalanced-coverage curves; paired utility estimates remain in baseline table",
+  "averaging": "Mean replications within attack, then four attacks equally; primary uses all three, baseline all completed matched records",
+  "primary_replications_per_attack": 3,
+  "primary_runs": 96,
+  "primary_inputs": [
+    {
+      "path": "results/v15_4_mnist_seed42_fr30/v15_4_mnist_noniid_FR3_seed42/global_metrics.csv",
+      "sha256": "b44a09f0dc6206c97058b9887f83bbae02bf5f7bea92fdafcfc3de10b36f24d8"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr30/v15_4_mnist_noniid_FR4_seed42/global_metrics.csv",
+      "sha256": "c3d9a86eb151d077d8e2c4d32ff482644025a06df7abb44394cd7e2bf322de06"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr30/v15_4_mnist_noniid_FR2_seed42/global_metrics.csv",
+      "sha256": "6c5e8a6e3b6931e65cf9160b06afb76babb81188e1c9bfb1ee2f7b0b41c9ab17"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr30/v15_4_mnist_noniid_FR1_seed42/global_metrics.csv",
+      "sha256": "9dbadbedc49a817a1dd1ca71628a378a945050f22b612f89e94f258d3b50cfc2"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr30/v15_4_mnist_iid_FR4_seed42/global_metrics.csv",
+      "sha256": "1671641b6a7e30e6718fd3d3213263fe5dfacb9cf3a63fa2be93e75b1b2ed83a"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr30/v15_4_mnist_iid_FR3_seed42/global_metrics.csv",
+      "sha256": "1a38b59a5f19deceff8cfb96fd942897814de248a6a07ebc548941afa6dda7cc"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr30/v15_4_mnist_iid_FR2_seed42/global_metrics.csv",
+      "sha256": "214e39b8e22f27f05d3864303187826a333efafd9005ad359149f4a4db9bc060"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr30/v15_4_mnist_iid_FR1_seed42/global_metrics.csv",
+      "sha256": "5715f361139c312d410ab3006efc5100c1cd58f570cf17414834ceed521da96e"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr40/v15_4_mnist_noniid_FR3_seed42/global_metrics.csv",
+      "sha256": "5ee5696a94892a6c9e447ca26312dd3d4f17db87721c1477416bad55fc6e1ea7"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr40/v15_4_mnist_noniid_FR4_seed42/global_metrics.csv",
+      "sha256": "ed5e67af5a1e28f3dcd67ab58230e7e476755731e7521dd36ae568ca70601456"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr40/v15_4_mnist_noniid_FR2_seed42/global_metrics.csv",
+      "sha256": "20c3b01abdd0805c267cfabfb0e74e5845de8e2b0aa2f78e638b1908cb46cb1b"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr40/v15_4_mnist_noniid_FR1_seed42/global_metrics.csv",
+      "sha256": "4acd9e3e8f3a2749df4ff2f7592f76e8e1150417ef04fb0431fb94312de5e1c2"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr40/v15_4_mnist_iid_FR4_seed42/global_metrics.csv",
+      "sha256": "040d7dce8a683f1d18fc33fd0a2750e617196b9e55efb46be06007468ea3fb5e"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr40/v15_4_mnist_iid_FR3_seed42/global_metrics.csv",
+      "sha256": "fa7c6db6874598460a63d2456ac0cda25f13d58048c55b014b4b9c6d6f5ba3d7"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr40/v15_4_mnist_iid_FR2_seed42/global_metrics.csv",
+      "sha256": "57077e21b2bc2cb3a878efb40e7c3e148ba92fe62988bab2681a1067f4c2924a"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr40/v15_4_mnist_iid_FR1_seed42/global_metrics.csv",
+      "sha256": "67044fc04fff07934bfaf944917bc82942427cb6cc7aedeeec93401bb9d908c1"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_noniid_FR3_fr40_seed43/global_metrics.csv",
+      "sha256": "e9168e9b0731a3693220bf04295e533fe135a3f2c9e311f5fe0bb5911afc6dec"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_noniid_FR4_fr40_seed43/global_metrics.csv",
+      "sha256": "332c0dcf203632e2d814b3937003437658c1f6685cb1ca703130aac8e8683523"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_noniid_FR2_fr40_seed43/global_metrics.csv",
+      "sha256": "fc5ace10ca50bac8924b1417d966f20fc84bfd031cfd4cbdacd53e684ce6a368"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_noniid_FR1_fr40_seed43/global_metrics.csv",
+      "sha256": "e8f414ff08f258dd004c7407fb98bd79baea64f170e6cf83bf645d79e36cfdc3"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_noniid_FR3_fr30_seed43/global_metrics.csv",
+      "sha256": "e0175c2dfe595eefcd2baa8403b8ab57f1862b6db1bbe909a1a22f5e395d46a3"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_noniid_FR4_fr30_seed43/global_metrics.csv",
+      "sha256": "9a39644f78facac0083b74b408044ebf692ad2fc54e8edc0332a8247697bb31d"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_noniid_FR2_fr30_seed43/global_metrics.csv",
+      "sha256": "c1dd217d70416e299b14430673db72c0cbeee0f81a022a964e7a89813bdf5a05"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_noniid_FR1_fr30_seed43/global_metrics.csv",
+      "sha256": "e224feac6e1fbc992fa531ee3d874753c0bf73a4309a994a341daf18cab4b1f3"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_iid_FR4_fr40_seed43/global_metrics.csv",
+      "sha256": "e0f16472b5007cab1ab6240af34dd1ea5c323848440ed7889a32e3eac0067dff"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_iid_FR3_fr40_seed43/global_metrics.csv",
+      "sha256": "9b6f45947367b275dfc90d4fe6981988aacb95ffe25456b5087a9418de2153bf"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_iid_FR2_fr40_seed43/global_metrics.csv",
+      "sha256": "65a22a66a574c1c26b5706c77b6110ce56342a437aa9868afd3bfd4e047eab25"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_iid_FR1_fr40_seed43/global_metrics.csv",
+      "sha256": "0d23b06d8860d40ab349dfc0dfbfa80883428e93cc4bffcf471227c4676d55bd"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_iid_FR4_fr30_seed43/global_metrics.csv",
+      "sha256": "0a7d6dd6cb557d127af139bccf89d0635911bd90c984dc1a543ff179ecf77b9a"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_iid_FR3_fr30_seed43/global_metrics.csv",
+      "sha256": "823c87b8d9841a846871ef2c6d9bfcb80fc2b6c269c904eeaf47f749a60da96f"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_iid_FR2_fr30_seed43/global_metrics.csv",
+      "sha256": "aca87330d8b9bbf2a9d33946bfd2a46d37ecc85d5998b70597e3b1a68f26c5bc"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_iid_FR1_fr30_seed43/global_metrics.csv",
+      "sha256": "1cc10941df30d91fa9e22d19c4d1bf4d0dac5d59b1f776d155eebc407387fbe1"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_noniid_FR3_fr40_seed73/global_metrics.csv",
+      "sha256": "a7daeef377915c9b34a5877dc40f7071aee0aa02ee0517bec0f68295a0dd32a3"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_noniid_FR4_fr40_seed73/global_metrics.csv",
+      "sha256": "e6acd3b67b33d94adfc93ee81d9c748854efca4174ecb148330a8b6a0c0cea5c"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_noniid_FR2_fr40_seed73/global_metrics.csv",
+      "sha256": "dd7495009e47db2f8b5992b9212bbf0a19d0a7b6c43edf01a85124bd246e7a58"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_noniid_FR1_fr40_seed73/global_metrics.csv",
+      "sha256": "44d10d197bf14e4f7f291b353da00e0c0813aecacb96781c06383ed9b69412ca"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_noniid_FR3_fr30_seed73/global_metrics.csv",
+      "sha256": "b95b732935bad4b96086ae18e16a73dc44b22713de96593e3879ec212f6bf0a2"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_noniid_FR4_fr30_seed73/global_metrics.csv",
+      "sha256": "f816b7593b09a477a653d947edb3c825b6c6c1409dcba5e42fa9f262d3f24f8c"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_noniid_FR2_fr30_seed73/global_metrics.csv",
+      "sha256": "9540dda103130cb881659d8336c8734ed0728707790f99ab4247fa066a7d555f"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_noniid_FR1_fr30_seed73/global_metrics.csv",
+      "sha256": "e846a64114715c70f67909e4d41f89e68d9d21e65ec861d59d99d89329a20393"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_iid_FR4_fr40_seed73/global_metrics.csv",
+      "sha256": "a569e973b3dd1c05692b907bcfa5fbd118d9d971045e976247587f9abeb8dbf6"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_iid_FR3_fr40_seed73/global_metrics.csv",
+      "sha256": "bfca7b0ccc869724eb34f6181f9f61dfb14999b9d9f043a7fd2c2ee2c03848bd"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_iid_FR2_fr40_seed73/global_metrics.csv",
+      "sha256": "0d2b94f697310ad5a88e1fc1f14f7083174fc2b005f51241f8c7aba98f06c0b8"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_iid_FR1_fr40_seed73/global_metrics.csv",
+      "sha256": "04e5da040da1d9662501c88b7dd166bba20650f6edfee0990d96e29ec6cd6aa5"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_iid_FR4_fr30_seed73/global_metrics.csv",
+      "sha256": "606edb57b0852d53b05eec7d35c0f2410e985055c0f6e9e45c632588159eafca"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_iid_FR3_fr30_seed73/global_metrics.csv",
+      "sha256": "bb51b68b215f6037046838ecc6b89d695276018f586b1756e488bc068b07756d"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_iid_FR2_fr30_seed73/global_metrics.csv",
+      "sha256": "cb1d5229d2dd09752d590219dcc600af60673f2fd9936c49e79af7d4fad71d69"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_iid_FR1_fr30_seed73/global_metrics.csv",
+      "sha256": "de2f7a05fcbd9da91416592c5f8157b734ef861db912cbd8ede87b0d30bc3d63"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr30/v15_4_cifar10_noniid_FR3_seed42/global_metrics.csv",
+      "sha256": "b8a365e947477bd20c6b2860bba1d137a69a4350e24985a04c7f539a593bb728"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr30/v15_4_cifar10_noniid_FR4_seed42/global_metrics.csv",
+      "sha256": "8f53f95378de33bc0e7254a2942b31dd17934dc59b37093dc7b4733ceffc80b1"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr30/v15_4_cifar10_noniid_FR2_seed42/global_metrics.csv",
+      "sha256": "f6e17270e1736aa82a2b24d7444fe3616047755b254b980be46a312b04793652"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr30/v15_4_cifar10_noniid_FR1_seed42/global_metrics.csv",
+      "sha256": "90a67d403d9e81c8f6f465588e84d99e2b673446010b0be7f5b2206c1c5c279e"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr30/v15_4_cifar10_iid_FR4_seed42/global_metrics.csv",
+      "sha256": "0b63fd2b6ada1ecef63021230e893c805336a878daa48ce6eeaf1442bd453cff"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr30/v15_4_cifar10_iid_FR3_seed42/global_metrics.csv",
+      "sha256": "9e5b52b48dd4f4c65c9ddb5aef23822e12148f9ee011cca5164e6de5c498ee4a"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr30/v15_4_cifar10_iid_FR2_seed42/global_metrics.csv",
+      "sha256": "e948e2a5cd36edb3b2adc13ac36e0df37a031ac01cd01370fb3f504bb2475cbd"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr30/v15_4_cifar10_iid_FR1_seed42/global_metrics.csv",
+      "sha256": "58293b264252cf875dc4cba4b0b3895040e240b8e6d6b6d2fa7c136306f69d6c"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_noniid_FR3_seed42/global_metrics.csv",
+      "sha256": "618c9c94e63f51b6c554df579b608d22c0f32c3ba5ebda225d2ee99d006f771c"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_noniid_FR4_seed42/global_metrics.csv",
+      "sha256": "adcd6c8a390431df25afb64a1d2fc6bb75ac470a2c51358324d62a088bcd2be8"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_noniid_FR2_seed42/global_metrics.csv",
+      "sha256": "5795ef392b3088bdbd9ea45f2fd76b9ef7446c04ea6ed2c597bc941f46ca19c2"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_noniid_FR1_seed42/global_metrics.csv",
+      "sha256": "16470b2c69c6335e2be590a2d69798fec2ed8f8735c55cecda0706d30eb2a7ef"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_iid_FR4_seed42/global_metrics.csv",
+      "sha256": "abd0a60f56b31332761526e4b571f6dc3192621880554a3c913d24c35489c7d1"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_iid_FR3_seed42/global_metrics.csv",
+      "sha256": "5314fadacd507bdce1081bbd22763b68a209173436ec1e017abfdf3303b65a7c"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_iid_FR2_seed42/global_metrics.csv",
+      "sha256": "54cb3f7fbcef025f4fc0466dc0cd0c3037fa819389b95da37fd72739dd64b5d1"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_iid_FR1_seed42/global_metrics.csv",
+      "sha256": "84b6491f0bfa3740de880592af9ffc22001f058e58c5381ac1d9f1aedcc3c3be"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_noniid_FR3_fr40_seed43/global_metrics.csv",
+      "sha256": "d3c7dd4d3ecd518a7a7b7f5a0b932e00989c63be8425a5ba4f13dcf969704978"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_noniid_FR4_fr40_seed43/global_metrics.csv",
+      "sha256": "50829b4dbcccd6d8f0b3c0e3fcf1f0ade3250dd9f52c555935af7e9e70646d8a"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_noniid_FR2_fr40_seed43/global_metrics.csv",
+      "sha256": "aac826c9013f6d36fb86dc511df939a7e2fcb62176cc1163ae1a3a9217696b4e"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_noniid_FR1_fr40_seed43/global_metrics.csv",
+      "sha256": "9ce684ab93fb1e3039043fdc69e56ad2bc954533b01e4a9bd5e6c4fb40843a13"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_noniid_FR3_fr30_seed43/global_metrics.csv",
+      "sha256": "97cfa7384a48be686904913b9c00f91980b4a358c6886ab25ac15942fc54d5c4"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_noniid_FR4_fr30_seed43/global_metrics.csv",
+      "sha256": "ede81a60ee43424f062353db32cdd7f5f33eedd9885f923150981ee30e17782b"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_noniid_FR2_fr30_seed43/global_metrics.csv",
+      "sha256": "bf1f3e7a4a951b17e8524baeda98cdc7b99ec174763af0042832dda5cb4c52ed"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_noniid_FR1_fr30_seed43/global_metrics.csv",
+      "sha256": "b15bef85a038a0fb7783cb8e4964087cf5ab80bd9eff6216a0b2b632ac370fde"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_iid_FR4_fr40_seed43/global_metrics.csv",
+      "sha256": "0d31f7981b04a3bf2f63d979fe45592311ac88236a0db5322771e60272fd2ae9"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_iid_FR3_fr40_seed43/global_metrics.csv",
+      "sha256": "1b771fafe43378b2415e08c258573ac93e0bc5c952f2d93d9527bad63207e98d"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_iid_FR2_fr40_seed43/global_metrics.csv",
+      "sha256": "12d863b07f44fddc645954404e98e581e95906a2a544395b77c392e2677c20b7"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_iid_FR1_fr40_seed43/global_metrics.csv",
+      "sha256": "860d15c61756efd0a6b204bb04e186d0d9116e6e804a87c59d550e2012d3039b"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_iid_FR4_fr30_seed43/global_metrics.csv",
+      "sha256": "5155fb1663bce35f289cd868026cc5f3c847279c41e4a88b8d586b158cbc7b4e"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_iid_FR3_fr30_seed43/global_metrics.csv",
+      "sha256": "61b12c82af1b5dc4b3ec60df09467bb7075bfca0a05742bb91ca07fe9ef46c12"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_iid_FR2_fr30_seed43/global_metrics.csv",
+      "sha256": "f79feed591208f5ace1dba9280b2cfeb8280fed74552779d9a325b557529f932"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_iid_FR1_fr30_seed43/global_metrics.csv",
+      "sha256": "6b3a31feaa8524ce507ec7bfb8d37b317b5c3dd71b4a7818c3fdb10e87ac29ff"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_noniid_FR3_fr40_seed73/global_metrics.csv",
+      "sha256": "014066b9f718b3884ad13c3cb8a01a0e32a2ffd5f4b14e4b7b53d69ebcd18196"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_noniid_FR4_fr40_seed73/global_metrics.csv",
+      "sha256": "723aff155b512896edaff1a5da4a50a35e42e3457ee7be0a31c87c7b7b14f56a"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_noniid_FR2_fr40_seed73/global_metrics.csv",
+      "sha256": "e64cc6bc8f140d8ecce9711a7c77805b33ab107d3dff6b30a0dc367c5605897f"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_noniid_FR1_fr40_seed73/global_metrics.csv",
+      "sha256": "9224e871dddcbacfac551ffc6a185d20612a6550bbda08698d3c5fba93265948"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_noniid_FR3_fr30_seed73/global_metrics.csv",
+      "sha256": "28ac2ce36a750fe168c5e6d53a14e990790dc3a6952fe5bb5a42499c4d3e4c3e"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_noniid_FR4_fr30_seed73/global_metrics.csv",
+      "sha256": "5b589dff9c560c9bfe3fb47184d04ba4d80e79b95df10a0c46eba377631d07ee"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_noniid_FR2_fr30_seed73/global_metrics.csv",
+      "sha256": "c7f03b5ae8fefc2f0a93e5614ab55625080633864dade209585719ff98f621da"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_noniid_FR1_fr30_seed73/global_metrics.csv",
+      "sha256": "0cebf5eb70198d1ecbee8adb6bcf90a173f0bd768e912fdce74e375a63824f6d"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_iid_FR4_fr40_seed73/global_metrics.csv",
+      "sha256": "8ad1de890ac513662f739e5fee230b3bd489a92079ce8ea612c41b6ca2c0effb"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_iid_FR3_fr40_seed73/global_metrics.csv",
+      "sha256": "d6d2c415c45e2cf185319bb98a5c1ae29b665051ea67ebaa4916cce0c4616a21"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_iid_FR2_fr40_seed73/global_metrics.csv",
+      "sha256": "cbd648d37cb193bb39df5cec59966a5222ce46cd270d373aa5a02cc53734a823"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_iid_FR1_fr40_seed73/global_metrics.csv",
+      "sha256": "2d2823f8dc51c8567ac382e1d04d6477c02624346dcc972b6172aa20baa0922b"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_iid_FR4_fr30_seed73/global_metrics.csv",
+      "sha256": "ff96246351622772b6869bf0b4523172ed249fb0f67cf9b689206acb2622a3cf"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_iid_FR3_fr30_seed73/global_metrics.csv",
+      "sha256": "3815accfed1bad769d6722fa766214da292e46f7aac573b376f7211b4c93b7f8"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_iid_FR2_fr30_seed73/global_metrics.csv",
+      "sha256": "8ee2a702e9abac74271baadd2d68ee0013061499b41dd046aa3aa4cae4fc7480"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_iid_FR1_fr30_seed73/global_metrics.csv",
+      "sha256": "a726097d5d3dfddb7662f94c70860d89748b6d1b6495a4a368d3cfa39c55aa27"
+    }
+  ],
+  "display_rounds": "20-100",
+  "baseline_coverage": [
+    {
+      "dataset": "cifar10",
+      "split": "iid",
+      "share": "30",
+      "attack": "FR1",
+      "replications": 2
+    },
+    {
+      "dataset": "cifar10",
+      "split": "iid",
+      "share": "30",
+      "attack": "FR2",
+      "replications": 3
+    },
+    {
+      "dataset": "cifar10",
+      "split": "iid",
+      "share": "30",
+      "attack": "FR3",
+      "replications": 3
+    },
+    {
+      "dataset": "cifar10",
+      "split": "iid",
+      "share": "30",
+      "attack": "FR4",
+      "replications": 3
+    },
+    {
+      "dataset": "cifar10",
+      "split": "iid",
+      "share": "40",
+      "attack": "FR1",
+      "replications": 3
+    },
+    {
+      "dataset": "cifar10",
+      "split": "iid",
+      "share": "40",
+      "attack": "FR2",
+      "replications": 3
+    },
+    {
+      "dataset": "cifar10",
+      "split": "iid",
+      "share": "40",
+      "attack": "FR3",
+      "replications": 3
+    },
+    {
+      "dataset": "cifar10",
+      "split": "iid",
+      "share": "40",
+      "attack": "FR4",
+      "replications": 3
+    },
+    {
+      "dataset": "cifar10",
+      "split": "noniid",
+      "share": "30",
+      "attack": "FR1",
+      "replications": 3
+    },
+    {
+      "dataset": "cifar10",
+      "split": "noniid",
+      "share": "30",
+      "attack": "FR2",
+      "replications": 3
+    },
+    {
+      "dataset": "cifar10",
+      "split": "noniid",
+      "share": "30",
+      "attack": "FR3",
+      "replications": 3
+    },
+    {
+      "dataset": "cifar10",
+      "split": "noniid",
+      "share": "30",
+      "attack": "FR4",
+      "replications": 3
+    },
+    {
+      "dataset": "cifar10",
+      "split": "noniid",
+      "share": "40",
+      "attack": "FR1",
+      "replications": 3
+    },
+    {
+      "dataset": "cifar10",
+      "split": "noniid",
+      "share": "40",
+      "attack": "FR2",
+      "replications": 3
+    },
+    {
+      "dataset": "cifar10",
+      "split": "noniid",
+      "share": "40",
+      "attack": "FR3",
+      "replications": 3
+    },
+    {
+      "dataset": "cifar10",
+      "split": "noniid",
+      "share": "40",
+      "attack": "FR4",
+      "replications": 3
+    },
+    {
+      "dataset": "mnist",
+      "split": "iid",
+      "share": "30",
+      "attack": "FR1",
+      "replications": 1
+    },
+    {
+      "dataset": "mnist",
+      "split": "iid",
+      "share": "30",
+      "attack": "FR2",
+      "replications": 1
+    },
+    {
+      "dataset": "mnist",
+      "split": "iid",
+      "share": "30",
+      "attack": "FR3",
+      "replications": 1
+    },
+    {
+      "dataset": "mnist",
+      "split": "iid",
+      "share": "30",
+      "attack": "FR4",
+      "replications": 1
+    },
+    {
+      "dataset": "mnist",
+      "split": "iid",
+      "share": "40",
+      "attack": "FR1",
+      "replications": 1
+    },
+    {
+      "dataset": "mnist",
+      "split": "iid",
+      "share": "40",
+      "attack": "FR2",
+      "replications": 1
+    },
+    {
+      "dataset": "mnist",
+      "split": "iid",
+      "share": "40",
+      "attack": "FR3",
+      "replications": 1
+    },
+    {
+      "dataset": "mnist",
+      "split": "iid",
+      "share": "40",
+      "attack": "FR4",
+      "replications": 1
+    },
+    {
+      "dataset": "mnist",
+      "split": "noniid",
+      "share": "30",
+      "attack": "FR1",
+      "replications": 1
+    },
+    {
+      "dataset": "mnist",
+      "split": "noniid",
+      "share": "30",
+      "attack": "FR2",
+      "replications": 1
+    },
+    {
+      "dataset": "mnist",
+      "split": "noniid",
+      "share": "30",
+      "attack": "FR3",
+      "replications": 1
+    },
+    {
+      "dataset": "mnist",
+      "split": "noniid",
+      "share": "30",
+      "attack": "FR4",
+      "replications": 1
+    },
+    {
+      "dataset": "mnist",
+      "split": "noniid",
+      "share": "40",
+      "attack": "FR1",
+      "replications": 1
+    },
+    {
+      "dataset": "mnist",
+      "split": "noniid",
+      "share": "40",
+      "attack": "FR2",
+      "replications": 1
+    },
+    {
+      "dataset": "mnist",
+      "split": "noniid",
+      "share": "40",
+      "attack": "FR3",
+      "replications": 1
+    },
+    {
+      "dataset": "mnist",
+      "split": "noniid",
+      "share": "40",
+      "attack": "FR4",
+      "replications": 1
+    }
+  ]
+}

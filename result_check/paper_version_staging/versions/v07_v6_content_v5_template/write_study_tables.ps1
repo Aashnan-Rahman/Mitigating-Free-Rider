@@ -14,6 +14,10 @@ foreach ($dataset in $datasets) {
                 foreach ($field in @('tp','fp','fn','completion_round','final_accuracy','final_honest_candidates','honest_ever_quarantined','honest_quarantine_rounds','honest_trap_rounds','honest_nontrap_excluded','honest_excluded_pct')) {
                     $row[$field] = Mean @($runs | ForEach-Object { $_.$field })
                 }
+                foreach ($field in @('fp','honest_ever_quarantined')) {
+                    $row["${field}_min"]=($runs|Measure-Object -Property $field -Minimum).Minimum
+                    $row["${field}_max"]=($runs|Measure-Object -Property $field -Maximum).Maximum
+                }
                 $detailRows.Add([pscustomobject]$row)
             }
         }
@@ -21,15 +25,15 @@ foreach ($dataset in $datasets) {
 }
 $detailRows | Export-Csv (Join-Path $exportDir 'attack_means.csv') -NoTypeInformation -Encoding utf8
 
-$safetyRows = @($detailRows | Where-Object { $_.attack -eq 'FR3' -or $_.fp -gt 0 -or $_.honest_ever_quarantined -gt 0 })
+$safetyRows = @($detailRows)
 $safetyRows | Export-Csv (Join-Path $exportDir 'table2_means.csv') -NoTypeInformation -Encoding utf8
 $lines = [Collections.Generic.List[string]]::new()
-@('\begin{table*}[t]', '\centering\footnotesize\setlength{\tabcolsep}{4pt}',
-'\caption{Honest-client screening and exclusion.}\label{tab:safety}',
-'\begin{tabular}{lll l rrr rrr r}', '\toprule',
-'\multirow{2}{*}{Dataset} & \multirow{2}{*}{Partition} & \multirow{2}{*}{FR (\%)} & \multirow{2}{*}{Attack} & \multicolumn{3}{c}{Honest clients} & \multicolumn{3}{c}{Excluded client rounds} & \multirow{2}{*}{\shortstack{All excluded\\(\%)}} \\',
-'\cmidrule(lr){5-7}\cmidrule(lr){8-10}',
-'& & & & Candidates & Removed & Quarantined & Quarantine & Trap & Non-trap & \\', '\midrule') | ForEach-Object { $lines.Add($_) }
+@('\begin{table*}[!t]', '\centering\footnotesize\setlength{\tabcolsep}{3.5pt}',
+'\caption{Honest-client impact.}\label{tab:safety}',
+'\begin{tabular}{llllrrrrrr}', '\toprule',
+'\multirow{2}{*}{Dataset} & \multirow{2}{*}{Partition} & \multirow{2}{*}{FR (\%)} & \multirow{2}{*}{Attack} & \multicolumn{3}{c}{Mean honest clients per run} & \multicolumn{2}{c}{Excluded client-rounds} & \multirow{2}{*}{\shortstack{Responses\\withheld (\%)}} \\',
+'\cmidrule(lr){5-7}\cmidrule(lr){8-9}',
+'& & & & \shortstack{Final\\candidates} & \shortstack{Permanent\\removals [range]} & \shortstack{Ever\\quarantined [range]} & Quarantine & \shortstack{Ordinary\\responses} & \\', '\midrule') | ForEach-Object { $lines.Add($_) }
 foreach ($dataset in $datasets) {
     if ($dataset -eq 'cifar10') { $lines.Add('\midrule') }
     $datasetRows = @($safetyRows | Where-Object dataset -eq $dataset)
@@ -37,10 +41,12 @@ foreach ($dataset in $datasets) {
     $firstDatasetRow = $true
     foreach ($split in @('iid','noniid')) {
         $partitionRows = @($datasetRows | Where-Object split -eq $split)
+        if ($split -eq 'noniid' -and $partitionRows.Count -gt 0) { $lines.Add('\cmidrule(lr){2-10}') }
         $partitionLabel = if ($split -eq 'iid') { 'IID' } else { 'Non-IID' }
         $firstPartitionRow = $true
         $previousShare = -1
         foreach ($row in $partitionRows) {
+            if ($previousShare -ge 0 -and $previousShare -ne $row.share) { $lines.Add('\cmidrule(lr){3-10}') }
             $shareRows = @($partitionRows | Where-Object share -eq $row.share).Count
             $shareCell = if ($previousShare -eq $row.share) { '' } elseif ($shareRows -gt 1) { '\multirow{' + $shareRows + '}{*}{' + $row.share + '}' } else { [string]$row.share }
             $cells = @(
@@ -48,22 +54,29 @@ foreach ($dataset in $datasets) {
                 $(if ($firstPartitionRow) { '\multirow{' + $partitionRows.Count + '}{*}{' + $partitionLabel + '}' } else { '' }),
                 $shareCell, $row.attack
             )
-            foreach ($field in @('final_honest_candidates','fp','honest_ever_quarantined','honest_quarantine_rounds','honest_trap_rounds','honest_nontrap_excluded','honest_excluded_pct')) { $cells += FormatNumber $row.$field }
+            $cells += FormatNumber $row.final_honest_candidates
+            foreach ($field in @('fp','honest_ever_quarantined')) {
+                $minimum=[int]$row.("${field}_min");$maximum=[int]$row.("${field}_max")
+                $cells += $(if($minimum -eq $maximum){[string]$minimum}else{(FormatNumber $row.$field)+' ['+$minimum+'--'+$maximum+']'})
+            }
+            foreach ($field in @('honest_quarantine_rounds','honest_nontrap_excluded','honest_excluded_pct')) { $cells += FormatNumber $row.$field }
             $lines.Add(($cells -join ' & ') + ' \\')
             $firstDatasetRow = $false; $firstPartitionRow = $false
             $previousShare = $row.share
         }
     }
 }
-@('\bottomrule','\end{tabular}','\end{table*}') | ForEach-Object { $lines.Add($_) }
+@('\bottomrule','\end{tabular}',
+'\par\smallskip\parbox{0.97\textwidth}{\scriptsize Entries are per-run means; brackets give observed minimum--maximum counts. A client-round is one honest client in one round. Withheld responses include traps and quarantine without double counting, as a percentage of active honest client-rounds. Ordinary exclusions count non-trap responses.}',
+'\end{table*}') | ForEach-Object { $lines.Add($_) }
 WriteTable 'safety' $lines
 
 $costRows = [Collections.Generic.List[object]]::new()
 $lines = [Collections.Generic.List[string]]::new()
 @('\begin{table*}[t]', '\centering\footnotesize\setlength{\tabcolsep}{4pt}',
-'\caption{CPU execution time and process memory.}\label{tab:cost}',
+'\caption{Execution time and process memory.}\label{tab:cost}',
 '\begin{tabular}{llrrrr}', '\toprule',
-'Dataset & Partition & FR (\%) & s/round: mean [range] & Peak RSS GiB: mean [range] & min/run \\', '\midrule') | ForEach-Object { $lines.Add($_) }
+'Dataset & Partition & FR (\%) & \shortstack{Round time (s)\\mean [range]} & \shortstack{Peak process RSS (GiB)\\mean [range]} & \shortstack{Execution duration\\(min/run)} \\', '\midrule') | ForEach-Object { $lines.Add($_) }
 foreach ($dataset in $datasets) {
     if ($dataset -eq 'cifar10') { $lines.Add('\midrule') }
     $datasetRowIndex = 0

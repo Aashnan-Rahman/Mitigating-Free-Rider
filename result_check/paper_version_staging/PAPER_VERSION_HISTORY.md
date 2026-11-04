@@ -356,6 +356,210 @@ Instrumented MNIST timing integration, 3 November 2026:
   resolve without overfull boxes or oversized floats. Visually inspect the
   computation/elapsed tables, component plots, and timing-gap figures.
 
+Instrumented CIFAR-10 timing and wider score panels, 4 November 2026:
+
+- Keep the working paper at v7/code v15.4. Widen Figures 1 and 2 with explicit
+  plotting-area dimensions; preserve all 16 panels, points and independent ranges.
+- Import 27 byte-verified CIFAR-10 timing evidence files from study commit
+  `182ba40c3d036d7dc1cbe07975d6c0a62b1cefd2` without switching branches.
+  Share the import and validation scripts across MNIST/CIFAR-10, retaining the
+  previous MNIST entry points and its original evidence commit.
+- Replace the old CIFAR timing case in Tables V–VII and Figures 7–9 with the
+  completed instrumented 100-round pair. Include matching stages, elapsed time,
+  phase costs, full trajectories and both computation/elapsed differences.
+  Update the abstract, timing analysis, conclusion and reproducibility notes.
+- Validate completion, source/configuration provenance, all per-round sums,
+  nested fitting timers and phase coverage. All 100 BaitFL accuracies match the
+  corresponding original study execution on each dataset. Keep these cases
+  separate from replicated detection and no-defense averages.
+- Compile and visually inspect the 28-page PDF: widened score panels, combined
+  timing tables, stage bars and computation/elapsed traces. No overfull boxes,
+  oversized floats, unresolved references or citations remain.
+
+Methodology overview and free-rider illustration, 4 November 2026:
+
+- Insert the approved BaitFL overview at the start of Proposed Methodology,
+  removing its internal heading and subtitle and retaining no round numbers.
+- Draw a vector illustration of three devices training on private local data
+  and one free rider returning a perturbed response without training. Place it
+  beside the Introduction's explanation of free riding. Local data/resource
+  conditions are illustrative and are not information sent to the server.
+- Keep editable standalone TikZ sources and vector PDFs under `figures/`.
+  Build them through `build_diagrams.ps1` before the paper; preserve standalone
+  PDF/SVG/PNG previews under `analysis/`. Use LaTeX labels for automatic figure
+  numbering and cross-references.
+- Compile and visually check the 29-page PDF. The attack illustration appears
+  on page 2 and the methodology overview on page 5, with the heading removed.
+  No overflowing boxes, oversized floats or unresolved references remain.
+
+Section II language and limitations, 4 November 2026:
+
+- Rewrite the related-work discussion with varied sentence construction and
+  restrained limitations tied to each approach. Separate low utility or an
+  anomaly score from proof of missing training.
+- Check the original Lin, Fraboni, Zhu, PASS and FRIDA manuscripts. Discuss
+  auxiliary-model fitting, peer-evaluation work, canary training, auxiliary data
+  and property inference without claiming that peer auditing gives the server
+  raw datasets or that inference automatically invalidates federated learning.
+- Acknowledge FRIDA's reported adaptive cosine/loss distinction and privacy
+  protections, and retain BaitFL's individual-response visibility and withheld
+  trap-contribution costs. Record interpretation limits in `CITATION_REVIEW.md`.
+- Rebuild and visually inspect the 29-page PDF. Citations and references resolve
+  without overflowing boxes or oversized floats. No experiment data or detector
+  code changes are included.
+
+Section III tone and attack-definition layout, 4 November 2026:
+
+- Rewrite the threat model with varied sentences while preserving the trusted
+  server, complete participation, fixed population, honest-majority and
+  persistent non-adaptive attack assumptions and the server's knowledge limits.
+- Add space before FR1 and place every attack description beneath its bold
+  title. Shorten repeated explanation and align FR4's difference/response
+  equations. Keep the four definitions together at the normal body-text size.
+- Preserve all attack equations, noise parameters, floating-entry scope,
+  histories, cold-start behavior and cross-references. Visually confirm that
+  FR1–FR4 fit in the left column on page 4. Compile without unresolved
+  references, overflowing boxes or oversized floats.
+
+Section IV implementation audit and phase layout, 4 November 2026:
+
+- Check all six recorded v15.4 source hashes and called helpers. Match trap
+  generation, profiles, robust scores, screening, certificates, exact replay,
+  confirmation, grouping, review, recovery, cooldown and aggregation to code.
+  Record the mapping in `METHODOLOGY_REVIEW.md`.
+- Keep four algorithms, one per phase, with important line labels. Remove the
+  duplicate overall procedure subsection/algorithm and explain the main loop
+  in the section opening and Figure 2's feedback path. Add Phase I–IV diagram
+  labels and match Figure 1's outer border.
+- Explain the profile-score equation, lower-middle coordinatewise profile
+  median, exact-zero/fingerprint send-back check, all-active references,
+  nonconsecutive fresh statistical certificates and bounded review separately.
+- Confirm a frozen-engine edge case: cooldown-only audit findings can clear
+  the quiet clock without opening review. Reproduce the original control flow
+  with a small standard-library-only check. No matching last-audit/ordinary-tail
+  pattern was observed in the 96 completed runs. Preserve the implemented
+  algorithm and disclose the limitation in the reproducibility appendix.
+- Distribute algorithms with nearby explanatory text before Results. Preserve
+  the experimental code and records; this is a manuscript/diagram revision.
+- Compile the 30-page PDF and inspect the phase diagram and algorithm/text
+  layouts on pages 5–7. Exactly four algorithms remain. References resolve
+  without overflowing boxes or oversized floats; refresh vector/PNG previews.
+
+Section V results, data refresh and visual consolidation, 4 November 2026:
+
+- Validate all 96 primary multi-seed executions. Refresh no-defense comparisons
+  from 62 completed matched pairs, using verified published snapshots for
+  records missing in the local checkout. Keep baseline coverage provisional,
+  exclude partial executions and average matched seeds within attacks before
+  weighting attacks equally. Preserve running experiments and detector code.
+- Keep Evaluation Metrics red, cover every reported measure and timer boundary,
+  and remove textbook metric equations. Separate model test accuracy from
+  detection performance and quarantine from permanent removal.
+- Improve Tables I/II with partition dividers and integer ranges. Preserve
+  Figures 3/4. Replace the histogram with an evidence/removal timeline, cover
+  all attacks in score trends and simplify matched accuracy into eight panels.
+- Remove duplicate baseline bars and overlapping native timing tables/plots.
+  Keep one stage/percentage table and the requested average-time chart
+  (formerly Figure 10, now Figure 8). State measured checking shares and
+  whole-workflow timing limitations. Retain raw timing artifacts.
+- Check equal-weight means, unique pairs and accuracy plot/table agreement.
+  Compile and visually inspect the tables and figures with resolved references
+  and no overflowing boxes. Document the revision in `RESULTS_REVIEW.md`.
+
+Merged results discussion and closing-section revision, 4 November 2026:
+
+- Merge Results and Result Analysis into Results and Discussion. Organize the
+  red Evaluation Metrics subsection by detection, accuracy/honest participation
+  and lightweightness. Keep the overall test-accuracy range and multi-seed
+  wording, and remove procedural table narration and fractional-client phrasing.
+- Verify the three honest-removal triggers from completed decision records:
+  two repeated profile-distance cases in MNIST non-IID FR3, and a late repeated
+  norm case in FR4. Explain persistent legitimate heterogeneity and the overlap
+  caused by FR3's received-model history without claiming perfect imitation.
+- Remove the evidence timeline, mean score trends and redundant accuracy plots
+  from the manuscript. Keep score geometry and the requested average-time chart,
+  now Figure 5. Table V reports seconds saved per round alongside percentages.
+- Rewrite complexity, security, future work, conclusion and abstract. Include
+  sparse audits in the total detector-work bound, distinguish payloads from
+  process RSS, and retain the scope of the measured timing comparisons.
+- Preserve experimental code, all result records and the running queue. Compile
+  and inspect the merged section, timing table and chart, complexity, security
+  and closing sections. Record the review in `RESULTS_REVIEW.md`.
+
+Timing figures, round variability and appendix visibility, 4 November 2026:
+
+- Make Evaluation Metrics black. Use ragged-bottom layout from Results onward
+  and compact float spacing to avoid stretched paragraph gaps.
+- Redesign Figure 5 with adjacent BaitFL/STD-DAGMM bars for computation and
+  elapsed time, using teal/orange method colors. Add Figure 6 with multi-seed
+  mean complete-removal rounds and observed minimum–maximum ranges.
+- Add mean/sample SD to Table V. Calculate combined-stage and checking SDs
+  from per-round sums, preserving covariance. Keep savings and percentage
+  shares as full-horizon aggregates and export detailed table statistics.
+- Expand Table IV's pp abbreviation to percentage points. Temporarily comment
+  out the appendix source and remove all active appendix references.
+- Validate native timing records, SD calculations and completion summaries.
+  Compile and inspect metrics, table labels, both new charts and spacing.
+  Experiment code, frozen evidence and the running queue remain unchanged.
+
+Supplied reviewer-report revision, 4 November 2026:
+
+- Track feasible review fixes and remaining experiments in `REVIEW_RESPONSE.md`.
+  Retain three seeds and distinguish descriptive pooled outcomes from run-level
+  uncertainty. Refresh 63 completed matched baseline pairs.
+- Add 17 source-checked references and remove the medical framing/reference.
+  Cover robust aggregation, heterogeneous optimization, proof of learning,
+  verifiable training, Shapley valuation and update leakage. Add a qualitative
+  requirements table without claiming an empirical ranking across all methods.
+- Shorten the abstract, lead with checking shares, state three seeds, remove
+  thesis/version labels and update the roadmap. Add method intuition and a
+  notation/settings table. Explain fixed design choices and the profile gate.
+- Add accuracy SDs, include all attacks in honest-impact reporting, clarify
+  resource/exclusion units and remove duplicate round time. Explain unassigned
+  runtime separately from computation-stage measurements.
+- Generate ordinary/challenge norm boxplots from recorded first-cycle responses,
+  with per-client summaries and hashes. Label them observational, not an ablation.
+  Merge security and future work into Discussion and Limitations, state evidence
+  availability and preserve the disclosed audit-clock implementation limitation.
+- Compile with 31 resolved references and inspect tables, attack layout, diagrams
+  and boxplots. Keep appendix source commented out. Experimental code and the
+  running queue are unchanged; no unperformed tests or results are invented.
+
+Figure 5 redesign after reviewer-response follow-up, 4 November 2026:
+
+- Replace the initial ordinary/challenge boxplots with paired client scatters.
+  Match each client's eight-response ordinary mean to its two-challenge mean,
+  retain the asinh transform and use shared scales within each dataset.
+  The diagonal indicates equal response sizes. Count coincident FR1 zero
+  responses explicitly, without adding display jitter.
+- Export 800 paired client records and a standalone vector/raster preview.
+  Update the manuscript and review tracker while preserving the diagnostic's
+  observational scope and the three-seed primary evaluation.
+
+Distribution-curve alternative for Figure 5, 4 November 2026:
+
+- Replace the paired scatter with empirical cumulative response-size curves
+  to distinguish Figure 5 from the norm/profile scatter panels in Figures 3/4.
+  Color identifies client class, line style ordinary/challenge condition.
+- Normalize each class to 100% using exact empirical ranks, with no histogram
+  bins or density smoothing. Retain per-client means and shared dataset scales.
+  Export cumulative counts and refresh the standalone figure preview.
+- Explain curve heights and the descriptive scope. Condition averages do not
+  replace the detector's separate selected-response certificate checks.
+
+Aggregate accuracy alternative for Figure 5, 4 November 2026:
+
+- Replace the representative-run response diagnostic with accuracy versus
+  training round across both datasets, partitions and attacker proportions.
+  Use all three BaitFL replications, averaging within attack then equally
+  across FR1–FR4. Baseline curves use available completed records, with
+  their unequal coverage explicitly labeled.
+- Place the figure in the model-utility comparison. Keep matched accuracy-gain
+  estimates in the paired table. Display rounds 20–100 and share a vertical
+  scale across each dataset row. Retain full 100-round exported trajectories.
+- Add `build_accuracy_comparison.ps1` to reporting, validate endpoint/table
+  agreement and source hashes, and refresh the standalone figure preview.
+
 For each substantive revision:
 
 1. Continue editing the working `Paper/paper.tex`.

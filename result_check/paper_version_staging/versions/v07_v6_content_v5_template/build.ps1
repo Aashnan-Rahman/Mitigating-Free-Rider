@@ -1,6 +1,7 @@
 $ErrorActionPreference = 'Stop'
 Push-Location $PSScriptRoot
 try {
+    & (Join-Path $PSScriptRoot 'build_diagrams.ps1')
     & latexmk -pdf -interaction=nonstopmode -halt-on-error -outdir=build paper_v7.tex
     if ($LASTEXITCODE -ne 0) { throw 'V7 compilation failed.' }
     Copy-Item -LiteralPath 'build/paper_v7.pdf' -Destination 'paper_v7.pdf'

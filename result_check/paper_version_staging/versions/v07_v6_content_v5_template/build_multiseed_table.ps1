@@ -193,7 +193,7 @@ foreach ($dataset in $datasets) {
                 $fn = ($replication | Measure-Object fn -Sum).Sum
                 [pscustomobject]@{precision=$tp/($tp+$fp);recall=$tp/($tp+$fn)}
             }
-            $group = [ordered]@{dataset=$dataset;split=$split;share=$share;seed_count=$seeds.Count;precision=Mean $perSeed.precision;recall=Mean $perSeed.recall;mean_round_seconds=Mean $runs.mean_round_seconds}
+            $group = [ordered]@{dataset=$dataset;split=$split;share=$share;seed_count=$seeds.Count;precision=Mean $perSeed.precision;recall=Mean $perSeed.recall;precision_sd=SampleSd $perSeed.precision;recall_sd=SampleSd $perSeed.recall;mean_round_seconds=Mean $runs.mean_round_seconds}
             foreach ($attack in $attacks) {
                 $values = @($runs | Where-Object attack -eq $attack | ForEach-Object final_accuracy)
                 Require ($values.Count -eq 3) 'Incomplete accuracy replication'
@@ -228,17 +228,18 @@ $groups | Export-Csv -LiteralPath (Join-Path $exportDir 'table1_means.csv') -NoT
 $statistics | ConvertTo-Json -Depth 12 | Set-Content -LiteralPath (Join-Path $exportDir 'summary.json') -Encoding utf8
 @{inputs=$inputs;implementation_sha256=$referenceHashes;evidence_snapshot_hashes=$snapshotHashes;policy=($referencePolicy | ConvertFrom-Json)} | ConvertTo-Json -Depth 35 | Set-Content -LiteralPath (Join-Path $exportDir 'provenance.json') -Encoding utf8
 $lines = [Collections.Generic.List[string]]::new()
-@('\begin{table*}[t]', '\centering\footnotesize\setlength{\tabcolsep}{4pt}',
-'\caption{Free-rider detection performance and global model utility.}\label{tab:performance}',
-'\begin{tabular}{llrrrrrrrr}', '\toprule',
-'\multirow{2}{*}{Dataset} & \multirow{2}{*}{Partition} & \multirow{2}{*}{FR (\%)} & \multicolumn{2}{c}{Detection (\%)} & \multicolumn{4}{c}{Final test accuracy (\%)} & \multirow{2}{*}{\shortstack{Round time\\(s)}} \\',
+@('\begin{table*}[!t]', '\centering\footnotesize\setlength{\tabcolsep}{3.5pt}',
+'\caption{Detection performance and final model accuracy.}\label{tab:performance}',
+'\begin{tabular}{llrrrrrrr}', '\toprule',
+'\multirow{2}{*}{Dataset} & \multirow{2}{*}{Partition} & \multirow{2}{*}{FR (\%)} & \multicolumn{2}{c}{Detection (\%)} & \multicolumn{4}{c}{Final test accuracy (\%)} \\',
 '\cmidrule(lr){4-5}\cmidrule(lr){6-9}',
-'& & & Precision & Recall & FR1 & FR2 & FR3 & FR4 & \\', '\midrule') | ForEach-Object { $lines.Add($_) }
+'& & & Precision & Recall & FR1 & FR2 & FR3 & FR4 \\', '\midrule') | ForEach-Object { $lines.Add($_) }
 foreach ($dataset in $datasets) {
     if ($dataset -eq 'cifar10') { $lines.Add('\midrule') }
     $datasetLabel = if ($dataset -eq 'mnist') { 'MNIST' } else { 'CIFAR-10' }
     $datasetRow = 0
     foreach ($split in @('iid','noniid')) {
+        if ($split -eq 'noniid') { $lines.Add('\cmidrule(lr){2-9}') }
         $splitLabel = if ($split -eq 'iid') { 'IID' } else { 'Non-IID' }
         $splitRow = 0
         foreach ($share in @(30,40)) {
@@ -248,8 +249,7 @@ foreach ($dataset in $datasets) {
                 $(if ($splitRow -eq 0) { "\multirow{2}{*}{$splitLabel}" } else { '' }),
                 [string]$share, (FormatNumber (100*$group.precision)), (FormatNumber (100*$group.recall))
             )
-            foreach ($attack in $attacks) { $cells += FormatNumber (100*$group.("accuracy_$attack")) }
-            $cells += FormatNumber $group.mean_round_seconds
+            foreach ($attack in $attacks) { $cells += '$'+(FormatNumber (100*$group.("accuracy_$attack")))+' \pm '+(FormatNumber (100*$group.("accuracy_${attack}_sd")))+'$' }
             $lines.Add(($cells -join ' & ') + ' \\')
             $datasetRow++; $splitRow++
         }

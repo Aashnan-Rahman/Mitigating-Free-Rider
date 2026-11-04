@@ -32,20 +32,28 @@ H.~B. McMahan, E.~Moore, D.~Ramage, S.~Hampson, and B.~{Ag{\"u}era y Arcas},
   \url{https://proceedings.mlr.press/v54/mcmahan17a.html}
 \BIBentrySTDinterwordspacing
 
-\bibitem{rieke2020digitalhealth}
-\BIBentryALTinterwordspacing
-N.~Rieke, J.~Hancox, W.~Li \emph{et~al.}, ``The future of digital health with
-  federated learning,'' \emph{npj Digital Medicine}, vol.~3, 2020, art. no.
-  119. [Online]. Available:
-  \url{https://www.nature.com/articles/s41746-020-00323-1}
-\BIBentrySTDinterwordspacing
-
 \bibitem{kairouz2021advances}
 \BIBentryALTinterwordspacing
 P.~Kairouz, H.~B. McMahan, B.~Avent \emph{et~al.}, ``Advances and open problems
   in federated learning,'' \emph{Foundations and Trends in Machine Learning},
   vol.~14, no. 1--2, pp. 1--210, 2021. [Online]. Available:
   \url{https://arxiv.org/abs/1912.04977}
+\BIBentrySTDinterwordspacing
+
+\bibitem{zhu2019leakage}
+\BIBentryALTinterwordspacing
+L.~Zhu, Z.~Liu, and S.~Han, ``Deep leakage from gradients,'' in \emph{Advances
+  in Neural Information Processing Systems}, vol.~32, 2019. [Online].
+  Available:
+  \url{https://proceedings.neurips.cc/paper_files/paper/2019/hash/60a6c4002cc7b29142def8871531281a-Abstract.html}
+\BIBentrySTDinterwordspacing
+
+\bibitem{melis2019leakage}
+\BIBentryALTinterwordspacing
+L.~Melis, C.~Song, E.~D. Cristofaro, and V.~Shmatikov, ``Exploiting unintended
+  feature leakage in collaborative learning,'' in \emph{IEEE Symposium on
+  Security and Privacy}, 2019. [Online]. Available:
+  \url{https://arxiv.org/abs/1805.04049}
 \BIBentrySTDinterwordspacing
 
 \bibitem{bagdasaryan2020backdoor}
@@ -101,6 +109,14 @@ Z.~Zhu, J.~Shu, X.~Zou, and X.~Jia, ``Advanced free-rider attacks in federated
   \url{https://neurips2021workshopfl.github.io/NFFL-2021/papers/2021/Zhu2021.pdf}
 \BIBentrySTDinterwordspacing
 
+\bibitem{zong2018dagmm}
+\BIBentryALTinterwordspacing
+B.~Zong, Q.~Song, M.~R. Min, W.~Cheng, C.~Lumezanu, D.~Cho, and H.~Chen, ``Deep
+  autoencoding gaussian mixture model for unsupervised anomaly detection,'' in
+  \emph{International Conference on Learning Representations}, 2018. [Online].
+  Available: \url{https://openreview.net/forum?id=BJJLHbb0-}
+\BIBentrySTDinterwordspacing
+
 \bibitem{wang2024frad}
 \BIBentryALTinterwordspacing
 B.~Wang, H.~Li, X.~Liu, and Y.~Guo, ``{FRAD}: Free-rider attacks detection
@@ -117,6 +133,109 @@ K.~Bonawitz, V.~Ivanov, B.~Kreuter, A.~Marcedone, H.~B. McMahan, S.~Patel,
   SIGSAC Conference on Computer and Communications Security}, 2017, pp.
   1175--1191. [Online]. Available:
   \url{https://research.google/pubs/practical-secure-aggregation-for-privacy-preserving-machine-learning/}
+\BIBentrySTDinterwordspacing
+
+\bibitem{blanchard2017krum}
+\BIBentryALTinterwordspacing
+P.~Blanchard, E.~M.~E. Mhamdi, R.~Guerraoui, and J.~Stainer, ``Machine learning
+  with adversaries: Byzantine tolerant gradient descent,'' in \emph{Advances in
+  Neural Information Processing Systems}, vol.~30, 2017. [Online]. Available:
+  \url{https://proceedings.neurips.cc/paper/6617-machine-learning-with-adversaries-byzantine-tolerant-gradient-descent.pdf}
+\BIBentrySTDinterwordspacing
+
+\bibitem{yin2018byzantine}
+\BIBentryALTinterwordspacing
+D.~Yin, Y.~Chen, K.~Ramchandran, and P.~Bartlett, ``Byzantine-robust
+  distributed learning: Towards optimal statistical rates,'' in
+  \emph{Proceedings of the 35th International Conference on Machine Learning},
+  ser. Proceedings of Machine Learning Research, vol.~80, 2018, pp. 5650--5659.
+  [Online]. Available: \url{https://proceedings.mlr.press/v80/yin18a.html}
+\BIBentrySTDinterwordspacing
+
+\bibitem{pillutla2022rfa}
+\BIBentryALTinterwordspacing
+K.~Pillutla, S.~M. Kakade, and Z.~Harchaoui, ``Robust aggregation for federated
+  learning,'' \emph{IEEE Transactions on Signal Processing}, vol.~70, pp.
+  1142--1154, 2022. [Online]. Available: \url{https://arxiv.org/abs/1912.13445}
+\BIBentrySTDinterwordspacing
+
+\bibitem{cao2021fltrust}
+\BIBentryALTinterwordspacing
+X.~Cao, M.~Fang, J.~Liu, and N.~Z. Gong, ``{FLTrust}: Byzantine-robust
+  federated learning via trust bootstrapping,'' in \emph{Network and
+  Distributed System Security Symposium}, 2021. [Online]. Available:
+  \url{https://www.ndss-symposium.org/wp-content/uploads/ndss2021_6C-2_24434_paper.pdf}
+\BIBentrySTDinterwordspacing
+
+\bibitem{li2020fedprox}
+\BIBentryALTinterwordspacing
+T.~Li, A.~K. Sahu, M.~Zaheer, M.~Sanjabi, A.~Talwalkar, and V.~Smith,
+  ``Federated optimization in heterogeneous networks,'' in \emph{Proceedings of
+  Machine Learning and Systems}, vol.~2, 2020. [Online]. Available:
+  \url{https://proceedings.mlsys.org/paper_files/paper/2020/hash/1f5fe83998a09396ebe6477d9475ba0c-Abstract.html}
+\BIBentrySTDinterwordspacing
+
+\bibitem{karimireddy2020scaffold}
+\BIBentryALTinterwordspacing
+S.~P. Karimireddy, S.~Kale, M.~Mohri, S.~Reddi, S.~Stich, and A.~T. Suresh,
+  ``{SCAFFOLD}: Stochastic controlled averaging for federated learning,'' in
+  \emph{Proceedings of the 37th International Conference on Machine Learning},
+  ser. Proceedings of Machine Learning Research, vol. 119, 2020, pp.
+  5132--5143. [Online]. Available:
+  \url{https://proceedings.mlr.press/v119/karimireddy20a.html}
+\BIBentrySTDinterwordspacing
+
+\bibitem{wang2020fednova}
+\BIBentryALTinterwordspacing
+J.~Wang, Q.~Liu, H.~Liang, G.~Joshi, and H.~V. Poor, ``Tackling the objective
+  inconsistency problem in heterogeneous federated optimization,'' in
+  \emph{Advances in Neural Information Processing Systems}, vol.~33, 2020.
+  [Online]. Available:
+  \url{https://papers.neurips.cc/paper_files/paper/2020/hash/564127c03caab942e503ee6f810f54fd-Abstract.html}
+\BIBentrySTDinterwordspacing
+
+\bibitem{jia2021prooflearning}
+\BIBentryALTinterwordspacing
+H.~Jia, M.~Yaghini, C.~A. Choquette-Choo, N.~Dullerud, A.~Thudi,
+  V.~Chandrasekaran, and N.~Papernot, ``Proof-of-learning: Definitions and
+  practice,'' in \emph{IEEE Symposium on Security and Privacy}, 2021, pp.
+  1039--1056. [Online]. Available: \url{https://arxiv.org/abs/2103.05633}
+\BIBentrySTDinterwordspacing
+
+\bibitem{zhao2019veriml}
+\BIBentryALTinterwordspacing
+L.~Zhao, Q.~Wang, C.~Wang, Q.~Li, C.~Shen, X.~Lin, S.~Hu, and M.~Du,
+  ``{VeriML}: Enabling integrity assurances and fair payments for machine
+  learning as a service,'' arXiv preprint arXiv:1909.06961, 2019. [Online].
+  Available: \url{https://arxiv.org/abs/1909.06961}
+\BIBentrySTDinterwordspacing
+
+\bibitem{ghorbani2019datashapley}
+\BIBentryALTinterwordspacing
+A.~Ghorbani and J.~Zou, ``Data shapley: Equitable valuation of data for machine
+  learning,'' in \emph{Proceedings of the 36th International Conference on
+  Machine Learning}, ser. Proceedings of Machine Learning Research, vol.~97,
+  2019, pp. 2242--2251. [Online]. Available:
+  \url{https://proceedings.mlr.press/v97/ghorbani19c.html}
+\BIBentrySTDinterwordspacing
+
+\bibitem{jia2019datavaluation}
+\BIBentryALTinterwordspacing
+R.~Jia, D.~Dao, B.~Wang, F.~A. Hubis, N.~Hynes, N.~M. Gurel, B.~Li, C.~Zhang,
+  D.~Song, and C.~Spanos, ``Towards efficient data valuation based on the
+  shapley value,'' in \emph{Proceedings of the 22nd International Conference on
+  Artificial Intelligence and Statistics}, ser. Proceedings of Machine Learning
+  Research, vol.~89, 2019. [Online]. Available:
+  \url{https://proceedings.mlr.press/v89/jia19a.html}
+\BIBentrySTDinterwordspacing
+
+\bibitem{liu2022gtgshapley}
+\BIBentryALTinterwordspacing
+Z.~Liu, Y.~Chen, H.~Yu, Y.~Liu, and L.~Cui, ``{GTG-Shapley}: Efficient and
+  accurate participant contribution evaluation in federated learning,''
+  \emph{ACM Transactions on Intelligent Systems and Technology}, vol.~13,
+  no.~4, 2022, art. no. 60. [Online]. Available:
+  \url{https://arxiv.org/abs/2109.02053}
 \BIBentrySTDinterwordspacing
 
 \bibitem{otsu1979threshold}
@@ -147,6 +266,24 @@ Y.~LeCun, L.~Bottou, Y.~Bengio, and P.~Haffner, ``Gradient-based learning
 A.~Krizhevsky, ``Learning multiple layers of features from tiny images,''
   University of Toronto, Tech. Rep., 2009. [Online]. Available:
   \url{https://www.cs.toronto.edu/~kriz/cifar.html}
+\BIBentrySTDinterwordspacing
+
+\bibitem{caldas2018leaf}
+\BIBentryALTinterwordspacing
+S.~Caldas, S.~M.~K. Duddu, P.~Wu, T.~Li, J.~Kone{\v{c}}n{\'y}, H.~B. McMahan,
+  V.~Smith, and A.~Talwalkar, ``{LEAF}: A benchmark for federated settings,''
+  arXiv preprint arXiv:1812.01097, 2018. [Online]. Available:
+  \url{https://arxiv.org/abs/1812.01097}
+\BIBentrySTDinterwordspacing
+
+\bibitem{lai2022fedscale}
+\BIBentryALTinterwordspacing
+F.~Lai, Y.~Dai, S.~Singapuram, J.~Liu, X.~Zhu, H.~Madhyastha, and M.~Chowdhury,
+  ``{FedScale}: Benchmarking model and system performance of federated learning
+  at scale,'' in \emph{Proceedings of the 39th International Conference on
+  Machine Learning}, ser. Proceedings of Machine Learning Research, vol. 162,
+  2022, pp. 11\,814--11\,827. [Online]. Available:
+  \url{https://proceedings.mlr.press/v162/lai22a.html}
 \BIBentrySTDinterwordspacing
 
 \end{thebibliography}

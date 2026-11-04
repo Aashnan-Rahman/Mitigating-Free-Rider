@@ -1,4 +1,12 @@
 {
+  "implementation_sha256": {
+    "server/v15_certificate_memory.py": "bd678fc1c7fd3d279836bf37f55667916bf87cf7567fe5f329bc33b88ebd4092",
+    "server/v15_strict_norm.py": "65e51eaff541637159517bd27da9ab45c27fba6f519858b27c400ac53ab82833",
+    "server/v15_evidence.py": "ac51b13801862771031798e4fbde86b54fd0101774f11a841489384605143e92",
+    "server/diagonal_decision.py": "5b103ab09cd11b749d9478e2661953db27aae72ef41671891ae24715ff872224",
+    "train_v15_4.py": "69287b184df77f5b7106467b9478bee5815b8ea2cfb37e8e10984baaf20dc7b6",
+    "server/v15_protocol.py": "d9a712617554e309ddb6db1e12f1ea5feb20f0860c57432efb3e80803a64a4aa"
+  },
   "inputs": [
     {
       "path": "results/v15_4_mnist_seed42_fr30/v15_4_mnist_noniid_FR3_seed42/run_config.json",
@@ -3117,43 +3125,35 @@
     "spread": "empirical interquartile range",
     "weak_evidence": "screening only; no removal strike or automatic quarantine"
   },
-  "implementation_sha256": {
-    "server/v15_protocol.py": "d9a712617554e309ddb6db1e12f1ea5feb20f0860c57432efb3e80803a64a4aa",
-    "server/v15_certificate_memory.py": "bd678fc1c7fd3d279836bf37f55667916bf87cf7567fe5f329bc33b88ebd4092",
-    "server/v15_evidence.py": "ac51b13801862771031798e4fbde86b54fd0101774f11a841489384605143e92",
-    "server/diagonal_decision.py": "5b103ab09cd11b749d9478e2661953db27aae72ef41671891ae24715ff872224",
-    "train_v15_4.py": "69287b184df77f5b7106467b9478bee5815b8ea2cfb37e8e10984baaf20dc7b6",
-    "server/v15_strict_norm.py": "65e51eaff541637159517bd27da9ab45c27fba6f519858b27c400ac53ab82833"
-  },
   "evidence_snapshot_hashes": {
-    "server/v15_protocol.py": {
-      "lf_sha256": "d9a712617554e309ddb6db1e12f1ea5feb20f0860c57432efb3e80803a64a4aa",
-      "recorded_sha256": "d9a712617554e309ddb6db1e12f1ea5feb20f0860c57432efb3e80803a64a4aa",
-      "raw_sha256": "4780855aa8e24a0996e300bf0c8924acabf879eb456dbe33ce8b9015d6bcc0a7"
+    "train_v15_4.py": {
+      "recorded_sha256": "69287b184df77f5b7106467b9478bee5815b8ea2cfb37e8e10984baaf20dc7b6",
+      "lf_sha256": "69287b184df77f5b7106467b9478bee5815b8ea2cfb37e8e10984baaf20dc7b6",
+      "raw_sha256": "c4cf81b3fc0c3f340157f89fa876c02d497b0cc3b2ad68abdea84ff21d2d02df"
     },
     "server/v15_certificate_memory.py": {
-      "lf_sha256": "bd678fc1c7fd3d279836bf37f55667916bf87cf7567fe5f329bc33b88ebd4092",
       "recorded_sha256": "bd678fc1c7fd3d279836bf37f55667916bf87cf7567fe5f329bc33b88ebd4092",
+      "lf_sha256": "bd678fc1c7fd3d279836bf37f55667916bf87cf7567fe5f329bc33b88ebd4092",
       "raw_sha256": "c5d89751396d0ec5a0e1c13026cad0af355c443d3389cc9d5c361ae38ed39e6f"
     },
     "server/v15_evidence.py": {
-      "lf_sha256": "ac51b13801862771031798e4fbde86b54fd0101774f11a841489384605143e92",
       "recorded_sha256": "ac51b13801862771031798e4fbde86b54fd0101774f11a841489384605143e92",
+      "lf_sha256": "ac51b13801862771031798e4fbde86b54fd0101774f11a841489384605143e92",
       "raw_sha256": "2fd24eb5a40dfd3899bc99fae963fad355bcc10bc69630d6d92f50886693a7d3"
     },
     "server/diagonal_decision.py": {
-      "lf_sha256": "5b103ab09cd11b749d9478e2661953db27aae72ef41671891ae24715ff872224",
       "recorded_sha256": "5b103ab09cd11b749d9478e2661953db27aae72ef41671891ae24715ff872224",
+      "lf_sha256": "5b103ab09cd11b749d9478e2661953db27aae72ef41671891ae24715ff872224",
       "raw_sha256": "05bef27848a04c4a542d5d5c5a1fdc5b0ccceea00fa9920913c0f9a2fc26584e"
     },
-    "train_v15_4.py": {
-      "lf_sha256": "69287b184df77f5b7106467b9478bee5815b8ea2cfb37e8e10984baaf20dc7b6",
-      "recorded_sha256": "69287b184df77f5b7106467b9478bee5815b8ea2cfb37e8e10984baaf20dc7b6",
-      "raw_sha256": "c4cf81b3fc0c3f340157f89fa876c02d497b0cc3b2ad68abdea84ff21d2d02df"
+    "server/v15_protocol.py": {
+      "recorded_sha256": "d9a712617554e309ddb6db1e12f1ea5feb20f0860c57432efb3e80803a64a4aa",
+      "lf_sha256": "d9a712617554e309ddb6db1e12f1ea5feb20f0860c57432efb3e80803a64a4aa",
+      "raw_sha256": "4780855aa8e24a0996e300bf0c8924acabf879eb456dbe33ce8b9015d6bcc0a7"
     },
     "server/v15_strict_norm.py": {
-      "lf_sha256": "65e51eaff541637159517bd27da9ab45c27fba6f519858b27c400ac53ab82833",
       "recorded_sha256": "65e51eaff541637159517bd27da9ab45c27fba6f519858b27c400ac53ab82833",
+      "lf_sha256": "65e51eaff541637159517bd27da9ab45c27fba6f519858b27c400ac53ab82833",
       "raw_sha256": "4512eee8565f8b3c70942dafc963f59f7bdcc4245ff6e71c669dbd27f643d202"
     }
   }

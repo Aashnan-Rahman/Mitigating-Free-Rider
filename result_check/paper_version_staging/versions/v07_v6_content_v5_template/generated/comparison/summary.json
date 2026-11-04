@@ -1,9 +1,10 @@
 {
-  "matched_cases": 35,
-  "primary_cases": 32,
-  "primary_accuracy_wins": 24,
-  "primary_accuracy_ties": 1,
-  "primary_accuracy_losses": 7,
+  "matched_cases": 63,
+  "conditions": 32,
+  "provisional": true,
+  "accuracy_wins": 24,
+  "accuracy_ties": 1,
+  "accuracy_losses": 7,
   "dataset_summary": [
     {
       "dataset": "mnist",
@@ -11,19 +12,19 @@
       "min_accuracy_change_pp": -0.06999999999999229,
       "max_accuracy_change_pp": 0.48999999999999044,
       "baseline_late_sd_pp": 0.033695839603647915,
-      "bait_late_sd_pp": 0.027578462154459145,
+      "bait_late_sd_pp": 0.02757846215445915,
       "baseline_seconds": 40.571495876627274,
-      "bait_seconds": 38.81970028300002
+      "bait_seconds": 38.81970028300001
     },
     {
       "dataset": "cifar10",
-      "mean_accuracy_change_pp": 0.6418749999999981,
-      "min_accuracy_change_pp": -0.5000000000000004,
-      "max_accuracy_change_pp": 2.3399999999999976,
-      "baseline_late_sd_pp": 0.24430003592249172,
-      "bait_late_sd_pp": 0.21267650514090627,
-      "baseline_seconds": 85.38154147225103,
-      "bait_seconds": 92.12374985099994
+      "mean_accuracy_change_pp": 0.5976041666666659,
+      "min_accuracy_change_pp": -0.45000000000000223,
+      "max_accuracy_change_pp": 2.593333333333333,
+      "baseline_late_sd_pp": 0.22282987508574872,
+      "bait_late_sd_pp": 0.19836404978425154,
+      "baseline_seconds": 85.1903854727609,
+      "bait_seconds": 88.18995218050003
     }
   ]
 }

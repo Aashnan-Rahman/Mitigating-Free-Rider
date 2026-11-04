@@ -13,9 +13,10 @@
 \node[anchor=north east,font=\scriptsize,align=right,fill=white,inner sep=2pt] at (rel axis cs:0.98,0.98) {Mean computation gap: 15.34 s\\Mean elapsed gap: 21.91 s};
 \nextgroupplot[title={CIFAR-10 timing difference},xlabel={Round},extra y ticks={0},extra y tick style={grid=major}]
 \addplot[violet!75!black,thick] table[col sep=comma,x=round,y=gap] {generated/comparison/timing_cifar10.csv};
-\addplot[violet!75!black,densely dotted] coordinates {(1,42.393344) (100,42.393344)};
-\node[anchor=north east,font=\scriptsize,align=right,fill=white,inner sep=2pt] at (rel axis cs:0.98,0.98) {Mean computation gap: 42.39 s};
+\addplot[black!55,dashed] table[col sep=comma,x=round,y=wall_gap] {generated/comparison/timing_cifar10.csv};
+\addplot[violet!75!black,densely dotted] coordinates {(1,31.495184) (100,31.495184)};
+\node[anchor=north east,font=\scriptsize,align=right,fill=white,inner sep=2pt] at (rel axis cs:0.98,0.98) {Mean computation gap: 31.50 s\\Mean elapsed gap: 37.35 s};
 \end{groupplot}\end{tikzpicture}
-\par\smallskip{\scriptsize\textcolor{honestblue}{\rule{0.4cm}{0.8pt}}\ BaitFL\qquad\textcolor{riderorange}{\rule{0.4cm}{0.8pt}}\ STD-DAGMM\qquad\textcolor{black!55}{\textbf{-- --}}\ Elapsed-time gap (MNIST)}
+\par\smallskip{\scriptsize\textcolor{honestblue}{\rule{0.4cm}{0.8pt}}\ BaitFL\qquad\textcolor{riderorange}{\rule{0.4cm}{0.8pt}}\ STD-DAGMM\qquad\textcolor{black!55}{\textbf{-- --}}\ Elapsed-time gap}
 \caption{Round timing trajectories and their measured differences.}\label{fig:timing-traces}
 \end{figure*}

@@ -1,42 +1,30 @@
 \begin{figure*}[tp]\centering\begin{tikzpicture}
-\begin{groupplot}[group style={group size=2 by 2,horizontal sep=0.8cm,vertical sep=1.4cm},width=0.455\textwidth,height=5.25cm,axis line style={black!40},grid=major,grid style={black!8},tick label style={font=\scriptsize},label style={font=\scriptsize},title style={font=\small},scaled y ticks=false]
-\nextgroupplot[title={MNIST, 30\%},xmin=1,xmax=100,ymin=0,ymax=100,xtick={1,20,40,60,80,100},ylabel={Test accuracy (\%)},xlabel={Round}]
-\addplot[draw=none,name path=lower] table[col sep=comma,x=round,y=baseline_q1] {generated/comparison/accuracy_mnist_30.csv};
-\addplot[draw=none,name path=upper] table[col sep=comma,x=round,y=baseline_q3] {generated/comparison/accuracy_mnist_30.csv};
-\addplot[fill=riderorange,fill opacity=0.10,draw=none] fill between[of=lower and upper];
-\addplot[riderorange,thick,dashed] table[col sep=comma,x=round,y=baseline] {generated/comparison/accuracy_mnist_30.csv};
-\addplot[draw=none,name path=lower] table[col sep=comma,x=round,y=bait_q1] {generated/comparison/accuracy_mnist_30.csv};
-\addplot[draw=none,name path=upper] table[col sep=comma,x=round,y=bait_q3] {generated/comparison/accuracy_mnist_30.csv};
-\addplot[fill=honestblue,fill opacity=0.10,draw=none] fill between[of=lower and upper];
-\addplot[honestblue,thick] table[col sep=comma,x=round,y=bait] {generated/comparison/accuracy_mnist_30.csv};
-\nextgroupplot[title={MNIST, 40\%},xmin=1,xmax=100,ymin=0,ymax=100,xtick={1,20,40,60,80,100},xlabel={Round}]
-\addplot[draw=none,name path=lower] table[col sep=comma,x=round,y=baseline_q1] {generated/comparison/accuracy_mnist_40.csv};
-\addplot[draw=none,name path=upper] table[col sep=comma,x=round,y=baseline_q3] {generated/comparison/accuracy_mnist_40.csv};
-\addplot[fill=riderorange,fill opacity=0.10,draw=none] fill between[of=lower and upper];
-\addplot[riderorange,thick,dashed] table[col sep=comma,x=round,y=baseline] {generated/comparison/accuracy_mnist_40.csv};
-\addplot[draw=none,name path=lower] table[col sep=comma,x=round,y=bait_q1] {generated/comparison/accuracy_mnist_40.csv};
-\addplot[draw=none,name path=upper] table[col sep=comma,x=round,y=bait_q3] {generated/comparison/accuracy_mnist_40.csv};
-\addplot[fill=honestblue,fill opacity=0.10,draw=none] fill between[of=lower and upper];
-\addplot[honestblue,thick] table[col sep=comma,x=round,y=bait] {generated/comparison/accuracy_mnist_40.csv};
-\nextgroupplot[title={CIFAR-10, 30\%},xmin=1,xmax=100,ymin=0,ymax=100,xtick={1,20,40,60,80,100},ylabel={Test accuracy (\%)},xlabel={Round}]
-\addplot[draw=none,name path=lower] table[col sep=comma,x=round,y=baseline_q1] {generated/comparison/accuracy_cifar10_30.csv};
-\addplot[draw=none,name path=upper] table[col sep=comma,x=round,y=baseline_q3] {generated/comparison/accuracy_cifar10_30.csv};
-\addplot[fill=riderorange,fill opacity=0.10,draw=none] fill between[of=lower and upper];
-\addplot[riderorange,thick,dashed] table[col sep=comma,x=round,y=baseline] {generated/comparison/accuracy_cifar10_30.csv};
-\addplot[draw=none,name path=lower] table[col sep=comma,x=round,y=bait_q1] {generated/comparison/accuracy_cifar10_30.csv};
-\addplot[draw=none,name path=upper] table[col sep=comma,x=round,y=bait_q3] {generated/comparison/accuracy_cifar10_30.csv};
-\addplot[fill=honestblue,fill opacity=0.10,draw=none] fill between[of=lower and upper];
-\addplot[honestblue,thick] table[col sep=comma,x=round,y=bait] {generated/comparison/accuracy_cifar10_30.csv};
-\nextgroupplot[title={CIFAR-10, 40\%},xmin=1,xmax=100,ymin=0,ymax=100,xtick={1,20,40,60,80,100},xlabel={Round}]
-\addplot[draw=none,name path=lower] table[col sep=comma,x=round,y=baseline_q1] {generated/comparison/accuracy_cifar10_40.csv};
-\addplot[draw=none,name path=upper] table[col sep=comma,x=round,y=baseline_q3] {generated/comparison/accuracy_cifar10_40.csv};
-\addplot[fill=riderorange,fill opacity=0.10,draw=none] fill between[of=lower and upper];
-\addplot[riderorange,thick,dashed] table[col sep=comma,x=round,y=baseline] {generated/comparison/accuracy_cifar10_40.csv};
-\addplot[draw=none,name path=lower] table[col sep=comma,x=round,y=bait_q1] {generated/comparison/accuracy_cifar10_40.csv};
-\addplot[draw=none,name path=upper] table[col sep=comma,x=round,y=bait_q3] {generated/comparison/accuracy_cifar10_40.csv};
-\addplot[fill=honestblue,fill opacity=0.10,draw=none] fill between[of=lower and upper];
-\addplot[honestblue,thick] table[col sep=comma,x=round,y=bait] {generated/comparison/accuracy_cifar10_40.csv};
+\begin{groupplot}[group style={group size=4 by 2,horizontal sep=0.70cm,vertical sep=1.25cm},scale only axis,width=0.197\textwidth,height=3.65cm,grid=major,grid style={black!8},axis line style={black!40},tick label style={font=\scriptsize},label style={font=\scriptsize},title style={font=\scriptsize},scaled y ticks=false,yticklabel style={/pgf/number format/fixed,/pgf/number format/precision=2}]
+\nextgroupplot[title={MNIST, 30\% IID},xmin=1,xmax=100,ymin=0,ymax=100,xtick={1,50,100},ylabel={Test accuracy (\%)}]
+\addplot[black!65,dashed,thick,mark=square*,mark size=1.1pt,mark repeat=10] table[col sep=comma,x=round,y=baseline] {generated/comparison/accuracy_mnist_iid_30.csv};
+\addplot[violet!85!black,thick,mark=*,mark size=1.1pt,mark repeat=10] table[col sep=comma,x=round,y=bait] {generated/comparison/accuracy_mnist_iid_30.csv};
+\nextgroupplot[title={MNIST, 30\% Non-IID},xmin=1,xmax=100,ymin=0,ymax=100,xtick={1,50,100}]
+\addplot[black!65,dashed,thick,mark=square*,mark size=1.1pt,mark repeat=10] table[col sep=comma,x=round,y=baseline] {generated/comparison/accuracy_mnist_noniid_30.csv};
+\addplot[violet!85!black,thick,mark=*,mark size=1.1pt,mark repeat=10] table[col sep=comma,x=round,y=bait] {generated/comparison/accuracy_mnist_noniid_30.csv};
+\nextgroupplot[title={MNIST, 40\% IID},xmin=1,xmax=100,ymin=0,ymax=100,xtick={1,50,100}]
+\addplot[black!65,dashed,thick,mark=square*,mark size=1.1pt,mark repeat=10] table[col sep=comma,x=round,y=baseline] {generated/comparison/accuracy_mnist_iid_40.csv};
+\addplot[violet!85!black,thick,mark=*,mark size=1.1pt,mark repeat=10] table[col sep=comma,x=round,y=bait] {generated/comparison/accuracy_mnist_iid_40.csv};
+\nextgroupplot[title={MNIST, 40\% Non-IID},xmin=1,xmax=100,ymin=0,ymax=100,xtick={1,50,100}]
+\addplot[black!65,dashed,thick,mark=square*,mark size=1.1pt,mark repeat=10] table[col sep=comma,x=round,y=baseline] {generated/comparison/accuracy_mnist_noniid_40.csv};
+\addplot[violet!85!black,thick,mark=*,mark size=1.1pt,mark repeat=10] table[col sep=comma,x=round,y=bait] {generated/comparison/accuracy_mnist_noniid_40.csv};
+\nextgroupplot[title={CIFAR-10, 30\% IID},xmin=1,xmax=100,ymin=0,ymax=100,xtick={1,50,100},ylabel={Test accuracy (\%)},xlabel={Round}]
+\addplot[black!65,dashed,thick,mark=square*,mark size=1.1pt,mark repeat=10] table[col sep=comma,x=round,y=baseline] {generated/comparison/accuracy_cifar10_iid_30.csv};
+\addplot[violet!85!black,thick,mark=*,mark size=1.1pt,mark repeat=10] table[col sep=comma,x=round,y=bait] {generated/comparison/accuracy_cifar10_iid_30.csv};
+\nextgroupplot[title={CIFAR-10, 30\% Non-IID},xmin=1,xmax=100,ymin=0,ymax=100,xtick={1,50,100},xlabel={Round}]
+\addplot[black!65,dashed,thick,mark=square*,mark size=1.1pt,mark repeat=10] table[col sep=comma,x=round,y=baseline] {generated/comparison/accuracy_cifar10_noniid_30.csv};
+\addplot[violet!85!black,thick,mark=*,mark size=1.1pt,mark repeat=10] table[col sep=comma,x=round,y=bait] {generated/comparison/accuracy_cifar10_noniid_30.csv};
+\nextgroupplot[title={CIFAR-10, 40\% IID},xmin=1,xmax=100,ymin=0,ymax=100,xtick={1,50,100},xlabel={Round}]
+\addplot[black!65,dashed,thick,mark=square*,mark size=1.1pt,mark repeat=10] table[col sep=comma,x=round,y=baseline] {generated/comparison/accuracy_cifar10_iid_40.csv};
+\addplot[violet!85!black,thick,mark=*,mark size=1.1pt,mark repeat=10] table[col sep=comma,x=round,y=bait] {generated/comparison/accuracy_cifar10_iid_40.csv};
+\nextgroupplot[title={CIFAR-10, 40\% Non-IID},xmin=1,xmax=100,ymin=0,ymax=100,xtick={1,50,100},xlabel={Round}]
+\addplot[black!65,dashed,thick,mark=square*,mark size=1.1pt,mark repeat=10] table[col sep=comma,x=round,y=baseline] {generated/comparison/accuracy_cifar10_noniid_40.csv};
+\addplot[violet!85!black,thick,mark=*,mark size=1.1pt,mark repeat=10] table[col sep=comma,x=round,y=bait] {generated/comparison/accuracy_cifar10_noniid_40.csv};
 \end{groupplot}\end{tikzpicture}
-\par\smallskip{\scriptsize\textcolor{honestblue}{\rule{0.45cm}{0.8pt}}\ BaitFL\qquad\textcolor{riderorange}{\textbf{-- --}}\ No defense}
-\caption{Full-horizon accuracy with and without BaitFL.}\label{fig:accuracy-overview}
+\par\smallskip{\scriptsize\textcolor{violet!85!black}{\rule{0.4cm}{0.8pt}}\ BaitFL\qquad\textcolor{black!65}{\textbf{-- --}}\ No defense}
+\caption{Full training trajectories for the same completed matched cases used in Figure~\ref{fig:accuracy}.}\label{fig:accuracy-overview}
 \end{figure*}

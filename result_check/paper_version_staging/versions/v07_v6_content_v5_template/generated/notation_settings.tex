@@ -1,0 +1,18 @@
+\begin{table*}[t]\centering\footnotesize
+\renewcommand{\arraystretch}{1.12}
+\caption{Principal notation and fixed protocol settings.}\label{tab:notation-settings}
+\begin{tabular}{>{\raggedright\arraybackslash}p{3.1cm}>{\raggedright\arraybackslash}p{8.0cm}>{\raggedright\arraybackslash}p{4.8cm}}\toprule
+Symbol & Meaning & Study setting \\ \midrule
+$N,T$ & Initial client population and training horizon & 100 clients, 100 rounds \\
+$w_t,\tau_A,\tau_B$ & Global model and the two shared challenges & Updated globally, fixed per cycle \\
+$\Delta_i^a,r_i^a,p_i^a$ & Response change, its norm and its tensor profile & Measured from returned models \\
+$z_i^{n,a},z_i^{p,a}$ & Leave-one-out norm and profile scores & Population-derived \\
+$W,\ell_{\rm cyc},I$ & Warmup, paired-cycle length and sparse-audit interval & 10, 10 and 10 rounds \\
+$\gamma,\epsilon_\tau$ & Relative challenge strength and tensor-scale floor & $0.01$, $10^{-4}$ \\
+$B,q_{\rm boot}$ & Bootstrap replicates and nominal split-interval level & 1,000 and 99\% \\
+$q_{\rm confirm},q_{\rm clear}$ & Repeated evidence required and clean cycles to clear it & Two complete cycles each \\
+$R_{\rm review},C_{\rm audit}$ & Review budget and release cooldown & Two cycles, two sparse audits \\
+$P_{\rm ref},G$ & Extra clean-cycle probation and maximum groups & One clear cycle, ten groups \\
+$P,L$ & Floating model coordinates and floating tensors & Architecture-dependent \\
+\bottomrule\end{tabular}
+\end{table*}

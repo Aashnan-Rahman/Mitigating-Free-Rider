@@ -144,23 +144,148 @@ times remain inside fitting and are not added twice.
 
 Mean MNIST computation is 36.92 s for BaitFL and 52.26 s for STD-DAGMM.
 Elapsed round means are 40.92 and 62.83 s. The 15.34 s computation gap and
-21.91 s elapsed gap are reported separately. CIFAR-10 retains its existing
-logged round/phase comparison and STD stage measurements; absent operation
-and wall-time measurements are not fabricated. No-defense comparisons remain
+21.91 s elapsed gap are reported separately. The 4 November revision below
+adds the completed CIFAR-10 instrumented pair. No-defense comparisons remain
 in Table IV and Figures 5/6, using their original matched executions.
 
 Run `./rebuild_reporting.ps1` to validate and regenerate the study tables,
 baseline comparisons, and figures in the required order. It calls
 `build_multiseed_table.ps1`, `build_baseline_comparison.ps1`,
 `build_norm_figure.ps1`, and `build_review_figures.ps1`. The figure builder
-validates the instrumented MNIST evidence and regenerates the timing tables
+validates both instrumented datasets and regenerates the timing tables
 and macros. Run `./build.ps1` afterward to compile. The manuscript date is
-3 November 2026.
+4 November 2026.
 
-Build from any directory with:
+The 4 November revision widens the plotting areas in Figures 1 and 2 using
+`scale only axis`. All 16 panels per dataset remain, with nearly square axes
+spread across the text width. Tick labels no longer consume the requested
+plotting width. No score coordinates, axis ranges or class labels change.
+
+The CIFAR-10 pair is pinned to study commit
+`182ba40c3d036d7dc1cbe07975d6c0a62b1cefd2`, with 27 byte-verified evidence
+files under `evidence/timing_cifar10_20261103/`. Reproduce the import with
+`./import_instrumented_timing.ps1 -Dataset cifar10`; the MNIST import retains
+its original commit. Both imports read Git objects without switching branches.
+`build_instrumented_timing.ps1 -Dataset cifar10` validates the complete pair,
+source provenance, configurations, exclusive component sums, nested fitting,
+elapsed accounting and phase coverage. All 100 BaitFL accuracies also match
+the corresponding original CIFAR-10 study execution. The old MNIST-named
+scripts remain compatibility entry points to the shared scripts.
+
+Table V now places both datasets' stage means and sample standard deviations
+side by side. Tables VI/VII include measured CIFAR-10 elapsed and decision-block
+times. Figures 7–9 use both instrumented pairs for matching stage breakdowns,
+computation/elapsed bars and full 100-round traces with both timing gaps.
+CIFAR-10 averages 88.56/120.05 s of computation and 99.95/137.30 s of elapsed
+round time for BaitFL/STD-DAGMM. STD fitting averages 42.09 s/round; BaitFL's
+trap, scheduling, feature/preparation and decision timers sum to 0.791 s/round.
+These are measured workflow differences, not a controlled detector-only speedup.
+Neither simulator measures network communication. Detection-study averages and
+matched no-defense comparisons are unchanged.
+
+The diagram integration adds a free-rider illustration to the Introduction
+and the BaitFL workflow overview to Proposed Methodology. The attack figure
+shows four devices: three train on private data and one skips training and
+returns a perturbed response. Local data/resource conditions are illustrative,
+not telemetry available to the server. The workflow diagram has no internal
+title, subtitle or round numbers. All figure references renumber automatically;
+the score-geometry panels now follow these two new figures.
+
+The editable, self-contained TikZ sources and vector PDFs live in `figures/`.
+`build.ps1` runs `build_diagrams.ps1` before compiling the paper; diagram PDFs
+are regenerated when a source is newer or the PDF is missing. Matching SVG/PNG
+previews are also available under the repository's `analysis/baitfl_methodology/`
+and `analysis/free_rider_attack/` directories.
+
+The Section I refinement merges the Figure 1 reference into the preceding
+paragraph and shortens its caption. Figure 1 has a thin outer border. Checked
+processor icons show training resources on Devices 1–3; a crossed processor
+replaces Device 4's battery. The device labels and caption use sentences
+without semicolons. That refinement changed Section I only.
+
+Section II was subsequently rewritten with varied sentence structure and
+source-checked limitations. It distinguishes unusual or low-utility responses
+from proof of non-training, auxiliary fitting from universal runtime claims,
+peer auditing from server access to raw data, and canary training from property
+inference. FRIDA's reported difference between its adaptive cosine and loss
+tests is acknowledged. BaitFL's own aggregation and response-visibility costs
+remain explicit. `CITATION_REVIEW.md` records sources and separates reported
+findings from deployment considerations. The 29-page PDF compiles with resolved
+citations and references and no overflowing boxes; Section II was visually
+checked. Experimental data and policy were not changed.
+
+Section III now uses shorter, varied sentences while preserving its participation,
+server-knowledge and attacker assumptions. The attack definitions have space
+before FR1 and separate lines for each bold title and its description. A block
+at the normal body-text size keeps FR1–FR4 together in the left column on page 4.
+FR4's difference and response equations are aligned to save space without
+changing their definitions. Noise scales, cold start, histories and all equation
+references are retained. The rebuilt PDF was visually checked.
+
+Section IV was checked against the six source-hashed v15.4 files and their
+called trap, aggregation, profile, robust-statistic and fingerprint helpers.
+`METHODOLOGY_REVIEW.md` maps the text/equations to the code and records the
+review. The section now has exactly four algorithms, one per phase, with
+important line references and text explaining their roles in Figure 2. The
+duplicate overall algorithm and Overall Procedure subsection are removed;
+the opening paragraphs and feedback arrow explain the training loop instead.
+Figure 2 labels Phases I–IV and has the same outer border as Figure 1.
+Here/top/bottom algorithm placement distributes the procedures near their text.
+
+The audit clarifies exact send-back, all-active peer references, the profile
+median convention, statistical nomination versus certification, and the
+separation of retained evidence from active review/quarantine. It also confirms
+a cooldown-only audit-clock edge case in the frozen engine. No matching pattern
+was found in the 96 completed study runs inspected. Algorithm IV preserves the
+actual clock update, and Appendix C records the limitation. No experimental
+source, detector policy or stored result was changed.
+
+The Results revision of 4 November supersedes the older figure/table inventory
+above. Main tables use the complete multi-seed detection grid. The provisional
+no-defense comparison uses 63 completed matched pairs, including verified
+published records in `evidence/completed_baselines/`, with equal attack weights
+after seed averaging. Evaluation Metrics is black and covers all reported
+measures and timer boundaries without metric formulas.
+
+Results and Discussion now form one section. Metrics are organized by purpose,
+and interpretation focuses on important outcomes, including the logged causes
+of honest removals. Table I separates IID/non-IID, and Table II distinguishes
+mean removals from quarantine. Figures 3/4 are preserved. The timeline,
+class-mean score trends and accuracy plots are omitted from the manuscript.
+Table IV provides baseline comparisons. Table V combines native timing stages
+with explicit seconds saved per round and percentages. The original average-time
+chart is redesigned as Figure 5 with adjacent teal/orange method bars. Table V
+includes sample SDs calculated across the full 100-round timing horizon. A new
+Figure 6 shows mean complete-removal rounds and observed ranges across the
+multi-seed study. Appendix source is temporarily commented out, with no active
+references to it. Table IV spells out percentage-point differences, and compact
+float spacing avoids stretched gaps. Complexity includes sparse-audit costs, security
+language is revised, and the closing sections include Limitations and Future
+Work, Conclusion and an updated abstract.
+`RESULTS_REVIEW.md` records selections, averaging, coverage and validation.
+
+The supplied-review response supersedes the preceding figure/table inventory.
+`REVIEW_RESPONSE.md` records fixes and remaining experiments. The paper now
+states three seeds, cites 31 works, removes healthcare/thesis framing, adds
+method requirements and notation tables, and explains protocol defaults.
+Accuracy has across-run SDs, every attack appears in honest-impact reporting,
+and the resource table owns the round-time column. Figure 5 now shows global
+test accuracy over rounds 20–100, using all three BaitFL replications and
+available completed baseline records. The caption identifies unequal coverage.
+`build_accuracy_comparison.ps1` validates the trajectories and endpoints and
+retains means, coverage and source hashes. `build/figure5_preview.tex` can be
+compiled from this directory for a standalone vector preview. The former
+representative-run norm diagnostics remain archived but are not rendered.
+The accuracy plots precede the retained
+timing and completion-round plots. Security and future work are merged into
+Discussion and Limitations. Appendix source stays commented out.
+
+To refresh the data and plots first, run `./rebuild_reporting.ps1`. It excludes
+incomplete live runs and can incorporate newly completed baseline partners.
+From this directory, compile with:
 
 ```powershell
-& 'D:\Code\Mitigating Free Rider\result_check\paper_version_staging\versions\v07_v6_content_v5_template\build.ps1'
+./build.ps1
 ```
 
 PDFLaTeX, BibTeX and latexmk must be available. The build script compiles into

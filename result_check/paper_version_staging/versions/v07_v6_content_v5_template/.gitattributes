@@ -1,2 +1,4 @@
 # Preserve byte-verified timing evidence on Windows and Unix checkouts.
 evidence/timing_mnist_20261103/** -text
+evidence/timing_cifar10_20261103/** -text
+evidence/completed_baselines/** -text
