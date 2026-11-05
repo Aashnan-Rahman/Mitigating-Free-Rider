@@ -15,8 +15,13 @@ def read_plan(relative):
 
 
 def active_queue():
-    active = read_plan('configs/active_experiment_schedule.json')
-    return active, read_plan(active['queue'])
+    # These are historical MNIST replication tests, not assertions that the
+    # user must keep that queue selected forever. Exercise its frozen plan.
+    path = 'configs/v15_4_replication_seed73_seed43_queue.json'
+    queue = read_plan(path)
+    active = dict(auto_resume=True, workflow='v15_detection', plan=queue['plans'][0],
+        queue=path, cpu_threads=6, auto_update_paper=False)
+    return active, queue
 
 
 @pytest.mark.parametrize('seed', [73, 43])

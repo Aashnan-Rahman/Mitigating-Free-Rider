@@ -14,3 +14,22 @@
 /std_dagmm_recovery.py -text
 /comparison/std_dagmm.py -text
 /run_fedavg_baseline.py -text
+
+# Review registrations/checkpoints address these exact source and plan bytes.
+/train_review2.py -text
+/run_review2_batch.py -text
+/review2_config.py -text
+/clients/review2_attacks.py -text
+/analyze_review2_results.py -text
+/configs/review2_*.json -text whitespace=cr-at-eol
+/results/review2_*/** -text whitespace=cr-at-eol
+
+# Preserve the existing Windows source bytes recorded by active checkpoints.
+/clients/attacks.py -text whitespace=cr-at-eol
+/config.py -text whitespace=cr-at-eol
+/train.py -text whitespace=cr-at-eol
+/logging_utils.py -text whitespace=cr-at-eol
+/server/aggregation.py -text whitespace=cr-at-eol
+/data/loaders.py -text whitespace=cr-at-eol
+/data/partition.py -text whitespace=cr-at-eol
+/models/architectures.py -text whitespace=cr-at-eol

@@ -1,0 +1,149 @@
+{
+  "experiments": [
+    {
+      "config": {
+        "attack_type": "FR3",
+        "dataset": "mnist",
+        "distribution": "noniid",
+        "free_rider_pct": 0.0,
+        "seed": 42
+      },
+      "id": "paired_mnist_noniid_FR3_fr0_seed42",
+      "variant": "paired"
+    },
+    {
+      "config": {
+        "attack_type": "FR3",
+        "dataset": "cifar10",
+        "distribution": "noniid",
+        "free_rider_pct": 0.0,
+        "seed": 42
+      },
+      "id": "paired_cifar10_noniid_FR3_fr0_seed42",
+      "variant": "paired"
+    },
+    {
+      "config": {
+        "attack_type": "FR3",
+        "dataset": "mnist",
+        "distribution": "iid",
+        "free_rider_pct": 0.0,
+        "seed": 42
+      },
+      "id": "paired_mnist_iid_FR3_fr0_seed42",
+      "variant": "paired"
+    },
+    {
+      "config": {
+        "attack_type": "FR3",
+        "dataset": "cifar10",
+        "distribution": "iid",
+        "free_rider_pct": 0.0,
+        "seed": 42
+      },
+      "id": "paired_cifar10_iid_FR3_fr0_seed42",
+      "variant": "paired"
+    }
+  ],
+  "plan": {
+    "batch_name": "review2_01_honest_seed42",
+    "defaults": {
+      "checkpoint_keep_last": 2,
+      "cycle_candidate_clean_cycles": 2,
+      "cycle_reference_probation_cycles": 1,
+      "cycle_strong_cycles_for_removal": 2,
+      "cycle_suspect_clean_cycles": 2,
+      "dataset": "mnist",
+      "device": "cpu",
+      "download_data": false,
+      "free_rider_pct": 0.4,
+      "local_epochs": 3,
+      "methodology_version": "swtcp_v15_4",
+      "num_clients": 100,
+      "num_rounds": 100,
+      "num_workers": 0,
+      "save_checkpoints": true,
+      "seed": 42,
+      "surveillance_groups": 10,
+      "v15_audit_interval_rounds": 10,
+      "v15_candidate_cooldown_audits": 2,
+      "v15_candidate_review_cycles": 2,
+      "v15_cycle_rounds": 10,
+      "warmup_rounds": 10
+    },
+    "description": "Highest priority: honest-only false removals/quarantine with frozen settings. Attack selector is inactive at 0%.",
+    "experiments": [
+      {
+        "config": {
+          "attack_type": "FR3",
+          "dataset": "mnist",
+          "distribution": "noniid",
+          "free_rider_pct": 0.0,
+          "seed": 42
+        },
+        "id": "paired_mnist_noniid_FR3_fr0_seed42",
+        "variant": "paired"
+      },
+      {
+        "config": {
+          "attack_type": "FR3",
+          "dataset": "cifar10",
+          "distribution": "noniid",
+          "free_rider_pct": 0.0,
+          "seed": 42
+        },
+        "id": "paired_cifar10_noniid_FR3_fr0_seed42",
+        "variant": "paired"
+      },
+      {
+        "config": {
+          "attack_type": "FR3",
+          "dataset": "mnist",
+          "distribution": "iid",
+          "free_rider_pct": 0.0,
+          "seed": 42
+        },
+        "id": "paired_mnist_iid_FR3_fr0_seed42",
+        "variant": "paired"
+      },
+      {
+        "config": {
+          "attack_type": "FR3",
+          "dataset": "cifar10",
+          "distribution": "iid",
+          "free_rider_pct": 0.0,
+          "seed": 42
+        },
+        "id": "paired_cifar10_iid_FR3_fr0_seed42",
+        "variant": "paired"
+      }
+    ],
+    "results_root": "results",
+    "workflow": "review2"
+  },
+  "source_sha256": {
+    "analyze_review2_results.py": "c9018d2f18ff811e477185beea1b997700f808af2fae24c42818694f6aed1e66",
+    "atomic_io.py": "0d4e87dfc44c4c9c0ba06ff1566009f5635a18485741841d6236e1463cc8d809",
+    "clients/attacks.py": "a64721f25738783d71bd22349d17480c6622b665a0918852be6c2fccc17f5b13",
+    "clients/review2_attacks.py": "1985d37354b13d150043bd22e3f3634c64c958850ac06e9ff7eb1b6dd95ddc24",
+    "config.py": "a11033e73e61c8f2c3f1ad535ef6e6607b1bac27935d56f038c169adaa7cdc4b",
+    "data/loaders.py": "f7c32dd3b1f84cb6e49b667a50806703d5379ac581a42b24f447eca9bcae6982",
+    "data/partition.py": "576fd5ae1e4ce900fae45a5779360324b68317cf91c81b9a9dd9f1aa83cbb431",
+    "logging_utils.py": "dd652762b7dfb6e4cf74c2f5fde5deee557ad199c513fbb7633a6fdb24972122",
+    "models/architectures.py": "c631e20aa93a810d8612c5f740d1f54294a441a72134acad494d5b37e3608e43",
+    "review2_config.py": "938620237b0acfedebb1388787603f781ab362e35d6d24b8b339a9b9e618fbb1",
+    "run_review2_batch.py": "0bc8ffc9fbcf53c6614409cedf88f05833dacc389a9da40c0888636fad195177",
+    "server/aggregation.py": "f03eb8294d0e3f26ab46d9d8b93d9dcfbd8137b447a3e49964fb2c4cbe2eaa36",
+    "server/diagonal_decision.py": "5b103ab09cd11b749d9478e2661953db27aae72ef41671891ae24715ff872224",
+    "server/model_fingerprint.py": "3b596e2780fd405c60a5ca8c0fae33bdcd79921b5e1fdba7134a8a66b24df726",
+    "server/paired_challenges.py": "f0b632c72dc1f134da7b82ce9e3f8bcbc6cb6633ee80fff10b039fc106a76ea3",
+    "server/v15_certificate_memory.py": "bd678fc1c7fd3d279836bf37f55667916bf87cf7567fe5f329bc33b88ebd4092",
+    "server/v15_evidence.py": "ac51b13801862771031798e4fbde86b54fd0101774f11a841489384605143e92",
+    "server/v15_protocol.py": "d9a712617554e309ddb6db1e12f1ea5feb20f0860c57432efb3e80803a64a4aa",
+    "server/v15_strict_norm.py": "65e51eaff541637159517bd27da9ab45c27fba6f519858b27c400ac53ab82833",
+    "std_dagmm_recovery.py": "9a3d7575f79723ac4628d0dc01c725a72d19fb3f753fa2edcad5693abfdcd35e",
+    "train.py": "dc2172dd5ed0f7400cfb4962c61d1587bc195d24d99a06e233a3e8ea9e162d95",
+    "train_review2.py": "a7122c229f07da642e6d272656742a9317e1d1140bc98afbf0d2b4d6b478ab47"
+  },
+  "workflow": "review2"
+}

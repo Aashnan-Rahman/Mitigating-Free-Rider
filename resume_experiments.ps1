@@ -200,7 +200,7 @@ if ($Plan) {
         $planConfig = Get-Content -LiteralPath $_ -Raw | ConvertFrom-Json
         if (-not $planConfig.batch_name) { throw "Recovery requires a fixed batch_name in each plan." }
         $workflow = if ($planConfig.workflow) { [string]$planConfig.workflow } else { 'v15_detection' }
-        if ($workflow -notin @('v15_detection', 'fedavg_no_detection')) {
+        if ($workflow -notin @('v15_detection', 'fedavg_no_detection', 'review2')) {
             throw "Unsupported workflow in recovery queue: $workflow"
         }
         $planResults = if ([IO.Path]::IsPathRooted($planConfig.results_root)) {
@@ -311,6 +311,18 @@ try {
         exit 0
     }
 
+    # A priority handoff pauses the old queue only at its current-run boundary.
+    # The old launcher has released this same mutex before this cleanup runs.
+    if ($activeSchedule -and $activeSchedule.priority_handoff) {
+        $handoff = $activeSchedule.priority_handoff
+        $pausePath = Join-Path $projectRoot $handoff.marker_path
+        if (Test-Path -LiteralPath $pausePath) {
+            if ([IO.File]::ReadAllText($pausePath) -ne [string]$handoff.marker_content) {
+                throw 'Priority handoff marker was changed; preserving the user stop.'
+            }
+            Remove-Item -LiteralPath $pausePath
+        }
+    }
     foreach ($scheduled in $scheduledBatches) {
         if (Test-Path -LiteralPath (Join-Path $scheduled.Batch "STOP_REQUESTED")) {
             Write-Host "Batch stopped by user; automatic resume is blocked: $($scheduled.Label)"
@@ -319,6 +331,22 @@ try {
         }
         if (-not (Test-DetectionGate $scheduled.GateBatch $scheduled.GateRun)) {
             throw "Validation gate failed or is incomplete before: $($scheduled.Label)"
+        }
+        if ($scheduled.Workflow -eq 'review2') {
+            if (Test-Path -LiteralPath $scheduled.Batch) {
+                if (Test-BatchComplete (Get-Item -LiteralPath $scheduled.Batch)) {
+                    Write-Host "Review batch is complete: $($scheduled.Label)"
+                    continue
+                }
+            }
+            Write-Host "Starting/resuming priority review batch: $($scheduled.Label)"
+            & $python (Join-Path $projectRoot 'run_review2_batch.py') --plan $scheduled.Plan
+            if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+            if (Test-Path -LiteralPath (Join-Path $scheduled.Batch 'STOP_REQUESTED')) { exit 0 }
+            if (-not (Test-BatchComplete (Get-Item -LiteralPath $scheduled.Batch))) {
+                throw "Review batch incomplete; successors blocked: $($scheduled.Label)"
+            }
+            continue
         }
         if ($scheduled.Workflow -eq 'fedavg_no_detection') {
             if (Test-NativeBatchComplete $scheduled.Config $scheduled.Batch) {

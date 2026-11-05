@@ -1,0 +1,68 @@
+{
+  "caveat": "Never pool oracle exclusions with detections; flags and permanent removals have different endpoints.",
+  "completed": 4,
+  "mad_diagnostics": [],
+  "outcomes": [
+    {
+      "attack": "FR3",
+      "completed_rounds": 100,
+      "dataset": "mnist",
+      "distribution": "noniid",
+      "final_accuracy": 0.9904,
+      "id": "paired_mnist_noniid_FR3_fr0_seed42",
+      "interpretation": "permanent-removal outcome",
+      "missed_free_riders": 0,
+      "removed_free_riders": 0,
+      "removed_honest_clients": 0,
+      "seed": 42,
+      "share": 0.0,
+      "variant": "paired"
+    },
+    {
+      "attack": "FR3",
+      "completed_rounds": 100,
+      "dataset": "cifar10",
+      "distribution": "noniid",
+      "final_accuracy": 0.7764,
+      "id": "paired_cifar10_noniid_FR3_fr0_seed42",
+      "interpretation": "permanent-removal outcome",
+      "missed_free_riders": 0,
+      "removed_free_riders": 0,
+      "removed_honest_clients": 0,
+      "seed": 42,
+      "share": 0.0,
+      "variant": "paired"
+    },
+    {
+      "attack": "FR3",
+      "completed_rounds": 100,
+      "dataset": "mnist",
+      "distribution": "iid",
+      "final_accuracy": 0.9903,
+      "id": "paired_mnist_iid_FR3_fr0_seed42",
+      "interpretation": "permanent-removal outcome",
+      "missed_free_riders": 0,
+      "removed_free_riders": 0,
+      "removed_honest_clients": 0,
+      "seed": 42,
+      "share": 0.0,
+      "variant": "paired"
+    },
+    {
+      "attack": "FR3",
+      "completed_rounds": 100,
+      "dataset": "cifar10",
+      "distribution": "iid",
+      "final_accuracy": 0.7937,
+      "id": "paired_cifar10_iid_FR3_fr0_seed42",
+      "interpretation": "permanent-removal outcome",
+      "missed_free_riders": 0,
+      "removed_free_riders": 0,
+      "removed_honest_clients": 0,
+      "seed": 42,
+      "share": 0.0,
+      "variant": "paired"
+    }
+  ],
+  "planned": 4
+}

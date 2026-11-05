@@ -1,0 +1,208 @@
+{
+  "workflow": "review2",
+  "batch_name": "review2_03_passive_seed42",
+  "results_root": "results",
+  "description": "Controlled ordinary-model ablation: same norm/profile pipeline, selected slots and confirmation. No challenge model or trap withholding. Compare with existing seed-42 paired 40% records; clock-only differences are audited separately.",
+  "defaults": {
+    "methodology_version": "swtcp_v15_4",
+    "dataset": "mnist",
+    "num_clients": 100,
+    "num_rounds": 100,
+    "warmup_rounds": 10,
+    "surveillance_groups": 10,
+    "v15_cycle_rounds": 10,
+    "v15_audit_interval_rounds": 10,
+    "v15_candidate_review_cycles": 2,
+    "v15_candidate_cooldown_audits": 2,
+    "cycle_strong_cycles_for_removal": 2,
+    "cycle_suspect_clean_cycles": 2,
+    "cycle_candidate_clean_cycles": 2,
+    "cycle_reference_probation_cycles": 1,
+    "free_rider_pct": 0.4,
+    "device": "cpu",
+    "save_checkpoints": true,
+    "checkpoint_keep_last": 2,
+    "seed": 42,
+    "num_workers": 0,
+    "local_epochs": 3,
+    "download_data": false
+  },
+  "experiments": [
+    {
+      "id": "passive_mnist_noniid_FR3_fr40_seed42",
+      "variant": "passive",
+      "config": {
+        "dataset": "mnist",
+        "distribution": "noniid",
+        "free_rider_pct": 0.4,
+        "attack_type": "FR3",
+        "seed": 42
+      }
+    },
+    {
+      "id": "passive_mnist_noniid_FR4_fr40_seed42",
+      "variant": "passive",
+      "config": {
+        "dataset": "mnist",
+        "distribution": "noniid",
+        "free_rider_pct": 0.4,
+        "attack_type": "FR4",
+        "seed": 42
+      }
+    },
+    {
+      "id": "passive_mnist_noniid_FR2_fr40_seed42",
+      "variant": "passive",
+      "config": {
+        "dataset": "mnist",
+        "distribution": "noniid",
+        "free_rider_pct": 0.4,
+        "attack_type": "FR2",
+        "seed": 42
+      }
+    },
+    {
+      "id": "passive_mnist_noniid_FR1_fr40_seed42",
+      "variant": "passive",
+      "config": {
+        "dataset": "mnist",
+        "distribution": "noniid",
+        "free_rider_pct": 0.4,
+        "attack_type": "FR1",
+        "seed": 42
+      }
+    },
+    {
+      "id": "passive_cifar10_noniid_FR3_fr40_seed42",
+      "variant": "passive",
+      "config": {
+        "dataset": "cifar10",
+        "distribution": "noniid",
+        "free_rider_pct": 0.4,
+        "attack_type": "FR3",
+        "seed": 42
+      }
+    },
+    {
+      "id": "passive_cifar10_noniid_FR4_fr40_seed42",
+      "variant": "passive",
+      "config": {
+        "dataset": "cifar10",
+        "distribution": "noniid",
+        "free_rider_pct": 0.4,
+        "attack_type": "FR4",
+        "seed": 42
+      }
+    },
+    {
+      "id": "passive_cifar10_noniid_FR2_fr40_seed42",
+      "variant": "passive",
+      "config": {
+        "dataset": "cifar10",
+        "distribution": "noniid",
+        "free_rider_pct": 0.4,
+        "attack_type": "FR2",
+        "seed": 42
+      }
+    },
+    {
+      "id": "passive_cifar10_noniid_FR1_fr40_seed42",
+      "variant": "passive",
+      "config": {
+        "dataset": "cifar10",
+        "distribution": "noniid",
+        "free_rider_pct": 0.4,
+        "attack_type": "FR1",
+        "seed": 42
+      }
+    },
+    {
+      "id": "passive_mnist_iid_FR3_fr40_seed42",
+      "variant": "passive",
+      "config": {
+        "dataset": "mnist",
+        "distribution": "iid",
+        "free_rider_pct": 0.4,
+        "attack_type": "FR3",
+        "seed": 42
+      }
+    },
+    {
+      "id": "passive_mnist_iid_FR4_fr40_seed42",
+      "variant": "passive",
+      "config": {
+        "dataset": "mnist",
+        "distribution": "iid",
+        "free_rider_pct": 0.4,
+        "attack_type": "FR4",
+        "seed": 42
+      }
+    },
+    {
+      "id": "passive_mnist_iid_FR2_fr40_seed42",
+      "variant": "passive",
+      "config": {
+        "dataset": "mnist",
+        "distribution": "iid",
+        "free_rider_pct": 0.4,
+        "attack_type": "FR2",
+        "seed": 42
+      }
+    },
+    {
+      "id": "passive_mnist_iid_FR1_fr40_seed42",
+      "variant": "passive",
+      "config": {
+        "dataset": "mnist",
+        "distribution": "iid",
+        "free_rider_pct": 0.4,
+        "attack_type": "FR1",
+        "seed": 42
+      }
+    },
+    {
+      "id": "passive_cifar10_iid_FR3_fr40_seed42",
+      "variant": "passive",
+      "config": {
+        "dataset": "cifar10",
+        "distribution": "iid",
+        "free_rider_pct": 0.4,
+        "attack_type": "FR3",
+        "seed": 42
+      }
+    },
+    {
+      "id": "passive_cifar10_iid_FR4_fr40_seed42",
+      "variant": "passive",
+      "config": {
+        "dataset": "cifar10",
+        "distribution": "iid",
+        "free_rider_pct": 0.4,
+        "attack_type": "FR4",
+        "seed": 42
+      }
+    },
+    {
+      "id": "passive_cifar10_iid_FR2_fr40_seed42",
+      "variant": "passive",
+      "config": {
+        "dataset": "cifar10",
+        "distribution": "iid",
+        "free_rider_pct": 0.4,
+        "attack_type": "FR2",
+        "seed": 42
+      }
+    },
+    {
+      "id": "passive_cifar10_iid_FR1_fr40_seed42",
+      "variant": "passive",
+      "config": {
+        "dataset": "cifar10",
+        "distribution": "iid",
+        "free_rider_pct": 0.4,
+        "attack_type": "FR1",
+        "seed": 42
+      }
+    }
+  ]
+}

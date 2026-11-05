@@ -1,0 +1,802 @@
+{
+  "workflow": "review2",
+  "batch_name": "review2_06_heldout_multiseed_last",
+  "results_root": "results",
+  "description": "LAST: five prespecified unseen seeds, non-IID honest-only and FR3/FR4 at 5/10/20%. No retuning after earlier results; report every seed.",
+  "defaults": {
+    "methodology_version": "swtcp_v15_4",
+    "dataset": "mnist",
+    "num_clients": 100,
+    "num_rounds": 100,
+    "warmup_rounds": 10,
+    "surveillance_groups": 10,
+    "v15_cycle_rounds": 10,
+    "v15_audit_interval_rounds": 10,
+    "v15_candidate_review_cycles": 2,
+    "v15_candidate_cooldown_audits": 2,
+    "cycle_strong_cycles_for_removal": 2,
+    "cycle_suspect_clean_cycles": 2,
+    "cycle_candidate_clean_cycles": 2,
+    "cycle_reference_probation_cycles": 1,
+    "free_rider_pct": 0.4,
+    "device": "cpu",
+    "save_checkpoints": true,
+    "checkpoint_keep_last": 2,
+    "seed": 42,
+    "num_workers": 0,
+    "local_epochs": 3,
+    "download_data": false
+  },
+  "experiments": [
+    {
+      "id": "paired_mnist_noniid_FR3_fr0_seed101",
+      "variant": "paired",
+      "config": {
+        "dataset": "mnist",
+        "distribution": "noniid",
+        "free_rider_pct": 0.0,
+        "attack_type": "FR3",
+        "seed": 101
+      }
+    },
+    {
+      "id": "paired_mnist_noniid_FR3_fr5_seed101",
+      "variant": "paired",
+      "config": {
+        "dataset": "mnist",
+        "distribution": "noniid",
+        "free_rider_pct": 0.05,
+        "attack_type": "FR3",
+        "seed": 101
+      }
+    },
+    {
+      "id": "paired_mnist_noniid_FR4_fr5_seed101",
+      "variant": "paired",
+      "config": {
+        "dataset": "mnist",
+        "distribution": "noniid",
+        "free_rider_pct": 0.05,
+        "attack_type": "FR4",
+        "seed": 101
+      }
+    },
+    {
+      "id": "paired_mnist_noniid_FR3_fr10_seed101",
+      "variant": "paired",
+      "config": {
+        "dataset": "mnist",
+        "distribution": "noniid",
+        "free_rider_pct": 0.1,
+        "attack_type": "FR3",
+        "seed": 101
+      }
+    },
+    {
+      "id": "paired_mnist_noniid_FR4_fr10_seed101",
+      "variant": "paired",
+      "config": {
+        "dataset": "mnist",
+        "distribution": "noniid",
+        "free_rider_pct": 0.1,
+        "attack_type": "FR4",
+        "seed": 101
+      }
+    },
+    {
+      "id": "paired_mnist_noniid_FR3_fr20_seed101",
+      "variant": "paired",
+      "config": {
+        "dataset": "mnist",
+        "distribution": "noniid",
+        "free_rider_pct": 0.2,
+        "attack_type": "FR3",
+        "seed": 101
+      }
+    },
+    {
+      "id": "paired_mnist_noniid_FR4_fr20_seed101",
+      "variant": "paired",
+      "config": {
+        "dataset": "mnist",
+        "distribution": "noniid",
+        "free_rider_pct": 0.2,
+        "attack_type": "FR4",
+        "seed": 101
+      }
+    },
+    {
+      "id": "paired_cifar10_noniid_FR3_fr0_seed101",
+      "variant": "paired",
+      "config": {
+        "dataset": "cifar10",
+        "distribution": "noniid",
+        "free_rider_pct": 0.0,
+        "attack_type": "FR3",
+        "seed": 101
+      }
+    },
+    {
+      "id": "paired_cifar10_noniid_FR3_fr5_seed101",
+      "variant": "paired",
+      "config": {
+        "dataset": "cifar10",
+        "distribution": "noniid",
+        "free_rider_pct": 0.05,
+        "attack_type": "FR3",
+        "seed": 101
+      }
+    },
+    {
+      "id": "paired_cifar10_noniid_FR4_fr5_seed101",
+      "variant": "paired",
+      "config": {
+        "dataset": "cifar10",
+        "distribution": "noniid",
+        "free_rider_pct": 0.05,
+        "attack_type": "FR4",
+        "seed": 101
+      }
+    },
+    {
+      "id": "paired_cifar10_noniid_FR3_fr10_seed101",
+      "variant": "paired",
+      "config": {
+        "dataset": "cifar10",
+        "distribution": "noniid",
+        "free_rider_pct": 0.1,
+        "attack_type": "FR3",
+        "seed": 101
+      }
+    },
+    {
+      "id": "paired_cifar10_noniid_FR4_fr10_seed101",
+      "variant": "paired",
+      "config": {
+        "dataset": "cifar10",
+        "distribution": "noniid",
+        "free_rider_pct": 0.1,
+        "attack_type": "FR4",
+        "seed": 101
+      }
+    },
+    {
+      "id": "paired_cifar10_noniid_FR3_fr20_seed101",
+      "variant": "paired",
+      "config": {
+        "dataset": "cifar10",
+        "distribution": "noniid",
+        "free_rider_pct": 0.2,
+        "attack_type": "FR3",
+        "seed": 101
+      }
+    },
+    {
+      "id": "paired_cifar10_noniid_FR4_fr20_seed101",
+      "variant": "paired",
+      "config": {
+        "dataset": "cifar10",
+        "distribution": "noniid",
+        "free_rider_pct": 0.2,
+        "attack_type": "FR4",
+        "seed": 101
+      }
+    },
+    {
+      "id": "paired_mnist_noniid_FR3_fr0_seed103",
+      "variant": "paired",
+      "config": {
+        "dataset": "mnist",
+        "distribution": "noniid",
+        "free_rider_pct": 0.0,
+        "attack_type": "FR3",
+        "seed": 103
+      }
+    },
+    {
+      "id": "paired_mnist_noniid_FR3_fr5_seed103",
+      "variant": "paired",
+      "config": {
+        "dataset": "mnist",
+        "distribution": "noniid",
+        "free_rider_pct": 0.05,
+        "attack_type": "FR3",
+        "seed": 103
+      }
+    },
+    {
+      "id": "paired_mnist_noniid_FR4_fr5_seed103",
+      "variant": "paired",
+      "config": {
+        "dataset": "mnist",
+        "distribution": "noniid",
+        "free_rider_pct": 0.05,
+        "attack_type": "FR4",
+        "seed": 103
+      }
+    },
+    {
+      "id": "paired_mnist_noniid_FR3_fr10_seed103",
+      "variant": "paired",
+      "config": {
+        "dataset": "mnist",
+        "distribution": "noniid",
+        "free_rider_pct": 0.1,
+        "attack_type": "FR3",
+        "seed": 103
+      }
+    },
+    {
+      "id": "paired_mnist_noniid_FR4_fr10_seed103",
+      "variant": "paired",
+      "config": {
+        "dataset": "mnist",
+        "distribution": "noniid",
+        "free_rider_pct": 0.1,
+        "attack_type": "FR4",
+        "seed": 103
+      }
+    },
+    {
+      "id": "paired_mnist_noniid_FR3_fr20_seed103",
+      "variant": "paired",
+      "config": {
+        "dataset": "mnist",
+        "distribution": "noniid",
+        "free_rider_pct": 0.2,
+        "attack_type": "FR3",
+        "seed": 103
+      }
+    },
+    {
+      "id": "paired_mnist_noniid_FR4_fr20_seed103",
+      "variant": "paired",
+      "config": {
+        "dataset": "mnist",
+        "distribution": "noniid",
+        "free_rider_pct": 0.2,
+        "attack_type": "FR4",
+        "seed": 103
+      }
+    },
+    {
+      "id": "paired_cifar10_noniid_FR3_fr0_seed103",
+      "variant": "paired",
+      "config": {
+        "dataset": "cifar10",
+        "distribution": "noniid",
+        "free_rider_pct": 0.0,
+        "attack_type": "FR3",
+        "seed": 103
+      }
+    },
+    {
+      "id": "paired_cifar10_noniid_FR3_fr5_seed103",
+      "variant": "paired",
+      "config": {
+        "dataset": "cifar10",
+        "distribution": "noniid",
+        "free_rider_pct": 0.05,
+        "attack_type": "FR3",
+        "seed": 103
+      }
+    },
+    {
+      "id": "paired_cifar10_noniid_FR4_fr5_seed103",
+      "variant": "paired",
+      "config": {
+        "dataset": "cifar10",
+        "distribution": "noniid",
+        "free_rider_pct": 0.05,
+        "attack_type": "FR4",
+        "seed": 103
+      }
+    },
+    {
+      "id": "paired_cifar10_noniid_FR3_fr10_seed103",
+      "variant": "paired",
+      "config": {
+        "dataset": "cifar10",
+        "distribution": "noniid",
+        "free_rider_pct": 0.1,
+        "attack_type": "FR3",
+        "seed": 103
+      }
+    },
+    {
+      "id": "paired_cifar10_noniid_FR4_fr10_seed103",
+      "variant": "paired",
+      "config": {
+        "dataset": "cifar10",
+        "distribution": "noniid",
+        "free_rider_pct": 0.1,
+        "attack_type": "FR4",
+        "seed": 103
+      }
+    },
+    {
+      "id": "paired_cifar10_noniid_FR3_fr20_seed103",
+      "variant": "paired",
+      "config": {
+        "dataset": "cifar10",
+        "distribution": "noniid",
+        "free_rider_pct": 0.2,
+        "attack_type": "FR3",
+        "seed": 103
+      }
+    },
+    {
+      "id": "paired_cifar10_noniid_FR4_fr20_seed103",
+      "variant": "paired",
+      "config": {
+        "dataset": "cifar10",
+        "distribution": "noniid",
+        "free_rider_pct": 0.2,
+        "attack_type": "FR4",
+        "seed": 103
+      }
+    },
+    {
+      "id": "paired_mnist_noniid_FR3_fr0_seed107",
+      "variant": "paired",
+      "config": {
+        "dataset": "mnist",
+        "distribution": "noniid",
+        "free_rider_pct": 0.0,
+        "attack_type": "FR3",
+        "seed": 107
+      }
+    },
+    {
+      "id": "paired_mnist_noniid_FR3_fr5_seed107",
+      "variant": "paired",
+      "config": {
+        "dataset": "mnist",
+        "distribution": "noniid",
+        "free_rider_pct": 0.05,
+        "attack_type": "FR3",
+        "seed": 107
+      }
+    },
+    {
+      "id": "paired_mnist_noniid_FR4_fr5_seed107",
+      "variant": "paired",
+      "config": {
+        "dataset": "mnist",
+        "distribution": "noniid",
+        "free_rider_pct": 0.05,
+        "attack_type": "FR4",
+        "seed": 107
+      }
+    },
+    {
+      "id": "paired_mnist_noniid_FR3_fr10_seed107",
+      "variant": "paired",
+      "config": {
+        "dataset": "mnist",
+        "distribution": "noniid",
+        "free_rider_pct": 0.1,
+        "attack_type": "FR3",
+        "seed": 107
+      }
+    },
+    {
+      "id": "paired_mnist_noniid_FR4_fr10_seed107",
+      "variant": "paired",
+      "config": {
+        "dataset": "mnist",
+        "distribution": "noniid",
+        "free_rider_pct": 0.1,
+        "attack_type": "FR4",
+        "seed": 107
+      }
+    },
+    {
+      "id": "paired_mnist_noniid_FR3_fr20_seed107",
+      "variant": "paired",
+      "config": {
+        "dataset": "mnist",
+        "distribution": "noniid",
+        "free_rider_pct": 0.2,
+        "attack_type": "FR3",
+        "seed": 107
+      }
+    },
+    {
+      "id": "paired_mnist_noniid_FR4_fr20_seed107",
+      "variant": "paired",
+      "config": {
+        "dataset": "mnist",
+        "distribution": "noniid",
+        "free_rider_pct": 0.2,
+        "attack_type": "FR4",
+        "seed": 107
+      }
+    },
+    {
+      "id": "paired_cifar10_noniid_FR3_fr0_seed107",
+      "variant": "paired",
+      "config": {
+        "dataset": "cifar10",
+        "distribution": "noniid",
+        "free_rider_pct": 0.0,
+        "attack_type": "FR3",
+        "seed": 107
+      }
+    },
+    {
+      "id": "paired_cifar10_noniid_FR3_fr5_seed107",
+      "variant": "paired",
+      "config": {
+        "dataset": "cifar10",
+        "distribution": "noniid",
+        "free_rider_pct": 0.05,
+        "attack_type": "FR3",
+        "seed": 107
+      }
+    },
+    {
+      "id": "paired_cifar10_noniid_FR4_fr5_seed107",
+      "variant": "paired",
+      "config": {
+        "dataset": "cifar10",
+        "distribution": "noniid",
+        "free_rider_pct": 0.05,
+        "attack_type": "FR4",
+        "seed": 107
+      }
+    },
+    {
+      "id": "paired_cifar10_noniid_FR3_fr10_seed107",
+      "variant": "paired",
+      "config": {
+        "dataset": "cifar10",
+        "distribution": "noniid",
+        "free_rider_pct": 0.1,
+        "attack_type": "FR3",
+        "seed": 107
+      }
+    },
+    {
+      "id": "paired_cifar10_noniid_FR4_fr10_seed107",
+      "variant": "paired",
+      "config": {
+        "dataset": "cifar10",
+        "distribution": "noniid",
+        "free_rider_pct": 0.1,
+        "attack_type": "FR4",
+        "seed": 107
+      }
+    },
+    {
+      "id": "paired_cifar10_noniid_FR3_fr20_seed107",
+      "variant": "paired",
+      "config": {
+        "dataset": "cifar10",
+        "distribution": "noniid",
+        "free_rider_pct": 0.2,
+        "attack_type": "FR3",
+        "seed": 107
+      }
+    },
+    {
+      "id": "paired_cifar10_noniid_FR4_fr20_seed107",
+      "variant": "paired",
+      "config": {
+        "dataset": "cifar10",
+        "distribution": "noniid",
+        "free_rider_pct": 0.2,
+        "attack_type": "FR4",
+        "seed": 107
+      }
+    },
+    {
+      "id": "paired_mnist_noniid_FR3_fr0_seed109",
+      "variant": "paired",
+      "config": {
+        "dataset": "mnist",
+        "distribution": "noniid",
+        "free_rider_pct": 0.0,
+        "attack_type": "FR3",
+        "seed": 109
+      }
+    },
+    {
+      "id": "paired_mnist_noniid_FR3_fr5_seed109",
+      "variant": "paired",
+      "config": {
+        "dataset": "mnist",
+        "distribution": "noniid",
+        "free_rider_pct": 0.05,
+        "attack_type": "FR3",
+        "seed": 109
+      }
+    },
+    {
+      "id": "paired_mnist_noniid_FR4_fr5_seed109",
+      "variant": "paired",
+      "config": {
+        "dataset": "mnist",
+        "distribution": "noniid",
+        "free_rider_pct": 0.05,
+        "attack_type": "FR4",
+        "seed": 109
+      }
+    },
+    {
+      "id": "paired_mnist_noniid_FR3_fr10_seed109",
+      "variant": "paired",
+      "config": {
+        "dataset": "mnist",
+        "distribution": "noniid",
+        "free_rider_pct": 0.1,
+        "attack_type": "FR3",
+        "seed": 109
+      }
+    },
+    {
+      "id": "paired_mnist_noniid_FR4_fr10_seed109",
+      "variant": "paired",
+      "config": {
+        "dataset": "mnist",
+        "distribution": "noniid",
+        "free_rider_pct": 0.1,
+        "attack_type": "FR4",
+        "seed": 109
+      }
+    },
+    {
+      "id": "paired_mnist_noniid_FR3_fr20_seed109",
+      "variant": "paired",
+      "config": {
+        "dataset": "mnist",
+        "distribution": "noniid",
+        "free_rider_pct": 0.2,
+        "attack_type": "FR3",
+        "seed": 109
+      }
+    },
+    {
+      "id": "paired_mnist_noniid_FR4_fr20_seed109",
+      "variant": "paired",
+      "config": {
+        "dataset": "mnist",
+        "distribution": "noniid",
+        "free_rider_pct": 0.2,
+        "attack_type": "FR4",
+        "seed": 109
+      }
+    },
+    {
+      "id": "paired_cifar10_noniid_FR3_fr0_seed109",
+      "variant": "paired",
+      "config": {
+        "dataset": "cifar10",
+        "distribution": "noniid",
+        "free_rider_pct": 0.0,
+        "attack_type": "FR3",
+        "seed": 109
+      }
+    },
+    {
+      "id": "paired_cifar10_noniid_FR3_fr5_seed109",
+      "variant": "paired",
+      "config": {
+        "dataset": "cifar10",
+        "distribution": "noniid",
+        "free_rider_pct": 0.05,
+        "attack_type": "FR3",
+        "seed": 109
+      }
+    },
+    {
+      "id": "paired_cifar10_noniid_FR4_fr5_seed109",
+      "variant": "paired",
+      "config": {
+        "dataset": "cifar10",
+        "distribution": "noniid",
+        "free_rider_pct": 0.05,
+        "attack_type": "FR4",
+        "seed": 109
+      }
+    },
+    {
+      "id": "paired_cifar10_noniid_FR3_fr10_seed109",
+      "variant": "paired",
+      "config": {
+        "dataset": "cifar10",
+        "distribution": "noniid",
+        "free_rider_pct": 0.1,
+        "attack_type": "FR3",
+        "seed": 109
+      }
+    },
+    {
+      "id": "paired_cifar10_noniid_FR4_fr10_seed109",
+      "variant": "paired",
+      "config": {
+        "dataset": "cifar10",
+        "distribution": "noniid",
+        "free_rider_pct": 0.1,
+        "attack_type": "FR4",
+        "seed": 109
+      }
+    },
+    {
+      "id": "paired_cifar10_noniid_FR3_fr20_seed109",
+      "variant": "paired",
+      "config": {
+        "dataset": "cifar10",
+        "distribution": "noniid",
+        "free_rider_pct": 0.2,
+        "attack_type": "FR3",
+        "seed": 109
+      }
+    },
+    {
+      "id": "paired_cifar10_noniid_FR4_fr20_seed109",
+      "variant": "paired",
+      "config": {
+        "dataset": "cifar10",
+        "distribution": "noniid",
+        "free_rider_pct": 0.2,
+        "attack_type": "FR4",
+        "seed": 109
+      }
+    },
+    {
+      "id": "paired_mnist_noniid_FR3_fr0_seed113",
+      "variant": "paired",
+      "config": {
+        "dataset": "mnist",
+        "distribution": "noniid",
+        "free_rider_pct": 0.0,
+        "attack_type": "FR3",
+        "seed": 113
+      }
+    },
+    {
+      "id": "paired_mnist_noniid_FR3_fr5_seed113",
+      "variant": "paired",
+      "config": {
+        "dataset": "mnist",
+        "distribution": "noniid",
+        "free_rider_pct": 0.05,
+        "attack_type": "FR3",
+        "seed": 113
+      }
+    },
+    {
+      "id": "paired_mnist_noniid_FR4_fr5_seed113",
+      "variant": "paired",
+      "config": {
+        "dataset": "mnist",
+        "distribution": "noniid",
+        "free_rider_pct": 0.05,
+        "attack_type": "FR4",
+        "seed": 113
+      }
+    },
+    {
+      "id": "paired_mnist_noniid_FR3_fr10_seed113",
+      "variant": "paired",
+      "config": {
+        "dataset": "mnist",
+        "distribution": "noniid",
+        "free_rider_pct": 0.1,
+        "attack_type": "FR3",
+        "seed": 113
+      }
+    },
+    {
+      "id": "paired_mnist_noniid_FR4_fr10_seed113",
+      "variant": "paired",
+      "config": {
+        "dataset": "mnist",
+        "distribution": "noniid",
+        "free_rider_pct": 0.1,
+        "attack_type": "FR4",
+        "seed": 113
+      }
+    },
+    {
+      "id": "paired_mnist_noniid_FR3_fr20_seed113",
+      "variant": "paired",
+      "config": {
+        "dataset": "mnist",
+        "distribution": "noniid",
+        "free_rider_pct": 0.2,
+        "attack_type": "FR3",
+        "seed": 113
+      }
+    },
+    {
+      "id": "paired_mnist_noniid_FR4_fr20_seed113",
+      "variant": "paired",
+      "config": {
+        "dataset": "mnist",
+        "distribution": "noniid",
+        "free_rider_pct": 0.2,
+        "attack_type": "FR4",
+        "seed": 113
+      }
+    },
+    {
+      "id": "paired_cifar10_noniid_FR3_fr0_seed113",
+      "variant": "paired",
+      "config": {
+        "dataset": "cifar10",
+        "distribution": "noniid",
+        "free_rider_pct": 0.0,
+        "attack_type": "FR3",
+        "seed": 113
+      }
+    },
+    {
+      "id": "paired_cifar10_noniid_FR3_fr5_seed113",
+      "variant": "paired",
+      "config": {
+        "dataset": "cifar10",
+        "distribution": "noniid",
+        "free_rider_pct": 0.05,
+        "attack_type": "FR3",
+        "seed": 113
+      }
+    },
+    {
+      "id": "paired_cifar10_noniid_FR4_fr5_seed113",
+      "variant": "paired",
+      "config": {
+        "dataset": "cifar10",
+        "distribution": "noniid",
+        "free_rider_pct": 0.05,
+        "attack_type": "FR4",
+        "seed": 113
+      }
+    },
+    {
+      "id": "paired_cifar10_noniid_FR3_fr10_seed113",
+      "variant": "paired",
+      "config": {
+        "dataset": "cifar10",
+        "distribution": "noniid",
+        "free_rider_pct": 0.1,
+        "attack_type": "FR3",
+        "seed": 113
+      }
+    },
+    {
+      "id": "paired_cifar10_noniid_FR4_fr10_seed113",
+      "variant": "paired",
+      "config": {
+        "dataset": "cifar10",
+        "distribution": "noniid",
+        "free_rider_pct": 0.1,
+        "attack_type": "FR4",
+        "seed": 113
+      }
+    },
+    {
+      "id": "paired_cifar10_noniid_FR3_fr20_seed113",
+      "variant": "paired",
+      "config": {
+        "dataset": "cifar10",
+        "distribution": "noniid",
+        "free_rider_pct": 0.2,
+        "attack_type": "FR3",
+        "seed": 113
+      }
+    },
+    {
+      "id": "paired_cifar10_noniid_FR4_fr20_seed113",
+      "variant": "paired",
+      "config": {
+        "dataset": "cifar10",
+        "distribution": "noniid",
+        "free_rider_pct": 0.2,
+        "attack_type": "FR4",
+        "seed": 113
+      }
+    }
+  ]
+}

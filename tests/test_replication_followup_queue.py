@@ -32,8 +32,10 @@ def test_seed43_repeats_exact_grid_and_order_with_only_seed_changed():
     assert len(entries) == len({e['id'] for e in entries}) == 16
     assert all(e['config']['seed'] == 43 and e['id'].endswith('_seed43') for e in entries)
     active = json.loads((ROOT / 'configs/active_experiment_schedule.json').read_text())
-    queue = json.loads((ROOT / active['queue']).read_text())
-    assert queue['plans'][:2] == [active['plan'], 'configs/v15_4_cifar10_seed43_fr30_fr40_plan.json']
+    # Validate this historical replication schedule independently of the
+    # currently selected queue, which can legitimately have newer priorities.
+    queue = json.loads((ROOT / 'configs/replication_with_baselines_seed73_seed43_queue.json').read_text())
+    assert queue['plans'][:2] == ['configs/v15_4_cifar10_seed73_fr30_fr40_plan.json', 'configs/v15_4_cifar10_seed43_fr30_fr40_plan.json']
     assert active['cpu_threads'] == 6 and active['auto_update_paper'] is False
 
 

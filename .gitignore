@@ -40,3 +40,6 @@ previous_checkpoint.pt
 /results/timing_interlude_recovery.log
 /results/cifar10_segment_timing_20261103/.runtime/
 /results/cifar10_segment_timing_20261103/*/.runtime/
+
+# New review batches stay local until each completed phase is validated.
+/results/review2_*/

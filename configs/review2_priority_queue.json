@@ -1,0 +1,22 @@
+{
+  "description": "Review priorities first on one seed; existing matched MNIST replications and all additional multi-seed work last.",
+  "plans": [
+    "configs/review2_01_honest_seed42.json",
+    "configs/review2_02_low_share_seed42.json",
+    "configs/review2_03_passive_seed42.json",
+    "configs/review2_04_oracle_seed42.json",
+    "configs/review2_05_published_attacks_seed42.json",
+    "configs/fedavg_mnist_baseline_seed73_fr30_fr40.json",
+    "configs/fedavg_mnist_baseline_seed43_fr30_fr40.json",
+    "configs/review2_06_heldout_multiseed_last.json"
+  ],
+  "primary_seed": 42,
+  "heldout_seeds": [
+    101,
+    103,
+    107,
+    109,
+    113
+  ],
+  "freeze": "No attack-specific detector changes or outcome-dependent thresholds."
+}
