@@ -27,6 +27,11 @@
 \setlength{\textfloatsep}{6pt plus 1pt minus 1pt}
 \setlength{\dbltextfloatsep}{6pt plus 1pt minus 1pt}
 \setlength{\intextsep}{6pt plus 1pt minus 1pt}
+% Keep the conference heading spacing fixed during column justification.
+\makeatletter
+\renewcommand{\section}{\@startsection{section}{1}{\z@}{1.5ex}{0.7ex}{\normalfont\normalsize\centering\scshape}}
+\renewcommand{\subsection}{\@startsection{subsection}{2}{\z@}{1.5ex}{0.7ex}{\normalfont\normalsize\itshape}}
+\makeatother
 \usepgfplotslibrary{groupplots,fillbetween}
 \definecolor{honestblue}{HTML}{2878A5}
 \definecolor{riderorange}{HTML}{D66B27}
@@ -46,6 +51,11 @@ Islamic University of Technology}}
 \begin{document}
 \maketitle
 \raggedbottom
+% Fill short columns with modest paragraph spacing, without large heading gaps.
+\setlength{\parskip}{0pt plus 2pt minus 0.5pt}
+\makeatletter
+\def\@textbottom{\vskip\z@ plus 6pt}
+\makeatother
 \setlength{\abovedisplayskip}{6pt plus 1pt minus 1pt}
 \setlength{\belowdisplayskip}{6pt plus 1pt minus 1pt}
 \setlength{\abovedisplayshortskip}{3pt plus 1pt minus 1pt}
@@ -170,12 +180,12 @@ discusses security, limitations and future work before the conclusion.
 % Literature review is retained in the author's current black text.
 \section{Literature Review}\label{sec:related}
 \subsection{Free-Rider Attacks and Evasion}
-Lin \emph{et al.} examined how clients could fabricate updates without local
-training data, using random weights or changes in the global
-model~\cite{lin2019freeriders}. Their experiments established that receiving
-and returning a model does not demonstrate participation in training. They
-also showed why a defense that catches one fabrication strategy may fail
-when the attacker changes how the response is constructed.
+Lin \emph{et al.} examined fabricated updates based on random weights or
+differences between received global models, without local training
+data~\cite{lin2019freeriders}. Their experiments showed that random weights
+can evade autoencoder detection, while model-difference updates can evade
+DAGMM. A detector that catches one fabrication strategy may therefore fail
+when the attacker changes how its update is constructed.
 
 Fraboni \emph{et al.} provided a theoretical and experimental account of free
 riding under iterative aggregation~\cite{fraboni2021freerider}. Stochastic
@@ -351,11 +361,12 @@ to withhold them. They can still receive and store models and carry out
 the relatively simple calculations needed to fabricate a response.
 Introducing a targeted error or backdoor is outside their objective here.
 
-Our experiments consider persistent free riding: these clients perform
+Our experiments consider persistent free riding without collusion,
+following Lin \emph{et al.}~\cite{lin2019freeriders}. These clients perform
 no local optimization at any stage. Partial training and behavior that
 alternates between training and free riding fall outside this scope.
 Each attacker relies only on its own received-model history and local
-randomness. There is no collusion, response sharing or identity change.
+randomness. They do not share responses or change identities.
 The evaluated strategies do not attempt to recognize traps or adapt to
 evade audits. Section~\ref{sec:evasion} discusses those possibilities.
 
@@ -364,8 +375,7 @@ seeks a separated minority of suspicious responses. The experiments use
 30\% and 40\% free riders, with one fixed fabrication strategy shared by
 the free riders in each run.
 
-% Keep the attack definitions together at the normal body-text size.
-\noindent\begin{minipage}{\columnwidth}
+% Allow attack definitions to flow across columns at the normal body-text size.
 \subsection{Evaluated Free-Rider Behaviors}
 Let $\widehat w_{t,i}$ denote the model returned by a free rider.
 All four strategies below skip local optimization.
@@ -413,7 +423,6 @@ The vectors cover all floating model entries. On the first response,
 $\overline d_{1,i}=0$ and $\eta_{1,i}$ instead has independent Gaussian entries with
 standard deviation $10^{-4}$. Traps enter the same history as ordinary
 models and affect the estimated trajectory.
-\end{minipage}\par
 \input{generated/method_comparison.tex}
 
 \section{Proposed Methodology}\label{sec:method}

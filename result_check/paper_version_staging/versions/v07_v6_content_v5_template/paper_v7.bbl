@@ -52,8 +52,8 @@ L.~Zhu, Z.~Liu, and S.~Han, ``Deep leakage from gradients,'' in \emph{Advances
 \BIBentryALTinterwordspacing
 L.~Melis, C.~Song, E.~D. Cristofaro, and V.~Shmatikov, ``Exploiting unintended
   feature leakage in collaborative learning,'' in \emph{IEEE Symposium on
-  Security and Privacy}, 2019. [Online]. Available:
-  \url{https://arxiv.org/abs/1805.04049}
+  Security and Privacy}, 2019, pp. 691--706. [Online]. Available:
+  \url{https://doi.org/10.1109/SP.2019.00029}
 \BIBentrySTDinterwordspacing
 
 \bibitem{bagdasaryan2020backdoor}
@@ -89,7 +89,7 @@ J.~Wang, X.~Chang, J.~Mi{\v{s}}i{\'c}, V.~B. Mi{\v{s}}i{\'c}, and Y.~Wang,
   ``{PASS}: A parameter audit-based secure and fair federated learning scheme
   against free-rider attack,'' \emph{IEEE Internet of Things Journal}, vol.~11,
   no.~1, pp. 1374--1384, 2024. [Online]. Available:
-  \url{https://arxiv.org/abs/2207.07292}
+  \url{https://doi.org/10.1109/JIOT.2023.3288936}
 \BIBentrySTDinterwordspacing
 
 \bibitem{recasens2026frida}
@@ -98,7 +98,7 @@ P.~G. Recasens, {\'A}.~Horv{\'a}th, A.~Gutierrez-Torre, J.~Torres, J.~L.
   Berral, and B.~Pej{\'o}, ``{FRIDA}: Free-rider detection using privacy
   attacks,'' \emph{Journal of Information Security and Applications}, vol.~97,
   2026, art. no. 104357. [Online]. Available:
-  \url{https://arxiv.org/abs/2410.05020}
+  \url{https://doi.org/10.1016/j.jisa.2025.104357}
 \BIBentrySTDinterwordspacing
 
 \bibitem{zhu2021advanced}
@@ -156,7 +156,8 @@ D.~Yin, Y.~Chen, K.~Ramchandran, and P.~Bartlett, ``Byzantine-robust
 \BIBentryALTinterwordspacing
 K.~Pillutla, S.~M. Kakade, and Z.~Harchaoui, ``Robust aggregation for federated
   learning,'' \emph{IEEE Transactions on Signal Processing}, vol.~70, pp.
-  1142--1154, 2022. [Online]. Available: \url{https://arxiv.org/abs/1912.13445}
+  1142--1154, 2022. [Online]. Available:
+  \url{https://doi.org/10.1109/TSP.2022.3153135}
 \BIBentrySTDinterwordspacing
 
 \bibitem{cao2021fltrust}
@@ -204,10 +205,11 @@ H.~Jia, M.~Yaghini, C.~A. Choquette-Choo, N.~Dullerud, A.~Thudi,
 
 \bibitem{zhao2019veriml}
 \BIBentryALTinterwordspacing
-L.~Zhao, Q.~Wang, C.~Wang, Q.~Li, C.~Shen, X.~Lin, S.~Hu, and M.~Du,
-  ``{VeriML}: Enabling integrity assurances and fair payments for machine
-  learning as a service,'' arXiv preprint arXiv:1909.06961, 2019. [Online].
-  Available: \url{https://arxiv.org/abs/1909.06961}
+L.~Zhao, Q.~Wang, C.~Wang, Q.~Li, C.~Shen, and B.~Feng, ``{VeriML}: Enabling
+  integrity assurances and fair payments for machine learning as a service,''
+  \emph{IEEE Transactions on Parallel and Distributed Systems}, vol.~32,
+  no.~10, pp. 2524--2540, Oct. 2021. [Online]. Available:
+  \url{https://doi.org/10.1109/TPDS.2021.3068195}
 \BIBentrySTDinterwordspacing
 
 \bibitem{ghorbani2019datashapley}
@@ -225,7 +227,7 @@ R.~Jia, D.~Dao, B.~Wang, F.~A. Hubis, N.~Hynes, N.~M. Gurel, B.~Li, C.~Zhang,
   D.~Song, and C.~Spanos, ``Towards efficient data valuation based on the
   shapley value,'' in \emph{Proceedings of the 22nd International Conference on
   Artificial Intelligence and Statistics}, ser. Proceedings of Machine Learning
-  Research, vol.~89, 2019. [Online]. Available:
+  Research, vol.~89, 2019, pp. 1167--1176. [Online]. Available:
   \url{https://proceedings.mlr.press/v89/jia19a.html}
 \BIBentrySTDinterwordspacing
 

@@ -1,5 +1,21 @@
 # Paper v7 — v6 content in the v5 template
 
+The 5 November citation-hygiene pass narrows the Lin et al. literature claim,
+cites their persistent/non-colluding setting in Section III-B, replaces VeriML's
+preprint metadata with its six-author 2021 TPDS record, fills the Melis/Jia page
+ranges and exposes the requested published DOI links. Yin's correct pages are
+retained. `CITATION_REVIEW.md` records primary sources and the direct IEEE-author-
+panel access limitation. All layout controls and 31 citation numbers are
+unchanged. The PDF remains 19 pages and passes overflow/reference checks.
+
+The 5 November column-flow repair removes the unbreakable minipage around all
+four attack definitions. They now flow across columns. Fixed conference-heading
+spacing and finite column-bottom stretch prevent short prose columns without
+large heading gaps. Pages 2–4 were inspected at full size, and the complete
+19-page PDF was checked as a contact sheet. Manuscript wording and mathematics
+are unchanged. No undefined references/citations, oversized floats or overfull
+boxes are reported.
+
 The most recent spacing pass uses 6-point float/equation spacing, shorter legend
 gaps, compact notation-table rows and smaller outer borders on the two diagrams.
 Timing-figure placement respects the available page space. The 19-page PDF has

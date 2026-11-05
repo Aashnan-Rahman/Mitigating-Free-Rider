@@ -640,6 +640,28 @@ Second review revision, 4 November 2026:
   Compilation, citation/reference and overflow checks pass. No new training.
   See `REVIEW_RESPONSE_UPDATE_4.md` for dispositions.
 
+### v07 column-flow repair — 5 November 2026
+
+- Remove the unbreakable block around FR1–FR4 so the definitions can fill the
+  first column of page 4 and continue naturally into the second column.
+- Fix heading padding and use modest paragraph/bottom stretch to fill short
+  columns without inserting large gaps around headings. Inspect the specified
+  page 2/3 second columns and page 4 first column at full size.
+- Verify unchanged manuscript wording and mathematics, inspect all 19 pages,
+  and check citations/references and overflow. No data or experiments change.
+
+### v07 citation hygiene — 5 November 2026
+
+- Narrow Lin et al.'s experimental claim and cite their persistent/non-colluding
+  assumptions in Section III-B. Preserve the current scope and layout controls.
+- Cite the published six-author VeriML TPDS article, add the missing Melis/Jia
+  pages, expose DOI links for PASS/FRIDA/RFA and the corrected journal/conference
+  entries, and retain Yin's verified pages 5650–5659.
+- Record primary sources and the direct IEEE author-panel access limitation in
+  `CITATION_REVIEW.md`. Keep all 31 reference numbers stable. Rebuild and inspect
+  the 19-page PDF, including pages 2–4 and the bibliography. Overflow and
+  citation/reference checks pass. No experimental results or settings change.
+
 For each substantive revision:
 
 1. Continue editing the working `Paper/paper.tex`.

@@ -1,5 +1,50 @@
 # Citation and literature-review revision — 30 October 2026
 
+## Citation hygiene follow-up — 5 November 2026
+
+- **Lin et al. [6].** Recheck the [original paper](https://arxiv.org/html/1911.12560v1),
+  especially Sections 3, 4 and 5. Replace the earlier participation claim with
+  the tested distinction: random weights can evade the autoencoder, whereas
+  received-model differences can evade DAGMM. Section III-B now cites the same
+  paper for persistent free riding without collusion. Do not attribute our other
+  protocol assumptions or retained-history design to that paper.
+- **VeriML [22].** Replace the preprint entry with the published TPDS article,
+  volume 32, issue 10, pages 2524–2540, October 2021, DOI
+  [10.1109/TPDS.2021.3068195](https://doi.org/10.1109/TPDS.2021.3068195).
+  The six journal authors are Lingchen Zhao, Qian Wang, Cong Wang, Qi Li,
+  Chao Shen and Bo Feng, confirmed in the
+  [authors' university publication record](https://scholar.xjtu.edu.cn/en/publications/veriml-enabling-integrity-assurances-and-fair-payments-for-machin/).
+  IEEE Xplore's indexed publisher record confirms the venue, issue, pages and
+  DOI. Direct access to its author panel was blocked by a JavaScript/bot check,
+  so direct inspection of that panel is not claimed. The stable internal BibTeX
+  key is retained, while the visible year and publication metadata are corrected.
+- **Melis et al. [4].** Add pages 691–706 and DOI
+  [10.1109/SP.2019.00029](https://doi.org/10.1109/SP.2019.00029), checked against
+  [UCL Discovery](https://discovery.ucl.ac.uk/id/eprint/10061777/).
+- **Jia et al. [24].** Add PMLR 89 pages 1167–1176, as listed in the
+  [official proceedings](https://proceedings.mlr.press/v89/jia19a.html).
+- **PASS [8].** The existing DOI is correct. Use the published DOI URL
+  [10.1109/JIOT.2023.3288936](https://doi.org/10.1109/JIOT.2023.3288936)
+  instead of the arXiv URL. The
+  [authors' arXiv record](https://arxiv.org/abs/2207.07292) explicitly links that
+  IEEE DOI and gives volume 11, issue 1, pages 1374–1384, 2024.
+- **FRIDA [9].** Expose the existing DOI through the reference URL:
+  [10.1016/j.jisa.2025.104357](https://doi.org/10.1016/j.jisa.2025.104357).
+  The [publisher record](https://www.sciencedirect.com/science/article/pii/S221421262500393X)
+  confirms volume 97, March 2026, article 104357. Retain the 2026 issue year.
+- **RFA [16].** Expose the existing DOI through the reference URL:
+  [10.1109/TSP.2022.3153135](https://doi.org/10.1109/TSP.2022.3153135).
+  The [authors' arXiv record](https://arxiv.org/abs/1912.13445) confirms this
+  DOI and the journal reference, volume 70, pages 1142–1154, 2022.
+- **Yin et al. [15].** Retain pages 5650–5659. They agree with the
+  [official PMLR record](https://proceedings.mlr.press/v80/yin18a.html).
+
+IEEEtran renders these DOI URLs as clickable reference links. The reference
+keys, citation numbering and all 31 entries remain stable. Layout-control
+settings are unchanged. The rebuilt 19-page PDF has no undefined references or
+citations, overfull boxes or oversized floats. Pages 2–4 and the bibliography
+are checked for spacing regressions. Earlier notes below are revision history.
+
 The review now follows approach, contribution, limitation, then connection to
 the study. Source-backed descriptions are separated from interpretation and
 implementation-specific measurements.
