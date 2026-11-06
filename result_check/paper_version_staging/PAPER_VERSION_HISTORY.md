@@ -662,6 +662,36 @@ Second review revision, 4 November 2026:
   the 19-page PDF, including pages 2–4 and the bibliography. Overflow and
   citation/reference checks pass. No experimental results or settings change.
 
+### v07 short edition — 5 November 2026
+
+- Create `paper_v7_short.tex` and `paper_v7_short.pdf`, a separate six-page
+  conference-format edition including references. Preserve the full manuscript.
+- Condense the background and related work, retain the four contributions and
+  threat model, present the key method equations and one overall algorithm,
+  and reuse the full grouped detection/accuracy table.
+- Add compact workflow and timing figures and a short timing-stage table.
+  Retain honest-response costs, baseline interpretation, the implemented
+  audit-clock guard and its edge case, complexity and evaluation limitations.
+- Select 17 references from the corrected bibliography. Compile and inspect
+  all six pages, resolve citations/references, and check for overflow. Verify
+  that the full PDF hash is unchanged. No experiments or study-code edits.
+
+### v07 short-edition review — 6 November 2026
+
+- Correct STD-DAGMM attribution, restore three seeds and 96 runs in the abstract
+  and setup, add the repository/immutable-archive statement, state exact matched
+  baseline coverage and add the introduction's detection counts.
+- Replace the timing plot with verified FR2/FR3 challenge-score panels from
+  CIFAR-10 non-IID 40%, round 20, seed 42. Describe profile overlap precisely
+  and retain the timing-stage table. Name unevaluated published attacks and add
+  qualified external STD-DAGMM context checked against FRIDA Table 9(c).
+- Independently reproduce the disputed 16.48-minute value from the four
+  original MNIST trajectories, and verify all 200 plotted clients against 400
+  selected trap responses. Record checks in `check_short_review.ps1` and review
+  notes. Preserve the full PDF hash and study code. No training or publication.
+- Rebuild and visually inspect the six-page short PDF with 17 resolved
+  references and no overfull boxes, oversized floats or undefined references.
+
 For each substantive revision:
 
 1. Continue editing the working `Paper/paper.tex`.

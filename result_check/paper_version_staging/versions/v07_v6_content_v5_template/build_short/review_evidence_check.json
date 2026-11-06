@@ -1,0 +1,55 @@
+{
+  "study_runs": 96,
+  "study_seeds": 3,
+  "mnist_noniid40_target98_minutes": 16.47686075874999,
+  "review_date": "2026-11-06",
+  "full_pdf_sha256": "B074FED69AC10E886F16AA114DA4DCA54662264BD842E913C75C98350F52933F",
+  "rounding": 16.48,
+  "time_averaging": "One matched seed per attack, then all four attacks equally",
+  "scatter_checks": [
+    {
+      "attack": "FR2",
+      "label": "0",
+      "points": 60,
+      "round": 20,
+      "seed": 42,
+      "source": "results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_noniid_FR2_seed42/cycle_signals.csv",
+      "source_sha256": "653a8eca06833a58a98a27eaacd2e84e976e9bbfad971f5dcf7df6ea2133ce5e",
+      "plot": "generated/visuals/scatter_cifar10_40_noniid_FR2_0.dat",
+      "plot_sha256": "ba316c7c717c99c88af0e8af78d07fb6bd830191e6c1ac0f7366117d5fb21c34"
+    },
+    {
+      "attack": "FR2",
+      "label": "1",
+      "points": 40,
+      "round": 20,
+      "seed": 42,
+      "source": "results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_noniid_FR2_seed42/cycle_signals.csv",
+      "source_sha256": "653a8eca06833a58a98a27eaacd2e84e976e9bbfad971f5dcf7df6ea2133ce5e",
+      "plot": "generated/visuals/scatter_cifar10_40_noniid_FR2_1.dat",
+      "plot_sha256": "4efb0c3b50326e202bfa63694aa21bd92db197ff087eaee4e0be3fb94ec2c4da"
+    },
+    {
+      "attack": "FR3",
+      "label": "0",
+      "points": 60,
+      "round": 20,
+      "seed": 42,
+      "source": "results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_noniid_FR3_seed42/cycle_signals.csv",
+      "source_sha256": "91eb81ecd78873f82d9dd1bc6836a1424093a453b65d10f6eeb6e94983661062",
+      "plot": "generated/visuals/scatter_cifar10_40_noniid_FR3_0.dat",
+      "plot_sha256": "ce12998d10862fd5ce24fe3f5096626a87675257e2cbeba6f394287493ad689a"
+    },
+    {
+      "attack": "FR3",
+      "label": "1",
+      "points": 40,
+      "round": 20,
+      "seed": 42,
+      "source": "results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_noniid_FR3_seed42/cycle_signals.csv",
+      "source_sha256": "91eb81ecd78873f82d9dd1bc6836a1424093a453b65d10f6eeb6e94983661062",
+      "plot": "generated/visuals/scatter_cifar10_40_noniid_FR3_1.dat",
+      "plot_sha256": "edf7fb28bcab5e86c0e48d20a78954034315beb45ca32b350decdfb05ffcbcc3"
+    }
+  ]
+}

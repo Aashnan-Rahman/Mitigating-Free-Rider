@@ -1,5 +1,16 @@
 # Paper v7 — v6 content in the v5 template
 
+A separate six-page edition, including references, is available as
+`paper_v7_short.pdf`, with source `paper_v7_short.tex` and build command
+`./build_short.ps1`. See `README_SHORT.md` for retained content and dependencies.
+The full v7 manuscript and PDF are preserved.
+
+The short edition's 6 November review fixes citation attribution, restores
+three seeds and 96 runs, adds availability and precise baseline coverage,
+and replaces its redundant timing plot with two verified challenge-score panels.
+The disputed MNIST time is independently reproduced as 16.476861 minutes
+(16.48 rounded). See `SHORT_REVIEW_RESPONSE.md` and `check_short_review.ps1`.
+
 The 5 November citation-hygiene pass narrows the Lin et al. literature claim,
 cites their persistent/non-colluding setting in Section III-B, replaces VeriML's
 preprint metadata with its six-author 2021 TPDS record, fills the Melis/Jia page
