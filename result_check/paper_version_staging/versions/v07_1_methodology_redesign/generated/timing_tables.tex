@@ -1,0 +1,30 @@
+\input{generated/timing_component_table.tex}
+\begin{table*}[t]\centering\footnotesize
+\caption{Round timing over 100 rounds.}\label{tab:timing-horizons}
+\begin{tabular}{llrrrr}\toprule
+\multirow{2}{*}{Dataset} & \multirow{2}{*}{Workflow} & \multicolumn{2}{c}{Mean round time (s)} & \multicolumn{2}{c}{Full horizon (min)} \\
+\cmidrule(lr){3-4}\cmidrule(lr){5-6}
+ & & Computation & Elapsed & Computation & Elapsed \\ \midrule
+\multirow{2}{*}{MNIST} & BaitFL & 36.92 & 40.92 & 61.53 & 68.21 \\
+ & STD-DAGMM & 52.26 & 62.83 & 87.10 & 104.72 \\
+\midrule
+\multirow{2}{*}{CIFAR-10} & BaitFL & 88.56 & 99.95 & 147.60 & 166.59 \\
+ & STD-DAGMM & 120.05 & 137.30 & 200.09 & 228.83 \\
+\bottomrule\end{tabular}\end{table*}
+\begin{table*}[t]\centering\footnotesize
+\caption{BaitFL execution time by round phase.}\label{tab:timing-phases}
+\begin{tabular}{llrrrrr}\toprule Dataset & Round phase & Count & Computation (s) & Elapsed (s) & Decision (ms) & Contribution (s/round) \\ \midrule
+\multirow{6}{*}{MNIST} & Warmup & 10 & 38.03 & 41.15 & 0.002 & 3.80 \\
+ & Trap response & 27 & 37.40 & 41.42 & 0.002 & 10.10 \\
+ & Screening round & 2 & 37.46 & 41.53 & 373.03 & 0.75 \\
+ & Removal round & 1 & 37.52 & 41.71 & 395.91 & 0.38 \\
+ & Audit round & 6 & 36.41 & 40.45 & 68.57 & 2.18 \\
+ & Ordinary round & 54 & 36.50 & 40.65 & 0.002 & 19.71 \\
+\midrule
+\multirow{6}{*}{CIFAR-10} & Warmup & 10 & 90.33 & 99.24 & 0.005 & 9.03 \\
+ & Trap response & 63 & 89.57 & 101.27 & 0.008 & 56.43 \\
+ & Screening round & 6 & 88.01 & 100.03 & 527.43 & 5.28 \\
+ & Removal round & 1 & 91.35 & 101.67 & 660.59 & 0.91 \\
+ & Audit round & 2 & 84.34 & 93.42 & 258.46 & 1.69 \\
+ & Ordinary round & 18 & 84.54 & 96.33 & 0.003 & 15.22 \\
+\bottomrule\end{tabular}\end{table*}

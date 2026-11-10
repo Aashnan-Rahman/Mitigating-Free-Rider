@@ -1,0 +1,39 @@
+{
+  "original_files": [
+    {
+      "path": "paper_v7.tex",
+      "sha256": "EDFF3ED97BF155A4B235943C958E7ADEC3AB8B703B74BC0CDFCB978648CCE6FA"
+    },
+    {
+      "path": "paper_v7.pdf",
+      "sha256": "F8AC4B5E6CC373895219CE5502D988EFBCEB06F447559A5F59912189F468F8A6"
+    },
+    {
+      "path": "paper_v7_short.tex",
+      "sha256": "2E124C54AB3FA3496F69785A1664984ECEDED48749BD7ED65FD468449E609DF8"
+    },
+    {
+      "path": "paper_v7_short.pdf",
+      "sha256": "184C5AF5EDF2A23C73F7A0A73AC8C887849DEB8F2AD5FD70BDF273B38B731373"
+    },
+    {
+      "path": "figures/baitfl_methodology.tex",
+      "sha256": "425EC541D7D282BEE390396D828682B611BE5C4872D4167FC8C3B48A19C462B7"
+    },
+    {
+      "path": "figures/baitfl_methodology.pdf",
+      "sha256": "A2A7506332270B47636210B9953513C258746A7C1C64BACC17E95BD489B28245"
+    },
+    {
+      "path": "figures/free_rider_attack.tex",
+      "sha256": "E9B0E2157972E61D9737E722CCF51C50B0DB0F1F082C92AA7082878E516B2A79"
+    },
+    {
+      "path": "figures/free_rider_attack.pdf",
+      "sha256": "A1BA105BB5E943B1E60F4A88ED4BFC905D3BC3DEB4B11191274308ABF962B2BD"
+    }
+  ],
+  "created": "2026-11-10",
+  "base_version": "v07_v6_content_v5_template",
+  "authorized_update": "2026-11-11: user requested model icons in Figure 1 in both versions. Previous files and hashes are backed up under build/before_model_icon_20261111/."
+}

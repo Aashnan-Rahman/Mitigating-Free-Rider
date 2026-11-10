@@ -1,0 +1,24 @@
+{
+  "architecture_sha256": "c631e20aa93a810d8612c5f740d1f54294a441a72134acad494d5b37e3608e43",
+  "histograms": "raw trap-A norms, shared population bins ceil(sqrt(N)) per panel",
+  "historical_inputs": [
+    {
+      "results\\v15_3_cifar10_seed42_fr40\\v15_3_cifar10_noniid_FR2_seed42\\global_metrics.csv": "ea9155bd30fd9d1cffbdbbdbf44771155123fac08653792aaa7f3ff2d73a8fbc",
+      "results\\v15_3_cifar10_seed42_fr40\\v15_3_cifar10_noniid_FR2_seed42\\latest_results.json": "3c31c2ba9300c1ddbc06efdbbb3c57af78739f7c21ab8466f30e1df9fd4a2729",
+      "results\\v15_3_cifar10_seed42_fr40\\v15_3_cifar10_noniid_FR2_seed42\\run_config.json": "aa6cc2f1ef46ad99706afcbfa6724539beade79b59a98a4859c490bf2e1fc1c3"
+    },
+    {
+      "results\\v15_3_cifar10_seed42_fr40\\v15_3_cifar10_noniid_FR3_seed42\\global_metrics.csv": "c7d9b95bc0b5432501cb5c6127064277579f0a8607ae7783368b0e029b49386e",
+      "results\\v15_3_cifar10_seed42_fr40\\v15_3_cifar10_noniid_FR3_seed42\\latest_results.json": "8818368369a60a45a4f00bfd208dcd06cd21a610cb0c76d6c297418f49a2cde6",
+      "results\\v15_3_cifar10_seed42_fr40\\v15_3_cifar10_noniid_FR3_seed42\\run_config.json": "cac446cf8d88062d7d56f130f52c799e8f0060d8fece4508f9bbdc15b7242cc3"
+    },
+    {
+      "results\\v15_3_cifar10_seed42_fr40\\v15_3_cifar10_noniid_FR4_seed42\\global_metrics.csv": "14c08d23b2a8ac9b1ec58a38304d1495cae2822945a3f9404802d4934dd96b75",
+      "results\\v15_3_cifar10_seed42_fr40\\v15_3_cifar10_noniid_FR4_seed42\\latest_results.json": "65cc2ed72365006d887b31a823291f4e3c57c1049ed992691cd8d70fe01890c8",
+      "results\\v15_3_cifar10_seed42_fr40\\v15_3_cifar10_noniid_FR4_seed42\\run_config.json": "90653a048fd4bae3d70c7f2010e1f5e364a537c9faaf3564399ae163c333f508"
+    }
+  ],
+  "labels": "evaluation color/group summaries only; never used for decisions",
+  "paired_scores": "arithmetic mean of selected A/B scores, complete pairs only",
+  "scatter_transform": "asinh, visualization only; no clipping or jitter"
+}

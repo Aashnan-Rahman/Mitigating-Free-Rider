@@ -1,0 +1,37 @@
+{
+  "target_choice": "Illustrative thresholds selected for this analysis, not preregistered",
+  "cifar10_pairs": 47,
+  "missing_raw_logs": [
+    "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_iid_FR1_fr40_seed43/round_timings.csv",
+    "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_iid_FR2_fr30_seed43/round_timings.csv",
+    "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_iid_FR2_fr40_seed43/round_timings.csv",
+    "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_iid_FR3_fr30_seed43/round_timings.csv",
+    "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_iid_FR4_fr30_seed43/round_timings.csv"
+  ],
+  "timing_scope": "BaitFL logged round timer and no-defense component sum; different timer boundaries and host load; descriptive saved executions, not a controlled speedup benchmark",
+  "endpoint": "First round with accuracy at or above target; sum recorded round times through that round",
+  "available_raw_logs_verified": 121,
+  "matched_pairs": 63,
+  "higher_targets": "Case export retains higher targets with non-reached outcomes and observed horizon durations; no successful crossing imputed",
+  "averaging": "Matched seeds within attack, then all four attacks equally",
+  "figure_targets": {
+    "mnist": 0.98,
+    "cifar10": 0.7
+  },
+  "data_basis": "Complete saved paired exports; round order, values, duration means and accuracy endpoints validated against paired summaries. Available raw logs match their recorded hashes. Missing raw files cannot be rechecked from this checkout.",
+  "mnist_pairs": 16,
+  "inputs": [
+    {
+      "path": "generated/comparison/paired_trajectories.csv",
+      "sha256": "d0c1154cb35b564fad407ebdfea9454814d8d7b5c339fffb93398a9f5ac47d5e"
+    },
+    {
+      "path": "generated/comparison/paired_results.csv",
+      "sha256": "39efebf2af4d3c257435448a33a2b3aca58636ea6b3db037a3517cbc117788cb"
+    },
+    {
+      "path": "generated/comparison/provenance.json",
+      "sha256": "4ba223deaf3333dd93dacc4470a0cab56c658b922ff4d3a41fd7a65504b8d796"
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+\documentclass[tikz,border=4pt]{standalone}
+\input{figures/diagram_style.tex}
+\begin{document}
+\begin{tikzpicture}[font=\fontsize{9.5}{11}\selectfont,
+ note/.style={font=\fontsize{9}{10.5}\selectfont,align=center}]
+% Short phase labels and a common horizontal round axis keep the print size legible.
+\draw[black!55,line width=.55pt] (0,.65) rectangle (1.5,2.05);
+\node[align=center] at (.75,1.55) {Warmup};
+\node[note] at (.75,.96) {10 rounds};
+\draw[challenge,line width=.7pt] (1.5,.65) rectangle (3,2.05);
+\node[align=center,text=challenge] at (2.25,1.55) {Paired\\cycle 1};
+\node[note,text=challenge] at (2.25,.92) {$\tau_A,\tau_B$};
+\draw[challenge,line width=.7pt] (3,.65) rectangle (4.5,2.05);
+\node[align=center,text=challenge] at (3.75,1.55) {Paired\\cycle 2};
+\node[note,text=challenge] at (3.75,.92) {$\tau_A,\tau_B$};
+\draw[black!55,line width=.55pt] (4.5,.65) rectangle (7.8,2.05);
+\node[align=center] at (6.15,1.4) {Ordinary\\training};
+\draw[flow] (0,.25)--(8.05,.25);
+\node[note,anchor=east] at (-.12,.25) {$t$};
+\foreach \xx/\rr in {0/0,1.5/10,3/20,4.5/30,6/40,7.5/50} {
+ \draw[black!55,line width=.55pt] (\xx,.18)--(\xx,.32);
+ \node[below=3pt] at (\xx,.18) {\rr};
+}
+\foreach \xx in {6,7.5} {
+ \node[diamond,draw=challenge,line width=.65pt,minimum size=5pt,inner sep=0pt]
+  at (\xx,.25) {};
+}
+\draw[removal,line width=.55pt] (4.5,-.34)--(4.5,-.56);
+\node[note,text=removal] at (4.5,-.94) {Earliest\\removal};
+\node[diamond,draw=challenge,line width=.65pt,minimum size=5pt,inner sep=0pt]
+ at (6.35,-.94) {};
+\node[note,anchor=west,text=challenge] at (6.58,-.94) {Audit};
+\node[note,anchor=west] at (0,-1.72) {Review / probation};
+\draw[feedback] (3.35,-1.72)--(4.05,-1.72);
+\node[note,anchor=west,text=challenge] at (4.25,-1.72) {Repeat paired cycles};
+\node[note,anchor=west] at (0,-2.25) {Neither active};
+\draw[flow] (3.35,-2.25)--(4.05,-2.25);
+\node[note,anchor=west] at (4.25,-2.25) {Ordinary + audit};
+\end{tikzpicture}
+\end{document}

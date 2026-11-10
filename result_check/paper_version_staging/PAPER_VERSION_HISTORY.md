@@ -692,6 +692,82 @@ Second review revision, 4 November 2026:
 - Rebuild and visually inspect the six-page short PDF with 17 resolved
   references and no overfull boxes, oversized floats or undefined references.
 
+### v07.1 methodology figure redesign — 10 November 2026
+
+- Create `versions/v07_1_methodology_redesign/` from the full v7 manuscript.
+  Preserve the original full and short papers and the former methodology figure.
+- Replace the original methodology Figure 2 with three column-width vector
+  figures: audit schedule, challenge mechanism with recorded response geometry,
+  and principal client participation transitions. Update surrounding references.
+- Use Times labels, thin outlines, one challenge accent and red for removal.
+  Keep review distinct from quarantine and explain the general confirmation
+  rules in the state caption. Reuse the recorded CIFAR-10 non-IID FR3 scores.
+- Retain all 339 reporting exports and 31 references unchanged. Compile the
+  19-page PDF, inspect all pages and affected methodology pages, and check the
+  three figures at column width in grayscale. Validate vector-only content,
+  embedded non-Type-3 fonts, no overflow and unchanged original file hashes.
+  No experiments, study-code changes or external publication.
+
+### v07.1 figure readability follow-up — 10 November 2026
+
+- Make Figures 2–4 span the full text width, enlarge labels and spacing, place
+  Figure 3's challenge path beside its scatter, and lay out recovery conditions
+  horizontally in Figure 4. Repeated eligible nodes represent the same state.
+- Redraw Figure 1 as a single-column overview with two honest devices and a free
+  rider. Replace the resource-absence claim and perturbed-update wording with
+  skipped training and fabricated updates. Show ordinary/challenge models with
+  straight purple outgoing arrows and green/orange returns. Remove small icons
+  and expand the caption to explain the challenge comparison.
+- Retain all reporting exports and references. Relax only the accuracy figure's
+  float placement in a checked layout copy to prevent overflow after reflow.
+  Verify the 20-page PDF and all four vector figures at print size in grayscale.
+  Original full/short v7 manuscripts and original figures remain hash-verified.
+  The preceding v7.1 PDF and sources are backed up in its ignored build folder.
+
+### v07.1 illustrated figures and subfigures — 11 November 2026
+
+- Restore a richer single-column Figure 1 with server, data and laptop drawings,
+  two honest devices and a free rider. Retain resource-neutral threat wording,
+  straight model/response paths and the meaningful purple/green/orange legend.
+- Replace Figure 2's oversized decision diamond with a schedule strip showing
+  warmup, paired cycles, ordinary training and sparse audits, with compact
+  continuation rules below.
+- Split Figure 3 into separately built vector panels and IEEE-compatible
+  subfigures 3a and 3b with different captions. Retain seed 42 in the surrounding
+  reproducibility prose, not in titles or captions. Recorded coordinates stay.
+- Redraw Figure 4 as a single-column diagram with five unique participation
+  states, a central confirmation path and symmetric recovery returns.
+- Compile and inspect all 19 pages and grayscale/print-size previews. Verify 31
+  references, all 339 unchanged reporting exports, five vector panels and eight
+  unchanged original v7 files. Preserve the preceding v7.1 design in its ignored
+  build folder. No experiments, study-code changes or external publication.
+
+### v07.1 figure detail refinement — 11 November 2026
+
+- Make Figure 1 a basic FL/free-rider overview: all devices receive the global
+  model and return local models. Remove internal overlapping arrows and the
+  screen loss traces, show SGD, and use consistent smaller legend text. Stack
+  arrow keys on the left and identify the data cylinder on the right.
+- Convert Figure 2 to a single-column vertical round schedule with clear phase
+  bands, challenge labels, ordinary rounds, audit markers and continuation rules.
+- Preserve Figure 4's five-state structure, separate the recovery labels and
+  move arrow definitions into an image legend. Shorten captions and discuss
+  the figures and their rules in the surrounding manuscript prose.
+- Retain Figure 3's separate subcaptions and explicit panel references. Rebuild
+  and inspect the 19-page PDF at print size and in grayscale. Verify 31 resolved
+  references, unchanged reporting exports and original v7 hashes. No experiments
+  or study-code changes.
+
+### v07.1 horizontal Figure 2 — 11 November 2026
+
+- Replace the vertical schedule with a horizontal figure designed to fit one
+  column at readable label sizes. Use compact phase blocks, one shared round
+  axis, audit markers, an earliest-removal callout and short continuation rules.
+- Retain the manuscript source and Figures 1, 3 and 4 unchanged. Rebuild the
+  19-page PDF and inspect Figure 2 in its page and at print size in grayscale.
+  Validate 31 references, unchanged reporting exports and original v7 hashes.
+  Back up the preceding schedule and PDF under the ignored build directory.
+
 For each substantive revision:
 
 1. Continue editing the working `Paper/paper.tex`.

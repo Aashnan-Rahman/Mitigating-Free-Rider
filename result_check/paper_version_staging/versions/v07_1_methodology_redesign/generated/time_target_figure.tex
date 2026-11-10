@@ -1,0 +1,12 @@
+\begin{figure*}[!t]\centering\begin{tikzpicture}
+\begin{groupplot}[group style={group size=2 by 1,horizontal sep=1.1cm},scale only axis,width=0.405\textwidth,height=4.6cm,ybar,/pgf/bar width=10pt,xmin=0.5,xmax=4.5,ymin=0,xtick={1,2,3,4},xticklabels={{30\% IID},{30\% non-IID},{40\% IID},{40\% non-IID}},axis x line*=bottom,axis y line*=left,ymajorgrids=true,grid style={black!8},tick label style={font=\scriptsize},label style={font=\small},title style={font=\small},scaled y ticks=false,nodes near coords,every node near coord/.append style={font=\scriptsize,/pgf/number format/fixed,/pgf/number format/precision=1}]
+\nextgroupplot[title={MNIST, target 98\%},ylabel={Logged time to target (min)},ymax=29.096687]
+\addplot[/pgf/bar shift=-8pt,fill=baitteal!85,draw=baitteal] coordinates {(1,14.636322) (2,17.516342) (3,13.919884) (4,16.476861)};
+\addplot[/pgf/bar shift=8pt,fill=stdorange!85,draw=stdorange] coordinates {(1,16.109690) (2,24.247239) (3,16.943092) (4,23.278065)};
+\nextgroupplot[title={CIFAR-10, target 70\%},ylabel={Logged time to target (min)},ymax=69.978006]
+\addplot[/pgf/bar shift=-8pt,fill=baitteal!85,draw=baitteal] coordinates {(1,35.133839) (2,50.272567) (3,33.358247) (4,48.018053)};
+\addplot[/pgf/bar shift=8pt,fill=stdorange!85,draw=stdorange] coordinates {(1,35.178937) (2,54.618728) (3,36.459030) (4,58.315005)};
+\end{groupplot}\end{tikzpicture}
+\par\smallskip{\small\textcolor{baitteal}{\rule{0.35cm}{0.18cm}}\ BaitFL\qquad\textcolor{stdorange}{\rule{0.35cm}{0.18cm}}\ No defense}
+\caption{Time to first target-accuracy crossing in matched runs. BaitFL is the left bar and no defense the right bar in each pair.}\label{fig:time-target}
+\end{figure*}

@@ -1,0 +1,15 @@
+dataset,method,segment,description,mean_s,measured_rounds,actual_total_s,measurement
+mnist,STD-DAGMM,honest_training_seconds,Client training,33.98584427400157,100,3398.584427400157,100 measured rounds
+mnist,STD-DAGMM,fabrication_seconds,Simulated FR response,0.062138004002190425,100,6.213800400219043,100 measured rounds
+mnist,STD-DAGMM,aggregation_seconds,Server aggregation,0.04170650400075829,100,4.170650400075829,100 measured rounds
+mnist,STD-DAGMM,evaluation_seconds,Global evaluation,2.1436469499993835,100,214.36469499993837,100 measured rounds
+mnist,STD-DAGMM,preparation_seconds,Update preparation,0.04471735299986904,100,4.4717352999869036,100 measured rounds
+mnist,STD-DAGMM,fit_seconds,Detector fitting,13.629329961000039,100,1362.932996100004,100 measured rounds
+mnist,STD-DAGMM,score_decision_seconds,Scoring + flag decision,0.2784053729996958,100,27.840537299969583,100 measured rounds
+cifar10,STD-DAGMM,honest_training_seconds,Client training,76.20827069900784,100,7620.827069900784,100 measured rounds
+cifar10,STD-DAGMM,fabrication_seconds,Simulated FR response,0.2549593159962387,100,25.495931599623873,100 measured rounds
+cifar10,STD-DAGMM,aggregation_seconds,Server aggregation,0.1885074780001014,100,18.85074780001014,100 measured rounds
+cifar10,STD-DAGMM,evaluation_seconds,Global evaluation,4.546804874999362,100,454.6804874999362,100 measured rounds
+cifar10,STD-DAGMM,preparation_seconds,Update preparation,0.12740296700023465,100,12.740296700023466,100 measured rounds
+cifar10,STD-DAGMM,fit_seconds,Detector fitting,45.02932439800032,100,4502.932439800032,100 measured rounds
+cifar10,STD-DAGMM,score_decision_seconds,Scoring + flag decision,0.8833491380013584,100,88.33491380013584,100 measured rounds
