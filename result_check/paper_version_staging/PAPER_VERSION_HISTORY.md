@@ -768,6 +768,35 @@ Second review revision, 4 November 2026:
   Validate 31 references, unchanged reporting exports and original v7 hashes.
   Back up the preceding schedule and PDF under the ignored build directory.
 
+## v7.2 — Evidence alignment and reviewer revision
+
+Created: 2026-11-11. Directory: `versions/v07_2_review_revision/`.
+
+- Preserve the exact reviewed v7.1 source/export/PDF/bibliography by hash.
+- Build a 15-page IEEEtran journal main paper and seven-page supplement,
+  including a self-contained `paper_v7_2_all_in_one.tex/.pdf` without the
+  review header, figure guide or checksum banner.
+- Correct the representative-plot overlap claim. Add the recorded honest-error
+  case, explain coincident points and confirmation after quarantine release,
+  and align honest/free-rider colours across diagrams and score figures.
+- Add four honest-only and 26 completed lower-prevalence runs separately from
+  the original 96-run study. Retain the non-IID 5% FR2–FR4 misses and the
+  single new honest removal rather than adjusting the frozen detector.
+- Add an explicitly oracle, single-cycle norm-matching feature diagnostic on
+  all 72 original FR2–FR4 initial pairs. Distinguish its certificate endpoint
+  from permanent removal and from an end-to-end attack experiment.
+- Refresh matched baselines to 81 completed pairs: 33 MNIST and 48 CIFAR-10.
+  Update associated graphs and coverage statements. Keep pending experiments
+  and remaining seed replications out of completed evidence.
+- Move full geometry grids, detailed complexity/payload tables and four
+  expanded phase algorithms to the supplement; retain the precise decision
+  equations and a complete overall main-paper procedure.
+- Reference every labeled equation, remove unused notation and review-only
+  formatting, format 6,240 correctly and rename the VeriML key to 2021.
+- Validate both modular and isolated standalone builds, 31 references,
+  219 abstract words, vector/font checks and unchanged live registered files.
+  Record current official venue/page-charge guidance separately.
+
 For each substantive revision:
 
 1. Continue editing the working `Paper/paper.tex`.

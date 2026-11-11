@@ -1,0 +1,97 @@
+\documentclass[journal]{IEEEtran}
+\usepackage{amsmath,amssymb,booktabs,array,multirow,algorithm,algpseudocode,graphicx,pgfplots,cite,xurl,placeins}
+\usepackage[hidelinks]{hyperref}
+\usepgfplotslibrary{groupplots}
+\pgfplotsset{compat=1.18}
+\definecolor{honestblue}{HTML}{2878A5}
+\definecolor{riderorange}{HTML}{D66B27}
+\definecolor{baitteal}{HTML}{187F8C}
+\definecolor{comparisongray}{HTML}{6C7078}
+\renewcommand{\thesection}{S\arabic{section}}
+\renewcommand{\thefigure}{S\arabic{figure}}
+\renewcommand{\thetable}{S\arabic{table}}
+\renewcommand{\thealgorithm}{S\arabic{algorithm}}
+\title{Supplementary Material: BaitFL}
+\author{Aashnan~Rahman}
+\begin{document}\maketitle\raggedbottom
+This document retains the detailed plots, operation-level tables and
+expanded procedures accompanying paper version 7.2. The main study
+contains 96 completed runs; the prospective review cases and the
+single-cycle norm-matching diagnostic are separate evaluations.
+
+\section{Complete Representative Score Geometry}
+Figures~\ref{fig:geometry-mnist} and~\ref{fig:geometry-cifar10} retain
+the representative round-20 grid from study seed 42. Coordinates are
+$\operatorname{asinh}$ of mean A/B norm-$z$ and profile-$z$ scores.
+Each panel contains 100 clients, with coincident points possible.
+Blue circles denote honest clients and orange triangles free riders.
+These panels show norm separation; they do not establish its universality
+across seeds, cycles or magnitude-matched fabrication. The main paper's
+honest-error figure presents a different seed selected by its observed errors.
+\input{generated/geometry_mnist.tex}
+\input{generated/geometry_cifar10.tex}
+\FloatBarrier
+
+\section{Detailed Comparison and Honest-Client Costs}
+Table~\ref{tab:method-comparison} compares published information and
+computation requirements qualitatively. It is not an empirical ranking.
+Table~\ref{tab:safety} retains all attack-level honest-client summaries.
+Fractional client counts are means across completed runs; ranges describe
+the observed integer counts in individual runs. An unresolved label
+alone does not withhold an ordinary response or renew review.
+\input{generated/method_comparison.tex}
+\input{generated/safety.tex}
+\FloatBarrier
+
+\section{Operation-Level Complexity and Payloads}
+The main paper defines $N,P,L,B,K$. Table~\ref{tab:complexity} separates
+incremental detector work from ordinary training and aggregation.
+The temporary-state bounds are implementation bounds rather than measured
+process peaks. Table~\ref{tab:payload} counts packed numerical payloads;
+Python objects, clients, attack histories and logging add overhead.
+\input{generated/complexity_detail.tex}
+\input{generated/model_payload.tex}
+\FloatBarrier
+
+\section{Expanded Published-Engine Procedures}
+Algorithms~\ref{alg:warmup}--\ref{alg:sparse} expand the four phases
+of the frozen v15.4 study engine. The main text provides the score and
+certificate equations and a compact overall procedure. Protocol settings
+are unchanged. For traceability, Algorithm~\ref{alg:sparse} retains the
+published raw-finding clock rule; Section~S5 distinguishes its corrected
+prospective implementation.
+\input{generated/supp_algorithms.tex}
+\FloatBarrier
+
+\section{Audit-Clock Trace Check}\label{app:audit-clock}
+The frozen engine restarts the quiet clock when the raw finding set
+$\mathcal F$ is empty. Audit enrollment instead uses
+$\mathcal F_{\rm elig}=\mathcal F\setminus\mathcal D$, where $\mathcal D$
+is the pre-decrement cooldown set. If all findings are in cooldown,
+the raw guard can unset the clock without opening review and thereby
+prevent later audits. The corrected review engine restarts the clock
+when no actual review or probation requires paired coverage.
+
+The guards agree on all 622 recorded audits in the 96-run study.
+There are 609 empty-finding audits. In each of the other 13, the raw
+finding count exceeds the number of active clients in cooldown, proving
+that at least one finding remains eligible. This is a trace agreement
+check, not equivalence for unobserved cooldown states. The primary
+training results were not relabeled or recomputed. Prospective honest-only
+and low-prevalence runs use the corrected guard and an independent
+registered source manifest.
+
+\section{Reproducibility and Scope of the New Diagnostic}
+The norm-matching export contains 72 round-20 FR2--FR4 cases. The analysis
+first reproduces every stored statistical certificate with the unchanged
+decision backend. It then replaces only attacker norms by the same-trap
+median honest norm while preserving the normalized tensor profile.
+Evaluation labels construct this oracle input; the detector receives no
+labels. This tests feature sensitivity under additional attacker
+information, not a complete attack execution or confirmed removal.
+The full per-case counts, completed-run inventory, queue snapshot and
+input hashes are in \path{generated/revision/}.
+
+\bibliographystyle{IEEEtran}
+\bibliography{refs}
+\end{document}

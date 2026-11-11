@@ -1,0 +1,31 @@
+{
+  "data_basis": "Complete saved paired exports; round order, values, duration means and accuracy endpoints validated against paired summaries. Available raw logs match their recorded hashes. Missing raw files cannot be rechecked from this checkout.",
+  "available_raw_logs_verified": 162,
+  "target_choice": "Illustrative thresholds selected for this analysis, not preregistered",
+  "cifar10_pairs": 48,
+  "higher_targets": "Case export retains higher targets with non-reached outcomes and observed horizon durations; no successful crossing imputed",
+  "inputs": [
+    {
+      "path": "generated/comparison/paired_trajectories.csv",
+      "sha256": "7bf26b4caca7aa9716db0800afb3559e7c7d0dd12610b3c1a9b182e9bf1404fd"
+    },
+    {
+      "path": "generated/comparison/paired_results.csv",
+      "sha256": "cfe4cc7c555ba1cd9e2d83c467268159627061af7f54fe3a09a96df7dfe5ad43"
+    },
+    {
+      "path": "generated/comparison/provenance.json",
+      "sha256": "8aa9e37b9c5739a293b511f4713e25f652fbb394304d1f1607ff1b2ed836045f"
+    }
+  ],
+  "timing_scope": "BaitFL logged round timer and no-defense component sum; different timer boundaries and host load; descriptive saved executions, not a controlled speedup benchmark",
+  "endpoint": "First round with accuracy at or above target; sum recorded round times through that round",
+  "mnist_pairs": 33,
+  "averaging": "Matched seeds within attack, then all four attacks equally",
+  "figure_targets": {
+    "cifar10": 0.7,
+    "mnist": 0.98
+  },
+  "matched_pairs": 81,
+  "missing_raw_logs": []
+}

@@ -1,0 +1,30 @@
+\begin{figure*}[tp]\centering\begin{tikzpicture}
+\begin{groupplot}[group style={group size=4 by 2,horizontal sep=0.50cm,vertical sep=1.25cm},scale only axis,width=0.207\textwidth,height=3.55cm,xmin=18,xmax=102,xtick={20,60,100},grid=major,grid style={black!8},axis line style={black!40},tick label style={font=\scriptsize},title style={font=\scriptsize},label style={font=\scriptsize},scaled ticks=false,unbounded coords=jump]
+\nextgroupplot[title={MNIST FR1},ylabel={Mean paired norm-z},xmax=102,xtick={20,60,100}]
+\addplot[honestblue,mark=o,thick,mark size=1.8pt] table[col sep=comma,x=round,y=value] {generated/comparison/norm_trend_mnist_FR1_0.csv};
+\addplot[riderorange,mark=triangle*,thick,mark size=1.8pt] table[col sep=comma,x=round,y=value] {generated/comparison/norm_trend_mnist_FR1_1.csv};
+\nextgroupplot[title={MNIST FR2},xmax=32,xtick={20,30,40}]
+\addplot[honestblue,mark=o,thick,mark size=1.8pt] table[col sep=comma,x=round,y=value] {generated/comparison/norm_trend_mnist_FR2_0.csv};
+\addplot[riderorange,mark=triangle*,thick,mark size=1.8pt] table[col sep=comma,x=round,y=value] {generated/comparison/norm_trend_mnist_FR2_1.csv};
+\nextgroupplot[title={MNIST FR3},xmax=42,xtick={20,30,40}]
+\addplot[honestblue,mark=o,thick,mark size=1.8pt] table[col sep=comma,x=round,y=value] {generated/comparison/norm_trend_mnist_FR3_0.csv};
+\addplot[riderorange,mark=triangle*,thick,mark size=1.8pt] table[col sep=comma,x=round,y=value] {generated/comparison/norm_trend_mnist_FR3_1.csv};
+\nextgroupplot[title={MNIST FR4},xmax=102,xtick={20,60,100}]
+\addplot[honestblue,mark=o,thick,mark size=1.8pt] table[col sep=comma,x=round,y=value] {generated/comparison/norm_trend_mnist_FR4_0.csv};
+\addplot[riderorange,mark=triangle*,thick,mark size=1.8pt] table[col sep=comma,x=round,y=value] {generated/comparison/norm_trend_mnist_FR4_1.csv};
+\nextgroupplot[title={CIFAR-10 FR1},ylabel={Mean paired norm-z},xlabel={Decision round},xmax=32,xtick={20,30,40}]
+\addplot[honestblue,mark=o,thick,mark size=1.8pt] table[col sep=comma,x=round,y=value] {generated/comparison/norm_trend_cifar10_FR1_0.csv};
+\addplot[riderorange,mark=triangle*,thick,mark size=1.8pt] table[col sep=comma,x=round,y=value] {generated/comparison/norm_trend_cifar10_FR1_1.csv};
+\nextgroupplot[title={CIFAR-10 FR2},xlabel={Decision round},xmax=32,xtick={20,30,40}]
+\addplot[honestblue,mark=o,thick,mark size=1.8pt] table[col sep=comma,x=round,y=value] {generated/comparison/norm_trend_cifar10_FR2_0.csv};
+\addplot[riderorange,mark=triangle*,thick,mark size=1.8pt] table[col sep=comma,x=round,y=value] {generated/comparison/norm_trend_cifar10_FR2_1.csv};
+\nextgroupplot[title={CIFAR-10 FR3},xlabel={Decision round},xmax=102,xtick={20,60,100}]
+\addplot[honestblue,mark=o,thick,mark size=1.8pt] table[col sep=comma,x=round,y=value] {generated/comparison/norm_trend_cifar10_FR3_0.csv};
+\addplot[riderorange,mark=triangle*,thick,mark size=1.8pt] table[col sep=comma,x=round,y=value] {generated/comparison/norm_trend_cifar10_FR3_1.csv};
+\nextgroupplot[title={CIFAR-10 FR4},xlabel={Decision round},xmax=62,xtick={20,40,60,80}]
+\addplot[honestblue,mark=o,thick,mark size=1.8pt] table[col sep=comma,x=round,y=value] {generated/comparison/norm_trend_cifar10_FR4_0.csv};
+\addplot[riderorange,mark=triangle*,thick,mark size=1.8pt] table[col sep=comma,x=round,y=value] {generated/comparison/norm_trend_cifar10_FR4_1.csv};
+\end{groupplot}\end{tikzpicture}
+\par\smallskip{\scriptsize\textcolor{honestblue}{$\circ$}\ Honest\qquad\textcolor{riderorange}{$\blacktriangle$}\ Free rider}
+\caption{Paired norm-z across all four attacks under non-IID data and 40\% free riders. Client scores are averaged within each seed, then across available seed means. Only finite, complete pairs are used. Contributing populations can change after removal or missing measurements. Panel scales are independent.}\label{fig:score-trends}
+\end{figure*}

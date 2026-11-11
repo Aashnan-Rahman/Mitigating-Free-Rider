@@ -1,0 +1,18 @@
+\begin{table*}[t]\centering\footnotesize\setlength{\tabcolsep}{5pt}
+\caption{Comparison with no-defense aggregation.}\label{tab:baseline}
+\begin{tabular}{llrrrrrrr}\toprule
+\multirow{2}{*}{Dataset} & \multirow{2}{*}{Partition} & \multirow{2}{*}{FR (\%)} & \multicolumn{3}{c}{Final accuracy (\%)} & \multicolumn{3}{c}{Mean round time (s)} \\
+\cmidrule(lr){4-6}\cmidrule(lr){7-9}
+& & & No defense & BaitFL & \shortstack{Difference\\(percentage points)} & No defense & BaitFL & Change (\%) \\ \midrule
+\multirow{4}{*}{MNIST} & \multirow{2}{*}{IID} & 30 & 98.92 & 98.99 & +0.07 & 44.49 & 41.64 & -6.39 \\
+ &  & 40 & 98.82 & 98.91 & +0.09 & 38.10 & 36.96 & -3.01 \\
+\cmidrule(lr){2-9}
+ & \multirow{2}{*}{Non-IID} & 30 & 98.91 & 98.94 & +0.03 & 45.46 & 41.44 & -8.84 \\
+ &  & 40 & 98.79 & 98.93 & +0.14 & 37.35 & 35.50 & -4.96 \\
+\midrule
+\multirow{4}{*}{CIFAR-10} & \multirow{2}{*}{IID} & 30 & 77.37 & 77.80 & +0.44 & 94.90 & 99.35 & +4.68 \\
+ &  & 40 & 76.31 & 77.02 & +0.71 & 81.28 & 85.35 & +5.01 \\
+\cmidrule(lr){2-9}
+ & \multirow{2}{*}{Non-IID} & 30 & 75.35 & 75.84 & +0.49 & 91.28 & 92.30 & +1.12 \\
+ &  & 40 & 73.90 & 74.69 & +0.79 & 74.52 & 77.03 & +3.37 \\
+\bottomrule\end{tabular}\end{table*}

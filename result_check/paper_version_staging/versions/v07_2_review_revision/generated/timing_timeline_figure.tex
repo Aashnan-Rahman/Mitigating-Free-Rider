@@ -1,0 +1,22 @@
+\begin{figure*}[tp]\centering\begin{tikzpicture}
+\begin{groupplot}[group style={group size=2 by 2,horizontal sep=1.1cm,vertical sep=1.5cm},width=0.44\textwidth,height=5.3cm,xmin=1,xmax=100,xtick={1,20,40,60,80,100},axis line style={black!40},grid=major,grid style={black!8},tick label style={font=\scriptsize},label style={font=\scriptsize},title style={font=\small},scaled y ticks=false]
+\nextgroupplot[title={MNIST},ymin=0,ylabel={Seconds per round}]
+\addplot[honestblue,thick] table[col sep=comma,x=round,y=bait] {generated/comparison/timing_mnist.csv};
+\addplot[riderorange,thick] table[col sep=comma,x=round,y=std] {generated/comparison/timing_mnist.csv};
+\nextgroupplot[title={CIFAR-10},ymin=0]
+\addplot[honestblue,thick] table[col sep=comma,x=round,y=bait] {generated/comparison/timing_cifar10.csv};
+\addplot[riderorange,thick] table[col sep=comma,x=round,y=std] {generated/comparison/timing_cifar10.csv};
+\nextgroupplot[title={MNIST timing difference},ylabel={STD-DAGMM minus BaitFL (s)},ymin=0,xlabel={Round},extra y ticks={0},extra y tick style={grid=major}]
+\addplot[violet!75!black,thick] table[col sep=comma,x=round,y=gap] {generated/comparison/timing_mnist.csv};
+\addplot[black!55,dashed] table[col sep=comma,x=round,y=wall_gap] {generated/comparison/timing_mnist.csv};
+\addplot[violet!75!black,densely dotted] coordinates {(1,15.341213) (100,15.341213)};
+\node[anchor=north east,font=\scriptsize,align=right,fill=white,inner sep=2pt] at (rel axis cs:0.98,0.98) {Mean computation gap: 15.34 s\\Mean elapsed gap: 21.91 s};
+\nextgroupplot[title={CIFAR-10 timing difference},xlabel={Round},extra y ticks={0},extra y tick style={grid=major}]
+\addplot[violet!75!black,thick] table[col sep=comma,x=round,y=gap] {generated/comparison/timing_cifar10.csv};
+\addplot[black!55,dashed] table[col sep=comma,x=round,y=wall_gap] {generated/comparison/timing_cifar10.csv};
+\addplot[violet!75!black,densely dotted] coordinates {(1,31.495184) (100,31.495184)};
+\node[anchor=north east,font=\scriptsize,align=right,fill=white,inner sep=2pt] at (rel axis cs:0.98,0.98) {Mean computation gap: 31.50 s\\Mean elapsed gap: 37.35 s};
+\end{groupplot}\end{tikzpicture}
+\par\smallskip{\scriptsize\textcolor{honestblue}{\rule{0.4cm}{0.8pt}}\ BaitFL\qquad\textcolor{riderorange}{\rule{0.4cm}{0.8pt}}\ STD-DAGMM\qquad\textcolor{black!55}{\textbf{-- --}}\ Elapsed-time gap}
+\caption{Round timing trajectories and their measured differences.}\label{fig:timing-traces}
+\end{figure*}

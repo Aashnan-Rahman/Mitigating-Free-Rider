@@ -1,0 +1,20 @@
+\begin{table*}[t]\centering\footnotesize\setlength{\tabcolsep}{8pt}
+\caption{Measured CIFAR-10 computation and elapsed time (s per round).}\label{tab:std-segments-cifar10}
+\begin{tabular}{lrr}\toprule Stage & BaitFL & STD-DAGMM \\ \midrule
+Honest training & 81.371 $\pm$ 5.399 & 72.423 $\pm$ 3.676 \\
+Fabricated responses & 0.1883 $\pm$ 0.1718 & 0.2240 $\pm$ 0.0223 \\
+Client evaluation & 0.8993 $\pm$ 0.7525 & 0.000 $\pm$ 0.000 \\
+Trap construction & 0.0173 $\pm$ 0.0556 & 0.000 $\pm$ 0.000 \\
+Scheduling & 0.000935 $\pm$ 0.005170 & 0.000 $\pm$ 0.000 \\
+Features and preparation & 0.7294 $\pm$ 0.1792 & 0.1151 $\pm$ 0.0116 \\
+Detector fitting & 0.000 $\pm$ 0.000 & 42.090 $\pm$ 1.868 \\
+Decisions and scoring & 0.0434 $\pm$ 0.1455 & 0.8273 $\pm$ 0.0570 \\
+Aggregation & 0.0964 $\pm$ 0.0387 & 0.1362 $\pm$ 0.0141 \\
+Global evaluation & 5.212 $\pm$ 0.437 & 4.238 $\pm$ 0.203 \\
+\midrule
+Logging and checkpoints & 11.339 $\pm$ 1.793 & 9.756 $\pm$ 1.304 \\
+Unassigned and harness & 0.0543 $\pm$ 0.0435 & 7.490 $\pm$ 2.077 \\
+\midrule
+Total computation & 88.559 $\pm$ 6.228 & 120.054 $\pm$ 5.152 \\
+Elapsed round time & 99.952 $\pm$ 6.318 & 137.300 $\pm$ 5.372 \\
+\bottomrule\end{tabular}\end{table*}

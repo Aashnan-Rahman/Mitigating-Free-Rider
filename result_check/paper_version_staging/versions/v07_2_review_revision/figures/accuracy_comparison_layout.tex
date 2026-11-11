@@ -1,0 +1,30 @@
+\begin{figure*}[t]\centering\begin{tikzpicture}
+\begin{groupplot}[group style={group size=4 by 2,horizontal sep=0.7cm,vertical sep=1.1cm},scale only axis,width=0.195\textwidth,height=0.195\textwidth,xmin=20,xmax=100,xtick={20,60,100},grid=major,grid style={black!8},axis line style={black!45},tick label style={font=\scriptsize},title style={font=\small},label style={font=\scriptsize},scaled ticks=false,yticklabel style={/pgf/number format/fixed,/pgf/number format/precision=1}]
+\nextgroupplot[title={MNIST, 30\% IID},ymin=97.14750,ymax=99.04583,ylabel={Test accuracy (\%)}]
+\addplot[stdorange,dashed,thick,mark=square*,mark size=1pt,mark repeat=10] table[col sep=comma,x=round,y=accuracy] {generated/comparison/accuracy_all_baseline_mnist_iid_30.csv};
+\addplot[baitteal,thick,mark=*,mark size=1pt,mark repeat=10] table[col sep=comma,x=round,y=accuracy] {generated/comparison/accuracy_all_bait_mnist_iid_30.csv};
+\nextgroupplot[title={MNIST, 30\% non-IID},ymin=97.14750,ymax=99.04583,yticklabels=\empty]
+\addplot[stdorange,dashed,thick,mark=square*,mark size=1pt,mark repeat=10] table[col sep=comma,x=round,y=accuracy] {generated/comparison/accuracy_all_baseline_mnist_noniid_30.csv};
+\addplot[baitteal,thick,mark=*,mark size=1pt,mark repeat=10] table[col sep=comma,x=round,y=accuracy] {generated/comparison/accuracy_all_bait_mnist_noniid_30.csv};
+\nextgroupplot[title={MNIST, 40\% IID},ymin=97.14750,ymax=99.04583,yticklabels=\empty]
+\addplot[stdorange,dashed,thick,mark=square*,mark size=1pt,mark repeat=10] table[col sep=comma,x=round,y=accuracy] {generated/comparison/accuracy_all_baseline_mnist_iid_40.csv};
+\addplot[baitteal,thick,mark=*,mark size=1pt,mark repeat=10] table[col sep=comma,x=round,y=accuracy] {generated/comparison/accuracy_all_bait_mnist_iid_40.csv};
+\nextgroupplot[title={MNIST, 40\% non-IID},ymin=97.14750,ymax=99.04583,yticklabels=\empty]
+\addplot[stdorange,dashed,thick,mark=square*,mark size=1pt,mark repeat=10] table[col sep=comma,x=round,y=accuracy] {generated/comparison/accuracy_all_baseline_mnist_noniid_40.csv};
+\addplot[baitteal,thick,mark=*,mark size=1pt,mark repeat=10] table[col sep=comma,x=round,y=accuracy] {generated/comparison/accuracy_all_bait_mnist_noniid_40.csv};
+\nextgroupplot[title={CIFAR-10, 30\% IID},ymin=62.66000,ymax=78.10583,ylabel={Test accuracy (\%)},xlabel={Round}]
+\addplot[stdorange,dashed,thick,mark=square*,mark size=1pt,mark repeat=10] table[col sep=comma,x=round,y=accuracy] {generated/comparison/accuracy_all_baseline_cifar10_iid_30.csv};
+\addplot[baitteal,thick,mark=*,mark size=1pt,mark repeat=10] table[col sep=comma,x=round,y=accuracy] {generated/comparison/accuracy_all_bait_cifar10_iid_30.csv};
+\nextgroupplot[title={CIFAR-10, 30\% non-IID},ymin=62.66000,ymax=78.10583,yticklabels=\empty,xlabel={Round}]
+\addplot[stdorange,dashed,thick,mark=square*,mark size=1pt,mark repeat=10] table[col sep=comma,x=round,y=accuracy] {generated/comparison/accuracy_all_baseline_cifar10_noniid_30.csv};
+\addplot[baitteal,thick,mark=*,mark size=1pt,mark repeat=10] table[col sep=comma,x=round,y=accuracy] {generated/comparison/accuracy_all_bait_cifar10_noniid_30.csv};
+\nextgroupplot[title={CIFAR-10, 40\% IID},ymin=62.66000,ymax=78.10583,yticklabels=\empty,xlabel={Round}]
+\addplot[stdorange,dashed,thick,mark=square*,mark size=1pt,mark repeat=10] table[col sep=comma,x=round,y=accuracy] {generated/comparison/accuracy_all_baseline_cifar10_iid_40.csv};
+\addplot[baitteal,thick,mark=*,mark size=1pt,mark repeat=10] table[col sep=comma,x=round,y=accuracy] {generated/comparison/accuracy_all_bait_cifar10_iid_40.csv};
+\nextgroupplot[title={CIFAR-10, 40\% non-IID},ymin=62.66000,ymax=78.10583,yticklabels=\empty,xlabel={Round}]
+\addplot[stdorange,dashed,thick,mark=square*,mark size=1pt,mark repeat=10] table[col sep=comma,x=round,y=accuracy] {generated/comparison/accuracy_all_baseline_cifar10_noniid_40.csv};
+\addplot[baitteal,thick,mark=*,mark size=1pt,mark repeat=10] table[col sep=comma,x=round,y=accuracy] {generated/comparison/accuracy_all_bait_cifar10_noniid_40.csv};
+\end{groupplot}\end{tikzpicture}
+\par\smallskip{\small\textcolor{baitteal}{\rule{0.4cm}{0.8pt}}\ BaitFL\qquad\textcolor{stdorange}{-- --}\ No defense}
+\caption{Mean global test accuracy during training. BaitFL uses three replications per setting. No-defense coverage is one replication per setting on MNIST and two to three on CIFAR-10.}\label{fig:accuracy-comparison}
+\end{figure*}

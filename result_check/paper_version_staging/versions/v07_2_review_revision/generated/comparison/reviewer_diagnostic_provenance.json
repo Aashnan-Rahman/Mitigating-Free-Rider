@@ -1,0 +1,40 @@
+{
+  "window": "Initial paired cycle, rounds 11-20",
+  "unit": "Per-client mean norm within ordinary/challenge condition, then asinh transform",
+  "inputs": [
+    {
+      "path": "results/v15_4_mnist_seed42_fr40/v15_4_mnist_noniid_FR1_seed42/client_metrics.csv",
+      "sha256": "28e7087c8f7b7d464c6075fa0e278f6cb9b16a624975d216d30be1efaea2b8d8"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr40/v15_4_mnist_noniid_FR2_seed42/client_metrics.csv",
+      "sha256": "680e7bbfe2be2aad428bb296db6bb17ec7af47c01e7367c7b0c1a4314dc70782"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr40/v15_4_mnist_noniid_FR3_seed42/client_metrics.csv",
+      "sha256": "113cc27c0f5faa659e76dfcf44c7e10b895071d157aff38e0490aafc1b60d4c2"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr40/v15_4_mnist_noniid_FR4_seed42/client_metrics.csv",
+      "sha256": "9c1d81a4a618cb71ff7294958ba4f9469733c4cf74d962d2b761da536137be80"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_noniid_FR1_seed42/client_metrics.csv",
+      "sha256": "37dbc4ed653fb5ef905c83daeffd8100bec42b3e520baafcb4056f0ccd46e999"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_noniid_FR2_seed42/client_metrics.csv",
+      "sha256": "42ee963a88443524c3217af1cbcb6c30b636d248063dc08b9a8f59dfbc32d8d4"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_noniid_FR3_seed42/client_metrics.csv",
+      "sha256": "445cfb70d04beb4e61b990284ba6065467fa6f72649bfc21034d2fcd2b63aae6"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_noniid_FR4_seed42/client_metrics.csv",
+      "sha256": "22271aef325e2a916f19d78cf2dc2b638c88ef774ed7fd25742d7112a3edbe2a"
+    }
+  ],
+  "selection": "Non-IID, 40%, seed 42, both datasets and all four attacks",
+  "caveat": "Different starting states and round positions; observational, not a matched ablation"
+}
