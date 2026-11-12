@@ -2,10 +2,10 @@
   "auto_resume": true,
   "workflow": "v15_detection",
   "plan": "configs/review2_01_honest_seed42.json",
-  "queue": "configs/review2_priority_queue.json",
+  "queue": "configs/review3_priority_queue.json",
   "cpu_threads": 6,
   "auto_update_paper": false,
-  "description": "5 November 2026: frozen review priorities. Honest-only and low-share first, passive ablation, oracle, published attacks. Existing matched-baseline replications and five held-out seeds last. Preserve v15.4 records and checkpoint recovery.",
+  "description": "12 November 2026 amendment: finish registered low-share/passive, isolated analyses and separate Block B, published attacks, oracle/baselines, all registered held-out seeds last. No original detector/source/plan changes.",
   "priority_handoff": {
     "marker_content": "Owned priority handoff: review2_20261105; finish current experiment, defer remaining replication runs.",
     "marker_path": "results/fedavg_mnist_baseline_seed43_fr30_fr40/STOP_REQUESTED"

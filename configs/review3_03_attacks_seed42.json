@@ -1,0 +1,130 @@
+{
+  "workflow": "review2",
+  "batch_name": "review3_03_attacks_seed42",
+  "results_root": "results",
+  "defaults": {
+    "methodology_version": "swtcp_v15_4",
+    "dataset": "mnist",
+    "num_clients": 100,
+    "num_rounds": 100,
+    "warmup_rounds": 10,
+    "surveillance_groups": 10,
+    "v15_cycle_rounds": 10,
+    "v15_audit_interval_rounds": 10,
+    "v15_candidate_review_cycles": 2,
+    "v15_candidate_cooldown_audits": 2,
+    "cycle_strong_cycles_for_removal": 2,
+    "cycle_suspect_clean_cycles": 2,
+    "cycle_candidate_clean_cycles": 2,
+    "cycle_reference_probation_cycles": 1,
+    "free_rider_pct": 0.4,
+    "device": "cpu",
+    "save_checkpoints": true,
+    "checkpoint_keep_last": 2,
+    "seed": 42,
+    "num_workers": 0,
+    "local_epochs": 3,
+    "download_data": false,
+    "detector_arm": "combined",
+    "unperturbed_challenges": false
+  },
+  "description": "Full-model attacks. Oracle norm matching receives previous-round honest median scale as explicit extra adversarial information. Mixed fixed balanced FR1-4 assignments. No labels enter detector.",
+  "experiments": [
+    {
+      "id": "mnist_noniid_OracleNormMatchedFR4_combined_fr40",
+      "variant": "paired",
+      "config": {
+        "dataset": "mnist",
+        "distribution": "noniid",
+        "attack_type": "OracleNormMatchedFR4",
+        "detector_arm": "combined",
+        "free_rider_pct": 0.4,
+        "seed": 42
+      }
+    },
+    {
+      "id": "mnist_iid_OracleNormMatchedFR4_combined_fr40",
+      "variant": "paired",
+      "config": {
+        "dataset": "mnist",
+        "distribution": "iid",
+        "attack_type": "OracleNormMatchedFR4",
+        "detector_arm": "combined",
+        "free_rider_pct": 0.4,
+        "seed": 42
+      }
+    },
+    {
+      "id": "cifar10_noniid_OracleNormMatchedFR4_combined_fr40",
+      "variant": "paired",
+      "config": {
+        "dataset": "cifar10",
+        "distribution": "noniid",
+        "attack_type": "OracleNormMatchedFR4",
+        "detector_arm": "combined",
+        "free_rider_pct": 0.4,
+        "seed": 42
+      }
+    },
+    {
+      "id": "cifar10_iid_OracleNormMatchedFR4_combined_fr40",
+      "variant": "paired",
+      "config": {
+        "dataset": "cifar10",
+        "distribution": "iid",
+        "attack_type": "OracleNormMatchedFR4",
+        "detector_arm": "combined",
+        "free_rider_pct": 0.4,
+        "seed": 42
+      }
+    },
+    {
+      "id": "mnist_noniid_MixedFR_combined_fr40",
+      "variant": "paired",
+      "config": {
+        "dataset": "mnist",
+        "distribution": "noniid",
+        "attack_type": "MixedFR",
+        "detector_arm": "combined",
+        "free_rider_pct": 0.4,
+        "seed": 42
+      }
+    },
+    {
+      "id": "mnist_iid_MixedFR_combined_fr40",
+      "variant": "paired",
+      "config": {
+        "dataset": "mnist",
+        "distribution": "iid",
+        "attack_type": "MixedFR",
+        "detector_arm": "combined",
+        "free_rider_pct": 0.4,
+        "seed": 42
+      }
+    },
+    {
+      "id": "cifar10_noniid_MixedFR_combined_fr40",
+      "variant": "paired",
+      "config": {
+        "dataset": "cifar10",
+        "distribution": "noniid",
+        "attack_type": "MixedFR",
+        "detector_arm": "combined",
+        "free_rider_pct": 0.4,
+        "seed": 42
+      }
+    },
+    {
+      "id": "cifar10_iid_MixedFR_combined_fr40",
+      "variant": "paired",
+      "config": {
+        "dataset": "cifar10",
+        "distribution": "iid",
+        "attack_type": "MixedFR",
+        "detector_arm": "combined",
+        "free_rider_pct": 0.4,
+        "seed": 42
+      }
+    }
+  ]
+}

@@ -33,3 +33,14 @@
 /data/loaders.py -text whitespace=cr-at-eol
 /data/partition.py -text whitespace=cr-at-eol
 /models/architectures.py -text whitespace=cr-at-eol
+
+# Separate prospective Block B hashes must also survive Windows checkout.
+/train_review3.py -text whitespace=cr-at-eol
+/review3_config.py -text whitespace=cr-at-eol
+/run_review3_batch.py -text whitespace=cr-at-eol
+/review3_analysis.py -text whitespace=cr-at-eol
+/run_lin_std_validation.py -text
+/build_review3_plans.py -text whitespace=cr-at-eol
+/clients/review3_attacks.py -text whitespace=cr-at-eol
+/server/review3_ablation.py -text whitespace=cr-at-eol
+/configs/review3_*.json -text whitespace=cr-at-eol

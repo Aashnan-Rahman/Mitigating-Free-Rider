@@ -43,3 +43,4 @@ previous_checkpoint.pt
 
 # New review batches stay local until each completed phase is validated.
 /results/review2_*/
+/results/review3_*/

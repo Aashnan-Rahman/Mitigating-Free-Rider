@@ -486,3 +486,25 @@ python monitor.py --status results/cifar10_fr30_seeds42_43/experiment_status.jso
 
 It is included in `resume_experiments.ps1`, so the boot-triggered scheduled task
 continues it from its latest completed-round checkpoint after a restart.
+
+## Registered review amendment (12 November 2026)
+
+The experiment branch uses `configs/review3_priority_queue.json` through
+`configs/active_experiment_schedule.json`. See `REVIEW3_AMENDMENT_20261112.md`
+for the unchanged registered phases, separate Block B, fixed metrics and limits.
+`run_review3_batch.py` supervises original workers without changing their source
+hashes or checkpoints. The original `run_review2_batch.py` remains frozen.
+
+The saved Windows recovery task runs at startup, login and every five minutes.
+Watch automatically follows the amended queue:
+
+```powershell
+& ([scriptblock]::Create((Get-Content ./check_status.txt -Raw))) -Once
+```
+
+Operational memory headroom is configured independently in
+`configs/review3_resources.json`: .75 GiB MNIST, 1 GiB CIFAR-10. These launch
+safeguards are not detector thresholds or measured dataset requirements.
+Paper changes stay on `v15.4-paper-version`; leave this checkout on the experiment
+branch for its recovery launcher. Do not alter a registered source to repair an
+unfinished run. Use a separate amendment/version when scientific behavior changes.

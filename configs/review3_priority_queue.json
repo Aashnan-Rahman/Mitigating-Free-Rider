@@ -1,0 +1,29 @@
+{
+  "description": "12 November amendment; unchanged low-share/passive first; separate Block B; held-out block intact and last.",
+  "plans": [
+    "configs/review2_01_honest_seed42.json",
+    "configs/review2_02_low_share_seed42.json",
+    "configs/review2_03_passive_seed42.json",
+    "configs/review3_00_analysis_seed42.json",
+    "configs/review3_00b_lin_validation_seed42.json",
+    "configs/review3_01_perturbation_control_seed42.json",
+    "configs/review3_02_components_seed42.json",
+    "configs/review2_05_published_attacks_seed42.json",
+    "configs/review3_03_attacks_seed42.json",
+    "configs/review3_04_heterogeneity_seed42.json",
+    "configs/review3_05_gamma_sweep_seed42.json",
+    "configs/review2_04_oracle_seed42.json",
+    "configs/fedavg_mnist_baseline_seed73_fr30_fr40.json",
+    "configs/fedavg_mnist_baseline_seed43_fr30_fr40.json",
+    "configs/review2_06_heldout_multiseed_last.json"
+  ],
+  "primary_seed": 42,
+  "heldout_seeds": [
+    101,
+    103,
+    107,
+    109,
+    113
+  ],
+  "freeze": "Original registered sources/plans unchanged; Block B has separate hashes. Optional WEF reproductions not scheduled."
+}

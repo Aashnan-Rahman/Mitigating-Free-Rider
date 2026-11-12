@@ -1,0 +1,46 @@
+{
+  "workflow": "review2",
+  "batch_name": "review3_00_analysis_seed42",
+  "results_root": "results",
+  "defaults": {
+    "methodology_version": "swtcp_v15_4",
+    "dataset": "mnist",
+    "num_clients": 100,
+    "num_rounds": 100,
+    "warmup_rounds": 10,
+    "surveillance_groups": 10,
+    "v15_cycle_rounds": 10,
+    "v15_audit_interval_rounds": 10,
+    "v15_candidate_review_cycles": 2,
+    "v15_candidate_cooldown_audits": 2,
+    "cycle_strong_cycles_for_removal": 2,
+    "cycle_suspect_clean_cycles": 2,
+    "cycle_candidate_clean_cycles": 2,
+    "cycle_reference_probation_cycles": 1,
+    "free_rider_pct": 0.4,
+    "device": "cpu",
+    "save_checkpoints": true,
+    "checkpoint_keep_last": 2,
+    "seed": 42,
+    "num_workers": 0,
+    "local_epochs": 3,
+    "download_data": false,
+    "detector_arm": "combined",
+    "unperturbed_challenges": false
+  },
+  "description": "Isolated synthetic detector scaling, round-20 passive/active AUROC and nominal-alpha MAD diagnostics; numerical STD-DAGMM smoke check, not author-setting replication.",
+  "experiments": [
+    {
+      "id": "metrics_scaling_and_std_checks",
+      "variant": "paired",
+      "config": {
+        "dataset": "analysis",
+        "distribution": "synthetic",
+        "attack_type": "analysis",
+        "free_rider_pct": 0.0,
+        "num_rounds": 1
+      }
+    }
+  ],
+  "analysis_job": true
+}

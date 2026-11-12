@@ -1,0 +1,802 @@
+{
+  "workflow": "review2",
+  "batch_name": "review3_02_components_seed42",
+  "results_root": "results",
+  "defaults": {
+    "methodology_version": "swtcp_v15_4",
+    "dataset": "mnist",
+    "num_clients": 100,
+    "num_rounds": 100,
+    "warmup_rounds": 10,
+    "surveillance_groups": 10,
+    "v15_cycle_rounds": 10,
+    "v15_audit_interval_rounds": 10,
+    "v15_candidate_review_cycles": 2,
+    "v15_candidate_cooldown_audits": 2,
+    "cycle_strong_cycles_for_removal": 2,
+    "cycle_suspect_clean_cycles": 2,
+    "cycle_candidate_clean_cycles": 2,
+    "cycle_reference_probation_cycles": 1,
+    "free_rider_pct": 0.4,
+    "device": "cpu",
+    "save_checkpoints": true,
+    "checkpoint_keep_last": 2,
+    "seed": 42,
+    "num_workers": 0,
+    "local_epochs": 3,
+    "download_data": false,
+    "detector_arm": "combined",
+    "unperturbed_challenges": false
+  },
+  "description": "Independent reruns. Norm/profile arms neutralize the other nomination view and disable exact sendback. No-memory requires adjacent same-component certificates; never single-cycle removal.",
+  "experiments": [
+    {
+      "id": "mnist_noniid_FR1_norm_only_fr40",
+      "variant": "paired",
+      "config": {
+        "dataset": "mnist",
+        "distribution": "noniid",
+        "attack_type": "FR1",
+        "detector_arm": "norm_only",
+        "free_rider_pct": 0.4,
+        "seed": 42
+      }
+    },
+    {
+      "id": "mnist_noniid_FR2_norm_only_fr40",
+      "variant": "paired",
+      "config": {
+        "dataset": "mnist",
+        "distribution": "noniid",
+        "attack_type": "FR2",
+        "detector_arm": "norm_only",
+        "free_rider_pct": 0.4,
+        "seed": 42
+      }
+    },
+    {
+      "id": "mnist_noniid_FR3_norm_only_fr40",
+      "variant": "paired",
+      "config": {
+        "dataset": "mnist",
+        "distribution": "noniid",
+        "attack_type": "FR3",
+        "detector_arm": "norm_only",
+        "free_rider_pct": 0.4,
+        "seed": 42
+      }
+    },
+    {
+      "id": "mnist_noniid_FR4_norm_only_fr40",
+      "variant": "paired",
+      "config": {
+        "dataset": "mnist",
+        "distribution": "noniid",
+        "attack_type": "FR4",
+        "detector_arm": "norm_only",
+        "free_rider_pct": 0.4,
+        "seed": 42
+      }
+    },
+    {
+      "id": "mnist_iid_FR1_norm_only_fr40",
+      "variant": "paired",
+      "config": {
+        "dataset": "mnist",
+        "distribution": "iid",
+        "attack_type": "FR1",
+        "detector_arm": "norm_only",
+        "free_rider_pct": 0.4,
+        "seed": 42
+      }
+    },
+    {
+      "id": "mnist_iid_FR2_norm_only_fr40",
+      "variant": "paired",
+      "config": {
+        "dataset": "mnist",
+        "distribution": "iid",
+        "attack_type": "FR2",
+        "detector_arm": "norm_only",
+        "free_rider_pct": 0.4,
+        "seed": 42
+      }
+    },
+    {
+      "id": "mnist_iid_FR3_norm_only_fr40",
+      "variant": "paired",
+      "config": {
+        "dataset": "mnist",
+        "distribution": "iid",
+        "attack_type": "FR3",
+        "detector_arm": "norm_only",
+        "free_rider_pct": 0.4,
+        "seed": 42
+      }
+    },
+    {
+      "id": "mnist_iid_FR4_norm_only_fr40",
+      "variant": "paired",
+      "config": {
+        "dataset": "mnist",
+        "distribution": "iid",
+        "attack_type": "FR4",
+        "detector_arm": "norm_only",
+        "free_rider_pct": 0.4,
+        "seed": 42
+      }
+    },
+    {
+      "id": "cifar10_noniid_FR1_norm_only_fr40",
+      "variant": "paired",
+      "config": {
+        "dataset": "cifar10",
+        "distribution": "noniid",
+        "attack_type": "FR1",
+        "detector_arm": "norm_only",
+        "free_rider_pct": 0.4,
+        "seed": 42
+      }
+    },
+    {
+      "id": "cifar10_noniid_FR2_norm_only_fr40",
+      "variant": "paired",
+      "config": {
+        "dataset": "cifar10",
+        "distribution": "noniid",
+        "attack_type": "FR2",
+        "detector_arm": "norm_only",
+        "free_rider_pct": 0.4,
+        "seed": 42
+      }
+    },
+    {
+      "id": "cifar10_noniid_FR3_norm_only_fr40",
+      "variant": "paired",
+      "config": {
+        "dataset": "cifar10",
+        "distribution": "noniid",
+        "attack_type": "FR3",
+        "detector_arm": "norm_only",
+        "free_rider_pct": 0.4,
+        "seed": 42
+      }
+    },
+    {
+      "id": "cifar10_noniid_FR4_norm_only_fr40",
+      "variant": "paired",
+      "config": {
+        "dataset": "cifar10",
+        "distribution": "noniid",
+        "attack_type": "FR4",
+        "detector_arm": "norm_only",
+        "free_rider_pct": 0.4,
+        "seed": 42
+      }
+    },
+    {
+      "id": "cifar10_iid_FR1_norm_only_fr40",
+      "variant": "paired",
+      "config": {
+        "dataset": "cifar10",
+        "distribution": "iid",
+        "attack_type": "FR1",
+        "detector_arm": "norm_only",
+        "free_rider_pct": 0.4,
+        "seed": 42
+      }
+    },
+    {
+      "id": "cifar10_iid_FR2_norm_only_fr40",
+      "variant": "paired",
+      "config": {
+        "dataset": "cifar10",
+        "distribution": "iid",
+        "attack_type": "FR2",
+        "detector_arm": "norm_only",
+        "free_rider_pct": 0.4,
+        "seed": 42
+      }
+    },
+    {
+      "id": "cifar10_iid_FR3_norm_only_fr40",
+      "variant": "paired",
+      "config": {
+        "dataset": "cifar10",
+        "distribution": "iid",
+        "attack_type": "FR3",
+        "detector_arm": "norm_only",
+        "free_rider_pct": 0.4,
+        "seed": 42
+      }
+    },
+    {
+      "id": "cifar10_iid_FR4_norm_only_fr40",
+      "variant": "paired",
+      "config": {
+        "dataset": "cifar10",
+        "distribution": "iid",
+        "attack_type": "FR4",
+        "detector_arm": "norm_only",
+        "free_rider_pct": 0.4,
+        "seed": 42
+      }
+    },
+    {
+      "id": "mnist_noniid_FR1_profile_only_fr40",
+      "variant": "paired",
+      "config": {
+        "dataset": "mnist",
+        "distribution": "noniid",
+        "attack_type": "FR1",
+        "detector_arm": "profile_only",
+        "free_rider_pct": 0.4,
+        "seed": 42
+      }
+    },
+    {
+      "id": "mnist_noniid_FR2_profile_only_fr40",
+      "variant": "paired",
+      "config": {
+        "dataset": "mnist",
+        "distribution": "noniid",
+        "attack_type": "FR2",
+        "detector_arm": "profile_only",
+        "free_rider_pct": 0.4,
+        "seed": 42
+      }
+    },
+    {
+      "id": "mnist_noniid_FR3_profile_only_fr40",
+      "variant": "paired",
+      "config": {
+        "dataset": "mnist",
+        "distribution": "noniid",
+        "attack_type": "FR3",
+        "detector_arm": "profile_only",
+        "free_rider_pct": 0.4,
+        "seed": 42
+      }
+    },
+    {
+      "id": "mnist_noniid_FR4_profile_only_fr40",
+      "variant": "paired",
+      "config": {
+        "dataset": "mnist",
+        "distribution": "noniid",
+        "attack_type": "FR4",
+        "detector_arm": "profile_only",
+        "free_rider_pct": 0.4,
+        "seed": 42
+      }
+    },
+    {
+      "id": "mnist_iid_FR1_profile_only_fr40",
+      "variant": "paired",
+      "config": {
+        "dataset": "mnist",
+        "distribution": "iid",
+        "attack_type": "FR1",
+        "detector_arm": "profile_only",
+        "free_rider_pct": 0.4,
+        "seed": 42
+      }
+    },
+    {
+      "id": "mnist_iid_FR2_profile_only_fr40",
+      "variant": "paired",
+      "config": {
+        "dataset": "mnist",
+        "distribution": "iid",
+        "attack_type": "FR2",
+        "detector_arm": "profile_only",
+        "free_rider_pct": 0.4,
+        "seed": 42
+      }
+    },
+    {
+      "id": "mnist_iid_FR3_profile_only_fr40",
+      "variant": "paired",
+      "config": {
+        "dataset": "mnist",
+        "distribution": "iid",
+        "attack_type": "FR3",
+        "detector_arm": "profile_only",
+        "free_rider_pct": 0.4,
+        "seed": 42
+      }
+    },
+    {
+      "id": "mnist_iid_FR4_profile_only_fr40",
+      "variant": "paired",
+      "config": {
+        "dataset": "mnist",
+        "distribution": "iid",
+        "attack_type": "FR4",
+        "detector_arm": "profile_only",
+        "free_rider_pct": 0.4,
+        "seed": 42
+      }
+    },
+    {
+      "id": "cifar10_noniid_FR1_profile_only_fr40",
+      "variant": "paired",
+      "config": {
+        "dataset": "cifar10",
+        "distribution": "noniid",
+        "attack_type": "FR1",
+        "detector_arm": "profile_only",
+        "free_rider_pct": 0.4,
+        "seed": 42
+      }
+    },
+    {
+      "id": "cifar10_noniid_FR2_profile_only_fr40",
+      "variant": "paired",
+      "config": {
+        "dataset": "cifar10",
+        "distribution": "noniid",
+        "attack_type": "FR2",
+        "detector_arm": "profile_only",
+        "free_rider_pct": 0.4,
+        "seed": 42
+      }
+    },
+    {
+      "id": "cifar10_noniid_FR3_profile_only_fr40",
+      "variant": "paired",
+      "config": {
+        "dataset": "cifar10",
+        "distribution": "noniid",
+        "attack_type": "FR3",
+        "detector_arm": "profile_only",
+        "free_rider_pct": 0.4,
+        "seed": 42
+      }
+    },
+    {
+      "id": "cifar10_noniid_FR4_profile_only_fr40",
+      "variant": "paired",
+      "config": {
+        "dataset": "cifar10",
+        "distribution": "noniid",
+        "attack_type": "FR4",
+        "detector_arm": "profile_only",
+        "free_rider_pct": 0.4,
+        "seed": 42
+      }
+    },
+    {
+      "id": "cifar10_iid_FR1_profile_only_fr40",
+      "variant": "paired",
+      "config": {
+        "dataset": "cifar10",
+        "distribution": "iid",
+        "attack_type": "FR1",
+        "detector_arm": "profile_only",
+        "free_rider_pct": 0.4,
+        "seed": 42
+      }
+    },
+    {
+      "id": "cifar10_iid_FR2_profile_only_fr40",
+      "variant": "paired",
+      "config": {
+        "dataset": "cifar10",
+        "distribution": "iid",
+        "attack_type": "FR2",
+        "detector_arm": "profile_only",
+        "free_rider_pct": 0.4,
+        "seed": 42
+      }
+    },
+    {
+      "id": "cifar10_iid_FR3_profile_only_fr40",
+      "variant": "paired",
+      "config": {
+        "dataset": "cifar10",
+        "distribution": "iid",
+        "attack_type": "FR3",
+        "detector_arm": "profile_only",
+        "free_rider_pct": 0.4,
+        "seed": 42
+      }
+    },
+    {
+      "id": "cifar10_iid_FR4_profile_only_fr40",
+      "variant": "paired",
+      "config": {
+        "dataset": "cifar10",
+        "distribution": "iid",
+        "attack_type": "FR4",
+        "detector_arm": "profile_only",
+        "free_rider_pct": 0.4,
+        "seed": 42
+      }
+    },
+    {
+      "id": "mnist_noniid_FR1_sendback_only_fr40",
+      "variant": "paired",
+      "config": {
+        "dataset": "mnist",
+        "distribution": "noniid",
+        "attack_type": "FR1",
+        "detector_arm": "sendback_only",
+        "free_rider_pct": 0.4,
+        "seed": 42
+      }
+    },
+    {
+      "id": "mnist_noniid_FR2_sendback_only_fr40",
+      "variant": "paired",
+      "config": {
+        "dataset": "mnist",
+        "distribution": "noniid",
+        "attack_type": "FR2",
+        "detector_arm": "sendback_only",
+        "free_rider_pct": 0.4,
+        "seed": 42
+      }
+    },
+    {
+      "id": "mnist_noniid_FR3_sendback_only_fr40",
+      "variant": "paired",
+      "config": {
+        "dataset": "mnist",
+        "distribution": "noniid",
+        "attack_type": "FR3",
+        "detector_arm": "sendback_only",
+        "free_rider_pct": 0.4,
+        "seed": 42
+      }
+    },
+    {
+      "id": "mnist_noniid_FR4_sendback_only_fr40",
+      "variant": "paired",
+      "config": {
+        "dataset": "mnist",
+        "distribution": "noniid",
+        "attack_type": "FR4",
+        "detector_arm": "sendback_only",
+        "free_rider_pct": 0.4,
+        "seed": 42
+      }
+    },
+    {
+      "id": "mnist_iid_FR1_sendback_only_fr40",
+      "variant": "paired",
+      "config": {
+        "dataset": "mnist",
+        "distribution": "iid",
+        "attack_type": "FR1",
+        "detector_arm": "sendback_only",
+        "free_rider_pct": 0.4,
+        "seed": 42
+      }
+    },
+    {
+      "id": "mnist_iid_FR2_sendback_only_fr40",
+      "variant": "paired",
+      "config": {
+        "dataset": "mnist",
+        "distribution": "iid",
+        "attack_type": "FR2",
+        "detector_arm": "sendback_only",
+        "free_rider_pct": 0.4,
+        "seed": 42
+      }
+    },
+    {
+      "id": "mnist_iid_FR3_sendback_only_fr40",
+      "variant": "paired",
+      "config": {
+        "dataset": "mnist",
+        "distribution": "iid",
+        "attack_type": "FR3",
+        "detector_arm": "sendback_only",
+        "free_rider_pct": 0.4,
+        "seed": 42
+      }
+    },
+    {
+      "id": "mnist_iid_FR4_sendback_only_fr40",
+      "variant": "paired",
+      "config": {
+        "dataset": "mnist",
+        "distribution": "iid",
+        "attack_type": "FR4",
+        "detector_arm": "sendback_only",
+        "free_rider_pct": 0.4,
+        "seed": 42
+      }
+    },
+    {
+      "id": "cifar10_noniid_FR1_sendback_only_fr40",
+      "variant": "paired",
+      "config": {
+        "dataset": "cifar10",
+        "distribution": "noniid",
+        "attack_type": "FR1",
+        "detector_arm": "sendback_only",
+        "free_rider_pct": 0.4,
+        "seed": 42
+      }
+    },
+    {
+      "id": "cifar10_noniid_FR2_sendback_only_fr40",
+      "variant": "paired",
+      "config": {
+        "dataset": "cifar10",
+        "distribution": "noniid",
+        "attack_type": "FR2",
+        "detector_arm": "sendback_only",
+        "free_rider_pct": 0.4,
+        "seed": 42
+      }
+    },
+    {
+      "id": "cifar10_noniid_FR3_sendback_only_fr40",
+      "variant": "paired",
+      "config": {
+        "dataset": "cifar10",
+        "distribution": "noniid",
+        "attack_type": "FR3",
+        "detector_arm": "sendback_only",
+        "free_rider_pct": 0.4,
+        "seed": 42
+      }
+    },
+    {
+      "id": "cifar10_noniid_FR4_sendback_only_fr40",
+      "variant": "paired",
+      "config": {
+        "dataset": "cifar10",
+        "distribution": "noniid",
+        "attack_type": "FR4",
+        "detector_arm": "sendback_only",
+        "free_rider_pct": 0.4,
+        "seed": 42
+      }
+    },
+    {
+      "id": "cifar10_iid_FR1_sendback_only_fr40",
+      "variant": "paired",
+      "config": {
+        "dataset": "cifar10",
+        "distribution": "iid",
+        "attack_type": "FR1",
+        "detector_arm": "sendback_only",
+        "free_rider_pct": 0.4,
+        "seed": 42
+      }
+    },
+    {
+      "id": "cifar10_iid_FR2_sendback_only_fr40",
+      "variant": "paired",
+      "config": {
+        "dataset": "cifar10",
+        "distribution": "iid",
+        "attack_type": "FR2",
+        "detector_arm": "sendback_only",
+        "free_rider_pct": 0.4,
+        "seed": 42
+      }
+    },
+    {
+      "id": "cifar10_iid_FR3_sendback_only_fr40",
+      "variant": "paired",
+      "config": {
+        "dataset": "cifar10",
+        "distribution": "iid",
+        "attack_type": "FR3",
+        "detector_arm": "sendback_only",
+        "free_rider_pct": 0.4,
+        "seed": 42
+      }
+    },
+    {
+      "id": "cifar10_iid_FR4_sendback_only_fr40",
+      "variant": "paired",
+      "config": {
+        "dataset": "cifar10",
+        "distribution": "iid",
+        "attack_type": "FR4",
+        "detector_arm": "sendback_only",
+        "free_rider_pct": 0.4,
+        "seed": 42
+      }
+    },
+    {
+      "id": "mnist_noniid_FR1_no_memory_fr40",
+      "variant": "paired",
+      "config": {
+        "dataset": "mnist",
+        "distribution": "noniid",
+        "attack_type": "FR1",
+        "detector_arm": "no_memory",
+        "free_rider_pct": 0.4,
+        "seed": 42
+      }
+    },
+    {
+      "id": "mnist_noniid_FR2_no_memory_fr40",
+      "variant": "paired",
+      "config": {
+        "dataset": "mnist",
+        "distribution": "noniid",
+        "attack_type": "FR2",
+        "detector_arm": "no_memory",
+        "free_rider_pct": 0.4,
+        "seed": 42
+      }
+    },
+    {
+      "id": "mnist_noniid_FR3_no_memory_fr40",
+      "variant": "paired",
+      "config": {
+        "dataset": "mnist",
+        "distribution": "noniid",
+        "attack_type": "FR3",
+        "detector_arm": "no_memory",
+        "free_rider_pct": 0.4,
+        "seed": 42
+      }
+    },
+    {
+      "id": "mnist_noniid_FR4_no_memory_fr40",
+      "variant": "paired",
+      "config": {
+        "dataset": "mnist",
+        "distribution": "noniid",
+        "attack_type": "FR4",
+        "detector_arm": "no_memory",
+        "free_rider_pct": 0.4,
+        "seed": 42
+      }
+    },
+    {
+      "id": "mnist_iid_FR1_no_memory_fr40",
+      "variant": "paired",
+      "config": {
+        "dataset": "mnist",
+        "distribution": "iid",
+        "attack_type": "FR1",
+        "detector_arm": "no_memory",
+        "free_rider_pct": 0.4,
+        "seed": 42
+      }
+    },
+    {
+      "id": "mnist_iid_FR2_no_memory_fr40",
+      "variant": "paired",
+      "config": {
+        "dataset": "mnist",
+        "distribution": "iid",
+        "attack_type": "FR2",
+        "detector_arm": "no_memory",
+        "free_rider_pct": 0.4,
+        "seed": 42
+      }
+    },
+    {
+      "id": "mnist_iid_FR3_no_memory_fr40",
+      "variant": "paired",
+      "config": {
+        "dataset": "mnist",
+        "distribution": "iid",
+        "attack_type": "FR3",
+        "detector_arm": "no_memory",
+        "free_rider_pct": 0.4,
+        "seed": 42
+      }
+    },
+    {
+      "id": "mnist_iid_FR4_no_memory_fr40",
+      "variant": "paired",
+      "config": {
+        "dataset": "mnist",
+        "distribution": "iid",
+        "attack_type": "FR4",
+        "detector_arm": "no_memory",
+        "free_rider_pct": 0.4,
+        "seed": 42
+      }
+    },
+    {
+      "id": "cifar10_noniid_FR1_no_memory_fr40",
+      "variant": "paired",
+      "config": {
+        "dataset": "cifar10",
+        "distribution": "noniid",
+        "attack_type": "FR1",
+        "detector_arm": "no_memory",
+        "free_rider_pct": 0.4,
+        "seed": 42
+      }
+    },
+    {
+      "id": "cifar10_noniid_FR2_no_memory_fr40",
+      "variant": "paired",
+      "config": {
+        "dataset": "cifar10",
+        "distribution": "noniid",
+        "attack_type": "FR2",
+        "detector_arm": "no_memory",
+        "free_rider_pct": 0.4,
+        "seed": 42
+      }
+    },
+    {
+      "id": "cifar10_noniid_FR3_no_memory_fr40",
+      "variant": "paired",
+      "config": {
+        "dataset": "cifar10",
+        "distribution": "noniid",
+        "attack_type": "FR3",
+        "detector_arm": "no_memory",
+        "free_rider_pct": 0.4,
+        "seed": 42
+      }
+    },
+    {
+      "id": "cifar10_noniid_FR4_no_memory_fr40",
+      "variant": "paired",
+      "config": {
+        "dataset": "cifar10",
+        "distribution": "noniid",
+        "attack_type": "FR4",
+        "detector_arm": "no_memory",
+        "free_rider_pct": 0.4,
+        "seed": 42
+      }
+    },
+    {
+      "id": "cifar10_iid_FR1_no_memory_fr40",
+      "variant": "paired",
+      "config": {
+        "dataset": "cifar10",
+        "distribution": "iid",
+        "attack_type": "FR1",
+        "detector_arm": "no_memory",
+        "free_rider_pct": 0.4,
+        "seed": 42
+      }
+    },
+    {
+      "id": "cifar10_iid_FR2_no_memory_fr40",
+      "variant": "paired",
+      "config": {
+        "dataset": "cifar10",
+        "distribution": "iid",
+        "attack_type": "FR2",
+        "detector_arm": "no_memory",
+        "free_rider_pct": 0.4,
+        "seed": 42
+      }
+    },
+    {
+      "id": "cifar10_iid_FR3_no_memory_fr40",
+      "variant": "paired",
+      "config": {
+        "dataset": "cifar10",
+        "distribution": "iid",
+        "attack_type": "FR3",
+        "detector_arm": "no_memory",
+        "free_rider_pct": 0.4,
+        "seed": 42
+      }
+    },
+    {
+      "id": "cifar10_iid_FR4_no_memory_fr40",
+      "variant": "paired",
+      "config": {
+        "dataset": "cifar10",
+        "distribution": "iid",
+        "attack_type": "FR4",
+        "detector_arm": "no_memory",
+        "free_rider_pct": 0.4,
+        "seed": 42
+      }
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+{
+  "description": "Operational launch headroom only; no scientific setting or checkpoint hash is changed.",
+  "minimum_available_gib": {"mnist": 0.75, "cifar10": 1.0, "analysis": 0.75},
+  "poll_seconds": 5,
+  "notes": "Wait before launching each worker. No processes are killed to free memory. Change these settings independently of frozen detector parameters."
+}

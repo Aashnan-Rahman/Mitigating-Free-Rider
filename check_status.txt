@@ -180,6 +180,7 @@ function Show-Status {
     Show-BatchSchedule
     Write-Host "Batch:           $($status.batch_id)"
     Write-Host "State:           $($status.state)"
+    if ($status.error) { Write-Host "Reason:          $($status.error)" -ForegroundColor Yellow }
     Write-Host "Status file:     $path"
     Write-Host "Started:         $($status.started_at)"
     Write-Host "Last updated:    $($status.updated_at)"

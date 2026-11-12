@@ -340,7 +340,7 @@ try {
                 }
             }
             Write-Host "Starting/resuming priority review batch: $($scheduled.Label)"
-            & $python (Join-Path $projectRoot 'run_review2_batch.py') --plan $scheduled.Plan
+            & $python (Join-Path $projectRoot 'run_review3_batch.py') --plan $scheduled.Plan
             if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
             if (Test-Path -LiteralPath (Join-Path $scheduled.Batch 'STOP_REQUESTED')) { exit 0 }
             if (-not (Test-BatchComplete (Get-Item -LiteralPath $scheduled.Batch))) {
