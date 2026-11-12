@@ -1,0 +1,23 @@
+\begin{table*}[t]\centering\footnotesize\setlength{\tabcolsep}{5pt}
+\caption{Measured computation and elapsed time (mean $\pm$ sample SD, s per round).}\label{tab:std-segments}
+\begin{tabular}{lrrrr}\toprule
+\multirow{2}{*}{Stage} & \multicolumn{2}{c}{MNIST} & \multicolumn{2}{c}{CIFAR-10} \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}
+ & BaitFL & STD-DAGMM & BaitFL & STD-DAGMM \\ \midrule
+Honest training & 34.300 $\pm$ 0.937 & 33.886 $\pm$ 0.665 & 81.371 $\pm$ 5.399 & 72.423 $\pm$ 3.676 \\
+Fabricated responses & 0.0185 $\pm$ 0.0292 & 0.0662 $\pm$ 0.0115 & 0.1883 $\pm$ 0.1718 & 0.2240 $\pm$ 0.0223 \\
+Client evaluation & 0.1613 $\pm$ 0.2478 & 0.000 $\pm$ 0.000 & 0.8993 $\pm$ 0.7525 & 0.000 $\pm$ 0.000 \\
+Trap construction & 0.001621 $\pm$ 0.005402 & 0.000 $\pm$ 0.000 & 0.0173 $\pm$ 0.0556 & 0.000 $\pm$ 0.000 \\
+Scheduling & 0.000147 $\pm$ 0.000142 & 0.000 $\pm$ 0.000 & 0.000935 $\pm$ 0.005170 & 0.000 $\pm$ 0.000 \\
+Features and preparation & 0.1979 $\pm$ 0.0501 & 0.0455 $\pm$ 0.0033 & 0.7294 $\pm$ 0.1792 & 0.1151 $\pm$ 0.0116 \\
+Detector fitting & 0.000 $\pm$ 0.000 & 15.761 $\pm$ 1.246 & 0.000 $\pm$ 0.000 & 42.090 $\pm$ 1.868 \\
+Decisions and scoring & 0.0155 $\pm$ 0.0707 & 0.3346 $\pm$ 0.0394 & 0.0434 $\pm$ 0.1455 & 0.8273 $\pm$ 0.0570 \\
+Aggregation & 0.0299 $\pm$ 0.0131 & 0.0429 $\pm$ 0.0033 & 0.0964 $\pm$ 0.0387 & 0.1362 $\pm$ 0.0141 \\
+Global evaluation & 2.196 $\pm$ 0.097 & 2.126 $\pm$ 0.042 & 5.212 $\pm$ 0.437 & 4.238 $\pm$ 0.203 \\
+\midrule
+Logging and checkpoints & 3.995 $\pm$ 0.606 & 3.748 $\pm$ 0.538 & 11.339 $\pm$ 1.793 & 9.756 $\pm$ 1.304 \\
+Unassigned and harness & 0.008776 $\pm$ 0.002595 & 6.824 $\pm$ 2.332 & 0.0543 $\pm$ 0.0435 & 7.490 $\pm$ 2.077 \\
+\midrule
+Total computation & 36.921 $\pm$ 1.131 & 52.262 $\pm$ 1.492 & 88.559 $\pm$ 6.228 & 120.054 $\pm$ 5.152 \\
+Elapsed round time & 40.924 $\pm$ 1.350 & 62.833 $\pm$ 3.493 & 99.952 $\pm$ 6.318 & 137.300 $\pm$ 5.372 \\
+\bottomrule\end{tabular}\end{table*}

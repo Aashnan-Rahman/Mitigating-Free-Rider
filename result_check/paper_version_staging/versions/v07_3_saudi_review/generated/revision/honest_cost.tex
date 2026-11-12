@@ -1,0 +1,16 @@
+\begin{table*}[t]\centering\footnotesize
+\caption{Honest-client costs in the main study.}\label{tab:safety}
+\begin{tabular}{llrrrrr}\toprule
+Dataset & Partition & FR (\%) & Honest cases & Removals & Ever quarantined & Withheld (\%) \\ \midrule
+MNIST & IID & 30 & 840 & 0 & 0 & 11.00 \\
+MNIST & IID & 40 & 720 & 0 & 0 & 11.17 \\
+MNIST & Non-IID & 30 & 840 & 0 & 4 & 11.52 \\
+MNIST & Non-IID & 40 & 720 & 3 & 13 & 12.90 \\
+\midrule
+CIFAR-10 & IID & 30 & 840 & 0 & 0 & 11.00 \\
+CIFAR-10 & IID & 40 & 720 & 0 & 0 & 11.00 \\
+CIFAR-10 & Non-IID & 30 & 840 & 0 & 4 & 12.45 \\
+CIFAR-10 & Non-IID & 40 & 720 & 0 & 11 & 12.69 \\
+\bottomrule\end{tabular}
+\par\smallskip\parbox{.96\textwidth}{\scriptsize Counts pool completed client-cases across FR1--FR4 and study replications. A client can recur across runs. Withholding is the fraction of active honest client-rounds affected by traps or quarantine, counted once. Full attack-level means and ranges are in Supplementary Table S2.}
+\end{table*}

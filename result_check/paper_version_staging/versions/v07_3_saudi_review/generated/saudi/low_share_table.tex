@@ -1,0 +1,23 @@
+\begin{table}[t]\centering\footnotesize\setlength{\tabcolsep}{3pt}
+\caption{Completed lower-prevalence checks.}\label{tab:low-share}
+\begin{tabular}{llrrrrr}\toprule
+Dataset & Split & FR (\%) & FR1 & FR2 & FR3 & FR4 \\ \midrule
+MNIST & Non-IID & 5 & 5/5 & 0/5 & 0/5 & 0/5 \\
+MNIST & Non-IID & 10 & 10/10 & 10/10 & 10/10 & 10/10 \\
+MNIST & Non-IID & 20 & 20/20 & 20/20 & 20/20 & 20/20 \\
+\midrule
+MNIST & IID & 5 & 5/5 & 0/5 & 0/5 & 0/5 \\
+MNIST & IID & 10 & 10/10 & 10/10 & 10/10 & 10/10 \\
+MNIST & IID & 20 & -- & 20/20 & 20/20 & 20/20 \\
+\midrule
+CIFAR-10 & Non-IID & 5 & 5/5 & 0/5 & 0/5 & 0/5 \\
+CIFAR-10 & Non-IID & 10 & 10/10 & 10/10 & 10/10$^{\dagger}$ & 10/10 \\
+CIFAR-10 & Non-IID & 20 & 20/20 & 20/20 & 20/20 & 20/20 \\
+\midrule
+CIFAR-10 & IID & 5 & -- & -- & -- & -- \\
+CIFAR-10 & IID & 10 & -- & -- & -- & -- \\
+CIFAR-10 & IID & 20 & -- & -- & -- & -- \\
+\bottomrule
+\end{tabular}
+\par\smallskip\parbox{\columnwidth}{\scriptsize Completed 100-round runs only, seed 42, 100 clients. Entries: free riders removed / present. Dashes: incomplete or pending, not zero detections. $\dagger$ One honest removal.}
+\end{table}

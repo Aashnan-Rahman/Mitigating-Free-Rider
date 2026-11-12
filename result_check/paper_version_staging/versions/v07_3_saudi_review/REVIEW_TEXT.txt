@@ -1,0 +1,48 @@
+Peer review: "BaitFL: Lightweight Trap-Based Free-Rider Detection and Mitigation in Federated Learning" (v7)
+Overall assessment
+The main weakness is that the experiments do not test the paper's central idea. No ablation shows that the traps add detection power beyond the same statistics computed on ordinary rounds. No working detection baseline appears; the only baseline, STD-DAGMM, flags zero of 4,000 free-rider responses in the authors' reimplementation. All attackers are non-adaptive, and the design cannot certify free riders below 10% of the population at all. The "lightweight" claim also rests on a denominator dominated by simulated client training. 
+Critical and major concerns
+M1. The traps are never shown to matter. Critical
+Location: Title, abstract, contribution 1, Section IV (opening rationale), Section V.
+Evidence check: There is no condition where the same norm/profile/send-back pipeline runs on ordinary rounds without traps. FR1 is caught by the zero-norm or fingerprint check, which needs no trap. For FR4, the response is w_send + d + η (Eq. 6), so the update relative to a trap equals the update relative to an ordinary model. The trap changes nothing in FR4's measured delta. Only FR3, which averages history that includes the trap, gets a trap-specific signature.
+Concern: Detection of FR2 and FR4 may come entirely from the norm statistics, not from the bait. FR2's U(−10⁻³, 10⁻³) noise and FR4's averaged-delta norm (an aggregate delta is smaller than individual honest deltas) are both likely detectable with plain norm screening.
+Why it matters: "Trap-based" is the paper's name and main claim. Traps also cost about 11% of honest training (M4). If they add little, the method is a norm-and-profile outlier detector with a confirmation rule.
+Required action: Run a matched ablation: (a) no traps, same statistics on ordinary rounds; (b) norm only; (c) profile only; (d) send-back only; (e) without retained certificates. Report recall, false removals and completion round for each FR type.
+M2. The threat model is too weak to support the detection claims. Critical
+Location: Section III-B/C, Section VII-C, Eq. (13).
+Evidence check: (i) All attackers are non-adaptive, and all free riders in a run use one shared strategy. (ii) Eq. (13) requires a cohort of at least n/⌈√n⌉ = 10 clients at n = 100. A population with fewer than 10 free riders can never receive a statistical certificate; only exact send-back can remove them. The study tests only 30% and 40%. (iii) A cheap adaptive variant is obvious: FR4 with its delta rescaled to a typical honest norm. Because the profile of an averaged delta resembles individual profiles, this variant may pass both tests. (iv) A trap is shared by about 20% of clients within a cycle, so two colluders can spot it by comparing hashes.
+Concern: The 100% recall describes easy, large, homogeneous attacker groups.
+Why it matters: Free riders in practice are likely a small minority and will imitate honest update size. The cohort rule makes the method blind exactly there.
+Required action: Add 5%, 10% and 20% free riders; mixed strategies in one run; a norm-matched FR4; Fraboni et al.'s disguised free rider; and the adaptive attack in S2-WEF. If the cohort rule cannot be relaxed, state in the abstract that statistical removal needs at least ⌈√n⌉ suspects.
+M3. There is no working detection baseline. Major
+Location: Section V-A, Section V-H, Table VII.
+Evidence check: The STD-DAGMM reimplementation flags 0 of 4,000 free-rider responses and 2,200 (MNIST) and 2,196 (CIFAR-10) honest responses. That is zero precision and zero recall.
+Concern: A baseline that detects nothing is a failed reimplementation, not a comparison point. It also inflates the timing comparison, because the "saved" 15–31 s per round comes from a five-epoch refit the authors chose.
+Why it matters: Without a functioning baseline, readers cannot tell whether BaitFL is better, equal or worse than existing detectors on detection accuracy, which is the paper's main metric.
+Required action: Fix or replace the STD-DAGMM setup (match Lin et al.'s configuration) and compare detection, not only time. Add WEF-defense, a simple norm or cosine threshold, and ideally FLET or FRIDA where feasible. Use the same decision endpoint (permanent removal) for all.
+M4. The "lightweight" claim uses a misleading denominator and hides the real cost. Major
+Location: Abstract, Introduction, Table VII, Section VI.
+Evidence check: The 0.58% and 0.89% shares divide checking time by a total in which simulated client training is 34.30 s of 36.93 s (MNIST) and 81.37 s of 88.55 s (CIFAR-10). In a real deployment that training happens on clients, not on the server. Server-side, checking (0.216 s) is about 7 times aggregation (0.030 s) on MNIST, and 8 times on CIFAR-10 (0.791 s vs 0.096 s). Separately, every sparse audit discards a full round of honest training. Table IV(a) shows about 11% of honest responses withheld even in clean IID runs. Also, BaitFL's honest local training on CIFAR-10 takes 81.37 s vs 72.42 s for STD-DAGMM with the same honest clients, an unexplained 8.95 s gap. STD-DAGMM also carries 6.8–7.5 s of unassigned runtime. Both differences feed into the reported elapsed-time savings.
+Why it matters: The abstract implies near-zero cost. The real costs are an ~11% loss of client computation and an O(N²L) server step that has not been tested beyond 100 clients.
+Required action: Report checking time in absolute milliseconds and as a share of server-only work. Report wasted client computation as its own cost. Explain the CIFAR-10 training gap and the "client diagnostic evaluation" stage, which exists only for BaitFL and is excluded from the checking subtotal. Add a scaling test (e.g., 100, 500, 1,000 clients) for the leave-one-out step.
+M5. Honest-client harm is under-tested. Major
+Location: Section V-D, Table IV.
+Evidence check: All 3 false removals occur under non-IID data, and the study uses only one Dirichlet α (0.5). At the end of non-IID FR3 runs, 61.7% (MNIST, 37/60) and 71.7% (CIFAR-10, 43/60) of honest clients remain "unresolved." There is no run with 0% free riders, so the false-removal rate under the null case is unknown.
+Why it matters: Removal is permanent. The paper's own analysis says persistent non-IID clients can collect repeated certificates. Stronger heterogeneity (α = 0.1) will likely raise this rate.
+Required action: Add honest-only runs and α ∈ {0.1, 0.5, 1.0}. Report false removals per honest client with a confidence interval across runs. Either drop the "unresolved" label from outcome reporting or show it has a use.
+M6. Reference and positioning problems. Major (fixable in days)
+The reference list is mostly accurate, but several items need correction, and the closest prior work is missing. Details are in section F below.
+Reference verification
+All 31 entries exist and match their titles and author lists. Every entry is cited in the text.
+Two further problems:
+In the supplied file, many reference URLs are corrupted. The FRAD DOI and the Fraboni PMLR link appear spliced into the links of unrelated entries ([8], [9], [10], [11], [13]–[31]). Rebuild every link from the .bib file.
+Missing closest work: FLET (doi 10.1109/TON.2026.3668944), WEF-defense (Information Sciences, 2024; arXiv 2206.05406), S2-WEF (arXiv 2604.04611, preprint), and FLoomChecker (ICPADS 2024, doi 10.1109/ICPADS63350.2024.00034).
+Minor comments
+The abstract should state the cohort minimum, the 11% withheld training, and the non-adaptive attackers in one plain sentence each.
+Explain "client diagnostic evaluation" in Table VII and say whether a real deployment needs it.
+State that "lightweight" refers to server computation at N = 100 wherever the word appears.
+Fix the garbled equations (8)–(11) and (15) and Table I before submission; I could not check them fully.
+Figures 3 and 4 plot a different quantity from the removal test. Say so in the captions, not only in the text.
+Use one term for each status ("unresolved," "unconfirmed," "under review") and define them once in a table.
+
+

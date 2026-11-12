@@ -1,0 +1,21 @@
+\documentclass[tikz,border=4pt]{standalone}
+\input{figures/diagram_style.tex}
+\begin{document}
+\begin{tikzpicture}
+\node[process,text width=1.6cm] (frozen) at (0,0) {Frozen model\\$w^{(c)}$};
+\node[trap,text width=1cm] (a) at (2.4,.9) {$\tau_A$};
+\node[trap,text width=1cm] (b) at (2.4,-.9) {$\tau_B$};
+\node[process,text width=1.6cm] (ca) at (4.7,.9) {Group $g$};
+\node[process,text width=1.6cm] (cb) at (4.7,-.9) {Group $g$};
+\node[process,text width=2cm,minimum height=2.4cm] (summary) at (7.4,0)
+ {Compare peers\\[7pt]$r_i^a,\ p_i^a$\\[7pt]$z_i^{n,a},\ z_i^{p,a}$};
+\draw[flow,draw=challenge] (frozen.east)--(a.west);
+\draw[flow,draw=challenge] (frozen.east)--(b.west);
+\draw[flow,draw=challenge] (a.east)--(ca.west);
+\draw[flow,draw=challenge] (b.east)--(cb.west);
+\draw[flow] (ca.east)--(summary.north west);
+\draw[flow] (cb.east)--(summary.south west);
+\node[note,text=challenge] at (2.4,1.65) {Independent perturbations};
+\node at (3.5,-2.05) {$D_i^a=z_i^{p,a}-z_i^{n,a}$};
+\end{tikzpicture}
+\end{document}

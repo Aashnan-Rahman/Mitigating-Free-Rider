@@ -1,0 +1,34 @@
+{
+  "dataset": "cifar10",
+  "output": "results/cifar10_segment_timing_20261103",
+  "rounds": 100,
+  "seed": 42,
+  "minimum_available_gib": {
+    "ours": 2,
+    "std": 5
+  },
+  "memory_note": "Operational headroom, not a detection threshold: the previous CIFAR STD worker reached approximately 3.7 GiB RSS, in addition to the training parent.",
+  "paused_batch": "results/fedavg_cifar10_baseline_seed43_fr30_fr40",
+  "paused_run": "fedavg_cifar10_iid_FR4_fr30_seed43",
+  "paused_round": 93,
+  "paused_protocol": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_iid_FR4_fr30_seed43/protocol.json",
+  "paused_protocol_sha256": "c09fa8a78ae74630a77fb4e4af719be4bb3d72fb1edcf89f5e1fc7353125803e",
+  "pause_marker": "Temporary CIFAR-10 timing comparison requested on 2026-11-03; owned by configs/cifar10_segment_timing_20261103.json. Restore the original queue and remove this marker only after both comparison runs and reports succeed.",
+  "resume_schedule": {
+    "auto_resume": true,
+    "auto_update_paper": false,
+    "cpu_threads": 6,
+    "description": "29 October 2026: preserve the four completed v15.4 replication batches, then 64 matched no-defense FedAvg baselines: CIFAR-10 seeds 73/43, then MNIST seeds 73/43, FR1-FR4 x non-IID/IID x 40%/30%. Keep startup/logon/five-minute checkpoint recovery, existing credentials, full records, watch handoff, and no paper rebuild.",
+    "plan": "configs/v15_4_cifar10_seed73_fr30_fr40_plan.json",
+    "queue": "configs/replication_with_baselines_seed73_seed43_queue.json",
+    "workflow": "v15_detection"
+  },
+  "std_recipe": {
+    "source": "https://arxiv.org/html/1911.12560",
+    "features": "Full update, latent embedding, relative L2, cosine similarity and input STD; joint reconstruction, energy and covariance objective",
+    "epochs": 5,
+    "reset": "fresh every round",
+    "architecture": "128-64-32 symmetric AE, K3; FRIDA-described reproduction",
+    "caveat": "Not author code. Lin et al. do not specify fitting epochs/reset schedule; no inference of original timing or convergence."
+  }
+}

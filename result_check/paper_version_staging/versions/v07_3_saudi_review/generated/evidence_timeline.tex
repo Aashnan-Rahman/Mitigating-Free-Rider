@@ -1,0 +1,14 @@
+\begin{figure*}[tp]\centering\begin{tikzpicture}
+\begin{groupplot}[group style={group size=2 by 1,horizontal sep=1cm},width=0.445\textwidth,height=5cm,ymin=0,xmin=15,xmax=85,xtick={20,30,40,50,60,70,80},ymajorgrids=true,grid style={black!8},tick label style={font=\scriptsize},title style={font=\small},label style={font=\scriptsize},xlabel={Completed cycle (round)},ylabel={Clients}]
+\nextgroupplot[title={CIFAR-10 non-IID FR3, 40\%},ymax=48]
+\addplot[ybar,/pgf/bar width=6pt,/pgf/bar shift=-4pt,fill=honestblue!60,draw=honestblue] table[col sep=comma,x=round,y=honest] {generated/comparison/evidence_timeline_40.csv};
+\addplot[ybar,/pgf/bar width=6pt,/pgf/bar shift=4pt,fill=riderorange!65,draw=riderorange] table[col sep=comma,x=round,y=rider] {generated/comparison/evidence_timeline_40.csv};
+\addplot[only marks,black,mark=diamond*,mark size=3.2pt] coordinates {(60,40)};
+\nextgroupplot[title={CIFAR-10 non-IID FR3, 30\%},ymax=38]
+\addplot[ybar,/pgf/bar width=6pt,/pgf/bar shift=-4pt,fill=honestblue!60,draw=honestblue] table[col sep=comma,x=round,y=honest] {generated/comparison/evidence_timeline_30.csv};
+\addplot[ybar,/pgf/bar width=6pt,/pgf/bar shift=4pt,fill=riderorange!65,draw=riderorange] table[col sep=comma,x=round,y=rider] {generated/comparison/evidence_timeline_30.csv};
+\addplot[only marks,black,mark=diamond*,mark size=3.2pt] coordinates {(80,30)};
+\end{groupplot}\end{tikzpicture}
+\par\smallskip{\scriptsize\textcolor{honestblue}{\rule{0.25cm}{0.15cm}}\ Honest: fresh certificates\quad\textcolor{riderorange}{\rule{0.25cm}{0.15cm}}\ Free riders: fresh certificates\quad$\blacklozenge$\ Newly removed free riders}
+\caption{How fresh evidence leads to removal in representative executions. Bars count fresh norm certificates on both traps in a completed cycle. Diamonds mark new free-rider removals. A first certificate can precede removal by several cycles.}\label{fig:evidence-timeline}
+\end{figure*}

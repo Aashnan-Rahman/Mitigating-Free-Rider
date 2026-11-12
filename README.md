@@ -6,10 +6,10 @@ Trap Detection with Cumulative Penalty.
 For complete individual-run, four-attack scheduling, monitoring, timing, CUDA,
 checkpoint, and resume commands, see [`RUN_GUIDE.md`](RUN_GUIDE.md).
 
-The rewritten full-study manuscript is
-[`paper_v6.pdf`](result_check/paper_version_staging/versions/v06_v15_4_full_study/paper_v6.pdf),
-with v2-style sections, all 32 completed v15.4 runs, separate result/security
-analysis, and per-run appendices. Rebuild with `build_paper_v6_full_study.py --compile`.
+The current manuscript is [BaitFL v7.3](result_check/paper_version_staging/versions/v07_3_saudi_review/paper_v7_3_all_in_one.pdf).
+Use the [paper workspace index](result_check/README.md) to find its editable
+source, supplement, reviewer response and earlier versions. The original v6
+paper and its builder remain available as historical records.
 
 ## CIFAR-10 segmented timing interlude (3 November 2026)
 

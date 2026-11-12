@@ -1,6 +1,9 @@
 # Paper Version History
 
-The files directly inside `Paper/` are the current working version. Completed revisions are preserved under `Paper/versions/` and should not be edited after they are archived.
+The current working revision is **v7.3**, under `versions/v07_3_saudi_review/`.
+Use the [version index](versions/README.md) to distinguish it from earlier v7
+revisions and historical papers. The original entries below retain their
+historical descriptions and filenames.
 
 ## v01 — Pooled V8 results
 
@@ -803,3 +806,7 @@ For each substantive revision:
 2. Compile and validate citations and references.
 3. Copy the validated source, PDF, and bibliography into a new immutable `versions/vNN_description/` directory.
 4. Add a concise entry here recording content changes and validation status.
+
+## v7.3 — Azom review revision (12 November 2026)
+
+Based on v7.2, with the two geometry grids restored to the main appendix, 35 completed low-share checks, qualified trap/baseline claims, explicit server-core cost accounting, and four additional related-work references. See [the review response](versions/v07_3_saudi_review/REVIEW_RESPONSE.md) for addressed and pending items. Experiment sources and queue remain unchanged.

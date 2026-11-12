@@ -1,0 +1,112 @@
+\begin{algorithm}[!htb]
+\caption{Phase I: ordinary warmup}\label{alg:warmup}
+\begin{algorithmic}[1]\small
+\Procedure{Warmup}{$w,\mathcal S$}
+ \For{$t=1,\ldots,T_{\rm warm}$}
+  \State Send $w$ to all active clients\label{ln:warm:send}
+  \State Collect responses, summaries and send-back checks
+  \State $\mathcal A_t\gets$ all active clients
+  \State $w\gets\Call{Aggregate}{w,\mathcal A_t}$\label{ln:warm:aggregate}
+ \EndFor
+ \State \Return $(w,T_{\rm warm},\mathcal S)$
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}[!htb]
+\caption{Phase II: collect and assess paired responses}\label{alg:paired}
+\begin{algorithmic}[1]\small
+\Procedure{PairedCycle}{$w,t,\mathcal S,c,\sigma,\mathrm{initial}$}
+ \State Create fixed independent traps $A,B$ from a copy of $w$
+ \If{$\mathrm{initial}$}
+  \State Shuffle groups and schedule one response to each trap
+ \Else
+  \State Group active-review and remaining clients separately
+  \State Alternate traps for reviewed clients throughout the cycle
+  \State Schedule each remaining client once on each trap
+ \EndIf
+ \State Preselect one position per client and trap\label{ln:paired:select}
+ \State Initialize selected summaries $O$
+ \State $h\gets\min(\ell_{\rm cyc},T-t)$
+ \For{$s=1,\ldots,h$}
+  \State Advance $t$ and read trap recipients $\mathcal T_t$
+  \State Send the trap to $\mathcal T_t$ and $w$ to others
+  \State Collect responses and retain preselected summaries
+  \State $\mathcal A_t\gets$ ordinary, non-quarantined recipients at round start
+  \If{$s=\ell_{\rm cyc}$}
+   \State Require complete A/B coverage of active clients
+   \State $\mathcal E\gets\Call{ScreenAndCertify}{O}$\label{ln:paired:screen}
+   \State $\mathcal S\gets\Call{Confirm}{\mathcal S,\mathcal E,c}$\label{ln:paired:confirm}
+   \State Exclude new removals and quarantines from $\mathcal A_t$\label{ln:paired:filter}
+  \EndIf
+  \State $w\gets\Call{Aggregate}{w,\mathcal A_t}$
+ \EndFor
+ \If{the cycle completed}
+  \State Advance $c$ and clear the completed schedule
+  \State $\sigma\gets t$ if no review/probation remains, else $\bot$
+ \EndIf
+ \State \Return $(w,t,\mathcal S,c,\sigma)$
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}[!htb]
+\caption{Phase III: confirm evidence and bound review}\label{alg:confirmation}
+\begin{algorithmic}[1]\small
+\Procedure{Confirm}{$\mathcal S,\mathcal E,c$}
+ \State Require one complete decision per active client and a newer cycle
+ \ForAll{active clients $i$}
+  \State $J_i\gets$ statistical components certified on both traps
+  \State Advance or reset the consecutive paired send-back streak
+  \If{the cycle result is $\mathsf{clear}$}
+   \State Advance the consecutive-clear certificate-clean streak
+   \State Clear $M_{i,n},M_{i,p}$ after two consecutive clear cycles
+  \Else
+   \State Reset the certificate-clean streak
+   \State Increment $M_{i,j}$ once for each fresh $j\in J_i$\label{ln:confirm:increment}
+  \EndIf
+  \If{a fresh component reaches two, or send-back is confirmed}
+   \State Permanently remove $i$\label{ln:confirm:remove}
+  \ElsIf{strong paired evidence is present}
+   \State Quarantine $i$ and renew its review budget to two cycles\label{ln:confirm:review}
+   \State Reset recovery, probation and cooldown
+  \Else
+   \State Decrease the review budget toward zero
+   \State Apply consecutive-clear rehabilitation and probation
+   \If{unconfirmed review has expired}
+    \State Release $i$ and set a two-audit cooldown\label{ln:confirm:release}
+   \EndIf
+  \EndIf
+ \EndFor
+ \State \Return $\mathcal S$
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}[!htb]
+\caption{Phase IV: ordinary rounds and sparse audits}\label{alg:sparse}
+\begin{algorithmic}[1]\small
+\Procedure{SparseRound}{$w,t,\mathcal S,\sigma$}
+ \State $t\gets t+1$
+ \If{active clients remain, $\sigma\ne\bot$ and $t-\sigma\geq I$}
+  \State Send one fresh trap to all active clients
+  \State Collect same-trap norm/profile scores and send-back checks\label{ln:sparse:measure}
+  \State $\mathcal F\gets$ clients with a single-trap certificate or send-back
+  \State $\mathcal D\gets$ clients currently in cooldown
+  \State $\mathcal F_{\rm elig}\gets\mathcal F\setminus\mathcal D$\label{ln:sparse:eligible}
+  \State Decrease all audit cooldowns toward zero
+  \ForAll{$i\in\mathcal F_{\rm elig}$}
+   \State Open two cycles of review without quarantine\label{ln:sparse:enroll}
+   \State Reset clean progress and the paired send-back streak
+  \EndFor
+  \State $\sigma\gets t$ if $\mathcal F=\emptyset$, otherwise $\bot$\label{ln:sparse:clock}
+  \State Keep $w$ unchanged
+ \Else
+  \State Send $w$ to active clients and collect responses
+  \State $\mathcal A_t\gets$ eligible ordinary clients
+  \State $w\gets\Call{Aggregate}{w,\mathcal A_t}$
+ \EndIf
+ \State \Return $(w,t,\mathcal S,\sigma)$
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}

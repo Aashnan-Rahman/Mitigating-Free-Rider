@@ -1,0 +1,14 @@
+\begin{figure*}[t]\centering\begin{tikzpicture}
+\begin{groupplot}[group style={group size=2 by 1,horizontal sep=1.7cm},width=.39\textwidth,height=5cm,grid=major,grid style={black!8},xlabel={$\operatorname{asinh}(\bar z_{\rm norm})$},ylabel={$\operatorname{asinh}(\bar z_{\rm profile})$},tick label style={font=\footnotesize},label style={font=\footnotesize},title style={font=\small},unbounded coords=jump]
+\nextgroupplot[title={Round 20}]
+\addplot[only marks,mark=o,mark size=1.6pt,draw=honestblue] table[x=x,y=y] {generated/revision/error_honest_20.dat};
+\addplot[only marks,mark=triangle*,mark size=2pt,draw=riderorange,fill=riderorange] table[x=x,y=y] {generated/revision/error_rider_20.dat};
+\addplot[only marks,mark=x,mark size=3.4pt,line width=1pt,draw=honestblue] table[x=x,y=y] {generated/revision/error_error_20.dat};
+\nextgroupplot[title={Round 30}]
+\addplot[only marks,mark=o,mark size=1.6pt,draw=honestblue] table[x=x,y=y] {generated/revision/error_honest_30.dat};
+\addplot[only marks,mark=triangle*,mark size=2pt,draw=riderorange,fill=riderorange] table[x=x,y=y] {generated/revision/error_rider_30.dat};
+\addplot[only marks,mark=x,mark size=3.4pt,line width=1pt,draw=honestblue] table[x=x,y=y] {generated/revision/error_error_30.dat};
+\end{groupplot}\end{tikzpicture}
+\par\smallskip{\footnotesize\textcolor{honestblue}{$\circ$} Honest\quad\textcolor{riderorange}{$\blacktriangle$} Free rider\quad\textcolor{honestblue}{$\times$} Honest client removed at round 30}
+\caption{A recorded honest-client error case. MNIST non-IID FR3, 40\% free riders, study seed 43. Each point averages selected A/B scores. Crosses mark the two honest clients removed by repeated profile certificates. Points can coincide.}\label{fig:honest-error}
+\end{figure*}

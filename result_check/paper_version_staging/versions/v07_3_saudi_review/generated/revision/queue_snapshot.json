@@ -1,0 +1,62 @@
+[
+  {
+    "batch": "review2_01_honest_seed42",
+    "state": "completed",
+    "completed": 4,
+    "total": 4,
+    "current": null,
+    "error": null,
+    "updated": "2026-11-05T20:56:53.213720+00:00"
+  },
+  {
+    "batch": "review2_02_low_share_seed42",
+    "state": "waiting_resources",
+    "completed": 26,
+    "total": 48,
+    "current": "paired_mnist_iid_FR2_fr5_seed42",
+    "error": "Waiting for 2 GiB available RAM before training",
+    "updated": "2026-11-11T06:50:54.585752+00:00"
+  },
+  {
+    "batch": "review2_03_passive_seed42",
+    "state": "queued",
+    "completed": 0,
+    "total": 16
+  },
+  {
+    "batch": "review2_04_oracle_seed42",
+    "state": "queued",
+    "completed": 0,
+    "total": 12
+  },
+  {
+    "batch": "review2_05_published_attacks_seed42",
+    "state": "queued",
+    "completed": 0,
+    "total": 16
+  },
+  {
+    "batch": "fedavg_mnist_baseline_seed73_fr30_fr40",
+    "state": "completed",
+    "completed": 16,
+    "total": 16,
+    "current": null,
+    "error": null,
+    "updated": "2026-11-05T07:55:49.702760+00:00"
+  },
+  {
+    "batch": "fedavg_mnist_baseline_seed43_fr30_fr40",
+    "state": "stopped",
+    "completed": 1,
+    "total": 16,
+    "current": null,
+    "error": null,
+    "updated": "2026-11-05T09:53:30.320507+00:00"
+  },
+  {
+    "batch": "review2_06_heldout_multiseed_last",
+    "state": "queued",
+    "completed": 0,
+    "total": 70
+  }
+]

@@ -1,0 +1,18 @@
+\usepackage[T1]{fontenc}
+\usepackage{times,amsmath,amssymb,pgfplots}
+\usetikzlibrary{arrows.meta,positioning,calc,shapes.geometric}
+\pgfplotsset{compat=1.18}
+\definecolor{challenge}{HTML}{187F8C}
+\definecolor{removal}{HTML}{A33333}
+\definecolor{honestblue}{HTML}{2878A5}
+\definecolor{riderorange}{HTML}{D66B27}
+\tikzset{
+ every picture/.style={font=\normalfont\fontsize{11}{13}\selectfont},
+ process/.style={rectangle,draw=black!65,line width=.5pt,
+   align=center,minimum height=.85cm,inner sep=6pt},
+ state/.style={process,rounded corners=5pt,minimum height=.9cm},
+ flow/.style={-{Latex[length=2.2mm]},draw=black!65,line width=.6pt},
+ feedback/.style={flow,dashed},
+ note/.style={align=center,font=\normalfont\fontsize{10.5}{12}\selectfont},
+ trap/.style={process,draw=challenge,text=challenge}
+}

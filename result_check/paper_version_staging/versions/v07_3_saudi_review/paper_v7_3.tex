@@ -1,0 +1,1273 @@
+\documentclass[journal]{IEEEtran}
+\usepackage{iftex}
+\ifPDFTeX
+\else
+\usepackage{fontspec}
+\setmainfont{TeX Gyre Termes}
+\setsansfont{TeX Gyre Heros}
+\setmonofont{TeX Gyre Cursor}
+\fi
+\usepackage{amsmath,amssymb,booktabs,array,multirow,enumitem,algorithm,algpseudocode,microtype,graphicx,pgfplots,placeins}
+\usepackage{cite}
+\usepackage[caption=false,font=footnotesize]{subfig}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+\hypersetup{pdftitle={BaitFL: Lightweight Trap-Based Free-Rider Detection and Mitigation in Federated Learning},pdfauthor={Aashnan Rahman},pdfkeywords={federated learning,free-rider detection,robust statistics}}
+\pgfplotsset{compat=1.18}
+% Keep float pages top-aligned without stretching gaps between figures.
+\makeatletter
+\setlength{\@fptop}{0pt}
+\setlength{\@fpsep}{6pt plus 1pt minus 1pt}
+\setlength{\@fpbot}{0pt plus 1fil}
+\setlength{\@dblfptop}{0pt}
+\setlength{\@dblfpsep}{6pt plus 1pt minus 1pt}
+\setlength{\@dblfpbot}{0pt plus 1fil}
+\makeatother
+\setlength{\floatsep}{6pt plus 1pt minus 1pt}
+\setlength{\dblfloatsep}{6pt plus 1pt minus 1pt}
+\setlength{\textfloatsep}{6pt plus 1pt minus 1pt}
+\setlength{\dbltextfloatsep}{6pt plus 1pt minus 1pt}
+\setlength{\intextsep}{6pt plus 1pt minus 1pt}
+% Keep heading spacing fixed during column justification.
+\makeatletter
+\renewcommand{\section}{\@startsection{section}{1}{\z@}{1.5ex}{0.7ex}{\normalfont\normalsize\centering\scshape}}
+\renewcommand{\subsection}{\@startsection{subsection}{2}{\z@}{1.5ex}{0.7ex}{\normalfont\normalsize\itshape}}
+\makeatother
+\usepgfplotslibrary{groupplots,fillbetween}
+\definecolor{honestblue}{HTML}{2878A5}
+\definecolor{riderorange}{HTML}{D66B27}
+\definecolor{baitteal}{HTML}{187F8C}
+\definecolor{comparisongray}{HTML}{6C7078}
+\providecommand*{\algorithmautorefname}{Algorithm}
+\input{generated/numbers.tex}
+\input{generated/multiseed/summary.tex}
+\input{generated/comparison/instrumented_mnist_numbers.tex}
+\input{generated/comparison/instrumented_cifar10_numbers.tex}
+\input{generated/comparison/baseline_numbers.tex}
+\input{generated/review2/numbers.tex}
+\title{BaitFL: Lightweight Trap-Based Free-Rider Detection and Mitigation in Federated Learning}
+\author{Aashnan~Rahman\thanks{Aashnan Rahman is with the Department of Computer Science and Engineering, Islamic University of Technology.}}
+\begin{document}
+\maketitle
+\raggedbottom
+% Fill short columns with modest paragraph spacing, without large heading gaps.
+\setlength{\parskip}{0pt plus 2pt minus 0.5pt}
+\makeatletter
+\def\@textbottom{\vskip\z@ plus 6pt}
+\makeatother
+\setlength{\abovedisplayskip}{6pt plus 1pt minus 1pt}
+\setlength{\belowdisplayskip}{6pt plus 1pt minus 1pt}
+\setlength{\abovedisplayshortskip}{3pt plus 1pt minus 1pt}
+\setlength{\belowdisplayshortskip}{3pt plus 1pt minus 1pt}
+
+\begin{abstract}
+\bfseries
+Free riders receive a federated model without contributing local training.
+BaitFL combines undisclosed model challenges with update norms, tensor
+profiles and repeated fresh evidence before removal. Bounded review limits
+temporary exclusion when evidence remains inconclusive. The detector
+requires no auxiliary learner, client training loss or attack identities.
+The main study comprises 96 runs on MNIST and CIFAR-10 with IID and
+non-IID partitions and 30\% or 40\% free riders. All tested attackers are
+non-adaptive. This grid achieves 100\% removal recall with three honest
+removals in two runs. Statistical certification requires a supported cohort
+of at least ten clients at an active population of 100, while exact
+sendback follows a separate path. Additional honest-only runs remove no
+honest clients, but completed 5\% tests miss FR2--FR4. An oracle
+norm-matching feature diagnostic substantially reduces initial
+certification and does not establish robustness to adaptive attacks.
+Mean checking time is 215 ms per round on MNIST and 791 ms on CIFAR-10
+in the instrumented 100-client runs. Checking accounts for about 88\%
+and 89\% of checking-plus-aggregation time, respectively.
+Even clean IID settings withhold about 11\% of honest responses.
+These costs qualify the lightweight claim, which concerns measured
+server computation at 100 clients rather than deployment-scale efficiency.
+Matched passive ablations and a functioning comparative detection
+baseline remain necessary to establish the incremental value of traps.
+\end{abstract}
+
+\begin{IEEEkeywords}
+federated learning, free-rider detection, hidden challenges, robust statistics,
+non-IID data, client auditing
+\end{IEEEkeywords}
+
+\section{Introduction}
+
+Federated learning (FL) allows multiple clients to train a shared model
+without handing over their local data. In each communication round, the
+server distributes the current global model, the clients update it using
+their own data, and the server aggregates the returned updates into a
+revised model~\cite{mcmahan2017communication}. Since raw data stays with
+its owner, participants can collaborate without first creating a central
+repository of their records. Keeping data local does not remove every
+privacy risk, as shared updates can still reveal information about
+training data~\cite{kairouz2021advances,zhu2019leakage,melis2019leakage}.
+Exchanging updates instead of
+datasets also avoids moving large volumes of local data, although repeated
+model exchange remains a significant communication cost in
+FL~\cite{mcmahan2017communication}. Effective collaboration depends on clients
+performing useful local training, even though the server cannot directly
+observe that work.
+
+Like other distributed systems, FL is open to misconduct. Label-flipping and
+model-poisoning attacks, for example, alter local data or submitted updates
+in order to degrade the global model or introduce targeted
+behavior~\cite{kairouz2021advances,bagdasaryan2020backdoor}. Free riding is
+a quieter problem. The participant's primary aim is to obtain the shared
+model without paying the cost of local
+training~\cite{lin2019freeriders,fraboni2021freerider}. A client may lack
+useful data or computational resources, or may simply choose to conserve
+them. Instead of training, it can return an unchanged model, fabricate a
+noisy response, or build an update from models received in earlier rounds.
+Such responses may resemble what the server expects, so they need not
+visibly disrupt learning and can evade checks aimed at overtly harmful
+updates. Free riding shifts the training burden to honest participants. When
+a client withholds useful data and computation, the federation also loses a
+contribution that could have improved the shared model.
+Figure~\ref{fig:free-rider-attack} shows the standard model exchange.
+All clients receive the global model. Honest clients train it on local
+data and return their local models, while a free rider submits a fabricated
+model without local optimization.
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{figures/free_rider_attack.pdf}
+\caption{Free riding in federated learning. The server broadcasts the
+global model. Honest clients return locally trained models, while a free
+rider returns a fabricated model without local training.}
+\label{fig:free-rider-attack}
+\end{figure}
+
+Detecting this omission is difficult because unusual updates are not limited
+to free riders. Honest clients differ in sample sizes, class distributions,
+and local learning trajectories, particularly under non-IID
+data~\cite{kairouz2021advances}. A small update can therefore reflect
+legitimate training, while a fabricated one can look like an ordinary
+contribution. The server has to tell these cases apart without observing
+local optimization. Existing approaches rely on learned anomaly models,
+parameter audits, or evidence obtained through inference
+attacks~\cite{lin2019freeriders,wang2024pass,recasens2026frida}. This raises a
+practical question: can lightweight server-side checks detect free riding
+without training an auxiliary detector? There is also a cost to being wrong.
+Withholding an honest client's updates can reduce its contribution to the shared
+model, even if it is never permanently removed. A detector must therefore
+consider both the evidence needed for removal and the duration of temporary
+exclusion.
+
+To address this problem, we propose \emph{BaitFL}, a lightweight trap-based
+method for detecting and mitigating free riders in federated learning.
+In the \ReviewRunCount{}-run main grid at 30\% and 40\% prevalence,
+it removes all tested free riders,
+with \MultiFP{} honest removals in \ReviewAffectedRuns{} runs. Mean checking takes 215 ms on MNIST and 791 ms on CIFAR-10 in the
+instrumented 100-client executions; this is a substantial fraction of
+checking-plus-aggregation time.
+Additional low-prevalence and norm-matching checks expose limits to this
+result rather than supporting prevalence-independent detection.
+
+\noindent The main contributions of this work are as follows:
+\begin{itemize} %[leftmargin=*,nosep]
+\item \textbf{Lightweight server-side detection.} We develop a challenge-based
+detector using update norms and tensor profiles, without training an auxiliary
+detection model or accessing clients' private training data.
+\item \textbf{Confirmation using repeated evidence.} We design a decision
+mechanism that separates initial suspicion from permanent removal and requires
+fresh evidence of the same component across two challenges and distinct audit
+cycles for statistical confirmation.
+\item \textbf{Bounded mitigation and rehabilitation.} We retain strong evidence
+across ambiguous cycles while allowing unconfirmed quarantine to expire and
+clearing statistical memory after repeated clean observations.
+\item \textbf{Evaluation across four free-rider behaviors.} We study unchanged-model
+responses, random fabrication, history averaging, and trajectory imitation on
+MNIST and CIFAR-10 under IID and non-IID partitions, with 30\% and 40\% free riders.
+\end{itemize}
+
+Sections~\ref{sec:related} and~\ref{sec:threat} review related work and
+define the threat model. Section~\ref{sec:method} presents the auditing
+procedure, followed by results in Section~\ref{sec:results} and complexity
+analysis in Section~\ref{sec:complexity}. Section~\ref{sec:discussion}
+discusses security, limitations and future work before the conclusion.
+
+% Literature review is retained in the author's current black text.
+\section{Literature Review}\label{sec:related}
+Free-rider detection concerns omitted training, whereas poisoning
+defenses primarily address harmful updates. Lin \emph{et al.} introduced
+fabrication attacks and STD-DAGMM, combining update statistics with an
+autoencoder and mixture model~\cite{lin2019freeriders,zong2018dagmm}.
+Fraboni \emph{et al.} studied unchanged-model and disguised, decaying-noise
+responses in model aggregation~\cite{fraboni2021freerider}. Zhu \emph{et al.}
+developed scaled-delta and advanced attacks that imitate training
+trajectories~\cite{zhu2021advanced}. These studies show why an attacker
+need not submit an obviously damaging response. They also motivate
+testing magnitude-matched fabrication rather than assuming every free
+rider produces a small update.
+
+Learned detectors and contribution audits obtain different kinds of
+evidence. STD-DAGMM requires auxiliary fitting, whose cost depends on
+architecture and training budget. FRAD combines learned detection with
+contribution estimates and reputation~\cite{wang2024frad}. Its additional
+context depends on reliable resource and contribution information.
+PASS asks clients to evaluate peers' models on local data and report
+contribution scores~\cite{wang2024pass}. It avoids central access to raw
+data, but adds peer evaluation and exposes models to auditors. Low
+utility on an evaluator's data can also reflect heterogeneity rather
+than omitted training.
+
+FRIDA uses membership and property inference as training
+evidence~\cite{recasens2026frida}. Its membership variants introduce
+canaries and client training work, while property variants infer local
+dataset characteristics. These are distinct information and computation
+tradeoffs, not direct inspection of raw records. BaitFL likewise has a
+privacy limit: attributable responses must remain visible. It cannot
+operate unchanged behind secure aggregation~\cite{bonawitz2017practical},
+and keeping raw data local does not prevent leakage through
+updates~\cite{zhu2019leakage,melis2019leakage}.
+
+Robust aggregation offers another point of comparison. Krum, trimmed
+aggregation and geometric-median methods reduce the effect of Byzantine
+updates~\cite{blanchard2017krum,yin2018byzantine,pillutla2022rfa}.
+FLTrust uses a trusted server dataset~\cite{cao2021fltrust}. These methods
+aim to protect learning under their assumptions; rejecting a harmful
+update does not establish whether its sender trained. FedProx, SCAFFOLD
+and FedNova address heterogeneous local optimization
+\cite{li2020fedprox,karimireddy2020scaffold,wang2020fednova}. They can
+improve honest training but do not, by themselves, audit a participant
+that skips the prescribed computation.
+
+Proof-of-learning and VeriML seek evidence about executed training or
+outsourced learning computations~\cite{jia2021prooflearning,zhao2021veriml}.
+They provide a different assurance from population-relative anomaly
+scores and require their own verification artifacts. Data-Shapley and
+federated valuation estimate marginal usefulness
+\cite{ghorbani2019datashapley,jia2019datavaluation,liu2022gtgshapley};
+usefulness remains different from evidence of honest participation.
+
+BaitFL tests responses to altered starting models using compact
+statistics and repeated evidence. Our comparisons cover different
+endpoints: no-defense aggregation for utility, a declared STD-DAGMM
+implementation for timing and flag diagnostics, and published information
+requirements qualitatively. They do not constitute a common-workload
+ranking against PASS, FRAD or FRIDA. Supplementary Table~S1 retains the
+detailed requirements comparison.
+
+WEF-defense instead requests weight-evolution matrices from clients and
+uses them to separate participation behaviors~\cite{chen2022wef}.
+The S2-WEF preprint addresses changing behavior using server-simulated
+attack patterns and WEF comparisons~\cite{nakamura2026s2wef}. These are
+relevant alternatives to an auxiliary autoencoder, rather than methods
+that can be dismissed as requiring pretraining. FLET studies test-task
+mitigation through a game-theoretic formulation~\cite{guo2026flet}, while
+FLoomChecker studies training-integrity verification~\cite{liang2024floom}.
+BaitFL's response-only statistics and confirmation policy do not establish
+superiority to these approaches. Such a claim would require matched
+information access, attack settings and detection endpoints.
+
+\section{Threat Model}\label{sec:threat}
+\subsection{Participants and Server Knowledge}
+A trusted server coordinates $N$ clients with persistent identities and
+reliable communication. Every active client responds in each round.
+The population is fixed, with no client sampling, late arrivals or dropouts.
+Removal ends participation. Quarantined clients still return responses,
+but those responses are excluded from aggregation, as are all responses to
+traps. Honest clients train the model they receive with the prescribed
+optimizer. Their datasets may differ in size and class distribution,
+covering both IID and non-IID partitions.
+
+The server may send different models to different clients without disclosing
+which are traps. For client $i$ in round $t$, it knows the sent model,
+$w^{\rm send}_{t,i}$, and the returned model, $w^{\rm ret}_{t,i}$. These give
+the update and its norm,
+\begin{equation}
+ \Delta_{t,i}=w^{\rm ret}_{t,i}-w^{\rm send}_{t,i},\qquad
+ r_{t,i}=\|\Delta_{t,i}\|_2.
+\end{equation}
+Detection uses these responses and the server's audit history. The server
+has no access to private training records and no prior knowledge of which
+clients are free riders or how they construct their responses.
+Individual responses are visible to it, so the setting does not use
+secure aggregation.
+
+\subsection{Free-Rider Objective and Scope}
+Free riders seek the shared model while avoiding local training costs.
+Some lack suitable data or training resources. Others have both but choose
+to withhold them. They can still receive and store models and carry out
+the relatively simple calculations needed to fabricate a response.
+Introducing a targeted error or backdoor is outside their objective here.
+
+Our experiments consider persistent free riding without collusion,
+following Lin \emph{et al.}~\cite{lin2019freeriders}. These clients perform
+no local optimization at any stage. Partial training and behavior that
+alternates between training and free riding fall outside this scope.
+Each attacker relies only on its own received-model history and local
+randomness. They do not share responses or change identities.
+The evaluated strategies do not attempt to recognize traps or adapt to
+evade audits. Section~\ref{sec:evasion} discusses those possibilities.
+
+We assume an honest majority because screening uses peer statistics and
+seeks a separated minority of suspicious responses. The experiments use
+30\% and 40\% free riders, with one fixed fabrication strategy shared by
+the free riders in each run.
+
+% Allow attack definitions to flow across columns at the normal body-text size.
+\subsection{Evaluated Free-Rider Behaviors}
+Let $\widehat w_{t,i}$ denote the model returned by a free rider.
+All four strategies below skip local optimization.
+
+\par\medskip\noindent\textbf{FR1: current-model sendback.}\par\nopagebreak\smallskip\noindent
+Returning the received model unchanged gives a zero update, whether the
+model is ordinary or a trap:
+\begin{equation}
+ \widehat w_{t,i}=w^{\rm send}_{t,i}.
+\end{equation}
+
+\par\medskip\noindent\textbf{FR2: bounded random fabrication.}\par\nopagebreak\smallskip\noindent
+Independent uniform noise is added to each floating point entry of the
+received model state:
+\begin{equation}
+ \widehat w_{t,i}=w^{\rm send}_{t,i}+\epsilon_{t,i},\quad
+ (\epsilon_{t,i})_j\sim\mathcal U(-10^{-3},10^{-3}).
+\end{equation}
+
+\par\medskip\noindent\textbf{FR3: received-history averaging.}\par\nopagebreak\smallskip\noindent
+With a history length $H$, the response averages the most recent
+$\min(H,t)$ received model states, stored in $\mathcal H_{t,i}$:
+\begin{equation}
+ \widehat w_{t,i}=\frac{1}{|\mathcal H_{t,i}|}
+       \sum_{w\in\mathcal H_{t,i}}w.
+\end{equation}
+This history includes the current model and any earlier traps. The client
+therefore follows recent model evolution without training on local data.
+
+\par\medskip\noindent\textbf{FR4: received-trajectory imitation.}\par\nopagebreak\smallskip\noindent
+Changes between consecutive received models provide an estimated update.
+Let $\overline d_{t,i}$ average up to the five most recent differences:
+\begin{align}
+ d_{s,i}&=w^{\rm send}_{s,i}-w^{\rm send}_{s-1,i},\\
+ \widehat w_{t,i}&=w^{\rm send}_{t,i}+\overline d_{t,i}+\eta_{t,i}.
+\end{align}
+For a standard Gaussian vector $z_{t,i}$, the noise is scaled as
+\begin{equation}\label{eq:fr4-noise}
+ \eta_{t,i}=0.1\,
+ \frac{\max(\|\overline d_{t,i}\|_2,\epsilon_0)}
+      {\max(\|z_{t,i}\|_2,\epsilon_0)}\,z_{t,i},
+ \qquad\epsilon_0=10^{-6}.
+\end{equation}
+Equation~\eqref{eq:fr4-noise} applies to vectors covering all floating
+model entries. On the first response,
+$\overline d_{1,i}=0$ and $\eta_{1,i}$ instead has independent Gaussian entries with
+standard deviation $10^{-4}$. Traps enter the same history as ordinary
+models and affect the estimated trajectory.
+
+
+\section{Proposed Methodology}\label{sec:method}
+BaitFL compares clients through hidden model challenges, then separates
+initial suspicion from the evidence needed for removal.
+Figure~\ref{fig:audit-schedule} shows the round schedule,
+Figure~\ref{fig:challenge-mechanism} shows the challenge mechanism, and
+Figure~\ref{fig:client-states} summarizes client participation states.
+Warmup establishes an ordinary training trajectory
+(Phase I). Paired coverage collects comparable responses
+(Phase II), and confirmation updates the client records
+(Phase III). Outside paired cycles, ordinary training
+continues with sparse audits (Phase IV).
+
+The server first runs warmup and initial paired coverage. Thereafter, it
+repeats paired cycles while any client has an active review budget or
+rehabilitation probation. Otherwise, it executes ordinary rounds and any
+scheduled sparse audit until the training horizon $T$ is reached. The
+continuation rules appear at the bottom of Figure~\ref{fig:audit-schedule}.
+The illustrated second paired cycle permits earliest removal at round 30.
+The example then enters ordinary training with audits after ten quiet rounds.
+The two challenge labels summarize exposures within each paired cycle.
+The records $\mathcal S$ retain client status, quarantine, review budget,
+component counts, clean progress and cooldown. Counts start at zero and
+the quiet clock is initially unset, $\sigma=\bot$. The study uses warmup length
+$T_{\rm warm}=10$, paired-cycle length $\ell_{\rm cyc}=10$ and sparse-audit interval $I=10$.
+
+The challenge changes a client's starting point without changing the
+requested training task. Honest optimization responds to that starting
+point through the local data. An unchanged response, arbitrary noise or
+recycled model history need not respond in the same way. Comparing
+clients that received the same challenge can expose differences in the
+size and layer distribution of their updates. Two independent challenges
+test whether the difference recurs. This is behavioral evidence rather
+than proof of training, since fabricated and genuine responses may still
+overlap.
+\input{generated/notation_settings.tex}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{figures/audit_schedule.pdf}
+\caption{Illustrative round schedule from warmup and paired coverage
+to ordinary training with sparse audits.}
+\label{fig:audit-schedule}
+\end{figure}
+
+\subsection{Challenges, Measurements, and Aggregation}
+Each paired cycle starts from a frozen copy $w^{(c)}$ of the current global
+model. For floating tensor $k$, the server creates traps $A$ and $B$ as
+\begin{equation}\label{eq:trap}
+ \tau_{a,k}=w^{(c)}_k+
+ \gamma\max\{\operatorname{sd}(w^{(c)}_k),\epsilon_\tau\}\xi_{a,k},
+ \quad a\in\{A,B\}.
+\end{equation}
+In~\eqref{eq:trap}, $\xi_{a,k}\sim\mathcal N(0,I)$ uses independent draws, and
+$\operatorname{sd}$ is the tensor's population standard deviation. The
+study sets $\gamma=0.01$ and $\epsilon_\tau=10^{-4}$. Floating buffers,
+including BatchNorm statistics, are perturbed along with weights.
+Integer counters remain unchanged. The two traps stay fixed within the
+cycle, even as ordinary responses update the global model.
+
+For a response to trap $a$, write $\Delta^a_{i,k}$ for the returned tensor
+minus the tensor sent to client $i$. Its norm $r_i^a$ measures total update
+magnitude. The scale-free profile in~\eqref{eq:profile} is
+\begin{equation}\label{eq:profile}
+ p^a_{i,k}=\frac{\|\Delta^a_{i,k}\|_2}
+                  {\sum_j\|\Delta^a_{i,j}\|_2}.
+\end{equation}
+The profile is zero when its denominator is below $10^{-6}$. Otherwise,
+it records where the update magnitude lies across floating tensors.
+
+For each trap, client $i$ is compared with all other active clients having
+a selected response to that same trap. Quarantined and unresolved clients
+are not removed from this reference. Let $m_i^a$ and $d_i^a$ be the median
+and median absolute deviation (MAD) of the peer norms. Then
+\begin{equation}\label{eq:norm-score}
+ z_i^{n,a}=\frac{r_i^a-m_i^a}{d_i^a/\Phi^{-1}(0.75)},
+\end{equation}
+where $\Phi$ is the standard normal cumulative distribution function.
+The factor normalizes the MAD. It does not assume that client updates
+are normally distributed.
+
+The profile reference $\widetilde p_{-i}^a$ is the coordinatewise median
+of the peer profiles. The implementation uses the lower middle value
+when a tensor coordinate has an even number of peer observations.
+Define the client's profile distance as
+$\rho_i^a=\|p_i^a-\widetilde p_{-i}^a\|_2$. Peer distances are computed
+against that same reference. Their median $\mu_i^a$ and MAD $\delta_i^a$
+give
+\begin{equation}\label{eq:profile-score}
+ z_i^{p,a}=\frac{\rho_i^a-\mu_i^a}
+                  {\delta_i^a/\Phi^{-1}(0.75)}.
+\end{equation}
+A missing comparison or zero MAD leaves the corresponding score undefined.
+
+Send-back is checked separately. It means an exactly zero floating-point
+update norm, or a returned model whose fingerprint matches the immediately
+previous model sent to that client. The latter comparison covers every
+tensor in the model state. The server retains one previous-sent fingerprint
+per client, not a history of full returned models.
+
+\begin{figure*}[t]
+\centering
+\subfloat[Challenge construction and comparison. Each group receives both
+perturbed models, and the server compares norms and tensor profiles among
+clients receiving the same trap.\label{fig:challenge-path}]{%
+\parbox[c][5.5cm][c]{.53\textwidth}{\centering
+\includegraphics[width=\linewidth,height=5.4cm,keepaspectratio]{figures/challenge_path.pdf}}}
+\hfill
+\subfloat[Recorded response geometry. CIFAR-10, non-IID data, FR3, 40\%
+free riders, round 20. Axes show transformed paired mean scores.
+\label{fig:challenge-scores}]{%
+\parbox[c][5.5cm][c]{.43\textwidth}{\centering
+\includegraphics[width=\linewidth,height=5.4cm,keepaspectratio]{figures/challenge_scores.pdf}}}
+\caption{Model challenges and representative client responses.
+Point shapes identify evaluation labels unavailable to the detector.
+Panel (b) contains 40 free riders, but coincident score pairs leave only
+about four distinct triangle locations visible. Its averaged transformed
+coordinates are descriptive, rather than the individual per-trap raw-norm
+and profile certificate tests.}
+\label{fig:challenge-mechanism}
+\end{figure*}
+
+The representative response geometry in Figure~\ref{fig:challenge-scores}
+uses the seed-42 execution. The plotted averages summarize the two
+challenges and do not replace the paired component certificates.
+
+Aggregation runs alongside these checks. Let $\mathcal A_t$ contain clients
+that received the ordinary model and were not quarantined at the start of
+round $t$, excluding any newly quarantined or removed at its end. Then
+\begin{equation}\label{eq:method-aggregation}
+ w_{t+1}=w_t+\frac{1}{|\mathcal A_t|}
+                 \sum_{i\in\mathcal A_t}\Delta_{t,i}.
+\end{equation}
+Equation~\eqref{eq:method-aggregation} applies to floating tensors with equal client weights.
+This gives each eligible client equal influence, unlike sample-size
+weighting in the usual FedAvg formulation~\cite{mcmahan2017communication}.
+The server does not need client sample counts. Both the detector study
+and its no-defense comparison use this same weighting, so their utility
+differences are evaluated under a common aggregation objective.
+Non-floating entries retain their server values. An empty $\mathcal A_t$
+leaves the model unchanged. Training on a trap replaces ordinary local
+training in that round. The trap response never enters aggregation.
+
+\subsection{Phases I and II: Warmup and Paired Coverage}
+During the first $T_{\rm warm}=10$ rounds, all active clients receive the
+ordinary model and aggregate under~\eqref{eq:method-aggregation}.
+Measurements and previous-sent fingerprints are recorded, but no client
+is removed. In the next cycle, a random partition into at most ten groups
+gives every client one selected response to each challenge. The selected
+positions are fixed before responses are observed. Challenge recipients
+do the requested local training, but their responses are withheld from
+aggregation. Ordinary non-quarantined responses continue to contribute.
+
+After initial coverage, reviewed and other clients are grouped
+separately. Reviewed clients alternate challenges throughout the cycle,
+while the other clients receive one selected exposure to each. Only
+the preselected pair enters the cycle decision. Missing A/B coverage
+cannot confirm removal. Screening and state changes occur before the
+last aggregation, so newly quarantined or removed responses are excluded.
+Algorithm~\ref{alg:overall} connects these phases to ordinary training
+and sparse auditing. Supplementary Algorithms S1--S4 give the expanded
+procedures for the published study engine.
+
+\subsubsection{Screening}
+For each client, form $D_i^A=z_i^{p,A}-z_i^{n,A}$,
+$D_i^B=z_i^{p,B}-z_i^{n,B}$ and their average. Each view uses
+$\lceil\sqrt{n_v}\rceil$ equally spaced histogram bins, where $n_v$ counts
+clients with valid paired scores. Otsu's criterion selects a
+split~\cite{otsu1979threshold}. The lower side of the average-view split
+must contain a majority of all active clients, not merely a majority of
+the valid-score subset.
+
+The server resamples clients jointly across the three views in 1,000
+bootstrap replicates, obtaining a 99\% interval for each split
+boundary~\cite{efron1979bootstrap}. A client above every upper boundary
+is nominated as suspicious. One below every lower boundary is clear.
+Other outcomes remain unresolved. These intervals describe split
+stability, not a calibrated false-removal probability.
+
+If the population split is unavailable or unstable, negative norm-z scores
+on both traps nominate suspicion. Here zero denotes the measured peer
+median. Neither score negative gives a clear result. One negative score
+or an undefined comparison leaves the result unresolved. Paired send-back evidence is handled
+independently of this statistical fallback.
+
+\subsubsection{Geometric evidence}
+A statistical nomination must pass a separate separation test. Let
+$\mathcal U$ be the nominated cohort and $\mathcal V$ the remaining active
+clients. With $n$ active clients, statistical certification requires
+\begin{equation}\label{eq:cohort-support}
+ \left\lceil\frac{n}{\lceil\sqrt n\rceil}\right\rceil
+       \leq|\mathcal U|<|\mathcal V|.
+\end{equation}
+At $n=100$, this requires at least ten nominated clients. More generally
+the integer lower bound is $\lceil n/\lceil\sqrt n\rceil\rceil$, not
+identically $\lceil\sqrt n\rceil$ for every population. A pure five-rider
+cohort cannot qualify at 100 clients. This is a restriction on the nominated
+cohort, not proof that a rider can never enter a larger mixed cohort.
+Exact sendback is evaluated separately.
+The support condition in~\eqref{eq:cohort-support} grows approximately with $\sqrt n$, while the strict
+minority condition reflects the assumed honest majority. This is a
+population-based support rule, not an estimate of the attacker share.
+For a given signal, write $Q_q(\mathcal U)$ for its empirical quantile
+and $I_U=Q_{.75}(\mathcal U)-Q_{.25}(\mathcal U)$ for its interquartile
+range (IQR). Low raw update norms require both
+\begin{align}\label{eq:norm-certificate}
+ Q_{.25}(\mathcal V)-Q_{.75}(\mathcal U)&>I_U,\\
+ \min(\mathcal V)-Q_{.75}(\mathcal U)&>I_U.\nonumber
+\end{align}
+Equation~\eqref{eq:norm-certificate} requires interquartile and full-peer separation. The individual norm must also lie below the peer median.
+
+For high raw profile distances, let
+$I_V=Q_{.75}(\mathcal V)-Q_{.25}(\mathcal V)$ and
+$g=Q_{.25}(\mathcal U)-Q_{.75}(\mathcal V)$. Require $g>I_U$,
+together with
+\begin{equation}\label{eq:profile-certificate}
+ Q_{.25}(\mathcal U)-\max(\mathcal V)>I_U
+ \quad\text{or}\quad
+ \frac{I_U}{|\mathcal U|-1}<\frac{I_V}{|\mathcal V|-1}.
+\end{equation}
+Equation~\eqref{eq:profile-certificate} permits full-peer separation or greater within-cohort concentration. The individual's profile distance must exceed the peer median. Constant
+populations, invalid measurements or insufficient cohort support do not
+produce a statistical certificate.
+
+The norm test requires the suspicious cohort to remain separated from
+the nearest peer, making overlap sufficient to reject certification.
+The profile test permits either full separation or a more concentrated
+cohort after the interquartile gap is established. Dividing each IQR by
+population size minus one compares typical spacing rather than spread
+alone. This allowance limits the influence of extreme peer distances,
+but can also admit persistent honest profile outliers. It is a geometric
+heuristic, not a calibrated false-positive test.
+
+The same component must certify a client on both traps. The diagonal
+score nominates clients but cannot itself certify removal. Paired
+send-back supplies a separate evidence component without the statistical
+cohort requirement. Each client receives one of three cycle outcomes,
+$\mathsf{strong}$, $\mathsf{unresolved}$ or $\mathsf{clear}$.
+A nomination that fails certification remains unresolved without
+automatic quarantine. The collection of paired decisions is $\mathcal E$.
+These are cycle outcomes. A client's retained status may still reflect
+its recovery history.
+
+\subsection{Phases III and IV: Confirmation, Review and Audits}
+Separate counts $M_{i,n}$ and $M_{i,p}$ retain norm and profile
+certificates. Only a fresh paired certificate increments its own
+component, at most once per complete cycle. An ambiguous cycle preserves
+these counts; two consecutive complete clear cycles reset them. Removal
+requires a fresh certificate whose own count reaches two, even if the
+two certificates are not consecutive. Mixed components and retained
+memory alone cannot confirm removal. Exact current/previous sendback
+instead requires two consecutive complete paired cycles. Under this
+schedule, earliest removal is round 30.
+
+Strong statistical evidence opens two cycles of quarantined review.
+Fresh strong evidence can renew it, but weak labels or old memory cannot.
+If it does not recur, exclusion expires even when the client remains
+unresolved. Two complete clear cycles rehabilitate a client, followed by
+one additional clear cycle of monitoring. Quarantine and removal are
+therefore different from a retained unresolved label. Fresh confirmation
+can remove a client after quarantine has expired, as
+Figure~\ref{fig:client-states} summarizes.
+
+Without active review or probation, ordinary training continues. After
+ten quiet rounds, one fresh challenge audits active clients. A single
+audit can open bounded review, but cannot confirm removal or clear
+paired certificate memory. Released clients wait through two audits
+before re-enrollment. The eligibility check uses cooldown before its
+decrement. The published engine restarts the quiet clock only for an
+empty raw finding set; the prospective review engine uses the corrected
+eligible-finding guard. These guards agree on all 622 recorded audits
+in the main study. Supplementary Section S5 documents that trace check
+and the liveness edge case.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{figures/client_states.pdf}
+\caption{Client participation and review. Fresh matching confirmation is tested for all non-removed clients, including after quarantine expires. The red arrow does not restrict removal to quarantined clients.}
+\label{fig:client-states}
+\end{figure}
+
+\begin{algorithm}[t]
+\caption{Training with paired confirmation and bounded review}\label{alg:overall}
+\begin{algorithmic}[1]\small
+\State Initialize model, client records, evidence counts and quiet clock
+\For{each round up to $T$}
+ \If{warmup is incomplete}
+  \State Send the ordinary model; aggregate all active responses
+ \ElsIf{initial coverage, active review or probation requires a cycle}
+  \State On cycle start, freeze challenges and preselect response slots
+  \State Collect responses; retain selected A/B summaries and sendback checks
+  \State $\mathcal A_t\gets$ ordinary, non-quarantined clients at round start
+  \If{complete paired coverage is available}
+   \State Score peers using~\eqref{eq:norm-score}--\eqref{eq:profile-score}
+   \State Apply support and certificates~\eqref{eq:cohort-support}--\eqref{eq:profile-certificate}
+   \State Update same-component memory and bounded review
+   \State Remove only on fresh matching confirmation
+   \State Release expired quarantine; clear memory after two clear cycles
+   \State Exclude new quarantines and removals from $\mathcal A_t$
+   \State Set quiet clock if no review/probation remains, otherwise unset it
+  \EndIf
+  \State Aggregate $\mathcal A_t$ using~\eqref{eq:method-aggregation}
+ \ElsIf{a sparse audit is due}
+  \State Test one challenge; open review only for eligible findings
+  \State Restart quiet clock if no review/probation was opened
+  \State Withhold challenge responses and keep the global model unchanged
+ \Else
+  \State Train and aggregate eligible ordinary responses
+ \EndIf
+\EndFor
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Choice of Protocol Settings}
+Table~\ref{tab:notation-settings} lists the settings shared by every
+reported configuration. Ten groups and a ten-round cycle provide a simple
+coverage schedule. Two challenges and two confirming cycles are the
+smallest repeated-evidence design used here. Review and cooldown lengths
+bound exclusion and immediate re-enrollment, while the additional clear
+cycle extends monitoring before sparse auditing resumes. These are design tradeoffs,
+not statistically optimal choices.
+
+Perturbations are scaled to each tensor so that a common relative
+strength can be used across layers. The scale floor handles tensors with
+negligible variance. Bootstrap replicates assess split stability, and
+the nominal confidence level controls the width of those split intervals.
+It does not supply a false-removal probability. The defaults were adopted
+during development and then held fixed across the reported grid. There
+is no separately held-out tuning study or sensitivity experiment, so
+the results do not establish an optimal parameter setting.
+
+\FloatBarrier
+% The revised evaluation metrics and results use black text.
+
+
+\section{Results and Discussion}\label{sec:results}
+\subsection{Experimental Setup}
+The study covers MNIST and CIFAR-10, IID and Dirichlet non-IID partitions,
+FR1--FR4, and free-rider proportions of 30\% and 40\%
+\cite{lecun1998gradient,krizhevsky2009learning}. Each configuration is
+evaluated across three random seeds, giving 96 detection runs in total.
+The honest-client impact and resource tables average the completed
+replications, while detection rates pool the removal counts. The
+optimizer and detector settings are held fixed.
+
+Every federation has 100 clients and runs for 100 communication rounds.
+IID data are shuffled into equal-size client partitions. Non-IID label
+proportions follow a Dirichlet distribution with $\alpha=0.5$, with
+allocation repeated if any client receives no samples. Partitioning,
+attacker identities, initialization, local training and audit scheduling
+vary through separate random streams.
+
+Honest clients perform three local SGD epochs, using learning rate 0.01,
+momentum 0.9 and batch size 32. The MNIST network has convolutional blocks
+with 16 and 32 channels and a 128-unit hidden classifier. CIFAR-10 uses
+32, 64 and 128 channels with BatchNorm and a 256-unit hidden classifier.
+Images are normalized without augmentation. Execution uses the CPU, with
+six PyTorch threads. The evaluated FR3 history length is $H=5$.
+
+Two comparisons serve different purposes. Completed, seed-matched
+no-defense runs assess the effect of the whole BaitFL workflow.
+Separately instrumented BaitFL and STD-DAGMM executions measure timing
+stages over the full horizon. The latter are timing cases, separate from
+the multi-seed detection averages.
+STD-DAGMM is used for timing only. PASS, FRAD and FRIDA enter the
+requirements comparison, not a matched detection benchmark.
+
+
+\subsection{Evaluation Metrics}
+The evaluation asks whether BaitFL identifies free riders, preserves
+useful participation and adds little computational work. We assess these
+questions through detection performance, model accuracy, honest-client
+impact and resource use.
+
+\textbf{Detection performance.} Precision measures the proportion of
+permanently removed clients that are free riders, while recall measures
+the proportion of free riders removed. We also report $F_1$ and the round at which removal
+of all free riders is complete. An unresolved label or temporary quarantine
+does not count as detection. If any free rider remains at the training
+horizon, complete detection is recorded as not reached.
+
+\textbf{Model accuracy and honest participation.} Global test accuracy
+measures the utility of the trained model. Comparisons with no-defense
+federated averaging report accuracy differences in percentage points.
+To assess the cost to honest participants, we record permanent removals,
+clients ever quarantined and clients still unresolved at completion.
+Client-round counts measure how long responses are withheld. Total
+withheld participation includes trap responses and quarantine, counting
+each affected client-round once.
+
+\textbf{Lightweightness.} Mean round time, execution duration and peak
+process resident memory (RSS) describe the cost of the complete simulation.
+The round timer covers training, response processing, detection,
+aggregation and global evaluation, ending before log and checkpoint
+publication. Execution duration also includes setup and publication work,
+but excludes powered-off waiting. Separate instrumented runs divide the
+work into computation stages and distinguish these from elapsed round
+time, which also includes logging and other execution overhead. Timing means
+cover all 100 rounds, spreading periodic decision costs over the full
+training horizon. Percentage comparisons use the corresponding
+no-defense or STD-DAGMM execution as the reference. Network transmission
+is not measured in this local simulator.
+
+Each configuration has three complete runs. We treat the run as the
+experimental unit and report accuracy variation across those runs.
+Pooled precision summarizes the observed client outcomes, not uncertainty
+from independent client trials. Clients in a federation share a training
+trajectory, so the pooled percentage is not a confidence bound.
+
+
+\subsection{Permanent Detection and Model Utility}
+Table~\ref{tab:performance} summarizes the multi-seed results. Detection
+rates pool the removal counts across the four attacks and three seeds
+within each dataset, partition and attacker proportion. Final model accuracy is reported
+separately for FR1--FR4 as mean $\pm$ sample standard deviation.
+
+In the main 30\%/40\% grid, all free riders are removed across \ReviewRunCount{} runs, giving
+\MultiRecall\% recall. There are \MultiFP{} honest removals among
+\ReviewHonestCases{} honest client-cases, concentrated in
+\ReviewAffectedRuns{} runs. Pooled precision is \MultiPrecision\% and
+$F_1$ is \MultiFone\%, as descriptive summaries of these observed outcomes.
+Most executions complete detection at round 30. The slower cases extend
+to round \MultiCompletionMax{}, showing that successful detection need
+not occur at the first confirmation opportunity. Mean final test
+accuracy spans \MultiMnistAccuracyMin--\MultiMnistAccuracyMax\% on MNIST
+and \MultiCifarAccuracyMin--\MultiCifarAccuracyMax\% on CIFAR-10.
+Honest removals occur in two runs; per-run precision ranges from 95.24\%
+to 100\%. The pooled rate therefore summarizes errors concentrated in
+particular configurations rather than uniform behavior across runs.
+For MNIST non-IID at 40\%, the 12 runs contain 480 correct removals
+and three honest removals, giving $480/483=99.38\%$ pooled precision.
+
+FR1 and FR2 are consistently removed at the earliest confirmation round.
+FR1 returns an unchanged model and activates the exact-sendback path.
+FR2 avoids exact equality, but its fabricated noise remains distinct
+under the tested settings. The history-based attacks, FR3 and FR4,
+account for the delayed cases.
+\input{generated/performance.tex}
+
+\subsection{Honest-Client Impact}
+The principal errors occur among honest clients with non-IID data.
+Table~\ref{tab:safety} reports \MultiFP{} permanent honest removals and
+\MultiQuarantined{} honest client-cases experiencing quarantine, totaling
+620 quarantine client-rounds. No client remains quarantined at completion.
+Counts pool client-cases within each setting across FR1--FR4 and the
+study replications. Withholding counts traps and quarantine once per
+active honest client-round. Supplementary Table S2 retains the complete
+attack-specific means, ranges and unresolved-client counts.
+
+The decision records identify the immediate causes of the false positives.
+Two honest clients in MNIST non-IID FR3 receive profile-distance
+certificates in successive cycles and are removed at round 30. A third
+honest client, in FR4, receives norm certificates in separated cycles
+and is removed at round 90. None of these removals follows exact sendback.
+Non-IID training can produce legitimate updates whose size or distribution
+across layers differs persistently from the population. When these updates
+also satisfy the geometric gate, repeated confirmation can reinforce the
+same mistaken suspicion. Fresh traps do not remove the underlying
+similarity, because a client's local data remain unchanged. This is a
+limitation of inferring training behavior from response statistics.
+
+Unresolved labels can persist after the free riders have gone.
+For non-IID FR3 at 40\%, the mean numbers of honest clients still
+unresolved at completion are 37 on MNIST and 43 on CIFAR-10, respectively
+61.7\% and 71.7\% of the 60 honest clients. Unresolved denotes remaining
+response evidence rather than a free-rider classification.
+Ordinary responses from these clients remain
+eligible for aggregation, and they remain in the same-trap reference
+population. The label alone neither renews quarantine nor initiates dense
+probing, which depend on an active review budget or recovery probation.
+Such widespread unresolved labels have little value as an end-of-run
+classifier of free riding in these settings.
+Most withheld honest responses instead arise from the planned trap
+schedule. Even IID settings with no honest removal or quarantine withhold
+roughly 11\% of honest responses. These forgone contributions are a
+utility cost even when the client is never removed.
+\input{generated/revision/honest_cost.tex}
+
+\subsection{What the Score Plots Establish}
+The round-20 examples in Figure~\ref{fig:challenge-scores} and
+Appendix Figures~\ref{fig:geometry-mnist}--\ref{fig:geometry-cifar10} show clear norm-axis separation in all
+displayed seed-42 panels, including FR3 and FR4. Those panels do not
+demonstrate overlap or establish separation in other cycles and seeds.
+The averages also do not replace the individual paired certificates.
+
+Figure~\ref{fig:honest-error} instead examines a recorded error case:
+MNIST non-IID FR3 at 40\%, with the two honest clients removed at round 30
+marked explicitly. At round 30, the transformed paired-mean norm ranges
+partly overlap, unlike the representative seed-42 panels. The two removed
+honest clients receive repeated profile certificates. Because either
+statistical channel can certify a client, useful norm contrast elsewhere
+does not protect an honest client from the profile branch. These are
+averaged score plots, not substitutes for checking each challenge.
+\input{generated/revision/honest_error_figure.tex}
+
+The tested fabrications also have favorable magnitude structure. FR1
+has zero delta, FR2 uses small fixed noise, and FR3--FR4 recycle shared
+model changes. Averaging does not mathematically guarantee a smaller norm
+in every trajectory, but the displayed cases are strongly low-norm.
+Their results therefore cannot establish robustness to a norm-matched
+adversary or isolate the profile score's incremental value.
+
+For an additive fabricated response $w_{\rm sent}+d+\eta$, subtracting
+the dispatched model yields $d+\eta$ whether the model was ordinary or a
+challenge. Thus FR4 need not acquire a direct trap signature. Challenges
+can still change the honest reference distribution, which must be tested
+against the same statistics on ordinary models. FR1 sendback also needs
+no trap. The current results establish the combined pipeline's behavior,
+not that traps cause its detection gains. Norm-only, profile-only,
+sendback-only and no-retained-memory variants are likewise untested.
+
+\subsection{Oracle Norm-Matching Feature Diagnostic}
+To isolate that limitation, we replay each initial FR2--FR4 pair from the
+96-run study: 72 cases across both datasets, partitions, proportions and
+the three study seeds. The unchanged detector must reproduce every
+stored round-20 certificate before stress testing. We then replace each
+free rider's norm by the same-trap median honest norm. Positive rescaling
+preserves the normalized profile in~\eqref{eq:profile}; profiles are held
+fixed and the peer scores and certificates are recomputed.
+
+Evaluation labels construct this oracle stress input; they are not given
+to the detector. This provides the adversary extra information and
+operates on stored features rather than newly fabricated full models.
+It tests statistical certificates at one complete cycle, not confirmed
+removal, adaptation or model utility. FR1 is excluded because a zero
+vector cannot be positively rescaled to a nonzero norm.
+\input{generated/revision/norm_matching_table.tex}
+The low-norm channel certifies no attackers after norm matching.
+Profile certificates retain 61.9\% coverage for FR2, but only 10.7\%
+for FR3 and 17.9\% for FR4, with ten honest certificates across the
+stress cases. Profiles therefore supply some magnitude-independent
+evidence, while leaving a substantial detection gap. Whether these
+certificates would recur and confirm removal is unobserved here.
+Both channels retain the joint nomination step. These are certificate
+breakdowns within the unchanged pipeline, not comparisons of separate
+norm-only and profile-only detectors.
+
+\subsection{Honest-Only and Lower-Prevalence Checks}
+The prospective review engine freezes the v15.4 statistical settings and
+corrects only the audit-clock liveness guard. Four honest-only 100-round
+runs cover both datasets and both partitions with seed 42. None removes
+an honest client. This is evidence from four federations, not a population
+false-positive guarantee.
+
+Table~\ref{tab:low-share} reports the complete non-IID 5\%, 10\% and
+20\% grid available at this revision. FR1 removes all free riders at each
+share. FR2--FR4 remove none at 5\%, while the completed 10\% and 20\%
+cases remove all. The cohort-support requirement in~\eqref{eq:cohort-support}
+is ten at 100 active clients, making a five-client statistical cohort
+ineligible. This limit is retained rather than relaxed after observing
+misses. CIFAR-10 FR3 at 10\% also removes one honest client.
+\input{generated/saudi/low_share_table.tex}
+
+At the 12 November revision snapshot, 35 of 48 low-prevalence
+cases are complete. Table~\ref{tab:low-share} includes every completed
+IID and non-IID case; incomplete runs are not scored.
+The passive ablation/MAD phase, oracle utility comparisons, published
+decaying-noise and scaled-delta tests, and held-out seeds remain queued.
+Stronger non-IID concentrations, mixed attacks and complete norm-matched
+attack reruns are not covered by that queue.
+
+Across the four honest-only federations, the observed permanent-removal
+rate is zero. Four runs are too few for a narrow run-level uncertainty
+interval. Treating federations as independent Bernoulli trials, the exact
+two-sided 95\% interval for the probability of any honest removal is
+approximately $[0,0.602]$. This is not a client-level interval: clients
+within a federation share training and references. The main study's
+three removals among 6,240 honest client-cases are descriptive; pooling
+those cases as independent trials would understate uncertainty.
+
+\subsection{Execution Time and Memory}
+Throughout this paper, lightweight refers to measured server computation
+at 100 clients with the evaluated architectures. It does not imply
+negligible participation cost or demonstrated efficiency at larger scale.
+Table~\ref{tab:cost} reports multi-seed process measurements averaged over
+the attacks, with minimum and maximum execution values in brackets.
+Runs at 30\% free riders include more honest training jobs than those at
+40\%, which helps explain their longer rounds. Process RSS includes
+training tensors, simulated attacker histories and server state.
+It should not be interpreted as detector-only memory.
+
+The overall cost and the cost of the checking stages answer different
+questions. Table~\ref{tab:cost} describes the complete simulation.
+Section~\ref{sec:native-timing} measures selected operations, while
+Section~\ref{sec:complexity} analyzes their scaling.
+\input{generated/cost.tex}
+
+\subsection{Comparison with No-Defense Federated Averaging}\label{sec:baseline}
+The no-defense baseline keeps all clients throughout training and
+aggregates every response. It performs no traps, screening, quarantine
+or removal. Each completed baseline is matched to BaitFL using the same
+dataset, partition, attack, proportion and random seed. Configuration
+checks and identical warmup accuracies verify that the paired runs start
+from the same training conditions.
+
+Table~\ref{tab:baseline} uses \BaselineMatchedRuns{} completed matched
+runs: \BaselineMnistMatchedRuns{} on MNIST and
+\BaselineCifarMatchedRuns{} on CIFAR-10. Means are calculated across matched seeds within
+each attack, then across the four attacks with equal weight. A BaitFL
+execution without a completed baseline partner does not enter this
+comparison, even though it remains in Table~\ref{tab:performance}.
+Positive accuracy changes favor BaitFL. A positive time change means
+longer rounds. Accuracy differences are expressed in percentage points.
+
+The available paired means show comparable or slightly higher final
+accuracy with BaitFL. Their descriptive mean differences are
+\BaselineMnistGain{} percentage points on MNIST and \BaselineCifarGain{}
+on CIFAR-10, with variation across attacks and partitions. MNIST baseline
+coverage remains uneven, while CIFAR-10 now covers the complete matched
+grid. These differences do not establish a systematic accuracy gain
+across random seeds. That assessment requires paired differences with
+uncertainty estimates from more complete replication coverage.
+MNIST rounds become modestly shorter, while the current CIFAR-10
+comparisons take somewhat longer than no defense. These are whole-workflow
+measurements of the full training procedure. Stage-level timing is
+examined separately below.
+\input{generated/baseline_table.tex}
+
+The observed accuracy differences describe the combined effect of detection and
+mitigation. Removing fabricated responses changes aggregation, but
+challenge rounds also withhold genuine updates. Final model utility
+therefore depends on both effects, rather than on removal recall alone.
+
+Figure~\ref{fig:accuracy-comparison} shows model accuracy from rounds
+20--100, averaging all three BaitFL replications and the completed
+no-defense runs. Baseline coverage is \BaselineMnistReplications{}
+replications per attack setting on MNIST and \BaselineCifarReplications{}
+on CIFAR-10. FR1--FR4 receive equal weight,
+and each dataset row shares an accuracy scale. The curves show how
+learning continues after initial challenge coverage. Coverage differs
+between methods, so the paired accuracy differences in
+Table~\ref{tab:baseline} remain the basis for the quantitative comparison.
+\input{generated/accuracy_comparison.tex}
+
+Figure~\ref{fig:time-target} uses saved paired trajectories to compare
+logged time to 98\% accuracy on MNIST and 70\% on CIFAR-10. These
+illustrative targets were chosen for this analysis and reached in every
+included execution. Times sum the round timers through the first crossing,
+then average matched seeds within attack and the four attacks equally.
+Coverage is \BaselineMnistMatchedRuns{} MNIST pairs and
+\BaselineCifarMatchedRuns{} CIFAR-10 pairs. The comparison combines
+free-rider removal with withheld training contributions. Removing
+fabricated responses can reduce update dilution, so shorter times do
+not isolate audit costs. Separating these effects requires an honest-only
+oracle baseline without audits. Timer boundaries and execution load also
+differ, as in Table~\ref{tab:baseline}. These measurements describe the
+saved executions and do not establish a controlled time-to-accuracy advantage.
+\input{generated/time_target_figure.tex}
+
+\subsection{Instrumented Timing and Lightweight Operation}\label{sec:native-timing}
+Dedicated executions compare BaitFL with a reimplementation of STD-DAGMM
+on non-IID FR3 at 40\%, using both datasets, 100 clients,
+100 rounds, three local epochs and six CPU threads. STD-DAGMM freshly
+fits its auxiliary model for five epochs per round and retains every
+client. That fitting budget is a declared reproduction choice, not an
+author-specified training schedule or evidence of convergence
+\cite{lin2019freeriders,zong2018dagmm}. The instrumented BaitFL run
+matches its corresponding study accuracy trajectory in every round.
+
+Table~\ref{tab:std-segments} separates training from response preparation,
+challenge construction, decisions, aggregation and evaluation. BaitFL's
+recorded challenge, feature/preparation and decision stages average
+\TimingMnistAuditingMs{} ms per round on MNIST and
+\TimingCifarAuditingMs{} ms on CIFAR-10. They account for 0.58\% and
+0.89\% of the corresponding computation totals. STD-DAGMM adds auxiliary
+fitting, averaging \TimingMnistFitting{} and \TimingCifarFitting{} seconds.
+The checking subtotal groups these stages. The final rows give BaitFL's
+absolute saving in seconds per round together with the percentage
+reduction relative to STD-DAGMM. Stage times include sample standard
+deviations across the 100 rounds, capturing variation between ordinary
+training and periodic decisions.
+
+The deployment-relevant denominator must exclude simulated client SGD.
+Using checking plus aggregation only, the checking fractions are about
+$0.215/(0.215+0.030)=87.8\%$ on MNIST and
+$0.791/(0.791+0.096)=89.2\%$ on CIFAR-10, approximately 7.2 and 8.2 times
+aggregation. These are explicitly delimited server-core fractions, not
+fractions of all server activity, which may also include evaluation and
+I/O. The corresponding absolute times remain the primary cost measures.
+
+Client diagnostic evaluation measures simulator-side evaluation of fabricated
+responses on client loaders for reporting. This uses ground truth only in the
+experimental harness and does not expose private loaders to the detector.
+It is not an input to the detector or a required
+client report. Its cost remains visible in the workflow table but is
+outside the checking subtotal. This accounting does not justify concealing
+it when comparing whole-experiment elapsed times.
+
+Honest CIFAR-10 training averages 81.37 s for BaitFL versus 72.42 s for
+the STD-DAGMM recipe. The stored timing records do not isolate the cause
+of this 8.95 s difference. Changed dispatched models and execution
+conditions are possible confounders, not established explanations.
+Consequently the elapsed-time savings cannot be attributed solely to the
+detector. Withheld response counts measure forgone contributions; they
+are not a measured percentage of client CPU time or energy wasted.
+
+Figure~\ref{fig:timing-phases} shows average
+computation and elapsed round time over the complete horizon. BaitFL uses
+\TimingMnistReduction\% less computation time on MNIST and
+\TimingCifarReduction\% less on CIFAR-10 in these executions. Elapsed-time
+reductions are \TimingMnistWallReduction\% and
+\TimingCifarWallReduction\%. Logging, checkpoints and other runtime costs
+contribute to the difference between computation and elapsed time. Network
+communication is absent from both measurements.
+\input{generated/timing_compact_table.tex}
+\input{generated/timing_phases_figure.tex}
+
+These timing cases describe different native workflows. BaitFL changes
+probing and participation, whereas STD-DAGMM keeps the full population.
+Removing free riders does not remove honest clients' local SGD jobs.
+Checking accounts for less than 1\% of measured computation,
+while the STD-DAGMM comparison measures a particular fitting budget.
+It is not a successful comparative detection baseline, and its five-epoch
+cost is not an intrinsic cost of the published method.
+Detailed per-round and fitting-stage records accompany the study.
+
+The stored STD-DAGMM flags also permit a limited diagnostic of this
+five-epoch recipe. Each timing execution contains 4,000 free-rider
+responses, none of which is flagged. The numbers of flagged honest
+responses are 2,200 on MNIST and 2,196 on CIFAR-10, giving zero pooled
+flag precision and recall in both executions. These are roundwise flags
+from one configuration and fitting budget. A comparative detection
+benchmark would require matched decision endpoints and baseline settings,
+so these observations do not establish a ranking against BaitFL's
+permanent-removal results.
+
+The unassigned-runtime entry is the difference between elapsed time and
+the sum of explicitly timed computation and I/O stages. Its larger value
+for STD-DAGMM shows that the two execution paths include different
+untimed work. It is excluded from computation totals and cannot be
+attributed to detector fitting. Elapsed-time savings include this
+difference, so they are not an isolated measure of detection overhead.
+
+Low checking cost does not imply immediate detection.
+Figure~\ref{fig:completion-rounds} shows the variation in complete-removal
+rounds across configurations. Markers indicate the mean completion round,
+with whiskers spanning the observed minimum and maximum.
+The wider ranges in history-based attacks
+reflect the additional challenge cycles sometimes needed for confirmation.
+\input{generated/completion_rounds_figure.tex}
+
+\section{Complexity and Lightweight Design}\label{sec:complexity}
+Let $N$ be the largest active population, $P$ the floating model coordinates,
+$L$ the floating tensors, $B$ bootstrap replicates and
+$K=\lceil\sqrt N\rceil$ bins. Feature extraction reads $O(NP)$ coordinates
+per round. Leave-one-out profile comparisons cost $O(N^2L)$, with
+$O(N^2\log N)$ additional scalar-median work in the current implementation.
+Bootstrap splitting costs $O(B(N+K))$ on scalars. For $T$ rounds, $M$
+paired cycles and $A$ sparse audits, total incremental detector work is
+\begin{equation}\label{eq:detector-work}
+\begin{aligned}
+\mathcal W_{\rm det}=O\bigl(&TNP+(M+A)\bigl[N^2(L+\log N)\\
+&\hspace{4em}+B(N+K)\bigr]\bigr).
+\end{aligned}
+\end{equation}
+Equation~\eqref{eq:detector-work} excludes ordinary training, aggregation
+and persistent logging. The detector is linear in model size for feature
+extraction and quadratic in client count for peer comparisons; it is not
+claimed to scale linearly in the federation population.
+
+Working state is $O(P+NL+BN+BK)$, plus $O(N)$ evidence counters and
+fingerprints. At 100 clients, packed paired summaries occupy about
+8.59 KiB on MNIST and 19.53 KiB on CIFAR-10. Shared float32 challenges
+occupy about 1.58 and 4.74 MiB. Python objects, temporary arrays, client
+models and attacker histories make full-process RSS larger. Supplementary
+Tables S3--S4 give operation-level bounds and payload calculations.
+
+Challenges replace ordinary model requests, so the nominal payload order
+remains $O(NP)$ per round. Withholding genuine responses can change time
+to target accuracy. No network or energy saving follows from unchanged
+payload order. The measured sub-1\% checking fractions support lightweight
+server computation only for the tested population and architectures.
+
+\section{Discussion and Limitations}\label{sec:discussion}
+\subsection{Information Available to the Server}
+BaitFL uses returned models, client and challenge identifiers, response
+norms, profile distances and exact-sendback checks. Attacker identities
+and behavior settings belong to the simulator and evaluation records.
+They do not enter screening, geometric tests or confirmation. Likewise,
+the configured attacker proportion does not set a removal quota.
+This separation prevents direct use of evaluation labels, although the
+method's design has been informed by experimental observations.
+
+\subsection{Confirmation and Honest-Client Safety}
+Statistical removal requires fresh evidence from the same component
+on both selected challenges and in another complete cycle. Mixed
+norm/profile findings cannot be combined to reach confirmation, and
+stored evidence alone cannot authorize removal. Paired exact sendback
+also requires repetition. Weak unresolved labels do not renew quarantine,
+and unconfirmed review expires when fresh strong evidence does not recur.
+
+These rules reduce reliance on isolated anomalies. They do not make
+repeated evidence statistically independent. An honest client keeps
+its local data across challenges and can therefore remain unusual in
+successive cycles. Certificate memory can accumulate such findings
+unless two complete clear cycles reset it, explaining the risk of late
+false removal observed in the experiments.
+
+The decision boundaries are derived from the observed population rather
+than an attack-fitted numerical z-score cutoff. Nevertheless, the method
+has design parameters, including challenge strength, bootstrap confidence,
+cohort support and confirmation lengths. At 100 clients, statistical
+certification requires a cohort of at least ten. A small group of free
+riders that avoids exact sendback may therefore remain uncertified.
+
+\begin{table}[t]\centering\footnotesize
+\caption{Evidence outcomes and participation status.}\label{tab:status-meaning}
+\begin{tabular}{p{.25\columnwidth}p{.64\columnwidth}}\toprule
+Term & Meaning \\ \midrule
+Strong & A current paired observation satisfies a certificate. Repetition, not this label alone, permits removal. \\
+Unresolved & Evidence does not certify either strong misconduct or clearance. The label alone does not exclude contributions. \\
+Clear & A complete paired observation meets the clearance rule. Repeated clear cycles reset statistical memory. \\
+Under review & A bounded period of targeted probing. Its budget is distinct from the cycle outcome. \\
+Quarantined & Ordinary responses are temporarily excluded while the bounded mitigation state is active. \\
+Removed & Participation ends after fresh confirmation. This state is permanent in the evaluated protocol. \\ \bottomrule
+\end{tabular}\end{table}
+Table~\ref{tab:status-meaning} separates response evidence from participation
+states. A client can retain an unresolved label after its review budget
+expires, while again contributing on ordinary rounds.
+
+\subsection{Adaptive Attacks and Identifiability}\label{sec:evasion}
+A response-only detector cannot distinguish two clients whose observable
+histories are identical, even if one trained and the other fabricated
+its responses. BaitFL therefore tests whether challenges expose
+differences in behavior. Its certificates do not prove that local
+computation occurred.
+
+The evaluated free riders are not told which models are challenges.
+An adaptive participant might still recognize repeated frozen models,
+unusual perturbations or differences revealed through communication with
+other clients. Reproducible simulation randomness also does not establish
+unpredictability against an attacker who knows its configuration.
+Deployment would require server-secret randomness and tests against
+challenge-aware strategies. Secrecy alone would not guarantee that
+challenge models are indistinguishable from ordinary ones.
+
+\subsection{Privacy and Participation Limits}
+The server inspects individual returned models, so the current protocol
+cannot be used directly with standard secure
+aggregation~\cite{bonawitz2017practical}. It does not access raw client
+data or require reported training loss, but these restrictions do not
+provide differential privacy or prevent information leakage through
+updates~\cite{kairouz2021advances,zhu2019leakage,melis2019leakage}.
+
+The reference population assumes an honest majority. Colluding clients
+can also compare hashes of received models. Shared frozen traps may then
+be recognizable without training, so their being undisclosed is not a
+collusion defense. Clients could share trained responses, while Sybil identities could distort the
+reference distribution. Neither case is evaluated. The experiments also
+assume complete participation. Incomplete challenge coverage cannot
+certify removal, and the simulator stops on a nonfinite response rather
+than providing a full malicious-message or dropout-handling protocol.
+Checkpoint recovery restores the recorded training and evidence state
+after an interruption. Authentication and availability defenses require
+additional mechanisms.
+
+\subsection{Evaluation Scope and Remaining Tests}
+The main grid covers three seeds, 100 clients, one architecture per dataset
+and one non-IID concentration. The new lower-prevalence checks use one
+frozen seed and expose misses at 5\%; they do not support a prevalence-
+independent recall claim. The norm-matching feature diagnostic isolates
+statistical behavior but is not a full adaptive attack. Component and
+passive-detector ablations, completed published-attack runs and a stronger
+detection baseline are still needed. The stored five-epoch STD-DAGMM
+recipe supplies flag diagnostics, not a fair ranking of detection methods.
+
+Future tests should vary local training, non-IID concentration, model
+architecture, BatchNorm-buffer treatment, collusion and participation.
+LEAF and FedScale provide relevant heterogeneous settings
+\cite{caldas2018leaf,lai2022fedscale}. The held-out seed phase is registered
+but unexecuted. Oracle utility comparisons are also pending, so the
+benefit of removing fabricated responses is not yet separated from the
+cost of withholding honest challenge responses. Larger-scale detector
+memory, communication and energy measurements remain necessary.
+
+\subsection{Code and Evidence Availability}
+The project repository is available at\par
+{\footnotesize\urlstyle{same}\url{https://github.com/Aashnan-Rahman/Mitigating-Free-Rider}}\par
+The study retains configurations, per-client decisions, per-round timing
+and source hashes for reproducibility. A public immutable archive of
+the exact manuscript evidence is not yet available.
+
+\section{Conclusion}
+BaitFL combines model challenges, compact response statistics and repeated
+fresh evidence. The 96-run 30\%/40\% grid removes all tested free riders,
+with three honest removals in two runs. Four additional honest-only runs
+have no honest removal, but the completed non-IID 5\% tests miss FR2--FR4.
+These outcomes delimit the support gate's operating range rather than
+establish universal recall. The norm-matching diagnostic further tests
+what magnitude contrast alone cannot establish. Checking averages 215 and 791 ms per round in the two instrumented
+100-client workflows, but dominates checking-plus-aggregation time.
+The present study does not isolate the causal contribution of traps. Reliable auditing
+under lower prevalence, stronger fabrication and heterogeneous honest
+behavior remains the central research problem.
+
+\clearpage
+\onecolumn
+\appendices
+\section{Complete Representative Score Geometry}\label{app:geometry}
+Figures~\ref{fig:geometry-mnist} and~\ref{fig:geometry-cifar10} retain
+the two 4-by-4 round-20 grids from study seed 42. Each panel contains
+100 clients, including coincident points. Blue circles denote honest
+clients and orange triangles denote free riders. Coordinates summarize
+both selected traps. The plots illustrate observed geometry, not the
+per-trap raw-norm and profile certificate tests. These examples do not
+demonstrate robustness to norm matching or universal class separation.
+\input{generated/geometry_mnist.tex}
+\FloatBarrier
+\input{generated/geometry_cifar10.tex}
+\FloatBarrier
+
+\twocolumn
+\bibliographystyle{IEEEtran}
+\bibliography{refs}
+\end{document}

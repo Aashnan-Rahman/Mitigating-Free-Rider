@@ -1,0 +1,11 @@
+\begin{table*}[t]\centering\footnotesize
+\caption{Incremental detector computation and working state.}\label{tab:complexity}
+\begin{tabular}{>{\raggedright\arraybackslash}p{3.6cm}>{\raggedright\arraybackslash}p{3.6cm}>{\raggedright\arraybackslash}p{3.0cm}>{\raggedright\arraybackslash}p{5.3cm}}\toprule
+Operation & Work & Working state & Implementation \\ \midrule
+Norms, profiles and fingerprints & $O(NP)$ per round & $O(P)$ scratch and $O(N)$ hashes & Read returned tensors without training an auxiliary model. \\
+Selected challenge summaries & $O(NL)$ per paired cycle & $O(NL)$ & Retain two small profiles per client. \\
+Leave-one-out comparisons & $O(N^2(L+\log N))$ per cycle & $O(NL)$ temporary & Form peer medians and distances for each client. \\
+Histogram and bootstrap splits & $O(B(N+K))$ per cycle & $O(BN+BK)$ temporary & Resample scalar scores across three views. \\
+Geometric tests and confirmation & $O(N)$ per cycle & $O(N)$ counters & Apply fixed-component tests and update evidence memory. \\
+Shared challenge construction & $O(P)$ per cycle & $O(P)$ & Generate two shared models. \\
+\bottomrule\end{tabular}\end{table*}
