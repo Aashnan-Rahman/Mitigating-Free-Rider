@@ -1,0 +1,3 @@
+"dataset","rounds","attacker_responses","honest_responses","tp","fp","fn","precision","recall","endpoint","detector_epochs","source"
+"mnist","100","4000","6000","0","2200","4000","0","0","per-round observational flags","5","evidence/timing_mnist_20261103/std/segment_timings.csv"
+"cifar10","100","4000","6000","0","2196","4000","0","0","per-round observational flags","5","evidence/timing_cifar10_20261103/std/segment_timings.csv"

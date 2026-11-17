@@ -1,5 +1,5 @@
 {
-  "cutoff_utc": "2026-11-12T09:41:38.712419+00:00",
+  "cutoff_utc": "2026-11-17T08:29:02.447432+00:00",
   "queue": [
     {
       "plan": "configs/review2_01_honest_seed42.json",
@@ -13,25 +13,25 @@
       "plan": "configs/review2_02_low_share_seed42.json",
       "batch": "review2_02_low_share_seed42",
       "total": 48,
-      "completed": 35,
-      "state": "running",
-      "current": "paired_mnist_iid_FR1_fr20_seed42"
+      "completed": 48,
+      "state": "completed",
+      "current": null
     },
     {
       "plan": "configs/review2_03_passive_seed42.json",
       "batch": "review2_03_passive_seed42",
       "total": 16,
-      "completed": 0,
-      "state": "queued",
+      "completed": 16,
+      "state": "completed",
       "current": null
     },
     {
       "plan": "configs/review2_04_oracle_seed42.json",
       "batch": "review2_04_oracle_seed42",
       "total": 12,
-      "completed": 0,
-      "state": "queued",
-      "current": null
+      "completed": 3,
+      "state": "running",
+      "current": "oracle_cifar10_noniid_FR3_fr0_seed42"
     },
     {
       "plan": "configs/review2_05_published_attacks_seed42.json",
@@ -66,7 +66,7 @@
       "current": null
     }
   ],
-  "completed_review_runs": 39,
+  "completed_review_runs": 71,
   "inputs": [
     {
       "path": "results\\review2_01_honest_seed42\\experiment_status.json",
@@ -106,7 +106,7 @@
     },
     {
       "path": "results\\review2_02_low_share_seed42\\experiment_status.json",
-      "sha256": "d0d1227249f46f915fd00a5b2d7df0c5b38654a8c40b552816923a4e7dda23f5"
+      "sha256": "191ddd172fbe365b1e0ded66c1e431e009b236777407d8bde91fc36226f8323d"
     },
     {
       "path": "results\\review2_02_low_share_seed42\\paired_mnist_noniid_FR3_fr5_seed42\\run_config.json",
@@ -389,12 +389,468 @@
       "sha256": "f4d68b9f0b7b4c941b98c456893d0ebb393fe0fab9e65d902cfb6cabbc29ce31"
     },
     {
+      "path": "results\\review2_02_low_share_seed42\\paired_mnist_iid_FR1_fr20_seed42\\run_config.json",
+      "sha256": "2ffc0b57b95a63a48fd98dff510233c822dafd7edd27d831f4cc360e217becc9"
+    },
+    {
+      "path": "results\\review2_02_low_share_seed42\\paired_mnist_iid_FR1_fr20_seed42\\global_metrics.csv",
+      "sha256": "e2551aea58ab18e6ad374a51e24ba479b8f800d9323f48d01387319f01a4c98a"
+    },
+    {
+      "path": "results\\review2_02_low_share_seed42\\paired_cifar10_iid_FR3_fr5_seed42\\run_config.json",
+      "sha256": "68aae17aca952c5bd822bcf38d0c7207081562f056fb76b9b4a1c62261532036"
+    },
+    {
+      "path": "results\\review2_02_low_share_seed42\\paired_cifar10_iid_FR3_fr5_seed42\\global_metrics.csv",
+      "sha256": "b720f1b9aed89d9aba510d2087876b30303d1e413dce143b2ecbff92053ad405"
+    },
+    {
+      "path": "results\\review2_02_low_share_seed42\\paired_cifar10_iid_FR4_fr5_seed42\\run_config.json",
+      "sha256": "4ebdc288cc96e280b2c431b7ae8a55327ff90e940a85ea31028a2971d882ddc6"
+    },
+    {
+      "path": "results\\review2_02_low_share_seed42\\paired_cifar10_iid_FR4_fr5_seed42\\global_metrics.csv",
+      "sha256": "91a5daa3cb9466fe26f19b57b3ebfe16a9ce690ab72b11b545029f9022f9dbc9"
+    },
+    {
+      "path": "results\\review2_02_low_share_seed42\\paired_cifar10_iid_FR2_fr5_seed42\\run_config.json",
+      "sha256": "536dbe846d0e13ca8cf54e24cf888908cd735dc7731b83141f6df587bbbb8a29"
+    },
+    {
+      "path": "results\\review2_02_low_share_seed42\\paired_cifar10_iid_FR2_fr5_seed42\\global_metrics.csv",
+      "sha256": "053ba972d0993ce110a86d2255311a0fcb0fd8141d0285aa307bcb06374ab6dc"
+    },
+    {
+      "path": "results\\review2_02_low_share_seed42\\paired_cifar10_iid_FR1_fr5_seed42\\run_config.json",
+      "sha256": "c76a0089f9b3e5282c629dd0a60a3b470ee5d7a8c1733ff8eae8776dee349977"
+    },
+    {
+      "path": "results\\review2_02_low_share_seed42\\paired_cifar10_iid_FR1_fr5_seed42\\global_metrics.csv",
+      "sha256": "027ed099148396b99739533f8f59136fdde64668c609a8e25b0912107dcf5ac3"
+    },
+    {
+      "path": "results\\review2_02_low_share_seed42\\paired_cifar10_iid_FR3_fr10_seed42\\run_config.json",
+      "sha256": "404baf15a1b0b9602bf6a0f8eaaa7bab7eb0673cd50131a59578bf2943397989"
+    },
+    {
+      "path": "results\\review2_02_low_share_seed42\\paired_cifar10_iid_FR3_fr10_seed42\\global_metrics.csv",
+      "sha256": "9be101ff766a8f3ff2495958ac1152d9dc8e3a6a9ed9fb0de042423066c4fba7"
+    },
+    {
+      "path": "results\\review2_02_low_share_seed42\\paired_cifar10_iid_FR4_fr10_seed42\\run_config.json",
+      "sha256": "6027de5ed45131f9692513e3e94fc01fce7987085b37746cb739fbf2cf4b486b"
+    },
+    {
+      "path": "results\\review2_02_low_share_seed42\\paired_cifar10_iid_FR4_fr10_seed42\\global_metrics.csv",
+      "sha256": "9d656b7f6e6759d01075a2c269a3f91c6657257fd7f098041e955ee2eb7d04c1"
+    },
+    {
+      "path": "results\\review2_02_low_share_seed42\\paired_cifar10_iid_FR2_fr10_seed42\\run_config.json",
+      "sha256": "124c60525b1547a9824c6b8909c0ef33966fe134a2e1fa541e5f6165d4901e5c"
+    },
+    {
+      "path": "results\\review2_02_low_share_seed42\\paired_cifar10_iid_FR2_fr10_seed42\\global_metrics.csv",
+      "sha256": "973323756618d34d249b0cf4a1c80d784ccbf90ff1eb4f4469963d0c1f3d7961"
+    },
+    {
+      "path": "results\\review2_02_low_share_seed42\\paired_cifar10_iid_FR1_fr10_seed42\\run_config.json",
+      "sha256": "9e392e7bbff4854612f0e4833af5f2b927f097565e7281e015c12ee7a592aefe"
+    },
+    {
+      "path": "results\\review2_02_low_share_seed42\\paired_cifar10_iid_FR1_fr10_seed42\\global_metrics.csv",
+      "sha256": "456e2eabc5fca0c20b70f6a8b3deed6724ba416946e5626c607d1c22e530a04b"
+    },
+    {
+      "path": "results\\review2_02_low_share_seed42\\paired_cifar10_iid_FR3_fr20_seed42\\run_config.json",
+      "sha256": "3edaedc21c91f764ddd042bac46a5239d6b6651fd208718a2527fb0914ed8c7d"
+    },
+    {
+      "path": "results\\review2_02_low_share_seed42\\paired_cifar10_iid_FR3_fr20_seed42\\global_metrics.csv",
+      "sha256": "ef610286be660a2073fa5ef065af71e7b4fafb05234597d9c80a00d965a6e508"
+    },
+    {
+      "path": "results\\review2_02_low_share_seed42\\paired_cifar10_iid_FR4_fr20_seed42\\run_config.json",
+      "sha256": "0457435515bfa95736bd1cc464ca1195adaa9c82151d003f45ed0d3c739afdee"
+    },
+    {
+      "path": "results\\review2_02_low_share_seed42\\paired_cifar10_iid_FR4_fr20_seed42\\global_metrics.csv",
+      "sha256": "66ff30d1788aeff6b8b623f5a95750cb29bd5df580f4bc8d608f9f7073801212"
+    },
+    {
+      "path": "results\\review2_02_low_share_seed42\\paired_cifar10_iid_FR2_fr20_seed42\\run_config.json",
+      "sha256": "4e19c315d175ead19014152c60b0b65ca280e2a56da7a78ca87f80da184b7835"
+    },
+    {
+      "path": "results\\review2_02_low_share_seed42\\paired_cifar10_iid_FR2_fr20_seed42\\global_metrics.csv",
+      "sha256": "d08c1a4fc6aee540ae98c11b5b82977793fe9dbaec9f2af3cbc50589096a7b6c"
+    },
+    {
+      "path": "results\\review2_02_low_share_seed42\\paired_cifar10_iid_FR1_fr20_seed42\\run_config.json",
+      "sha256": "6ae6d56c545c240f850c12efc7695ecee7bcff785c45d0be4769bacaddb98dbc"
+    },
+    {
+      "path": "results\\review2_02_low_share_seed42\\paired_cifar10_iid_FR1_fr20_seed42\\global_metrics.csv",
+      "sha256": "05deae5163a5a93ced0b7d3dc139e17043aa3133d78d52e4699bcfbb3fec053a"
+    },
+    {
+      "path": "results\\review2_03_passive_seed42\\experiment_status.json",
+      "sha256": "c3e393b6e3f425f533ea5e00d5f583ce337f4249ec498665be61a103e0899727"
+    },
+    {
+      "path": "results\\review2_03_passive_seed42\\passive_mnist_noniid_FR3_fr40_seed42\\run_config.json",
+      "sha256": "ba2f7cb581f32f19194fb7f8e5223c2dd848c1b177d1ca6a50a231dfc7ecb674"
+    },
+    {
+      "path": "results\\review2_03_passive_seed42\\passive_mnist_noniid_FR3_fr40_seed42\\global_metrics.csv",
+      "sha256": "c3c435d73c9dda58b2e8d385c834789e556cb8593138cb7d13b595117cadbdc1"
+    },
+    {
+      "path": "results\\review2_03_passive_seed42\\passive_mnist_noniid_FR4_fr40_seed42\\run_config.json",
+      "sha256": "fe4cedc6854800b85cd002294a2779b0085a320414056b40c105dc0ef89fca87"
+    },
+    {
+      "path": "results\\review2_03_passive_seed42\\passive_mnist_noniid_FR4_fr40_seed42\\global_metrics.csv",
+      "sha256": "938be849c51a921041570e8ecf7744e638c67a4a4d27d6a4c756398fa93e37b6"
+    },
+    {
+      "path": "results\\review2_03_passive_seed42\\passive_mnist_noniid_FR2_fr40_seed42\\run_config.json",
+      "sha256": "dfeb1698987513827b6e963125db2bfcf43b34b988da4b9cb91a230de5826b8b"
+    },
+    {
+      "path": "results\\review2_03_passive_seed42\\passive_mnist_noniid_FR2_fr40_seed42\\global_metrics.csv",
+      "sha256": "edbbab9caaa6b37d4b43255058268b49a5ba8b4af04b65f29839ad3a079959cf"
+    },
+    {
+      "path": "results\\review2_03_passive_seed42\\passive_mnist_noniid_FR1_fr40_seed42\\run_config.json",
+      "sha256": "fc62994f54a0d525ecc3ce1d57062c81adb8ded0c90cfd0ff5b315cb7b6222f6"
+    },
+    {
+      "path": "results\\review2_03_passive_seed42\\passive_mnist_noniid_FR1_fr40_seed42\\global_metrics.csv",
+      "sha256": "ebb510c92f9814b9077386bfc3f3508a2bab12f771b9c49c78553cd658e022dc"
+    },
+    {
+      "path": "results\\review2_03_passive_seed42\\passive_cifar10_noniid_FR3_fr40_seed42\\run_config.json",
+      "sha256": "8fcf81d0937621eeb6e9dbbadbd84aef1389d1b1fbcfb90a22910714c658a56c"
+    },
+    {
+      "path": "results\\review2_03_passive_seed42\\passive_cifar10_noniid_FR3_fr40_seed42\\global_metrics.csv",
+      "sha256": "fdddd1681840357f2cea5a2e3c5e23d4fd52bcf35e26e4a06552b7609a27ba9f"
+    },
+    {
+      "path": "results\\review2_03_passive_seed42\\passive_cifar10_noniid_FR4_fr40_seed42\\run_config.json",
+      "sha256": "094b5bf52ae4a8436c1f9c822f837112c96dafcd57800786cf855d72c96fdc3e"
+    },
+    {
+      "path": "results\\review2_03_passive_seed42\\passive_cifar10_noniid_FR4_fr40_seed42\\global_metrics.csv",
+      "sha256": "6d904bce89f471f15f79be40bff34bce83618fb697ca43c4a6339d6344fc75fa"
+    },
+    {
+      "path": "results\\review2_03_passive_seed42\\passive_cifar10_noniid_FR2_fr40_seed42\\run_config.json",
+      "sha256": "2d0318105138de196b9635a70ede0a2d6278c106a762f9a264b31b25119bf36c"
+    },
+    {
+      "path": "results\\review2_03_passive_seed42\\passive_cifar10_noniid_FR2_fr40_seed42\\global_metrics.csv",
+      "sha256": "268b679843fe22da66da799e5cd4b056107dbacb5e5ca66fd5ec6ba8874a4434"
+    },
+    {
+      "path": "results\\review2_03_passive_seed42\\passive_cifar10_noniid_FR1_fr40_seed42\\run_config.json",
+      "sha256": "d7ba9e1a7abc986c965358c11a59ddf47a23f908d727a50876be58a840957ea0"
+    },
+    {
+      "path": "results\\review2_03_passive_seed42\\passive_cifar10_noniid_FR1_fr40_seed42\\global_metrics.csv",
+      "sha256": "5735202f3db2bca4aaf8012d719ca3304d92722b2ff52c9bc827ca98282c12c2"
+    },
+    {
+      "path": "results\\review2_03_passive_seed42\\passive_mnist_iid_FR3_fr40_seed42\\run_config.json",
+      "sha256": "45276de3cc0f72607823e2c18044ee496dca22fe7d366ca5ba677d137a8f4792"
+    },
+    {
+      "path": "results\\review2_03_passive_seed42\\passive_mnist_iid_FR3_fr40_seed42\\global_metrics.csv",
+      "sha256": "251e5ae1fa351c74079275a95ec2a2db8261846d72226dc781d73e5fc1adb53a"
+    },
+    {
+      "path": "results\\review2_03_passive_seed42\\passive_mnist_iid_FR4_fr40_seed42\\run_config.json",
+      "sha256": "81586b7b3377ef965b7db6b63c2e0cf835b4a523f7aece62046da9c85714a3ac"
+    },
+    {
+      "path": "results\\review2_03_passive_seed42\\passive_mnist_iid_FR4_fr40_seed42\\global_metrics.csv",
+      "sha256": "499f9f66b545a9ab63f88ab5e6466355eb76b8fa07bf82f0c497b60fc6ac1649"
+    },
+    {
+      "path": "results\\review2_03_passive_seed42\\passive_mnist_iid_FR2_fr40_seed42\\run_config.json",
+      "sha256": "2e53db44beb682c8d1807cd9f1ebcfd7c40ccf3c6ba3e3c09d88e47bf9c0a86a"
+    },
+    {
+      "path": "results\\review2_03_passive_seed42\\passive_mnist_iid_FR2_fr40_seed42\\global_metrics.csv",
+      "sha256": "4e18e715a3dfbe8949bc6e0fbd6bd859c130d1e5f3512043c71467e9030269ab"
+    },
+    {
+      "path": "results\\review2_03_passive_seed42\\passive_mnist_iid_FR1_fr40_seed42\\run_config.json",
+      "sha256": "8c7df6e28aa84392110c0f57f94a409860ce78696671c98b6fd06d0f927dc59c"
+    },
+    {
+      "path": "results\\review2_03_passive_seed42\\passive_mnist_iid_FR1_fr40_seed42\\global_metrics.csv",
+      "sha256": "e55abf31412b08480683b9392b531862c53e9b7f3680b5fee2c3b4de8a17cde6"
+    },
+    {
+      "path": "results\\review2_03_passive_seed42\\passive_cifar10_iid_FR3_fr40_seed42\\run_config.json",
+      "sha256": "b11fda6456a3b1f9141e681d895d3191ab383b1222fce4d40b6e6e709181aff2"
+    },
+    {
+      "path": "results\\review2_03_passive_seed42\\passive_cifar10_iid_FR3_fr40_seed42\\global_metrics.csv",
+      "sha256": "67eccbece4a85357321620383a6f13fe0a9687365c7b10e0a75d958650d59269"
+    },
+    {
+      "path": "results\\review2_03_passive_seed42\\passive_cifar10_iid_FR4_fr40_seed42\\run_config.json",
+      "sha256": "14d6a7ae68b3efab2422a0455675cabe86a862163e4b3784b1a3dc2a5a1cf00e"
+    },
+    {
+      "path": "results\\review2_03_passive_seed42\\passive_cifar10_iid_FR4_fr40_seed42\\global_metrics.csv",
+      "sha256": "cbe491cedfba56974fe1a4e00cf1c106b9723dd7a1f3d7fb2de0e5d60ea264db"
+    },
+    {
+      "path": "results\\review2_03_passive_seed42\\passive_cifar10_iid_FR2_fr40_seed42\\run_config.json",
+      "sha256": "7abcfa423bdf2bf899844112fa6d846abcc60284150addac25ca2f812197e00a"
+    },
+    {
+      "path": "results\\review2_03_passive_seed42\\passive_cifar10_iid_FR2_fr40_seed42\\global_metrics.csv",
+      "sha256": "308d7fdf8d1c0a79ef55c7b38dbdc8f3e719a68a73f803d18a88588abc032139"
+    },
+    {
+      "path": "results\\review2_03_passive_seed42\\passive_cifar10_iid_FR1_fr40_seed42\\run_config.json",
+      "sha256": "e800bc659e327e92c98a6e8ae140cb12dcb8b7a1906e6d8d754fedbbb6f355b8"
+    },
+    {
+      "path": "results\\review2_03_passive_seed42\\passive_cifar10_iid_FR1_fr40_seed42\\global_metrics.csv",
+      "sha256": "77b8379a13243c5129fc668388ef08dfa09c71193a731119618ea656e2ddc9d0"
+    },
+    {
+      "path": "results\\review2_04_oracle_seed42\\experiment_status.json",
+      "sha256": "26b9af4aa547a3f7ec3505427fb00abaedf64bd3b2d87341f19ccb519669ef8d"
+    },
+    {
+      "path": "results\\review2_04_oracle_seed42\\oracle_mnist_noniid_FR3_fr0_seed42\\run_config.json",
+      "sha256": "1cf851e8a31d58903f758daeec01cc66caa59d7ee8e2a2868e7e679b55735a4e"
+    },
+    {
+      "path": "results\\review2_04_oracle_seed42\\oracle_mnist_noniid_FR3_fr0_seed42\\global_metrics.csv",
+      "sha256": "24050f3c946a286fc9daeb40bf92cb3cb862eb398aadae74628be51a24509d3a"
+    },
+    {
+      "path": "results\\review2_04_oracle_seed42\\oracle_mnist_noniid_FR3_fr30_seed42\\run_config.json",
+      "sha256": "e12733515da296fcfafbe80ee7894cab056cb64812889c10e3af0afd692e30f0"
+    },
+    {
+      "path": "results\\review2_04_oracle_seed42\\oracle_mnist_noniid_FR3_fr30_seed42\\global_metrics.csv",
+      "sha256": "919144ce2bafc43f147b7a915c3a59018efabb5c0a43910b59ff25ae6d2c9118"
+    },
+    {
+      "path": "results\\review2_04_oracle_seed42\\oracle_mnist_noniid_FR3_fr40_seed42\\run_config.json",
+      "sha256": "ca555f9a7e172c89c681e0d72e2bf6e897e06746aab23672334c47ed3846ae37"
+    },
+    {
+      "path": "results\\review2_04_oracle_seed42\\oracle_mnist_noniid_FR3_fr40_seed42\\global_metrics.csv",
+      "sha256": "cdcc3074cbe1eefbb15210c05bfbdcff2366563440a466066047783d54eaf7a5"
+    },
+    {
       "path": "results\\fedavg_mnist_baseline_seed73_fr30_fr40\\experiment_status.json",
       "sha256": "345e44a0f84c6faa045ba9388143e153dd63119a392396ffe691ec6d826e5217"
     },
     {
       "path": "results\\fedavg_mnist_baseline_seed43_fr30_fr40\\experiment_status.json",
       "sha256": "8f7cb152281dd0dfb5de3d504ae4e6c27fabe7d11f389bc92f5553678da8e0d3"
+    },
+    {
+      "path": "results\\review2_03_passive_seed42\\passive_mnist_iid_FR1_fr40_seed42\\run_config.json",
+      "sha256": "8c7df6e28aa84392110c0f57f94a409860ce78696671c98b6fd06d0f927dc59c"
+    },
+    {
+      "path": "results\\review2_03_passive_seed42\\passive_mnist_iid_FR1_fr40_seed42\\removals.csv",
+      "sha256": "88c74e3260b58fac2088d990a03f55b5453d28048e534199ebdfcd84ad790c95"
+    },
+    {
+      "path": "results\\review2_03_passive_seed42\\passive_mnist_iid_FR1_fr40_seed42\\client_metrics.csv",
+      "sha256": "5836220213f57cb42102b82326285a09beb16ae74d7cf91bba5277560a6ba202"
+    },
+    {
+      "path": "results\\review2_03_passive_seed42\\passive_mnist_iid_FR2_fr40_seed42\\run_config.json",
+      "sha256": "2e53db44beb682c8d1807cd9f1ebcfd7c40ccf3c6ba3e3c09d88e47bf9c0a86a"
+    },
+    {
+      "path": "results\\review2_03_passive_seed42\\passive_mnist_iid_FR2_fr40_seed42\\removals.csv",
+      "sha256": "88c74e3260b58fac2088d990a03f55b5453d28048e534199ebdfcd84ad790c95"
+    },
+    {
+      "path": "results\\review2_03_passive_seed42\\passive_mnist_iid_FR2_fr40_seed42\\client_metrics.csv",
+      "sha256": "5877217bba7f183a0ed1f74af07e9e7cbcedcbe5254792d43b9cfd68ee593439"
+    },
+    {
+      "path": "results\\review2_03_passive_seed42\\passive_mnist_iid_FR3_fr40_seed42\\run_config.json",
+      "sha256": "45276de3cc0f72607823e2c18044ee496dca22fe7d366ca5ba677d137a8f4792"
+    },
+    {
+      "path": "results\\review2_03_passive_seed42\\passive_mnist_iid_FR3_fr40_seed42\\removals.csv",
+      "sha256": "88c74e3260b58fac2088d990a03f55b5453d28048e534199ebdfcd84ad790c95"
+    },
+    {
+      "path": "results\\review2_03_passive_seed42\\passive_mnist_iid_FR3_fr40_seed42\\client_metrics.csv",
+      "sha256": "7eb5560c78f1817cc616408bd0fb07cf2087a5fd9221e82de4e2b1a865ded9f9"
+    },
+    {
+      "path": "results\\review2_03_passive_seed42\\passive_mnist_iid_FR4_fr40_seed42\\run_config.json",
+      "sha256": "81586b7b3377ef965b7db6b63c2e0cf835b4a523f7aece62046da9c85714a3ac"
+    },
+    {
+      "path": "results\\review2_03_passive_seed42\\passive_mnist_iid_FR4_fr40_seed42\\removals.csv",
+      "sha256": "88c74e3260b58fac2088d990a03f55b5453d28048e534199ebdfcd84ad790c95"
+    },
+    {
+      "path": "results\\review2_03_passive_seed42\\passive_mnist_iid_FR4_fr40_seed42\\client_metrics.csv",
+      "sha256": "04760f6c8da9c72fa8813d97b3e960c6afc8d9431c35fa3117f40b63f306a049"
+    },
+    {
+      "path": "results\\review2_03_passive_seed42\\passive_mnist_noniid_FR1_fr40_seed42\\run_config.json",
+      "sha256": "fc62994f54a0d525ecc3ce1d57062c81adb8ded0c90cfd0ff5b315cb7b6222f6"
+    },
+    {
+      "path": "results\\review2_03_passive_seed42\\passive_mnist_noniid_FR1_fr40_seed42\\removals.csv",
+      "sha256": "88c74e3260b58fac2088d990a03f55b5453d28048e534199ebdfcd84ad790c95"
+    },
+    {
+      "path": "results\\review2_03_passive_seed42\\passive_mnist_noniid_FR1_fr40_seed42\\client_metrics.csv",
+      "sha256": "93536ee0399f0270ad72f91c37405db446c61acc19be6b847898c6b7d4712078"
+    },
+    {
+      "path": "results\\review2_03_passive_seed42\\passive_mnist_noniid_FR2_fr40_seed42\\run_config.json",
+      "sha256": "dfeb1698987513827b6e963125db2bfcf43b34b988da4b9cb91a230de5826b8b"
+    },
+    {
+      "path": "results\\review2_03_passive_seed42\\passive_mnist_noniid_FR2_fr40_seed42\\removals.csv",
+      "sha256": "88c74e3260b58fac2088d990a03f55b5453d28048e534199ebdfcd84ad790c95"
+    },
+    {
+      "path": "results\\review2_03_passive_seed42\\passive_mnist_noniid_FR2_fr40_seed42\\client_metrics.csv",
+      "sha256": "d5ac7cd73b7d5cad80b94df884409942325c237fe8de9184d21706b143f1d18b"
+    },
+    {
+      "path": "results\\review2_03_passive_seed42\\passive_mnist_noniid_FR3_fr40_seed42\\run_config.json",
+      "sha256": "ba2f7cb581f32f19194fb7f8e5223c2dd848c1b177d1ca6a50a231dfc7ecb674"
+    },
+    {
+      "path": "results\\review2_03_passive_seed42\\passive_mnist_noniid_FR3_fr40_seed42\\removals.csv",
+      "sha256": "88c74e3260b58fac2088d990a03f55b5453d28048e534199ebdfcd84ad790c95"
+    },
+    {
+      "path": "results\\review2_03_passive_seed42\\passive_mnist_noniid_FR3_fr40_seed42\\client_metrics.csv",
+      "sha256": "be3fd747d7983a6aea9d72258693c5a558e0a1c18df1961755712537272bc8a2"
+    },
+    {
+      "path": "results\\review2_03_passive_seed42\\passive_mnist_noniid_FR4_fr40_seed42\\run_config.json",
+      "sha256": "fe4cedc6854800b85cd002294a2779b0085a320414056b40c105dc0ef89fca87"
+    },
+    {
+      "path": "results\\review2_03_passive_seed42\\passive_mnist_noniid_FR4_fr40_seed42\\removals.csv",
+      "sha256": "88c74e3260b58fac2088d990a03f55b5453d28048e534199ebdfcd84ad790c95"
+    },
+    {
+      "path": "results\\review2_03_passive_seed42\\passive_mnist_noniid_FR4_fr40_seed42\\client_metrics.csv",
+      "sha256": "09b5e268adefd32c15ce7be67c50d2694cb200c7459df34ed239c1f2f71d77f1"
+    },
+    {
+      "path": "results\\review2_03_passive_seed42\\passive_cifar10_iid_FR1_fr40_seed42\\run_config.json",
+      "sha256": "e800bc659e327e92c98a6e8ae140cb12dcb8b7a1906e6d8d754fedbbb6f355b8"
+    },
+    {
+      "path": "results\\review2_03_passive_seed42\\passive_cifar10_iid_FR1_fr40_seed42\\removals.csv",
+      "sha256": "88c74e3260b58fac2088d990a03f55b5453d28048e534199ebdfcd84ad790c95"
+    },
+    {
+      "path": "results\\review2_03_passive_seed42\\passive_cifar10_iid_FR1_fr40_seed42\\client_metrics.csv",
+      "sha256": "c9f80942b129bdc5f6f7b72641c370c43e840c1033cf986b6de97a0c93a19d94"
+    },
+    {
+      "path": "results\\review2_03_passive_seed42\\passive_cifar10_iid_FR2_fr40_seed42\\run_config.json",
+      "sha256": "7abcfa423bdf2bf899844112fa6d846abcc60284150addac25ca2f812197e00a"
+    },
+    {
+      "path": "results\\review2_03_passive_seed42\\passive_cifar10_iid_FR2_fr40_seed42\\removals.csv",
+      "sha256": "88c74e3260b58fac2088d990a03f55b5453d28048e534199ebdfcd84ad790c95"
+    },
+    {
+      "path": "results\\review2_03_passive_seed42\\passive_cifar10_iid_FR2_fr40_seed42\\client_metrics.csv",
+      "sha256": "64b9ac9acc03017fb6809ba22532993b7a50dc25722e15e9e9133ab12fc18c45"
+    },
+    {
+      "path": "results\\review2_03_passive_seed42\\passive_cifar10_iid_FR3_fr40_seed42\\run_config.json",
+      "sha256": "b11fda6456a3b1f9141e681d895d3191ab383b1222fce4d40b6e6e709181aff2"
+    },
+    {
+      "path": "results\\review2_03_passive_seed42\\passive_cifar10_iid_FR3_fr40_seed42\\removals.csv",
+      "sha256": "88c74e3260b58fac2088d990a03f55b5453d28048e534199ebdfcd84ad790c95"
+    },
+    {
+      "path": "results\\review2_03_passive_seed42\\passive_cifar10_iid_FR3_fr40_seed42\\client_metrics.csv",
+      "sha256": "eb748d79223381181d25f2cb45faa50faccd0e175193fcbf32ab33ec129b4346"
+    },
+    {
+      "path": "results\\review2_03_passive_seed42\\passive_cifar10_iid_FR4_fr40_seed42\\run_config.json",
+      "sha256": "14d6a7ae68b3efab2422a0455675cabe86a862163e4b3784b1a3dc2a5a1cf00e"
+    },
+    {
+      "path": "results\\review2_03_passive_seed42\\passive_cifar10_iid_FR4_fr40_seed42\\removals.csv",
+      "sha256": "88c74e3260b58fac2088d990a03f55b5453d28048e534199ebdfcd84ad790c95"
+    },
+    {
+      "path": "results\\review2_03_passive_seed42\\passive_cifar10_iid_FR4_fr40_seed42\\client_metrics.csv",
+      "sha256": "854b9f09c5e2396e61d1e2a1b2d20f260db1b72e0d3117dc391ab3c3c4efca61"
+    },
+    {
+      "path": "results\\review2_03_passive_seed42\\passive_cifar10_noniid_FR1_fr40_seed42\\run_config.json",
+      "sha256": "d7ba9e1a7abc986c965358c11a59ddf47a23f908d727a50876be58a840957ea0"
+    },
+    {
+      "path": "results\\review2_03_passive_seed42\\passive_cifar10_noniid_FR1_fr40_seed42\\removals.csv",
+      "sha256": "88c74e3260b58fac2088d990a03f55b5453d28048e534199ebdfcd84ad790c95"
+    },
+    {
+      "path": "results\\review2_03_passive_seed42\\passive_cifar10_noniid_FR1_fr40_seed42\\client_metrics.csv",
+      "sha256": "320ad7288ca4d5ab10b9ff7e1a42a87055755890d8da50c871a7ca0ec5d64914"
+    },
+    {
+      "path": "results\\review2_03_passive_seed42\\passive_cifar10_noniid_FR2_fr40_seed42\\run_config.json",
+      "sha256": "2d0318105138de196b9635a70ede0a2d6278c106a762f9a264b31b25119bf36c"
+    },
+    {
+      "path": "results\\review2_03_passive_seed42\\passive_cifar10_noniid_FR2_fr40_seed42\\removals.csv",
+      "sha256": "88c74e3260b58fac2088d990a03f55b5453d28048e534199ebdfcd84ad790c95"
+    },
+    {
+      "path": "results\\review2_03_passive_seed42\\passive_cifar10_noniid_FR2_fr40_seed42\\client_metrics.csv",
+      "sha256": "1057e31d8214004729820c70badb9c17b54bf86bc4e0721bc98e9a483556e30e"
+    },
+    {
+      "path": "results\\review2_03_passive_seed42\\passive_cifar10_noniid_FR3_fr40_seed42\\run_config.json",
+      "sha256": "8fcf81d0937621eeb6e9dbbadbd84aef1389d1b1fbcfb90a22910714c658a56c"
+    },
+    {
+      "path": "results\\review2_03_passive_seed42\\passive_cifar10_noniid_FR3_fr40_seed42\\removals.csv",
+      "sha256": "28f829c79318e7dad4194c76eed38d1f73b3a5d6217b3deaf9ac0e266284bc22"
+    },
+    {
+      "path": "results\\review2_03_passive_seed42\\passive_cifar10_noniid_FR3_fr40_seed42\\client_metrics.csv",
+      "sha256": "d89657b94b55e89a5cc1e31025e82b79f8c431dfe8ba48586c267d45af588156"
+    },
+    {
+      "path": "results\\review2_03_passive_seed42\\passive_cifar10_noniid_FR4_fr40_seed42\\run_config.json",
+      "sha256": "094b5bf52ae4a8436c1f9c822f837112c96dafcd57800786cf855d72c96fdc3e"
+    },
+    {
+      "path": "results\\review2_03_passive_seed42\\passive_cifar10_noniid_FR4_fr40_seed42\\removals.csv",
+      "sha256": "88c74e3260b58fac2088d990a03f55b5453d28048e534199ebdfcd84ad790c95"
+    },
+    {
+      "path": "results\\review2_03_passive_seed42\\passive_cifar10_noniid_FR4_fr40_seed42\\client_metrics.csv",
+      "sha256": "e147effdbac638d1261559713f3f398e8a439da14e5d68657d4afede460cc7ab"
     }
   ]
 }

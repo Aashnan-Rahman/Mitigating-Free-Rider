@@ -1,0 +1,10 @@
+{
+  "canonical_source_sha256": "2c13d2c389f910a8fe01e0ca20b653e3c411d0feae28aed9d006bd8ab4ad9b68",
+  "detector_epochs": 5,
+  "instrumentation_sha256": "18fc3f699126cbc58f40de1e50a20316a269444e713f35c66784c6cf4a841948",
+  "note": "Core STD-DAGMM features/objective match Lin et al.; fitting budget/reset schedule and architecture are declared reproduction choices",
+  "rounds": 100,
+  "seed": 42,
+  "shared_instrumentation_sha256": "812072f3c2e2cbcc6ad08644bfa036b64b37c8d84ed4a45d577fe72543934ace",
+  "transformed_function_sha256": "79bf01f91c1e2f38a5f1bbfc784dc29edfe3d85e0e5378c68a73d139e61172b9"
+}

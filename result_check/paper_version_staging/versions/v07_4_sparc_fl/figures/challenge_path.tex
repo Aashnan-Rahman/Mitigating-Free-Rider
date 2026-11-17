@@ -1,0 +1,21 @@
+\documentclass[tikz,border=4pt]{standalone}
+\input{figures/diagram_style.tex}
+\begin{document}
+\begin{tikzpicture}[
+ small/.style={font=\normalfont\fontsize{10}{12}\selectfont,align=center},
+ slot/.style={process,rounded corners=3pt,text width=2.1cm,minimum height=1.45cm,inner sep=4pt}]
+\node[process,text width=1.3cm,minimum height=1.45cm] (global) at (0,0) {Global\\model $w_t$};
+\node[slot] (a) at (2.85,1.05) {Slot A\\[1pt]{\small selected clients}\\[1pt]{\small $w_t$ \textcolor{challenge}{or $\tau_A$}}};
+\node[slot] (b) at (2.85,-1.05) {Slot B\\[1pt]{\small selected clients}\\[1pt]{\small $w_t$ \textcolor{challenge}{or $\tau_B$}}};
+\node[process,text width=1.9cm,minimum height=3.55cm] (peer) at (5.85,0)
+ {Peer scores\\per slot\\[6pt]$r_i^a,\ p_i^a$\\[4pt]$z_i^{n,a},\ z_i^{p,a}$};
+\node[process,draw=removal,text=removal,text width=2.2cm,minimum height=3.55cm] (cert) at (8.55,0)
+ {Remove only\\if the same\\component\\recurs on\\A and B and\\in a later\\cycle};
+\draw[flow] (global.east)--(a.west);
+\draw[flow] (global.east)--(b.west);
+\draw[flow] (a.east)--(a.east-|peer.west);
+\draw[flow] (b.east)--(b.east-|peer.west);
+\draw[flow] (peer.east)--(cert.west);
+\node[small,text=challenge] at (3.6,-2.25) {$\tau_a$: perturbed copy, used only under challenge dispatch};
+\end{tikzpicture}
+\end{document}

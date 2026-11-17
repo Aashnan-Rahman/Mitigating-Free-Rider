@@ -1,0 +1,82 @@
+\documentclass[tikz,border=4pt]{standalone}
+\input{figures/diagram_style.tex}
+\definecolor{sharedmodel}{HTML}{7040B0}
+\definecolor{honest}{HTML}{2878A5}
+\definecolor{rider}{HTML}{D66B27}
+\begin{document}
+\begin{tikzpicture}[font=\fontsize{10}{12}\selectfont,
+ sent/.style={flow,draw=sharedmodel},
+ trained/.style={flow,draw=honest},
+ fabricated/.style={flow,draw=rider,dashed},
+ card/.style={draw=black!45,rounded corners=3pt,line width=.6pt,
+ minimum width=2.4cm,minimum height=2.7cm},
+ key/.style={font=\fontsize{9}{11}\selectfont,anchor=west}]
+\node[draw=black!60,rounded corners=3pt,minimum width=8.3cm,
+ minimum height=1.8cm,line width=.65pt] (server) at (2.9,0) {};
+\node[font=\bfseries\fontsize{11}{13}\selectfont] at (2.7,.48) {Federated server};
+\node[font=\fontsize{9.5}{11}\selectfont] at (2.7,-.02) {Broadcast global model};
+\node[font=\fontsize{9.5}{11}\selectfont] at (2.9,-.59)
+ {Aggregate returned local models};
+% A server rack and a compact model graph, without tiny icon labels.
+\foreach \y in {-.16,.12,.40} {
+ \draw[black!60,rounded corners=.5pt] (-.85,\y-.09) rectangle (.35,\y+.09);
+ \fill[honest] (-.68,\y) circle (.025);
+ \draw[black!40] (-.5,\y)--(.17,\y);
+}
+\foreach \yy in {-.2,.32} { \foreach \zz in {-.3,.06,.42} {
+ \draw[sharedmodel!45,line width=.4pt] (5.05,\yy)--(5.68,\zz);
+ \draw[sharedmodel!45,line width=.4pt] (5.68,\zz)--(6.31,\yy);
+}}
+\foreach \xx/\yy in {5.05/-.2,5.05/.32,5.68/-.3,5.68/.06,5.68/.42,6.31/-.2,6.31/.32}
+ \fill[sharedmodel] (\xx,\yy) circle (.035);
+\foreach \xx/\id in {0/1,2.9/2} {
+ \begin{scope}[shift={(\xx,-3.5)}]
+  \node[card,draw=honest!75,fill=honest!3] {};
+  \node[font=\bfseries,text=honest] at (0,.98) {Honest \id};
+  % Private data and a laptop carrying out the prescribed local optimizer.
+  \draw[honest,line width=.6pt] (-.93,-.05)--(-.93,.40)
+   arc[start angle=180,end angle=360,x radius=.23,y radius=.08]
+   --(-.47,-.05) arc[start angle=0,end angle=-180,x radius=.23,y radius=.08];
+  \draw[honest,line width=.6pt] (-.70,.40) ellipse[x radius=.23,y radius=.08];
+  \draw[black!65,rounded corners=1pt,line width=.6pt] (-.27,-.12) rectangle (.91,.56);
+  \draw[black!65,line width=.6pt] (-.38,-.22)--(1.02,-.22)--(.88,-.34)--(-.24,-.34)--cycle;
+  % A compact model icon inside the screen.
+  \begin{scope}[shift={(.32,.22)},x=.85cm,y=.7cm]
+   \foreach \a in {-.3,.3} { \foreach \b in {-.4,0,.4} {
+    \draw[honest!55,line width=.4pt] (-.45,\a)--(0,\b);
+    \draw[honest!55,line width=.4pt] (0,\b)--(.45,\a);
+   }}
+   \foreach \nx/\ny in {-.45/-.3,-.45/.3,0/-.4,0/0,0/.4,.45/-.3,.45/.3}
+    \fill[honest] (\nx,\ny) circle[radius=1pt];
+  \end{scope}
+  \node[font=\fontsize{9.5}{11}\selectfont] at (0,-.78) {Local training};
+ \end{scope}
+}
+\begin{scope}[shift={(5.8,-3.5)}]
+ \node[card,draw=rider!80,fill=rider!4] {};
+ \node[font=\bfseries,text=rider] at (0,.98) {Free rider};
+ \draw[black!65,rounded corners=1pt,line width=.6pt] (-.72,-.12) rectangle (.72,.56);
+ \draw[black!65,line width=.6pt] (-.85,-.22)--(.85,-.22)--(.70,-.34)--(-.70,-.34)--cycle;
+ \node[text=rider] at (0,.22) {$\widehat w_{t,i}$};
+ \node[font=\fontsize{9.5}{11}\selectfont,align=center] at (0,-.78) {Skips local\\training};
+\end{scope}
+\foreach \xx in {0,2.9,5.8} {
+ \draw[sent] (\xx-.16,-.90)--(\xx-.16,-2.15);
+ \node[font=\fontsize{10}{12}\selectfont,text=sharedmodel,anchor=east]
+  at (\xx-.31,-1.5) {$w_t$};
+}
+\foreach \xx in {0,2.9} \draw[trained] (\xx+.16,-2.15)--(\xx+.16,-.90);
+\draw[fabricated] (5.96,-2.15)--(5.96,-.90);
+\draw[sent] (-1.05,-5.35)--(-.40,-5.35);
+\node[key,text=sharedmodel] at (-.25,-5.35) {Global model};
+\draw[trained] (-.40,-5.91)--(-1.05,-5.91);
+\node[key,text=honest] at (-.25,-5.91) {Trained local model};
+\draw[fabricated] (-.40,-6.47)--(-1.05,-6.47);
+\node[key,text=rider] at (-.25,-6.47) {Fabricated local model};
+\draw[honest,line width=.55pt] (4.15,-6.08)--(4.15,-5.66)
+ arc[start angle=180,end angle=360,x radius=.23,y radius=.08]
+ --(4.61,-6.08) arc[start angle=0,end angle=-180,x radius=.23,y radius=.08];
+\draw[honest,line width=.55pt] (4.38,-5.66) ellipse[x radius=.23,y radius=.08];
+\node[key] at (4.82,-5.91) {Local data};
+\end{tikzpicture}
+\end{document}

@@ -4,13 +4,14 @@
 
 | Version | Purpose | Open |
 | --- | --- | --- |
-| **v7.3 — current** | Azom review, refreshed prospective checks, both geometry grids in the main appendix | [Folder](v07_3_saudi_review/README.md) · [PDF](v07_3_saudi_review/paper_v7_3_all_in_one.pdf) · [Source](v07_3_saudi_review/paper_v7_3.tex) |
+| **v7.4 — current** | Renamed SPARC-FL; reframed after the dispatch ablation; reviewer response | [Folder](v07_4_sparc_fl/README.md) · [PDF](v07_4_sparc_fl/paper_v7_4_all_in_one.pdf) · [Source](v07_4_sparc_fl/paper_v7_4.tex) |
+| v7.3 — previous | Azom review, refreshed prospective checks, both geometry grids in the main appendix | [Folder](v07_3_saudi_review/README.md) · [PDF](v07_3_saudi_review/paper_v7_3_all_in_one.pdf) · [Source](v07_3_saudi_review/paper_v7_3.tex) |
 | v7.2 — previous | Reviewer fixes, refreshed evidence, compact main paper and separate supplement | [Folder](v07_2_review_revision/README.md) · [PDF](v07_2_review_revision/paper_v7_2_all_in_one.pdf) · [Source](v07_2_review_revision/paper_v7_2.tex) |
 | v7.1 — previous | Methodology diagram redesign, before the latest review | [Folder](v07_1_methodology_redesign/README.md) · [PDF](v07_1_methodology_redesign/paper_v7_1_all_in_one.pdf) |
 | v7 — original | Earlier full manuscript and a separate short edition | [Folder](v07_v6_content_v5_template/README.md) · [Full PDF](v07_v6_content_v5_template/paper_v7.pdf) · [Short PDF](v07_v6_content_v5_template/paper_v7_short.pdf) |
 
 The original v7 folder also holds the historical reviewer requests and prospective
-experiment plan. Use v7.3 for current writing. Do not confuse **paper revision
+experiment plan. Use v7.4 for current writing. Do not confuse **paper revision
 numbers** with detector versions such as v8, v12 and v15.4 in the folder names.
 
 ## Historical papers

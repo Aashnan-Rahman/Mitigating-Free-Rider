@@ -1,0 +1,17 @@
+id,dataset,split,attack,passive_removed,passive_honest_removed,passive_completion,passive_withheld_pct,passive_accuracy,trap_removed,trap_honest_removed,trap_completion,trap_withheld_pct,trap_accuracy,mad_tp,mad_fp,trap_source
+passive_mnist_iid_FR1_fr40_seed42,mnist,iid,FR1,40,0,30,0.0,0.9892,40,0,30,11.0,0.989,40,0,results/v15_4_mnist_seed42_fr40/v15_4_mnist_iid_FR1_seed42
+passive_mnist_iid_FR2_fr40_seed42,mnist,iid,FR2,40,0,30,0.0,0.9893,40,0,30,11.0,0.9891,0,0,results/v15_4_mnist_seed42_fr40/v15_4_mnist_iid_FR2_seed42
+passive_mnist_iid_FR3_fr40_seed42,mnist,iid,FR3,40,0,30,0.0,0.9894,40,0,30,11.0,0.9885,0,0,results/v15_4_mnist_seed42_fr40/v15_4_mnist_iid_FR3_seed42
+passive_mnist_iid_FR4_fr40_seed42,mnist,iid,FR4,40,0,30,0.0,0.9882,40,0,30,11.0,0.9877,0,0,results/v15_4_mnist_seed42_fr40/v15_4_mnist_iid_FR4_seed42
+passive_mnist_noniid_FR1_fr40_seed42,mnist,noniid,FR1,40,0,30,0.0,0.99,40,0,30,11.0,0.9896,0,0,results/v15_4_mnist_seed42_fr40/v15_4_mnist_noniid_FR1_seed42
+passive_mnist_noniid_FR2_fr40_seed42,mnist,noniid,FR2,40,0,30,0.0,0.9897,40,0,30,11.0,0.9896,0,0,results/v15_4_mnist_seed42_fr40/v15_4_mnist_noniid_FR2_seed42
+passive_mnist_noniid_FR3_fr40_seed42,mnist,noniid,FR3,40,0,30,0.0,0.9896,40,0,30,12.28,0.9893,0,0,results/v15_4_mnist_seed42_fr40/v15_4_mnist_noniid_FR3_seed42
+passive_mnist_noniid_FR4_fr40_seed42,mnist,noniid,FR4,40,0,30,0.7,0.9895,40,0,30,11.0,0.9898,0,0,results/v15_4_mnist_seed42_fr40/v15_4_mnist_noniid_FR4_seed42
+passive_cifar10_iid_FR1_fr40_seed42,cifar10,iid,FR1,40,0,30,0.0,0.7727,40,0,30,11.0,0.7746,40,0,results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_iid_FR1_seed42
+passive_cifar10_iid_FR2_fr40_seed42,cifar10,iid,FR2,40,0,30,0.0,0.7745,40,0,30,11.0,0.7765,40,0,results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_iid_FR2_seed42
+passive_cifar10_iid_FR3_fr40_seed42,cifar10,iid,FR3,40,0,30,0.0,0.7733,40,0,30,11.0,0.7727,40,0,results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_iid_FR3_seed42
+passive_cifar10_iid_FR4_fr40_seed42,cifar10,iid,FR4,40,0,30,0.0,0.7731,40,0,30,11.0,0.7736,40,0,results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_iid_FR4_seed42
+passive_cifar10_noniid_FR1_fr40_seed42,cifar10,noniid,FR1,40,0,30,0.0,0.7539,40,0,30,11.0,0.7528,0,0,results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_noniid_FR1_seed42
+passive_cifar10_noniid_FR2_fr40_seed42,cifar10,noniid,FR2,40,0,30,0.0,0.7554,40,0,30,11.0,0.7543,0,0,results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_noniid_FR2_seed42
+passive_cifar10_noniid_FR3_fr40_seed42,cifar10,noniid,FR3,40,0,50,0.0,0.7517,40,0,60,18.48,0.7489,0,0,results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_noniid_FR3_seed42
+passive_cifar10_noniid_FR4_fr40_seed42,cifar10,noniid,FR4,40,0,30,0.35,0.7495,40,0,30,11.0,0.7514,0,0,results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_noniid_FR4_seed42

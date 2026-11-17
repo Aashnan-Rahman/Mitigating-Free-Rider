@@ -1,0 +1,196 @@
+{
+  "files": [
+    {
+      "source": "configs/cifar10_segment_timing_20261103.json",
+      "snapshot": "source/configs/cifar10_segment_timing_20261103.json",
+      "bytes": 2065,
+      "git_blob_sha1": "94d12ab06837479a6e9e57eef3e1e8b561dc973b",
+      "sha256": "8ff1c1c985a1413d5c4d621808ab098c598d15ef3dc370bc836573c59083b829"
+    },
+    {
+      "source": "results/cifar10_segment_timing_20261103/README.md",
+      "snapshot": "README.md",
+      "bytes": 1214,
+      "git_blob_sha1": "42062e46b5854df1bd59adeb1fd7022a10e79a56",
+      "sha256": "6006d08126e917ee323e0e252b87c6c18f20fb44b524e65f85e884c0f39fa227"
+    },
+    {
+      "source": "results/cifar10_segment_timing_20261103/experiment_manifest.json",
+      "snapshot": "experiment_manifest.json",
+      "bytes": 2229,
+      "git_blob_sha1": "5e4afad7a169c215e03d0ec2be9f45e90d7bd20d",
+      "sha256": "d436ac13ec55c335a5db07eeb2bbc0c43f38ce405e09ec56037d0221819bb37f"
+    },
+    {
+      "source": "results/cifar10_segment_timing_20261103/experiment_status.json",
+      "snapshot": "experiment_status.json",
+      "bytes": 2085,
+      "git_blob_sha1": "0d715ec46985d061432e10b5ec618d007a34c2b3",
+      "sha256": "11e81d6edceb216eaf03ce42619ca57ddcf0cc472604309f9e57de1955c9528b"
+    },
+    {
+      "source": "results/cifar10_segment_timing_20261103/ours/cycle_decisions.csv",
+      "snapshot": "ours/cycle_decisions.csv",
+      "bytes": 89104,
+      "git_blob_sha1": "eb5ecbbde5c972d83131188854c56438d59f610b",
+      "sha256": "df61b03ab1d454af71f1db7f5f6a6c050ab3e66371bae41bde4848f36e3012c2"
+    },
+    {
+      "source": "results/cifar10_segment_timing_20261103/ours/global_metrics.csv",
+      "snapshot": "ours/global_metrics.csv",
+      "bytes": 10563,
+      "git_blob_sha1": "53a7d91775dc9eabf354ba2232b13ad48f56edcb",
+      "sha256": "2a46db98edf2da2847e6e782b19e04216d2509e5e9308fe945074549dd7fba8b"
+    },
+    {
+      "source": "results/cifar10_segment_timing_20261103/ours/latest_results.json",
+      "snapshot": "ours/latest_results.json",
+      "bytes": 1608,
+      "git_blob_sha1": "b278d8461eeeb3f612a4fbafb930ea3bd09b9cd7",
+      "sha256": "31d534144cb3c613192a1a95d4090211ef79b4ad2eabca030d1c5e60369cd7f6"
+    },
+    {
+      "source": "results/cifar10_segment_timing_20261103/ours/protocol.json",
+      "snapshot": "ours/protocol.json",
+      "bytes": 6179,
+      "git_blob_sha1": "819053c1bc5e9eb19cf50a1957d71e926d7edb41",
+      "sha256": "e14f511fde5e4e0e7b10397b5ac32752ec1f66f09e1dc4c787a4be59d87d63b7"
+    },
+    {
+      "source": "results/cifar10_segment_timing_20261103/ours/removals.csv",
+      "snapshot": "ours/removals.csv",
+      "bytes": 2166,
+      "git_blob_sha1": "84d9548e2351db358c99fb8f0771a92e644246b7",
+      "sha256": "cb474e17417ccfe3185dc8cf5331dc79cee277e808a14e8d0afaf1ca27f00b9f"
+    },
+    {
+      "source": "results/cifar10_segment_timing_20261103/ours/round_timings.csv",
+      "snapshot": "ours/round_timings.csv",
+      "bytes": 32652,
+      "git_blob_sha1": "fa76ea035d9a393bf9e685d97215bcc7aa8232f6",
+      "sha256": "39ce97351f0837d99519bb4bc43539e80fa670b3aa1deb7321284e4e14e097c3"
+    },
+    {
+      "source": "results/cifar10_segment_timing_20261103/ours/run_config.json",
+      "snapshot": "ours/run_config.json",
+      "bytes": 10709,
+      "git_blob_sha1": "5cf09441f14b9aa0ffbffe035ea79b9407c57613",
+      "sha256": "26b4f4701792b6e11f33f8d11e52caf4277bd282758258882ff95a1394d0c780"
+    },
+    {
+      "source": "results/cifar10_segment_timing_20261103/ours/status.json",
+      "snapshot": "ours/status.json",
+      "bytes": 698,
+      "git_blob_sha1": "74e47aeafdcf9c93e8f6bc8074b5bbc4b24b48ec",
+      "sha256": "3df993417887fc452ab61baec261d8bf2ff956533d2b02ad95b9c6ab922948d7"
+    },
+    {
+      "source": "results/cifar10_segment_timing_20261103/ours/timing_protocol.json",
+      "snapshot": "ours/timing_protocol.json",
+      "bytes": 4573,
+      "git_blob_sha1": "877f5ab0e6c475ade9669569b85835addfbcad59",
+      "sha256": "76ec87c5d37ebbcd6998f2af4cb4a33724224fb292974776176fd61bdb86125b"
+    },
+    {
+      "source": "results/cifar10_segment_timing_20261103/ours/timing_summary.json",
+      "snapshot": "ours/timing_summary.json",
+      "bytes": 5050,
+      "git_blob_sha1": "0894e570d219edc468360cb1799e407aaebd0b06",
+      "sha256": "10a6a3d3e90299466e0f06bd20a9789ddb4a642bf76d5b85265fd80d6a40ffc3"
+    },
+    {
+      "source": "results/cifar10_segment_timing_20261103/ours_phase_segments.csv",
+      "snapshot": "ours_phase_segments.csv",
+      "bytes": 3708,
+      "git_blob_sha1": "4fa0859a78a58797fd579471919236ad5e545d17",
+      "sha256": "894dd21c1e673336a0a71fb81203505f10ca4d96e1d6bb070b7b9fe6fe472940"
+    },
+    {
+      "source": "results/cifar10_segment_timing_20261103/segment_comparison.csv",
+      "snapshot": "segment_comparison.csv",
+      "bytes": 1444,
+      "git_blob_sha1": "97acb7ad6068757c8319866ed67a0e781ffde3ff",
+      "sha256": "6626ab9cc33cd15a413ca51a550bf0ef0836e4b47eb3439d21834cfb6ebba16f"
+    },
+    {
+      "source": "results/cifar10_segment_timing_20261103/std/latest_results.json",
+      "snapshot": "std/latest_results.json",
+      "bytes": 46,
+      "git_blob_sha1": "13f63e1c399aba81b5ffa4d9f7318f7d449cf2bc",
+      "sha256": "4f40cbf237e59c25c2ada123e5ed200f15b49ad886e6f14952ee3f883342c981"
+    },
+    {
+      "source": "results/cifar10_segment_timing_20261103/std/protocol.json",
+      "snapshot": "std/protocol.json",
+      "bytes": 5286,
+      "git_blob_sha1": "8a437bc699ac34e5da9ab4094f22f7a186123be8",
+      "sha256": "05ac7d9b1bce3fcf436c5d3bb92641d720c50f96ba29a2b13f3b625032175322"
+    },
+    {
+      "source": "results/cifar10_segment_timing_20261103/std/round_timings.csv",
+      "snapshot": "std/round_timings.csv",
+      "bytes": 40219,
+      "git_blob_sha1": "c7b2479707ee7afdad181412eae755303f8fdd4c",
+      "sha256": "5516826804d53b4568f8c2bdb4439c3d7bf276968bb5bc58c1e8a0c2400361a2"
+    },
+    {
+      "source": "results/cifar10_segment_timing_20261103/std/segment_timings.csv",
+      "snapshot": "std/segment_timings.csv",
+      "bytes": 53507,
+      "git_blob_sha1": "bd8d378078b186d67498001ebc2fb0d8bb49b0c8",
+      "sha256": "2e8f2b32c643b171b0bac547018a0c9da139030f07cc4920e5cef5afb5b02b97"
+    },
+    {
+      "source": "results/cifar10_segment_timing_20261103/std/status.json",
+      "snapshot": "std/status.json",
+      "bytes": 141,
+      "git_blob_sha1": "2be434494c43ef7ab4e902df3eefd7259fe46ac4",
+      "sha256": "4b9e10e2043fdd6d4d6c15c09b72840aa436fffdaffdc57628dc942fbe0ccb9e"
+    },
+    {
+      "source": "results/cifar10_segment_timing_20261103/std/summary.json",
+      "snapshot": "std/summary.json",
+      "bytes": 9763,
+      "git_blob_sha1": "f645da875656a70db98688f7248fa7cc3c9603db",
+      "sha256": "dc98cdbac92764cdcfa776b5bbe6cc64720b095b792979223a97c7c35f9ff161"
+    },
+    {
+      "source": "results/cifar10_segment_timing_20261103/std/timing_summary.json",
+      "snapshot": "std/timing_summary.json",
+      "bytes": 847,
+      "git_blob_sha1": "2d4e8a5026aa72f799333fed1efa95602bb48f8e",
+      "sha256": "1a9cc672a4f37d7d253c1113ec848f3940a034e9e975a2d8bc8ecf83a6f74019"
+    },
+    {
+      "source": "results/cifar10_segment_timing_20261103/std_segment_protocol.json",
+      "snapshot": "std_segment_protocol.json",
+      "bytes": 624,
+      "git_blob_sha1": "8bb2230e9cca7de18da4c96cc7ea0c76dd0ec414",
+      "sha256": "607ffcbcb275b88440f56228d3b21f3b2032e6d0c227c52b7645a1efedec5cde"
+    },
+    {
+      "source": "run_std_segment_timing.py",
+      "snapshot": "source/run_std_segment_timing.py",
+      "bytes": 6495,
+      "git_blob_sha1": "071b4d4c76462afdcdcbe3cd53aff2c1118b3f12",
+      "sha256": "0de8b34f9166ec05a9d32e616e6192ff9c0afdaf851be8082c28b74309deff8b"
+    },
+    {
+      "source": "run_v154_segment_timing.py",
+      "snapshot": "source/run_v154_segment_timing.py",
+      "bytes": 3517,
+      "git_blob_sha1": "387999cac2abf115c8ed40136e4d536df3f6bbfe",
+      "sha256": "f42830c1d5216b84c616bb6a3dd672875234206fbd2a9772d2bcf667443ccff1"
+    },
+    {
+      "source": "segment_timing.py",
+      "snapshot": "source/segment_timing.py",
+      "bytes": 8697,
+      "git_blob_sha1": "df9d291c8420090ee465cca7d868b203403dd14e",
+      "sha256": "812072f3c2e2cbcc6ad08644bfa036b64b37c8d84ed4a45d577fe72543934ace"
+    }
+  ],
+  "repository": "https://github.com/Aashnan-Rahman/Mitigating-Free-Rider",
+  "commit": "182ba40c3d036d7dc1cbe07975d6c0a62b1cefd2",
+  "branch": "v15.4-completed-study"
+}

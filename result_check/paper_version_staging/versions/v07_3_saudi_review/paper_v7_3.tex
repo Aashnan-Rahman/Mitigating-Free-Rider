@@ -73,7 +73,7 @@ non-adaptive. This grid achieves 100\% removal recall with three honest
 removals in two runs. Statistical certification requires a supported cohort
 of at least ten clients at an active population of 100, while exact
 sendback follows a separate path. Additional honest-only runs remove no
-honest clients, but completed 5\% tests miss FR2--FR4. An oracle
+honest clients, but 5\% tests miss FR2--FR4 in every setting. An oracle
 norm-matching feature diagnostic substantially reduces initial
 certification and does not establish robustness to adaptive attacks.
 Mean checking time is 215 ms per round on MNIST and 791 ms on CIFAR-10
@@ -82,8 +82,10 @@ and 89\% of checking-plus-aggregation time, respectively.
 Even clean IID settings withhold about 11\% of honest responses.
 These costs qualify the lightweight claim, which concerns measured
 server computation at 100 clients rather than deployment-scale efficiency.
-Matched passive ablations and a functioning comparative detection
-baseline remain necessary to establish the incremental value of traps.
+A matched passive ablation that sends ordinary models reproduces every
+seed-42, 40\% removal without withholding, so the tested detection gains
+are not attributable to the traps. A functioning comparative detection
+baseline is still lacking.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -162,6 +164,9 @@ instrumented 100-client executions; this is a substantial fraction of
 checking-plus-aggregation time.
 Additional low-prevalence and norm-matching checks expose limits to this
 result rather than supporting prevalence-independent detection.
+A matched passive ablation reaches the same removals with ordinary models,
+so the evidence supports the response statistics and confirmation rule,
+not a detection benefit from the challenges themselves.
 
 \noindent The main contributions of this work are as follows:
 \begin{itemize} %[leftmargin=*,nosep]
@@ -863,9 +868,10 @@ the dispatched model yields $d+\eta$ whether the model was ordinary or a
 challenge. Thus FR4 need not acquire a direct trap signature. Challenges
 can still change the honest reference distribution, which must be tested
 against the same statistics on ordinary models. FR1 sendback also needs
-no trap. The current results establish the combined pipeline's behavior,
-not that traps cause its detection gains. Norm-only, profile-only,
-sendback-only and no-retained-memory variants are likewise untested.
+no trap. Section~\ref{sec:passive} tests this directly with ordinary
+models and finds no detection gain from the traps in the tested cells.
+Norm-only, profile-only, sendback-only and no-retained-memory variants
+remain untested.
 
 \subsection{Oracle Norm-Matching Feature Diagnostic}
 To isolate that limitation, we replay each initial FR2--FR4 pair from the
@@ -900,20 +906,20 @@ runs cover both datasets and both partitions with seed 42. None removes
 an honest client. This is evidence from four federations, not a population
 false-positive guarantee.
 
-Table~\ref{tab:low-share} reports the complete non-IID 5\%, 10\% and
-20\% grid available at this revision. FR1 removes all free riders at each
-share. FR2--FR4 remove none at 5\%, while the completed 10\% and 20\%
-cases remove all. The cohort-support requirement in~\eqref{eq:cohort-support}
+Table~\ref{tab:low-share} reports the complete 48-run 5\%, 10\% and
+20\% grid across both datasets and partitions. FR1 removes all free
+riders at each share. FR2--FR4 remove none at 5\% in any setting, while
+every 10\% and 20\% case removes all. The cohort-support requirement in~\eqref{eq:cohort-support}
 is ten at 100 active clients, making a five-client statistical cohort
 ineligible. This limit is retained rather than relaxed after observing
 misses. CIFAR-10 FR3 at 10\% also removes one honest client.
 \input{generated/saudi/low_share_table.tex}
 
-At the 12 November revision snapshot, 35 of 48 low-prevalence
-cases are complete. Table~\ref{tab:low-share} includes every completed
-IID and non-IID case; incomplete runs are not scored.
-The passive ablation/MAD phase, oracle utility comparisons, published
-decaying-noise and scaled-delta tests, and held-out seeds remain queued.
+At the 17 November revision snapshot, all 48 low-prevalence cases and
+the 16-run passive ablation (Section~\ref{sec:passive}) are complete.
+No other honest removal occurs in the grid. Oracle utility comparisons
+are in progress (3 of 12 complete, not reported). Published
+decaying-noise and scaled-delta tests and held-out seeds remain queued.
 Stronger non-IID concentrations, mixed attacks and complete norm-matched
 attack reruns are not covered by that queue.
 
@@ -925,6 +931,41 @@ approximately $[0,0.602]$. This is not a client-level interval: clients
 within a federation share training and references. The main study's
 three removals among 6,240 honest client-cases are descriptive; pooling
 those cases as independent trials would understate uncertainty.
+
+\subsection{Passive Ordinary-Model Ablation}\label{sec:passive}
+The passive variant keeps the audit schedule, the selected response
+slots, the norm and profile statistics, sendback checks and the
+repeated-certificate removal rule. It sends the ordinary global model
+instead of a challenge and aggregates every selected response that is
+not quarantined. The 16 registered runs cover both datasets, both
+partitions and FR1--FR4 at 40\% with seed 42. Each is compared with the
+matched seed-42 run of the main grid. The passive runs use the review
+engine with the audit-clock correction; the trap runs use the frozen
+v15.4 engine. Thresholds were fixed before these outcomes were observed.
+
+Table~\ref{tab:passive} shows no detection benefit from the traps. Both
+variants remove all 640 free riders and no honest client. Completion
+rounds are identical in 15 of 16 cells. In CIFAR-10 non-IID FR3, the
+passive variant finishes at round 50 rather than 60. Final accuracy
+differs by at most 0.3 percentage points. The passive variant withholds
+at most 0.7\% of active honest client-rounds, against 11--18.5\% with
+traps. In this setting, detection comes from the response statistics and
+the confirmation rule, while the challenges add honest-client cost.
+\input{generated/saudi/passive_table.tex}
+
+Three limits apply. The cells use one seed and 40\% prevalence, where
+the main grid already reaches full recall. Traps could still matter at
+lower prevalence, under norm-matched or challenge-aware attacks, or
+against attackers who distinguish ordinary rounds. None of these cases
+is tested passively. The comparison also changes the engine and cannot
+attribute the round-50 completion difference.
+
+The registered one-round MAD norm screen on the same ordinary round-20
+responses is a simple passive baseline. It flags no honest client. It
+flags all free riders only in CIFAR-10 IID and MNIST IID FR1, and none in
+the other 11 cells. At 40\% prevalence the fabricated norms contaminate
+the median and MAD. A single robust norm threshold therefore does not
+match the per-slot peer statistics and repeated certificates here.
 
 \subsection{Execution Time and Memory}
 Throughout this paper, lightweight refers to measured server computation
@@ -1217,8 +1258,10 @@ The main grid covers three seeds, 100 clients, one architecture per dataset
 and one non-IID concentration. The new lower-prevalence checks use one
 frozen seed and expose misses at 5\%; they do not support a prevalence-
 independent recall claim. The norm-matching feature diagnostic isolates
-statistical behavior but is not a full adaptive attack. Component and
-passive-detector ablations, completed published-attack runs and a stronger
+statistical behavior but is not a full adaptive attack. The passive
+ablation covers only seed 42 at 40\%; passive runs at low prevalence and
+under adaptive attacks would show whether traps help anywhere.
+Component ablations, completed published-attack runs and a stronger
 detection baseline are still needed. The stored five-epoch STD-DAGMM
 recipe supplies flag diagnostics, not a fair ranking of detection methods.
 
@@ -1247,7 +1290,9 @@ These outcomes delimit the support gate's operating range rather than
 establish universal recall. The norm-matching diagnostic further tests
 what magnitude contrast alone cannot establish. Checking averages 215 and 791 ms per round in the two instrumented
 100-client workflows, but dominates checking-plus-aggregation time.
-The present study does not isolate the causal contribution of traps. Reliable auditing
+A matched passive ablation removes the same free riders with ordinary
+models and almost no honest withholding, so the tested gains come from
+the statistics and confirmation rule rather than the traps. Reliable auditing
 under lower prevalence, stronger fabrication and heterogeneous honest
 behavior remains the central research problem.
 

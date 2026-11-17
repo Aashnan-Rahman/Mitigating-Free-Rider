@@ -1,0 +1,75 @@
+{
+  "batch_id": "cifar10_segment_timing_20261103",
+  "completed_experiments": 2,
+  "completed_rounds": 200,
+  "current_experiment": null,
+  "error": null,
+  "estimated_remaining_seconds": null,
+  "experiments": [
+    {
+      "completed_rounds": 100,
+      "config": {
+        "attack_type": "FR3",
+        "dataset": "cifar10",
+        "distribution": "noniid",
+        "free_rider_pct": 0.4,
+        "methodology_version": "swtcp_v15_4",
+        "num_rounds": 100,
+        "seed": 42
+      },
+      "id": "ours",
+      "progress": {
+        "active_clients": "60",
+        "candidate_clients": 52,
+        "completed_clients": 0,
+        "device": "cpu",
+        "fit_seconds": null,
+        "global_accuracy": "0.7489",
+        "inference_seconds": null,
+        "methodology_version": "swtcp_v15_4",
+        "phase": "single_audit",
+        "round": 100,
+        "round_time_seconds": "94.18899890000466",
+        "suspected_clients": 0,
+        "total_rounds": 100,
+        "working_round": 101
+      },
+      "state": "completed"
+    },
+    {
+      "completed_rounds": 100,
+      "config": {
+        "attack_type": "FR3",
+        "dataset": "cifar10",
+        "distribution": "noniid",
+        "free_rider_pct": 0.4,
+        "methodology_version": "std_dagmm_native_observational",
+        "num_rounds": 100,
+        "seed": 42
+      },
+      "id": "std",
+      "progress": {
+        "active_clients": "100",
+        "candidate_clients": null,
+        "completed_clients": 0,
+        "device": "cpu",
+        "fit_seconds": "40.78623610000068",
+        "global_accuracy": "0.7255",
+        "inference_seconds": "0.7748390999986441",
+        "methodology_version": "std_dagmm_native_observational",
+        "phase": "completed",
+        "round": 100,
+        "round_time_seconds": "132.6156148000009",
+        "suspected_clients": null,
+        "total_rounds": 100,
+        "working_round": 100
+      },
+      "state": "completed"
+    }
+  ],
+  "failed_experiments": 0,
+  "state": "completed",
+  "total_experiments": 2,
+  "total_rounds": 200,
+  "updated_at": "2026-11-04T07:35:01"
+}

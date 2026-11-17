@@ -1,0 +1,27 @@
+{
+  "communication": "no network experiment",
+  "formulas": {
+    "amortized_phase": "sum(round durations in phase) / 100",
+    "std": "sum of actual 100 round durations"
+  },
+  "horizon": "ours and STD: 100 actual measured rounds",
+  "inputs": {
+    "results\\std_dagmm_100_seed42_fr40\\std_dagmm_cifar10_noniid_FR3_seed42\\protocol.json": "d7243b0e7b771576636c3fb73026cccdd9bf396c3cb8e167815d415a4beef7f0",
+    "results\\std_dagmm_100_seed42_fr40\\std_dagmm_cifar10_noniid_FR3_seed42\\round_timings.csv": "82e027651044d04e2f9106e0eebf6d822dd19ceedeccd78b3c5f80c51eb25cec",
+    "results\\std_dagmm_100_seed42_fr40\\std_dagmm_cifar10_noniid_FR3_seed42\\status.json": "e56499458057ec9029ff63f7832c6fa4b2966df030b21c426f6cb1f76274b79c",
+    "results\\std_dagmm_100_seed42_fr40\\std_dagmm_cifar10_noniid_FR3_seed42\\summary.json": "71d5c4803e47165d4b2e1ed617c900d2c7d5bd92cc3d421d8105a66308ab7ef4",
+    "results\\std_dagmm_100_seed42_fr40\\std_dagmm_mnist_noniid_FR3_seed42\\protocol.json": "49c869cde371a11bb05f3b118ff3b7158a00f397bda21bfa4fcf4ee6cd4bc345",
+    "results\\std_dagmm_100_seed42_fr40\\std_dagmm_mnist_noniid_FR3_seed42\\round_timings.csv": "cc725ba9e25f04f9c135b0bb2499fcafc80c0bfde299f17026ee9876983745f5",
+    "results\\std_dagmm_100_seed42_fr40\\std_dagmm_mnist_noniid_FR3_seed42\\status.json": "334b827a73f292416869260f77055d1562a370add219acba9aee5250ce69e8ef",
+    "results\\std_dagmm_100_seed42_fr40\\std_dagmm_mnist_noniid_FR3_seed42\\summary.json": "447dd8352ae54539e644c14332c0cb67a45e7b50117eb29c161dbfcb5b3ca0b8",
+    "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR3_seed42\\cycle_decisions.csv": "58a9e93ef249fc5f11f284634e3ab61e657b363504455d1da6267a20dbdd9d6c",
+    "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR3_seed42\\global_metrics.csv": "618c9c94e63f51b6c554df579b608d22c0f32c3ba5ebda225d2ee99d006f771c",
+    "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR3_seed42\\latest_results.json": "087cb3bc86213d49b6f41333aaaed261529c3e004bf589141f749e3a69533a5f",
+    "results\\v15_4_cifar10_seed42_fr40\\v15_4_cifar10_noniid_FR3_seed42\\run_config.json": "4758172f3dafee36ee279ec2a894f95f03e87f6ec899ae179d397ef67eb7eaad",
+    "results\\v15_4_mnist_seed42_fr40\\v15_4_mnist_noniid_FR3_seed42\\cycle_decisions.csv": "697253172a5eb487dd2e7d05a3386609ec6987119cecb92b86b674776e697990",
+    "results\\v15_4_mnist_seed42_fr40\\v15_4_mnist_noniid_FR3_seed42\\global_metrics.csv": "5ee5696a94892a6c9e447ca26312dd3d4f17db87721c1477416bad55fc6e1ea7",
+    "results\\v15_4_mnist_seed42_fr40\\v15_4_mnist_noniid_FR3_seed42\\latest_results.json": "cfd3e2b7cd8c3e7fdc4df8fc71b1f979f03925d611541b4637a3ebb9b0e07a3a",
+    "results\\v15_4_mnist_seed42_fr40\\v15_4_mnist_noniid_FR3_seed42\\run_config.json": "e0ee24ea691d068f01b7daf09c91bf005ed0f750a5c9b208cf12e1f26108ab6c"
+  },
+  "ours_components": "not recorded; total only"
+}

@@ -1,0 +1,35 @@
+\begin{figure*}[tp]\centering\begin{tikzpicture}
+\begin{groupplot}[group style={group size=2 by 2,horizontal sep=1.1cm,vertical sep=1.6cm},width=0.44\textwidth,height=5.0cm,ybar,/pgf/bar width=4pt,xmin=0.45,xmax=4.55,xtick={1,2,3,4},xticklabels={FR1,FR2,FR3,FR4},axis line style={black!40},ymajorgrids=true,grid style={black!8},tick label style={font=\scriptsize},label style={font=\scriptsize},title style={font=\small},scaled y ticks=false,enlarge y limits=0.12]
+\nextgroupplot[title={MNIST},ylabel={Accuracy change (pp)}]
+\addplot[/pgf/bar shift=-7.5pt,fill=honestblue,draw=honestblue] coordinates {(1,0.000000) (2,0.010000) (3,0.150000) (4,-0.010000)};
+\addplot[/pgf/bar shift=-2.5pt,fill=violet!75!black,draw=violet!75!black] coordinates {(1,0.110000) (2,0.080000) (3,0.250000) (4,-0.070000)};
+\addplot[/pgf/bar shift=2.5pt,fill=teal!75!black,draw=teal!75!black] coordinates {(1,0.090000) (2,0.070000) (3,0.240000) (4,-0.030000)};
+\addplot[/pgf/bar shift=7.5pt,fill=riderorange,draw=riderorange] coordinates {(1,0.100000) (2,0.090000) (3,0.490000) (4,0.040000)};
+\draw[black!60,thin] (axis cs:0.5,0) -- (axis cs:4.5,0);
+\nextgroupplot[title={CIFAR-10}]
+\addplot[/pgf/bar shift=-7.5pt,fill=honestblue,draw=honestblue] coordinates {(1,0.300000) (2,0.340000) (3,1.330000) (4,-0.450000)};
+\addplot[/pgf/bar shift=-2.5pt,fill=violet!75!black,draw=violet!75!black] coordinates {(1,0.430000) (2,0.130000) (3,1.310000) (4,-0.500000)};
+\addplot[/pgf/bar shift=2.5pt,fill=teal!75!black,draw=teal!75!black] coordinates {(1,0.460000) (2,0.920000) (3,1.960000) (4,-0.020000)};
+\addplot[/pgf/bar shift=7.5pt,fill=riderorange,draw=riderorange] coordinates {(1,0.720000) (2,1.050000) (3,2.340000) (4,-0.050000)};
+\draw[black!60,thin] (axis cs:0.5,0) -- (axis cs:4.5,0);
+\nextgroupplot[title={MNIST},ylabel={Round-time change (\%)}]
+\addplot[/pgf/bar shift=-7.5pt,fill=honestblue,draw=honestblue] coordinates {(1,-1.578930) (2,-1.070645) (3,-4.207094) (4,-5.503301)};
+\addplot[/pgf/bar shift=-2.5pt,fill=violet!75!black,draw=violet!75!black] coordinates {(1,-6.222373) (2,-7.059907) (3,-15.060472) (4,-3.274299)};
+\addplot[/pgf/bar shift=2.5pt,fill=teal!75!black,draw=teal!75!black] coordinates {(1,4.826847) (2,-2.299781) (3,-4.094663) (4,-5.099863)};
+\addplot[/pgf/bar shift=7.5pt,fill=riderorange,draw=riderorange] coordinates {(1,-3.598615) (2,-3.414733) (3,-4.725226) (4,-3.807220)};
+\draw[black!60,thin] (axis cs:0.5,0) -- (axis cs:4.5,0);
+\nextgroupplot[title={CIFAR-10}]
+\addplot[/pgf/bar shift=-7.5pt,fill=honestblue,draw=honestblue] coordinates {(1,-7.159210) (2,2.901927) (3,-5.389143) (4,20.635033)};
+\addplot[/pgf/bar shift=-2.5pt,fill=violet!75!black,draw=violet!75!black] coordinates {(1,9.980755) (2,3.081338) (3,17.564053) (4,4.257039)};
+\addplot[/pgf/bar shift=2.5pt,fill=teal!75!black,draw=teal!75!black] coordinates {(1,-7.682565) (2,-10.248718) (3,32.406819) (4,27.195837)};
+\addplot[/pgf/bar shift=7.5pt,fill=riderorange,draw=riderorange] coordinates {(1,12.517428) (2,13.479964) (3,11.211865) (4,11.668122)};
+\draw[black!60,thin] (axis cs:0.5,0) -- (axis cs:4.5,0);
+\end{groupplot}\end{tikzpicture}
+\par\smallskip{\scriptsize
+\textcolor{honestblue}{\rule{0.25cm}{0.15cm}}\ 30\% IID\quad
+\textcolor{violet!75!black}{\rule{0.25cm}{0.15cm}}\ 30\% Non-IID\quad
+\textcolor{teal!75!black}{\rule{0.25cm}{0.15cm}}\ 40\% IID\quad
+\textcolor{riderorange}{\rule{0.25cm}{0.15cm}}\ 40\% Non-IID\quad
+}
+\caption{Changes relative to federated averaging without a defense.}\label{fig:baseline-effects}
+\end{figure*}

@@ -1,0 +1,11 @@
+{
+  "canonical_source_sha256": "2c13d2c389f910a8fe01e0ca20b653e3c411d0feae28aed9d006bd8ab4ad9b68",
+  "dataset": "cifar10",
+  "detector_epochs": 5,
+  "instrumentation_sha256": "5ec24cab686e0ff447682b1153295dc38a2f1007840e8091778b1d98c785992a",
+  "note": "Core STD-DAGMM features/objective match Lin et al.; fitting budget/reset schedule and architecture are declared reproduction choices",
+  "rounds": 100,
+  "seed": 42,
+  "shared_instrumentation_sha256": "690b0b8cf6f1a94dbff5553badb98740f72317aac469ba40e163d47ec97b6de6",
+  "transformed_function_sha256": "79bf01f91c1e2f38a5f1bbfc784dc29edfe3d85e0e5378c68a73d139e61172b9"
+}

@@ -1,0 +1,26 @@
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}
+\begin{groupplot}[group style={group size=2 by 1,horizontal sep=0.55cm},
+ scale only axis,width=.35\columnwidth,height=3.1cm,
+ xmin=-1.2,xmax=2.6,ymin=-1.8,ymax=3.2,xtick={-1,0,1,2},ytick={-1,0,1,2,3},
+ xlabel={$\operatorname{asinh}(\bar z_n)$},
+ title style={font=\small},label style={font=\scriptsize},
+ tick label style={font=\scriptsize},grid=major,grid style={black!8}]
+\nextgroupplot[title={FR2},ylabel={$\operatorname{asinh}(\bar z_p)$}]
+\addplot[only marks,mark=o,mark size=1.5pt,draw=honestblue,opacity=.8]
+ table[x=x,y=y] {generated/visuals/scatter_cifar10_40_noniid_FR2_0.dat};
+\addplot[only marks,mark=triangle*,mark size=1.7pt,draw=riderorange,fill=riderorange,opacity=.8]
+ table[x=x,y=y] {generated/visuals/scatter_cifar10_40_noniid_FR2_1.dat};
+\nextgroupplot[title={FR3},yticklabels={}]
+\addplot[only marks,mark=o,mark size=1.5pt,draw=honestblue,opacity=.8]
+ table[x=x,y=y] {generated/visuals/scatter_cifar10_40_noniid_FR3_0.dat};
+\addplot[only marks,mark=triangle*,mark size=1.7pt,draw=riderorange,fill=riderorange,opacity=.8]
+ table[x=x,y=y] {generated/visuals/scatter_cifar10_40_noniid_FR3_1.dat};
+\end{groupplot}
+\end{tikzpicture}
+\par\smallskip{\footnotesize\textcolor{honestblue}{$\circ$}\ Honest clients\quad
+\textcolor{riderorange}{$\blacktriangle$}\ Free riders}
+\caption{Round-20 challenge scores on CIFAR-10 with non-IID data and
+40\% free riders (seed 42).}\label{fig:short-scores}
+\end{figure}

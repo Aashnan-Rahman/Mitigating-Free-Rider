@@ -1,0 +1,123 @@
+{
+  "date": "2026-11-11",
+  "primary_runs": 96,
+  "honest_only_completed": 4,
+  "honest_only_removals": 0,
+  "completed_review_runs": 30,
+  "low_share_completed": 26,
+  "norm_matching_cases": 72,
+  "norm_matching": [
+    {
+      "attack": "FR2",
+      "cases": 24,
+      "stored_norm_low_recall": 1.0,
+      "stored_norm_low_honest_certificates": 0,
+      "stored_profile_high_recall": 1.0,
+      "stored_profile_high_honest_certificates": 0,
+      "stored_either_recall": 1.0,
+      "stored_either_honest_certificates": 0,
+      "norm_matched_norm_low_recall": 0.0,
+      "norm_matched_norm_low_honest_certificates": 0,
+      "norm_matched_profile_high_recall": 0.6190476190476191,
+      "norm_matched_profile_high_honest_certificates": 5,
+      "norm_matched_either_recall": 0.6190476190476191,
+      "norm_matched_either_honest_certificates": 5
+    },
+    {
+      "attack": "FR3",
+      "cases": 24,
+      "stored_norm_low_recall": 0.38095238095238093,
+      "stored_norm_low_honest_certificates": 9,
+      "stored_profile_high_recall": 0.5,
+      "stored_profile_high_honest_certificates": 14,
+      "stored_either_recall": 0.7976190476190477,
+      "stored_either_honest_certificates": 23,
+      "norm_matched_norm_low_recall": 0.0,
+      "norm_matched_norm_low_honest_certificates": 0,
+      "norm_matched_profile_high_recall": 0.10714285714285714,
+      "norm_matched_profile_high_honest_certificates": 2,
+      "norm_matched_either_recall": 0.10714285714285714,
+      "norm_matched_either_honest_certificates": 2
+    },
+    {
+      "attack": "FR4",
+      "cases": 24,
+      "stored_norm_low_recall": 0.7857142857142857,
+      "stored_norm_low_honest_certificates": 1,
+      "stored_profile_high_recall": 0.34523809523809523,
+      "stored_profile_high_honest_certificates": 0,
+      "stored_either_recall": 0.8214285714285714,
+      "stored_either_honest_certificates": 1,
+      "norm_matched_norm_low_recall": 0.0,
+      "norm_matched_norm_low_honest_certificates": 0,
+      "norm_matched_profile_high_recall": 0.17857142857142858,
+      "norm_matched_profile_high_honest_certificates": 3,
+      "norm_matched_either_recall": 0.17857142857142858,
+      "norm_matched_either_honest_certificates": 3
+    }
+  ],
+  "endpoint": "paired statistical certificates at round 20, not permanent removal",
+  "stress_scope": "oracle feature-level positive rescaling; no full-model construction or training rerun",
+  "queue": [
+    {
+      "batch": "review2_01_honest_seed42",
+      "state": "completed",
+      "completed": 4,
+      "total": 4,
+      "current": null,
+      "error": null,
+      "updated": "2026-11-05T20:56:53.213720+00:00"
+    },
+    {
+      "batch": "review2_02_low_share_seed42",
+      "state": "waiting_resources",
+      "completed": 26,
+      "total": 48,
+      "current": "paired_mnist_iid_FR2_fr5_seed42",
+      "error": "Waiting for 2 GiB available RAM before training",
+      "updated": "2026-11-11T06:50:54.585752+00:00"
+    },
+    {
+      "batch": "review2_03_passive_seed42",
+      "state": "queued",
+      "completed": 0,
+      "total": 16
+    },
+    {
+      "batch": "review2_04_oracle_seed42",
+      "state": "queued",
+      "completed": 0,
+      "total": 12
+    },
+    {
+      "batch": "review2_05_published_attacks_seed42",
+      "state": "queued",
+      "completed": 0,
+      "total": 16
+    },
+    {
+      "batch": "fedavg_mnist_baseline_seed73_fr30_fr40",
+      "state": "completed",
+      "completed": 16,
+      "total": 16,
+      "current": null,
+      "error": null,
+      "updated": "2026-11-05T07:55:49.702760+00:00"
+    },
+    {
+      "batch": "fedavg_mnist_baseline_seed43_fr30_fr40",
+      "state": "stopped",
+      "completed": 1,
+      "total": 16,
+      "current": null,
+      "error": null,
+      "updated": "2026-11-05T09:53:30.320507+00:00"
+    },
+    {
+      "batch": "review2_06_heldout_multiseed_last",
+      "state": "queued",
+      "completed": 0,
+      "total": 70
+    }
+  ]
+}

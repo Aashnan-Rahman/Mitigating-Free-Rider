@@ -1,0 +1,734 @@
+{
+  "commit": "182ba40c3d036d7dc1cbe07975d6c0a62b1cefd2",
+  "files": [
+    {
+      "source": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_iid_FR3_fr40_seed43/client_metrics.csv",
+      "snapshot": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_iid_FR3_fr40_seed43/client_metrics.csv",
+      "git_blob_sha1": "91227c5b23ae49c88c2caba9048d43e624b3fdd6",
+      "sha256": "871b88465f3f5a36f6a9fa63f315e73fc1e2f4c93bae7b6050ba9692779f6726",
+      "bytes": 630742
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_iid_FR3_fr40_seed43/protocol.json",
+      "snapshot": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_iid_FR3_fr40_seed43/protocol.json",
+      "git_blob_sha1": "00bd458595a897a09850afda70b65245fb5b7938",
+      "sha256": "a412c7c01664d14aef832c93f5733117193c32a14af1718c2a7427d8859c4cde",
+      "bytes": 5025
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_iid_FR3_fr40_seed43/round_timings.csv",
+      "snapshot": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_iid_FR3_fr40_seed43/round_timings.csv",
+      "git_blob_sha1": "89fefb9b8175d46ea2b901f440f993692cec6474",
+      "sha256": "efca4768637057e45614ef08a56606350f85d93ff952131033d8f63afbc1b105",
+      "bytes": 22208
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_iid_FR3_fr40_seed43/summary.json",
+      "snapshot": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_iid_FR3_fr40_seed43/summary.json",
+      "git_blob_sha1": "cc91bee8fadc11ecc059d16e6d0795e113bc79a2",
+      "sha256": "6f4b0df4a5433f9523ca878d1e5c2a4ff2adb38988d633e1dc61c69e8b8e9c16",
+      "bytes": 5989
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_iid_FR4_fr40_seed43/client_metrics.csv",
+      "snapshot": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_iid_FR4_fr40_seed43/client_metrics.csv",
+      "git_blob_sha1": "0410850a91ea6d14e59bdf815b7b9c03dd5d9945",
+      "sha256": "5ff8466a93a0a34a71249f60c2d6162ce9e451a3fb681656f60532b313e8416b",
+      "bytes": 632604
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_iid_FR4_fr40_seed43/protocol.json",
+      "snapshot": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_iid_FR4_fr40_seed43/protocol.json",
+      "git_blob_sha1": "5563a84c3f1217fcb73b343f407fd58a600e8dcc",
+      "sha256": "79ba96e1329d08aec9c5963cae641483293596882b0daa0a0295c15bd15cc1c1",
+      "bytes": 5025
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_iid_FR4_fr40_seed43/round_timings.csv",
+      "snapshot": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_iid_FR4_fr40_seed43/round_timings.csv",
+      "git_blob_sha1": "c9fa2062c96a7ece3dfd8d7cb1064557d50421fd",
+      "sha256": "e3859640cfee79c80afaeea138022e4b9b2b4ae5f8a2ab4e76905083821a153d",
+      "bytes": 22148
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_iid_FR4_fr40_seed43/summary.json",
+      "snapshot": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_iid_FR4_fr40_seed43/summary.json",
+      "git_blob_sha1": "7da8f57858d37ffa246321c41f773a81a7f84bd1",
+      "sha256": "fabd0ee309d677b32e6dbe5a1e5f31abc7424b406ed976768ebb3f2089b1efd8",
+      "bytes": 5990
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR1_fr30_seed43/client_metrics.csv",
+      "snapshot": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR1_fr30_seed43/client_metrics.csv",
+      "git_blob_sha1": "4c53770bad9e1a9791ccdc950291277ebd733280",
+      "sha256": "7f29ec3845518edbd42f834de5ce95657b9d45eeae25480721e62ac0d85595fe",
+      "bytes": 696162
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR1_fr30_seed43/protocol.json",
+      "snapshot": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR1_fr30_seed43/protocol.json",
+      "git_blob_sha1": "df5bb4be03dd4c41d57591689fe668025d56c093",
+      "sha256": "bc1cac4f3625e10c9856b262f18353e6128cc9cf5ad5c8c62153c12bcf4a09cb",
+      "bytes": 5028
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR1_fr30_seed43/round_timings.csv",
+      "snapshot": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR1_fr30_seed43/round_timings.csv",
+      "git_blob_sha1": "069dc9720f7fab76d5fc68135ad40b3a5cb8b8cd",
+      "sha256": "6247467c9ba8944b254a8b49865a911e290603eaec4943578c0e6aad5e525418",
+      "bytes": 22355
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR1_fr30_seed43/summary.json",
+      "snapshot": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR1_fr30_seed43/summary.json",
+      "git_blob_sha1": "8ea5947899ad0d044355494a0a242b09cc70f2a8",
+      "sha256": "1bd1b6376950f3fa2e925384251a799b895949e2f66a218c0fddd23f91bbc2ac",
+      "bytes": 5991
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR1_fr40_seed43/client_metrics.csv",
+      "snapshot": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR1_fr40_seed43/client_metrics.csv",
+      "git_blob_sha1": "417c30b924efc455c6ce4c89a1b9f1673bce4276",
+      "sha256": "b9318d6c1488698556045ae5fad2e6f6ec070ed46d504eaa0c6a09bed22a6838",
+      "bytes": 662080
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR1_fr40_seed43/protocol.json",
+      "snapshot": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR1_fr40_seed43/protocol.json",
+      "git_blob_sha1": "22fb45fe8efc329002d62ff64769b4b412f3328d",
+      "sha256": "6335240d0abbd6ae86d938eb8ad388dbf6baa376bd5d7fd0d40f367ca288fe28",
+      "bytes": 5028
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR1_fr40_seed43/round_timings.csv",
+      "snapshot": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR1_fr40_seed43/round_timings.csv",
+      "git_blob_sha1": "8fb4f45519479f08a42b3a2869cc0d49b75865d2",
+      "sha256": "57d52bd891caa96cc463387510c6e8bb3d8a6b5c618954fdcfa4e3d7e80597e4",
+      "bytes": 22291
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR1_fr40_seed43/summary.json",
+      "snapshot": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR1_fr40_seed43/summary.json",
+      "git_blob_sha1": "fa139c2596d79faf12fc9a586a6c4195b5a635e5",
+      "sha256": "882e23cf0724b17584cd251dcbfffd6637f643b75df2955c6e7fe353e6a73e6b",
+      "bytes": 5988
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR2_fr30_seed43/client_metrics.csv",
+      "snapshot": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR2_fr30_seed43/client_metrics.csv",
+      "git_blob_sha1": "4c85883700ebc393953fe3216abc953c22b0fd09",
+      "sha256": "63818fe76cb00c51255d0b6e2ec784363d0f2acf53cd1f16d0cb616df4bc4188",
+      "bytes": 694158
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR2_fr30_seed43/protocol.json",
+      "snapshot": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR2_fr30_seed43/protocol.json",
+      "git_blob_sha1": "4dcf022cf8b3c53855ccc55cb6ea3e57bb6c387d",
+      "sha256": "c6dbba4da4dc417b55c71c0d41009b999a0f2807525ee31e9f89c7ea04fb7296",
+      "bytes": 5028
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR2_fr30_seed43/round_timings.csv",
+      "snapshot": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR2_fr30_seed43/round_timings.csv",
+      "git_blob_sha1": "28af37b4120b5884150043dd15aa8de8a9486657",
+      "sha256": "bc93748b2965c2582eb0b28aba8fd0d67b1b681499e609591e93b1090caa6f40",
+      "bytes": 22325
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR2_fr30_seed43/summary.json",
+      "snapshot": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR2_fr30_seed43/summary.json",
+      "git_blob_sha1": "3da45a8c7376ab5c23923dac70925acb7b57534e",
+      "sha256": "850e4a47121ba3de24de5d2bacebf84795932771cecf7d1f6e9c565712576b04",
+      "bytes": 5993
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR2_fr40_seed43/client_metrics.csv",
+      "snapshot": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR2_fr40_seed43/client_metrics.csv",
+      "git_blob_sha1": "53e3a241ccdb026c383b5847f4089e6b7839adf9",
+      "sha256": "fb9150dceb6ea4e28a82386d8d2dda9d9e93475d7a87bdcf8fc830949a9d8924",
+      "bytes": 658698
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR2_fr40_seed43/protocol.json",
+      "snapshot": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR2_fr40_seed43/protocol.json",
+      "git_blob_sha1": "192f0cc9dcaeea5f06334c226c5eae32591ac68f",
+      "sha256": "115b1ba85c6b498b0b7f4e7c99b8593eb4d42eb81ae94c66b2f459d494bba184",
+      "bytes": 5028
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR2_fr40_seed43/round_timings.csv",
+      "snapshot": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR2_fr40_seed43/round_timings.csv",
+      "git_blob_sha1": "44ff23d72d33000c2037f36d07d47cac6b5fe29e",
+      "sha256": "0c28664d869b041bd60d1aef171b40b2f73ef2f5947d95b01a6cfaf8e872126d",
+      "bytes": 22155
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR2_fr40_seed43/summary.json",
+      "snapshot": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR2_fr40_seed43/summary.json",
+      "git_blob_sha1": "ea960a61a93df2e2d4965b11c7097a9f7bdf9c1b",
+      "sha256": "d81658f61225e12f4a756ca7d9bb45ac696983074fa4b94e280a40b7ec5036b7",
+      "bytes": 5993
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR3_fr30_seed43/client_metrics.csv",
+      "snapshot": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR3_fr30_seed43/client_metrics.csv",
+      "git_blob_sha1": "da69386bb59aac26294ca7d4ca1823ffc2c10e7a",
+      "sha256": "ee6dca76038c3b2e54eef5c34fb5cd449ee5710a8cf7701f42cc4848402c029b",
+      "bytes": 693158
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR3_fr30_seed43/protocol.json",
+      "snapshot": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR3_fr30_seed43/protocol.json",
+      "git_blob_sha1": "d18bfff83d1b2cf7b3d633b8fc9a2438a319aa69",
+      "sha256": "d7dfa7f13e2bc0d8a26c4b2ca0c406d493546146baf48f3a925f17dbdb50b7df",
+      "bytes": 5028
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR3_fr30_seed43/round_timings.csv",
+      "snapshot": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR3_fr30_seed43/round_timings.csv",
+      "git_blob_sha1": "93a0532177a792ae2bc47e5e4eb3826a76d7127a",
+      "sha256": "0976e22ab13c2eb5035563102a21179c7cce136e8dc358299fd9bf78cbe4e715",
+      "bytes": 22298
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR3_fr30_seed43/summary.json",
+      "snapshot": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR3_fr30_seed43/summary.json",
+      "git_blob_sha1": "4607442c5af1f25105398b2ba23e7fd0461c94c6",
+      "sha256": "f98eea67197b26fa20bc5bf20f766825ed8d32109100cc259782d5544b9076d7",
+      "bytes": 5993
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR3_fr40_seed43/client_metrics.csv",
+      "snapshot": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR3_fr40_seed43/client_metrics.csv",
+      "git_blob_sha1": "ca726e0db029d024518d1e400f956f7c96320902",
+      "sha256": "fa2ca58fe7cf75737705278234596884cdef8908bbc84db12b4657e9c167b855",
+      "bytes": 657903
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR3_fr40_seed43/protocol.json",
+      "snapshot": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR3_fr40_seed43/protocol.json",
+      "git_blob_sha1": "ab02c1bf8d24f188415551d810c830345f62e402",
+      "sha256": "9f14157290ffa18871ec2253f3c8ff922a4c6b05bff67bf24ed0984d78229ee1",
+      "bytes": 5028
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR3_fr40_seed43/round_timings.csv",
+      "snapshot": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR3_fr40_seed43/round_timings.csv",
+      "git_blob_sha1": "d3d3e79655d0a53ea994e72fc21e5d8f4a78a394",
+      "sha256": "cb36adfc7d06d17e3c8eb6fffb7c8dffe12d8f164d8400e149ccf6764d0b3e6c",
+      "bytes": 22263
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR3_fr40_seed43/summary.json",
+      "snapshot": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR3_fr40_seed43/summary.json",
+      "git_blob_sha1": "e517e0cc5a8fca3165b38ab227a0b1c738e0977f",
+      "sha256": "ef37be566df41ee871e722331c78d968ebfc31910c9b2c056b3f7a002e1a7cd7",
+      "bytes": 5993
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR4_fr30_seed43/client_metrics.csv",
+      "snapshot": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR4_fr30_seed43/client_metrics.csv",
+      "git_blob_sha1": "eecefcfa02ba57aa3807dfb0761cd43e758aa857",
+      "sha256": "eaeefc93e634d8eb978116e15c2d016fb8aa99576526f18709adb5e6e04db06f",
+      "bytes": 694068
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR4_fr30_seed43/protocol.json",
+      "snapshot": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR4_fr30_seed43/protocol.json",
+      "git_blob_sha1": "ffae707d0cd165ccb98849296ef7ee1eaeeef67e",
+      "sha256": "334fd1c9c209f5d53d49bc3d04f98984aa45bd40dbd78f655b5646ff75ca26bf",
+      "bytes": 5028
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR4_fr30_seed43/round_timings.csv",
+      "snapshot": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR4_fr30_seed43/round_timings.csv",
+      "git_blob_sha1": "b4d098f89239f973586d73b68bcc84b1395f6548",
+      "sha256": "61f779f5c52b459628a3d3ad3c043e38b21c3904b0c42de9b2a581b7be577e2e",
+      "bytes": 22059
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR4_fr30_seed43/summary.json",
+      "snapshot": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR4_fr30_seed43/summary.json",
+      "git_blob_sha1": "d8b24674adc8b0ba7dcbeadb5a8207ad7c09fe65",
+      "sha256": "131bb375fd6e7d32943a790dd66d0a9a79bc723ece92a4fa5f8e55b250bcdd72",
+      "bytes": 5993
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR4_fr40_seed43/client_metrics.csv",
+      "snapshot": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR4_fr40_seed43/client_metrics.csv",
+      "git_blob_sha1": "458329ac71b1de363e1e026a61bf6ce2d1b28479",
+      "sha256": "5030ff3d958d0f1330b933c2846c39eb7e6a108a553db46ddb35de31823c0847",
+      "bytes": 658749
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR4_fr40_seed43/protocol.json",
+      "snapshot": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR4_fr40_seed43/protocol.json",
+      "git_blob_sha1": "c7356e56cdecdfa5292e1b3b39dca2fc0919da96",
+      "sha256": "2e387edf7165f06d2a32a4f1b43031ff9498a601250a02d054160e7472470578",
+      "bytes": 5028
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR4_fr40_seed43/round_timings.csv",
+      "snapshot": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR4_fr40_seed43/round_timings.csv",
+      "git_blob_sha1": "0c81349b200d52acad70b6b9c1f73214ab5c1c6e",
+      "sha256": "c2450c90be8be786c495740f5f1d74f10174ef5c1f91369a38c9f1388871da01",
+      "bytes": 22112
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR4_fr40_seed43/summary.json",
+      "snapshot": "results/fedavg_cifar10_baseline_seed43_fr30_fr40/fedavg_cifar10_noniid_FR4_fr40_seed43/summary.json",
+      "git_blob_sha1": "7dea8afd18b0e4a1f4354675690536c28a222572",
+      "sha256": "21a70f9411719f98a337a87bb32fd4cd055fbb5d89d866e98fca07ffa4f3f170",
+      "bytes": 5993
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR1_fr30_seed73/client_metrics.csv",
+      "snapshot": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR1_fr30_seed73/client_metrics.csv",
+      "git_blob_sha1": "a334a3639108ed497be23f1df59c61135a2c3061",
+      "sha256": "dbc83a9a040565cfec2d38910b40f0554d0ee02a4d76067596669f087d153365",
+      "bytes": 665615
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR1_fr30_seed73/protocol.json",
+      "snapshot": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR1_fr30_seed73/protocol.json",
+      "git_blob_sha1": "645aa9d462aa533dba469bfce0c3be15bb3b9122",
+      "sha256": "9f539b983e28e447fd984770b344e3c44462568f4f564f812fe9979e4d3d0085",
+      "bytes": 5026
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR1_fr30_seed73/round_timings.csv",
+      "snapshot": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR1_fr30_seed73/round_timings.csv",
+      "git_blob_sha1": "a29ebee8377132502fbed7de859d7daa45785cef",
+      "sha256": "48d446609d1171d6dee4c75fbc7b96b4062bfc322c022a579cef8a440cbe79c1",
+      "bytes": 22388
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR1_fr30_seed73/summary.json",
+      "snapshot": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR1_fr30_seed73/summary.json",
+      "git_blob_sha1": "5715b3638bb1f8b2436dd6f2003fecb4bab2edcf",
+      "sha256": "a960cdecba151a4fb99e5c81e33bcd0be37c0d135ddfa71bbba62d4c10b8ff37",
+      "bytes": 5990
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR1_fr40_seed73/client_metrics.csv",
+      "snapshot": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR1_fr40_seed73/client_metrics.csv",
+      "git_blob_sha1": "53883a7ee66ed3b85e848e7861eab968fa071b2a",
+      "sha256": "9af524686f85eea090943bcf2d2783dcd2db94fc118f1996cd9dd2b0796cac90",
+      "bytes": 635559
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR1_fr40_seed73/protocol.json",
+      "snapshot": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR1_fr40_seed73/protocol.json",
+      "git_blob_sha1": "d4c5ba9d218ef2053a733faea3f54c6abe0beb9e",
+      "sha256": "d3dfd51fdcf9ec1e1def1f0ced824dd51a44a307bbc5f977b42bb806fb106d60",
+      "bytes": 5026
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR1_fr40_seed73/round_timings.csv",
+      "snapshot": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR1_fr40_seed73/round_timings.csv",
+      "git_blob_sha1": "e27f54633430ed26b4ddbbc0873a34a7f46c5b1a",
+      "sha256": "5e9c9e43c4d64762f63e2c46bcb93803a155f21e9ae664113e9886399046460e",
+      "bytes": 22313
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR1_fr40_seed73/summary.json",
+      "snapshot": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR1_fr40_seed73/summary.json",
+      "git_blob_sha1": "75c1f0e47d63e22659bed42aa4367921d9583934",
+      "sha256": "ba9b3a46350ce8af84dc8ae80deba43c0f943e3962ae718584032fb7194920c6",
+      "bytes": 5990
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR2_fr30_seed73/client_metrics.csv",
+      "snapshot": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR2_fr30_seed73/client_metrics.csv",
+      "git_blob_sha1": "00c13271e6e2a1e256f9acc2985558a8f40a1084",
+      "sha256": "31d0cf450aece732e2d6c4398f547f5b46951ff663c3aab436a6edac5083f85e",
+      "bytes": 664041
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR2_fr30_seed73/protocol.json",
+      "snapshot": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR2_fr30_seed73/protocol.json",
+      "git_blob_sha1": "65332a7d8e4cc151dd5bbdff7b7f8133a50741b4",
+      "sha256": "70e5b4c401b89772538bfb94222658334775c81c487ac9c3905bd91c1a9378cc",
+      "bytes": 5026
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR2_fr30_seed73/round_timings.csv",
+      "snapshot": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR2_fr30_seed73/round_timings.csv",
+      "git_blob_sha1": "f9f89b13728c027d2aa0b5baf0bb9499e7cc34b9",
+      "sha256": "279e6132286b232f8c73f6e951e57e4cf5d97e306d41a07d006a36c1118417ac",
+      "bytes": 22288
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR2_fr30_seed73/summary.json",
+      "snapshot": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR2_fr30_seed73/summary.json",
+      "git_blob_sha1": "860e024effc951b30935250fafda74ce9750e60e",
+      "sha256": "6ddb16127861879e9d88905643c1f7a0c6875fdd95d4a5d4aa794ef4d47e7537",
+      "bytes": 5991
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR2_fr40_seed73/client_metrics.csv",
+      "snapshot": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR2_fr40_seed73/client_metrics.csv",
+      "git_blob_sha1": "5038268724c312efe1b94df6f86445289289df94",
+      "sha256": "745a7897d00eb9fe385b7c28ecca9698f1555fa0d2967998e49d3d467b32726c",
+      "bytes": 632463
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR2_fr40_seed73/protocol.json",
+      "snapshot": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR2_fr40_seed73/protocol.json",
+      "git_blob_sha1": "3f7235ca52eae57c750feb91a00de17c17130185",
+      "sha256": "e6a773b590e731108fc8a44369ab29c965e17747d7b5d53a5d0af92ff05381ed",
+      "bytes": 5026
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR2_fr40_seed73/round_timings.csv",
+      "snapshot": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR2_fr40_seed73/round_timings.csv",
+      "git_blob_sha1": "201e3b242cff9555d8d5ae333aad657997bc94e4",
+      "sha256": "068fe2904c85f5df541bb9ca6a83a0858bc4c5a32156acecdecb5ab7a3d01c7d",
+      "bytes": 22242
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR2_fr40_seed73/summary.json",
+      "snapshot": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR2_fr40_seed73/summary.json",
+      "git_blob_sha1": "470c138065c0bbfdb0ade78452500758deea950b",
+      "sha256": "149af3a87f05f611bd7b2b1b7371a36fa9c2cf81e2f4bcff3159c31ab0f5abff",
+      "bytes": 5989
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR3_fr30_seed73/client_metrics.csv",
+      "snapshot": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR3_fr30_seed73/client_metrics.csv",
+      "git_blob_sha1": "2971f29de00e3031e14cb768f0d9e0a7f9d11ef2",
+      "sha256": "342e6f26ee4b1729b492b0722730b34ec4ff1b5f745243ed66d6ee58c90bcf49",
+      "bytes": 662668
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR3_fr30_seed73/protocol.json",
+      "snapshot": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR3_fr30_seed73/protocol.json",
+      "git_blob_sha1": "701e5c6c52e1e07bf5a5a041150db4e4f800ee6b",
+      "sha256": "6443185b61220e898c4b9ba2cf5890215ed0b17637983ecedc78441a54cb4f96",
+      "bytes": 5026
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR3_fr30_seed73/round_timings.csv",
+      "snapshot": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR3_fr30_seed73/round_timings.csv",
+      "git_blob_sha1": "3a70954bd39672260d107390e619c89a59424831",
+      "sha256": "f5c1422c684ae81775bdbced6cfac07b12a6dcdc57450a443b43e94fa0a1b7ac",
+      "bytes": 22267
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR3_fr30_seed73/summary.json",
+      "snapshot": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR3_fr30_seed73/summary.json",
+      "git_blob_sha1": "2eb1eb6e18a7102152fd82261d660609478c3cd7",
+      "sha256": "01772eafd96ddb9c9e965649d075d56dca7f75305e479ee7aaf4aa825e2891e4",
+      "bytes": 5991
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR3_fr40_seed73/client_metrics.csv",
+      "snapshot": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR3_fr40_seed73/client_metrics.csv",
+      "git_blob_sha1": "3a8b47f99a4e3f0279ba5f644b70f18164e67102",
+      "sha256": "4ef15a7de5c53e818635cf92cceaab5e4b96b3af31c3dd55986636a49ea0713c",
+      "bytes": 631027
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR3_fr40_seed73/protocol.json",
+      "snapshot": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR3_fr40_seed73/protocol.json",
+      "git_blob_sha1": "c99d14f762b5e3ba5f9cbc71dbd41bd20af0d000",
+      "sha256": "10f86872ab427b74f5b59f1f7cc50369b546159b270a468446efa6a66b813063",
+      "bytes": 5026
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR3_fr40_seed73/round_timings.csv",
+      "snapshot": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR3_fr40_seed73/round_timings.csv",
+      "git_blob_sha1": "83d6da724a3a3a94359383670d93863b1a4ea7ea",
+      "sha256": "fc73b42c6f04bd9104647c14890d5526f248a591351ec606169c99a33da99f6d",
+      "bytes": 22266
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR3_fr40_seed73/summary.json",
+      "snapshot": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR3_fr40_seed73/summary.json",
+      "git_blob_sha1": "b66f2cff542d7366b29a72bc0f6f2c30d7d5b3fe",
+      "sha256": "dd74af05a318f5308d58aa005b73b5f27f0ed322543bee9f046a181b35f52abf",
+      "bytes": 5991
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR4_fr30_seed73/client_metrics.csv",
+      "snapshot": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR4_fr30_seed73/client_metrics.csv",
+      "git_blob_sha1": "bf960cce6d7b4e41f80c3ca6202c1047ae09072f",
+      "sha256": "7ad16881546751af381d161f6af138982aa8224e64023bf698e4019cf6f347c5",
+      "bytes": 663024
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR4_fr30_seed73/protocol.json",
+      "snapshot": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR4_fr30_seed73/protocol.json",
+      "git_blob_sha1": "dd61a819cc710bde2d8adad6d1b4c86e257e35ca",
+      "sha256": "b396bdfc51c8c2077c806abdb80ea13ac7f78854b5d1248323efd6ac5ad38802",
+      "bytes": 5026
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR4_fr30_seed73/round_timings.csv",
+      "snapshot": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR4_fr30_seed73/round_timings.csv",
+      "git_blob_sha1": "5b87a5c056770610b06bfcb3fd927503965fde82",
+      "sha256": "064efc4d0c04716b3a74e352769a65b840a9989cdab2a03ac131d7101489d03f",
+      "bytes": 22180
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR4_fr30_seed73/summary.json",
+      "snapshot": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR4_fr30_seed73/summary.json",
+      "git_blob_sha1": "9a86df061976cf35ec1ce66b0f3f058d6e2cc120",
+      "sha256": "b6af89361989171ab09b9784bebe7df9b72e3adfba40941ed1d3a2201c93424e",
+      "bytes": 5989
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR4_fr40_seed73/client_metrics.csv",
+      "snapshot": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR4_fr40_seed73/client_metrics.csv",
+      "git_blob_sha1": "59484e8bc0faf167e6a9217cdc9168fa68992056",
+      "sha256": "ecf97e8a2af9b0f8d5382b60c7ed5ccb8b79a0ba67cb0a2d46e137a4604a1310",
+      "bytes": 632718
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR4_fr40_seed73/protocol.json",
+      "snapshot": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR4_fr40_seed73/protocol.json",
+      "git_blob_sha1": "9a2d4edc4cc0063d446d2ddf385acab71d472ef5",
+      "sha256": "1bd8bf986a80619a221f522e9e1e581d5ef410e95a6d429ee8dc7a6c0810ab30",
+      "bytes": 5026
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR4_fr40_seed73/round_timings.csv",
+      "snapshot": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR4_fr40_seed73/round_timings.csv",
+      "git_blob_sha1": "6a6f4e22926f84418344b82c2f960bd874e6afdc",
+      "sha256": "4a0c270d0878cf11c2f737da584317e5054b09a518b4164fed44bdb4ec1ab94f",
+      "bytes": 22126
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR4_fr40_seed73/summary.json",
+      "snapshot": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_iid_FR4_fr40_seed73/summary.json",
+      "git_blob_sha1": "d8baff7342a0dc371f33a3e631334c26362531d3",
+      "sha256": "3abb03b28f20edbc52afdf22ee3a9af5ee93f12fee7af62868c2289657a39b4d",
+      "bytes": 5991
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_noniid_FR1_fr30_seed73/client_metrics.csv",
+      "snapshot": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_noniid_FR1_fr30_seed73/client_metrics.csv",
+      "git_blob_sha1": "31781c348af3f3e9033736dff1ad02230cddcca8",
+      "sha256": "13b097368450ab290e49c5aa65f53a960570778685c46d5b0667d210e58ecc13",
+      "bytes": 696364
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_noniid_FR1_fr30_seed73/protocol.json",
+      "snapshot": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_noniid_FR1_fr30_seed73/protocol.json",
+      "git_blob_sha1": "4135f134e055ba83229bfa946c0594dfc348d9ad",
+      "sha256": "5b3846e1bd7cb7989de7e95bcfebf935854f783a2721514b24baf39ccfbd0952",
+      "bytes": 5029
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_noniid_FR1_fr30_seed73/round_timings.csv",
+      "snapshot": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_noniid_FR1_fr30_seed73/round_timings.csv",
+      "git_blob_sha1": "c545330e449da9f2dee515b4ba670cc8af90412e",
+      "sha256": "5f3ea6ffcf5935a40bd5329dff0d317e307fc44ce65b4fb79e8cbd71f6afa7c2",
+      "bytes": 22356
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_noniid_FR1_fr30_seed73/summary.json",
+      "snapshot": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_noniid_FR1_fr30_seed73/summary.json",
+      "git_blob_sha1": "9c7fe28345d12793dc82a06d8450b385ea9899b6",
+      "sha256": "3f13f77ef34cd09bc86e1a8ded23466d0bae34113f7080b45075eaeb2db5e42c",
+      "bytes": 5992
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_noniid_FR1_fr40_seed73/client_metrics.csv",
+      "snapshot": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_noniid_FR1_fr40_seed73/client_metrics.csv",
+      "git_blob_sha1": "058c02c9ba60edf48d886e51510be93210f5a49a",
+      "sha256": "bffd1f3ba25755660c9f1ac07922922ff5b1779dc01803d5e69fdccca31bf0d7",
+      "bytes": 661638
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_noniid_FR1_fr40_seed73/protocol.json",
+      "snapshot": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_noniid_FR1_fr40_seed73/protocol.json",
+      "git_blob_sha1": "24714680f92a5ee4cf2d63b2de0dd305d633e0d8",
+      "sha256": "a609d2457d7062faf13ef1af02ac23044163bde980e39dd52ae73f3651651ed3",
+      "bytes": 5029
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_noniid_FR1_fr40_seed73/round_timings.csv",
+      "snapshot": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_noniid_FR1_fr40_seed73/round_timings.csv",
+      "git_blob_sha1": "9fd8ac207e7b82a4042e13eeaea93df17602e8e8",
+      "sha256": "90a26a67b5fdaf017bc71884a3e00480b46fe5a872c1f16dcd034ccbaa889250",
+      "bytes": 22305
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_noniid_FR1_fr40_seed73/summary.json",
+      "snapshot": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_noniid_FR1_fr40_seed73/summary.json",
+      "git_blob_sha1": "8bb9433abaa6302a007cc76877e0ab097ad0236b",
+      "sha256": "49c5f89e870a5b0780dac64bb1318a0cf3b91b8d4de17226ec066ccc96250beb",
+      "bytes": 5993
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_noniid_FR2_fr30_seed73/client_metrics.csv",
+      "snapshot": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_noniid_FR2_fr30_seed73/client_metrics.csv",
+      "git_blob_sha1": "c3901c355f7315d11ec076a8a05c7156bf6dc580",
+      "sha256": "079410a89c55dc5e4f26c72e43803808afe2625792a9af3ec9f1c0e621e92add",
+      "bytes": 693931
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_noniid_FR2_fr30_seed73/protocol.json",
+      "snapshot": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_noniid_FR2_fr30_seed73/protocol.json",
+      "git_blob_sha1": "2cab58ebb7ae3e18d6c66b633173ed70530ce5fb",
+      "sha256": "dc225302a371af72bec352e776eaae0ba22c2be0b09da5d4115d6d18c5eb491e",
+      "bytes": 5029
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_noniid_FR2_fr30_seed73/round_timings.csv",
+      "snapshot": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_noniid_FR2_fr30_seed73/round_timings.csv",
+      "git_blob_sha1": "cffc5a787a91763912dfa7e12b9666f11bc5cc7c",
+      "sha256": "8fc42d79a412d92af042b6993b46d22bea1bf895a3dc6775ad34878062bfbc95",
+      "bytes": 22278
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_noniid_FR2_fr30_seed73/summary.json",
+      "snapshot": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_noniid_FR2_fr30_seed73/summary.json",
+      "git_blob_sha1": "27e0753d5276a1e8dff86115901035f4dc233ad9",
+      "sha256": "1abcdbc8049a5db673c346d091da6938558b1aa3faf6e5d38acc42b52d9b2317",
+      "bytes": 5994
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_noniid_FR2_fr40_seed73/client_metrics.csv",
+      "snapshot": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_noniid_FR2_fr40_seed73/client_metrics.csv",
+      "git_blob_sha1": "dbc3689081fa831d26c14688c6fc5df5dcdafcbf",
+      "sha256": "b50e18b44d79377384b7ea6a277aea8db9c091a29d4a5939b46bde3a063ce27c",
+      "bytes": 658670
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_noniid_FR2_fr40_seed73/protocol.json",
+      "snapshot": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_noniid_FR2_fr40_seed73/protocol.json",
+      "git_blob_sha1": "71ed40624c880b03de739f60c225c61765cb7607",
+      "sha256": "f85bd290488a7414a8f1b3621ecfd8b934e514412faaa7178fa9986f58947332",
+      "bytes": 5029
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_noniid_FR2_fr40_seed73/round_timings.csv",
+      "snapshot": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_noniid_FR2_fr40_seed73/round_timings.csv",
+      "git_blob_sha1": "3ce1d1dfffd7f54606b46a755c9c2f42e890c428",
+      "sha256": "27c9dd1c9a0d9b48c62de6109d32fa1d5ba14bd89803163cb4353aea7e0a07bb",
+      "bytes": 22280
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_noniid_FR2_fr40_seed73/summary.json",
+      "snapshot": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_noniid_FR2_fr40_seed73/summary.json",
+      "git_blob_sha1": "a865990a7f21015762396c6350d684e5721279a7",
+      "sha256": "6440e369c18d91a1f2e843a9bbe92bff859e3365dfa819c00290bfe7264545d4",
+      "bytes": 5994
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_noniid_FR3_fr30_seed73/client_metrics.csv",
+      "snapshot": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_noniid_FR3_fr30_seed73/client_metrics.csv",
+      "git_blob_sha1": "2e472f868cfb37c13f261015a23f11966cff3f04",
+      "sha256": "2537bf685c3de24a25db59ca4717ebeaab00255363035d941659d00fcacb68d5",
+      "bytes": 692711
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_noniid_FR3_fr30_seed73/protocol.json",
+      "snapshot": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_noniid_FR3_fr30_seed73/protocol.json",
+      "git_blob_sha1": "ade2dd114f7ea668b5ce8557fa2a8fc48c6d5f67",
+      "sha256": "366f2299c3b43a55a7755b1ef2709096bcef6f0c65b66234656c29cd09d891ae",
+      "bytes": 5029
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_noniid_FR3_fr30_seed73/round_timings.csv",
+      "snapshot": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_noniid_FR3_fr30_seed73/round_timings.csv",
+      "git_blob_sha1": "3d73365f0616af73e780a1e3673dc0a296475ec3",
+      "sha256": "304e2a5f650d157d9f6040ae24f0f7e998b42c84a0c0db94dc369f291c1ad482",
+      "bytes": 22276
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_noniid_FR3_fr30_seed73/summary.json",
+      "snapshot": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_noniid_FR3_fr30_seed73/summary.json",
+      "git_blob_sha1": "0262fbbecaec847d27aaae7b8cea8d961454ccee",
+      "sha256": "b98320da1e1ac148101db5c19f14450492b645599e4c483d93d747614bce55d3",
+      "bytes": 5994
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_noniid_FR3_fr40_seed73/client_metrics.csv",
+      "snapshot": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_noniid_FR3_fr40_seed73/client_metrics.csv",
+      "git_blob_sha1": "64738f94485e2556000fa97cfc0b4d04ae298487",
+      "sha256": "dc8281ad5bb1fca07e4f6c72e389cee262f341d32abd28d260d4d5cc6f695fc5",
+      "bytes": 657156
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_noniid_FR3_fr40_seed73/protocol.json",
+      "snapshot": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_noniid_FR3_fr40_seed73/protocol.json",
+      "git_blob_sha1": "3d53055609d94450161bc5b6bf7a167f6c5213df",
+      "sha256": "db9222776a45249bac58899e9f1bb77ec69fa1a41027522b7ee433f823c3234f",
+      "bytes": 5029
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_noniid_FR3_fr40_seed73/round_timings.csv",
+      "snapshot": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_noniid_FR3_fr40_seed73/round_timings.csv",
+      "git_blob_sha1": "294627e229b6f93fe9ad169340d00e90e6a21a8e",
+      "sha256": "651fded23b9193a0f08e465b9fd75d4ef5088256cc60fd560b9f0bbb996a1b74",
+      "bytes": 22149
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_noniid_FR3_fr40_seed73/summary.json",
+      "snapshot": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_noniid_FR3_fr40_seed73/summary.json",
+      "git_blob_sha1": "cfe1b1bc0e0dce29b4a87b8f625fba7dc1ee18ba",
+      "sha256": "98eeeb9072806257f8230c9959621c120e9c81be539c572e5fb8b709eba55149",
+      "bytes": 5993
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_noniid_FR4_fr30_seed73/client_metrics.csv",
+      "snapshot": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_noniid_FR4_fr30_seed73/client_metrics.csv",
+      "git_blob_sha1": "08f9f2be962823674339fe1fb2520d1a76436276",
+      "sha256": "0e913225f778ddcf3920e45fd53ef3366767fd8e052e2783fdc88112722dc862",
+      "bytes": 693649
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_noniid_FR4_fr30_seed73/protocol.json",
+      "snapshot": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_noniid_FR4_fr30_seed73/protocol.json",
+      "git_blob_sha1": "692f816946625c2c9b2447758cf31d344506af68",
+      "sha256": "601988e90aadac69850325dea5e3d83e4a055e5552aff9d88e9d82c4a5b115bb",
+      "bytes": 5029
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_noniid_FR4_fr30_seed73/round_timings.csv",
+      "snapshot": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_noniid_FR4_fr30_seed73/round_timings.csv",
+      "git_blob_sha1": "bc517e975a18d09ce2c42103d4a174cf7893a469",
+      "sha256": "9f059091128f1830c8caf98397c314c32c78aa989f6a431bc721f4966911ac0e",
+      "bytes": 22270
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_noniid_FR4_fr30_seed73/summary.json",
+      "snapshot": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_noniid_FR4_fr30_seed73/summary.json",
+      "git_blob_sha1": "ba7839b542a58657d53f94e76993de1f2c138a78",
+      "sha256": "fd772c31f0af3d6fe9accee9cadda2111ea0f09c1fc8c69f3843e71162c5a3ad",
+      "bytes": 5994
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_noniid_FR4_fr40_seed73/client_metrics.csv",
+      "snapshot": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_noniid_FR4_fr40_seed73/client_metrics.csv",
+      "git_blob_sha1": "4f69bfe28f2ed781586f8425e2b57a404d3ded55",
+      "sha256": "5a849c8bd5d8d450163bfc3adaf40a0fa65695ecf4d841fc0fcf40bce62da651",
+      "bytes": 658507
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_noniid_FR4_fr40_seed73/protocol.json",
+      "snapshot": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_noniid_FR4_fr40_seed73/protocol.json",
+      "git_blob_sha1": "59c13a28dd52909d665a58c4617eadeed3b68b24",
+      "sha256": "5573e8a750cb78fd45da89d5982832ec94931ce2065c5b8512e33c96987beb48",
+      "bytes": 5029
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_noniid_FR4_fr40_seed73/round_timings.csv",
+      "snapshot": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_noniid_FR4_fr40_seed73/round_timings.csv",
+      "git_blob_sha1": "eaf1d14d1fb27f9238c79d012d7b915e3f465c82",
+      "sha256": "a7aad9ba5da006de5bb89268bbf09b671a08d864cb70153c2428c7accb17f0da",
+      "bytes": 22137
+    },
+    {
+      "source": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_noniid_FR4_fr40_seed73/summary.json",
+      "snapshot": "results/fedavg_cifar10_baseline_seed73_fr30_fr40/fedavg_cifar10_noniid_FR4_fr40_seed73/summary.json",
+      "git_blob_sha1": "9b3a11d8efecf7089b2d8505641af37e6db01b8b",
+      "sha256": "416295e8eed2b1394e228123597abf0865f0fe0b1a9c9d04e3c610525b5a255d",
+      "bytes": 5994
+    }
+  ],
+  "selection": "Published records only; live completed records are discovered separately; no checkpoint/model import"
+}

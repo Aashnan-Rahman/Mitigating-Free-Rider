@@ -1,0 +1,52 @@
+\documentclass[tikz,border=4pt]{standalone}
+\input{figures/diagram_style.tex}
+\begin{document}
+\begin{tikzpicture}[font=\fontsize{9.5}{11}\selectfont,
+ note/.style={font=\fontsize{8.5}{10}\selectfont,align=center},
+ phase/.style={font=\fontsize{8}{9.5}\selectfont\bfseries,text=black!55},
+ band/.style={draw=black!45,line width=.5pt},
+ slotbox/.style={draw=challenge,line width=.55pt,fill=white,minimum width=.5cm,
+   minimum height=.38cm,inner sep=0pt,font=\fontsize{8.5}{10}\selectfont,text=challenge}]
+% Phase bands share the round axis below (1 unit = 6.67 rounds).
+\fill[black!6] (0,.6) rectangle (1.5,1.85);
+\fill[challenge!10] (1.5,.6) rectangle (4.5,1.85);
+\fill[black!3] (4.5,.6) rectangle (7.9,1.85);
+\draw[band] (0,.6) rectangle (7.9,1.85);
+\draw[band] (1.5,.6)--(1.5,1.85) (3,.6)--(3,1.85) (4.5,.6)--(4.5,1.85);
+\node[phase] at (.75,2.08) {I};
+\node[phase] at (2.25,2.08) {II};
+\node[phase] at (3.75,2.08) {III};
+\node[phase] at (6.2,2.08) {IV};
+\node[align=center] at (.75,1.22) {Warmup};
+\node[align=center] at (2.25,1.52) {Coverage};
+\node[slotbox] at (1.98,1.0) {A};
+\node[slotbox] at (2.52,1.0) {B};
+\node[align=center] at (3.75,1.52) {Confirm};
+\node[slotbox] at (3.48,1.0) {A};
+\node[slotbox] at (4.02,1.0) {B};
+\node[align=center] at (6.2,1.4) {Ordinary training};
+\node[note,text=black!60] at (6.2,.95) {sparse audits};
+% Round axis.
+\draw[flow] (0,.25)--(8.15,.25);
+\node[note,anchor=east] at (-.1,.25) {round};
+\foreach \xx/\rr in {0/0,1.5/10,3/20,4.5/30,6/40,7.5/50} {
+ \draw[black!55,line width=.55pt] (\xx,.18)--(\xx,.32);
+ \node[note,below=2pt] at (\xx,.18) {\rr};
+}
+\foreach \xx in {6,7.5}
+ \node[diamond,draw=challenge,fill=white,line width=.65pt,minimum size=6pt,inner sep=0pt] at (\xx,.25) {};
+\draw[removal,line width=.7pt,-{Latex[length=1.8mm]}] (4.5,-.62)--(4.5,-.2);
+\node[note,text=removal,anchor=north] at (4.5,-.62) {earliest removal};
+\node[diamond,draw=challenge,fill=white,line width=.65pt,minimum size=6pt,inner sep=0pt] at (6.25,-.78) {};
+\node[note,anchor=west] at (6.42,-.78) {single-slot audit};
+% Continuation rule after each paired cycle.
+\node[note,anchor=west,text=black!70] at (0,-1.45) {\textbf{After a paired cycle}};
+\node[note,anchor=west] at (0,-1.95) {review or probation active};
+\draw[feedback,draw=challenge] (3.55,-1.95)--(4.15,-1.95);
+\node[note,anchor=west,text=challenge] at (4.25,-1.95) {another paired cycle};
+\node[note,anchor=west] at (0,-2.42) {otherwise};
+\draw[flow] (3.55,-2.42)--(4.15,-2.42);
+\node[note,anchor=west] at (4.25,-2.42) {ordinary training, audit every};
+\node[note,anchor=west] at (4.25,-2.82) {10 quiet rounds};
+\end{tikzpicture}
+\end{document}

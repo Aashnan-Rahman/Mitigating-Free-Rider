@@ -1,0 +1,38 @@
+\begin{figure*}[tp]\centering
+\begin{tikzpicture}
+\begin{groupplot}[group style={group size=2 by 4,horizontal sep=0.8cm,vertical sep=1.25cm},
+width=0.455\textwidth,height=4.6cm,
+axis line style={black!35},grid=major,grid style={black!8},
+tick label style={font=\scriptsize},title style={font=\small},
+label style={font=\scriptsize},legend style={font=\scriptsize,draw=none},
+scaled ticks=false,unbounded coords=jump]
+\nextgroupplot[title={IID FR1},ylabel={$\operatorname{asinh}(\bar z_{\rm profile})$},legend to name=scatter-mnist-30-legend,legend columns=2]
+\addplot[only marks,mark=o,mark size=1.65pt,color=honestblue,opacity=0.7] table[x=x,y=y] {generated/visuals/scatter_mnist_30_iid_FR1_0.dat};
+\addlegendentry{Honest}
+\addplot[only marks,mark=triangle*,mark size=1.65pt,color=riderorange,opacity=0.7] table[x=x,y=y] {generated/visuals/scatter_mnist_30_iid_FR1_1.dat};
+\addlegendentry{Free rider}
+\nextgroupplot[title={IID FR2},]
+\addplot[only marks,mark=o,mark size=1.65pt,color=honestblue,opacity=0.7] table[x=x,y=y] {generated/visuals/scatter_mnist_30_iid_FR2_0.dat};
+\addplot[only marks,mark=triangle*,mark size=1.65pt,color=riderorange,opacity=0.7] table[x=x,y=y] {generated/visuals/scatter_mnist_30_iid_FR2_1.dat};
+\nextgroupplot[title={IID FR3},ylabel={$\operatorname{asinh}(\bar z_{\rm profile})$}]
+\addplot[only marks,mark=o,mark size=1.65pt,color=honestblue,opacity=0.7] table[x=x,y=y] {generated/visuals/scatter_mnist_30_iid_FR3_0.dat};
+\addplot[only marks,mark=triangle*,mark size=1.65pt,color=riderorange,opacity=0.7] table[x=x,y=y] {generated/visuals/scatter_mnist_30_iid_FR3_1.dat};
+\nextgroupplot[title={IID FR4},]
+\addplot[only marks,mark=o,mark size=1.65pt,color=honestblue,opacity=0.7] table[x=x,y=y] {generated/visuals/scatter_mnist_30_iid_FR4_0.dat};
+\addplot[only marks,mark=triangle*,mark size=1.65pt,color=riderorange,opacity=0.7] table[x=x,y=y] {generated/visuals/scatter_mnist_30_iid_FR4_1.dat};
+\nextgroupplot[title={Non-IID FR1},ylabel={$\operatorname{asinh}(\bar z_{\rm profile})$}]
+\addplot[only marks,mark=o,mark size=1.65pt,color=honestblue,opacity=0.7] table[x=x,y=y] {generated/visuals/scatter_mnist_30_noniid_FR1_0.dat};
+\addplot[only marks,mark=triangle*,mark size=1.65pt,color=riderorange,opacity=0.7] table[x=x,y=y] {generated/visuals/scatter_mnist_30_noniid_FR1_1.dat};
+\nextgroupplot[title={Non-IID FR2},]
+\addplot[only marks,mark=o,mark size=1.65pt,color=honestblue,opacity=0.7] table[x=x,y=y] {generated/visuals/scatter_mnist_30_noniid_FR2_0.dat};
+\addplot[only marks,mark=triangle*,mark size=1.65pt,color=riderorange,opacity=0.7] table[x=x,y=y] {generated/visuals/scatter_mnist_30_noniid_FR2_1.dat};
+\nextgroupplot[title={Non-IID FR3},xlabel={$\operatorname{asinh}(\bar z_{\rm norm})$},ylabel={$\operatorname{asinh}(\bar z_{\rm profile})$}]
+\addplot[only marks,mark=o,mark size=1.65pt,color=honestblue,opacity=0.7] table[x=x,y=y] {generated/visuals/scatter_mnist_30_noniid_FR3_0.dat};
+\addplot[only marks,mark=triangle*,mark size=1.65pt,color=riderorange,opacity=0.7] table[x=x,y=y] {generated/visuals/scatter_mnist_30_noniid_FR3_1.dat};
+\nextgroupplot[title={Non-IID FR4},xlabel={$\operatorname{asinh}(\bar z_{\rm norm})$}]
+\addplot[only marks,mark=o,mark size=1.65pt,color=honestblue,opacity=0.7] table[x=x,y=y] {generated/visuals/scatter_mnist_30_noniid_FR4_0.dat};
+\addplot[only marks,mark=triangle*,mark size=1.65pt,color=riderorange,opacity=0.7] table[x=x,y=y] {generated/visuals/scatter_mnist_30_noniid_FR4_1.dat};
+\end{groupplot}\end{tikzpicture}
+\par\ref{scatter-mnist-30-legend}
+\caption{MNIST: round-20 score geometry at 30\% free riders (all eight settings). One point is one client, averaging the A/B norm-z and profile-z scores separately. The monotone asinh display compresses extreme tails without clipping; zero remains zero, but distances are transformed. Panels autoscale independently. Labels color evaluation only, never references or decisions. 0 points have undefined coordinates and are omitted; coincident points overlap. No plotted line is a removal cutoff.}\label{fig:scatter-mnist-30}
+\end{figure*}

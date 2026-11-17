@@ -33,8 +33,8 @@ Otherwise a supposedly fair comparison changes the baseline's method.
 
 | Item | Already in v7.2 | v7.3 action | Remaining evidence |
 | --- | --- | --- | --- |
-| M1: traps may not matter | Scope limitations and pending passive tests acknowledged | Explicit FR4 additive cancellation and FR1 no-trap observation; remove any inference that pipeline recall proves trap benefit | Matched ordinary-model ablation is queued; standalone norm/profile/sendback and memory ablations are **not scheduled** |
-| M2: weak threat model | Non-adaptive scope; norm-matching feature diagnostic; non-IID 5/10/20% checks; small-cohort limitation | Exact integer support bound in abstract/method; both IID and non-IID completed results in one table; hash-sharing collusion risk explicit | Remaining low-share runs active/queued. Published attacks queued. Mixed strategies, full-model norm-matched FR4 and S2-WEF camouflage attacks are **not scheduled** |
+| M1: traps may not matter | Scope limitations and pending passive tests acknowledged | Explicit FR4 additive cancellation and FR1 no-trap observation. **17 Nov: matched passive ablation complete (16/16, seed 42, 40%) and reported as Section V-H / Table VI: passive removes all 640 free riders, 0 honest removals, same completion round in 15/16 cells (50 vs 60 in CIFAR-10 non-IID FR3), ≤0.7% honest withholding vs 11–18.5% with traps. Abstract, introduction and conclusion now state the tested gains are not attributable to traps.** Round-20 MAD norm screen reported as a simple passive baseline (5/16 cells full recall, 0 honest flags) | Passive runs at low prevalence or under adaptive attacks are **not scheduled**; standalone norm/profile/sendback and memory ablations are **not scheduled** |
+| M2: weak threat model | Non-adaptive scope; norm-matching feature diagnostic; non-IID 5/10/20% checks; small-cohort limitation | Exact integer support bound in abstract/method; hash-sharing collusion risk explicit. **17 Nov: low-share grid complete (48/48); 5% misses FR2–FR4 in all four settings, all 10%/20% cases removed, one honest removal (CIFAR-10 non-IID FR3 10%)** | Low-share complete. Published attacks queued. Mixed strategies, full-model norm-matched FR4 and S2-WEF camouflage attacks are **not scheduled** |
 | M3: no working baseline | Zero attacker flags and honest flags disclosed; no detection ranking claimed | Explicitly call the recipe unsuccessful as a comparative detection baseline, separate its chosen fitting budget from the published method; add related WEF literature | Validate/fix STD-DAGMM against author settings or replace; WEF/common-endpoint comparison **not scheduled** |
 | M4: cost denominator | Full stage table, withheld responses, residual-runtime caveats | Abstract uses 215/791 ms; define checking-plus-aggregation denominator (87.8/89.2%); explain diagnostic evaluation from instrumented code; disclose unresolved 8.95 s honest-training gap | Controlled timing rerun and N=100/500/1,000 scaling **not scheduled**. Existing data cannot prove the cause of the gap or actual wasted CPU/energy |
 | M5: honest harm | Four honest-only runs, three main-grid false removals, unresolved-label costs already disclosed | Run-level uncertainty example for honest-only null; reject treating 6,240 correlated client-cases as independent; retain unresolved only as a defined operational label, not a useful final classifier | Additional registered seeds last. Alpha=0.1/1.0 sweep and cluster-aware uncertainty for error rates **not scheduled** |
@@ -57,6 +57,11 @@ Otherwise a supposedly fair comparison changes the baseline's method.
 - The review's equation and figure numbers refer to v7.1 and may differ in v7.3.
 
 ## Experiment snapshot incorporated
+
+**17 November 2026 refresh** (`refresh_evidence.py`, cutoff in `generated/saudi/snapshot.json`):
+honest-only 4/4, low-share 48/48, passive 16/16 complete; oracle 3/12 running (not reported);
+published attacks 0/16, MNIST baseline seed 43 1/16 (deferred), held-out seeds 0/70 queued.
+The table below is the original 12 November snapshot.
 
 This is a dated inventory, not a live monitor. Machine-readable records and source
 hashes are in `generated/saudi/snapshot.json`; completed outputs are exported in

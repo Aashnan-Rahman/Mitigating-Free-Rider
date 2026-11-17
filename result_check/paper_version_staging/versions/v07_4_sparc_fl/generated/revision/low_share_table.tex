@@ -1,0 +1,14 @@
+\begin{table}[t]\centering\footnotesize\setlength{\tabcolsep}{3.5pt}
+\caption{Completed non-IID lower-prevalence checks.}\label{tab:low-share}
+\begin{tabular}{lrrrrr}\toprule
+Dataset & FR (\%) & FR1 & FR2 & FR3 & FR4 \\ \midrule
+MNIST & 5 & 5/5 & 0/5 & 0/5 & 0/5 \\
+MNIST & 10 & 10/10 & 10/10 & 10/10 & 10/10 \\
+MNIST & 20 & 20/20 & 20/20 & 20/20 & 20/20 \\
+\midrule
+CIFAR-10 & 5 & 5/5 & 0/5 & 0/5 & 0/5 \\
+CIFAR-10 & 10 & 10/10 & 10/10 & 10/10$^{\dagger}$ & 10/10 \\
+CIFAR-10 & 20 & 20/20 & 20/20 & 20/20 & 20/20 \\
+\bottomrule\end{tabular}
+\par\smallskip\parbox{\columnwidth}{\scriptsize Entries are free riders permanently removed / present by round 100. One frozen seed, 100 clients per run. $\dagger$ One honest removal; all other displayed runs have none.}
+\end{table}

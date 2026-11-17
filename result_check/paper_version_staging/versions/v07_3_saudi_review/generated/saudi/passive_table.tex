@@ -1,0 +1,29 @@
+\begin{table}[t]\centering\scriptsize\setlength{\tabcolsep}{3.6pt}
+\caption{Passive ordinary-model ablation versus the trap pipeline (seed 42, 40\% free riders).}\label{tab:passive}
+\begin{tabular}{llcccc@{\hspace{8pt}}c}\toprule
+& & \multicolumn{2}{c}{Completion round} & \multicolumn{2}{c}{Honest withheld (\%)} & MAD \\
+\cmidrule(lr){3-4}\cmidrule(lr){5-6}
+Setting & Attack & Passive & Trap & Passive & Trap & r20 \\ \midrule
+MNIST IID & FR1 & 30 & 30 & 0.0 & 11.0 & 40/40 \\
+ & FR2 & 30 & 30 & 0.0 & 11.0 & 0/40 \\
+ & FR3 & 30 & 30 & 0.0 & 11.0 & 0/40 \\
+ & FR4 & 30 & 30 & 0.0 & 11.0 & 0/40 \\
+\midrule
+MNIST non-IID & FR1 & 30 & 30 & 0.0 & 11.0 & 0/40 \\
+ & FR2 & 30 & 30 & 0.0 & 11.0 & 0/40 \\
+ & FR3 & 30 & 30 & 0.0 & 12.3 & 0/40 \\
+ & FR4 & 30 & 30 & 0.7 & 11.0 & 0/40 \\
+\midrule
+CIFAR-10 IID & FR1 & 30 & 30 & 0.0 & 11.0 & 40/40 \\
+ & FR2 & 30 & 30 & 0.0 & 11.0 & 40/40 \\
+ & FR3 & 30 & 30 & 0.0 & 11.0 & 40/40 \\
+ & FR4 & 30 & 30 & 0.0 & 11.0 & 40/40 \\
+\midrule
+CIFAR-10 non-IID & FR1 & 30 & 30 & 0.0 & 11.0 & 0/40 \\
+ & FR2 & 30 & 30 & 0.0 & 11.0 & 0/40 \\
+ & FR3 & 50 & 60 & 0.0 & 18.5 & 0/40 \\
+ & FR4 & 30 & 30 & 0.3 & 11.0 & 0/40 \\
+\bottomrule
+\end{tabular}
+\par\smallskip\parbox{\columnwidth}{\scriptsize Both variants remove all 40 free riders and no honest client in every row. Passive: same schedule, selected response slots and certificate rule, but ordinary models and no trap withholding (review engine with the audit-clock fix). Trap: matched seed-42 run of the main grid. Withheld: active honest client-rounds not aggregated. MAD r20: free riders flagged by a one-round lower-tail MAD norm screen ($\alpha=0.01$) on ordinary round-20 responses; it flags no honest client in any row.}
+\end{table}

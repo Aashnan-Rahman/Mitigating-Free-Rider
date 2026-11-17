@@ -1,0 +1,19 @@
+\begin{table*}[t]
+\centering\footnotesize\setlength{\tabcolsep}{4pt}
+\caption{Execution time and process memory.}\label{tab:cost}
+\begin{tabular}{llrrrr}
+\toprule
+Dataset & Partition & FR (\%) & \shortstack{Round time (s)\\mean [range]} & \shortstack{Peak process RSS (GiB)\\mean [range]} & \shortstack{Execution duration\\(min/run)} \\
+\midrule
+\multirow{4}{*}{MNIST} & \multirow{2}{*}{IID} & 30 & 42.38 [39.78--48.57] & 0.54 [0.29--0.78] & 75.02 \\
+ &  & 40 & 37.05 [35.35--42.68] & 0.60 [0.30--0.88] & 66.71 \\
+ & \multirow{2}{*}{Non-IID} & 30 & 41.62 [40.57--43.43] & 0.57 [0.30--0.78] & 73.79 \\
+ &  & 40 & 36.08 [34.34--38.67] & 0.62 [0.30--0.88] & 65.27 \\
+\midrule
+\multirow{4}{*}{CIFAR-10} & \multirow{2}{*}{IID} & 30 & 99.35 [88.18--119.07] & 1.24 [0.70--1.76] & 175.07 \\
+ &  & 40 & 85.35 [73.52--104.21] & 1.38 [0.71--2.06] & 154.65 \\
+ & \multirow{2}{*}{Non-IID} & 30 & 92.30 [82.85--108.38] & 1.31 [0.73--1.79] & 161.97 \\
+ &  & 40 & 77.03 [69.10--84.85] & 1.49 [0.75--2.14] & 139.40 \\
+\bottomrule
+\end{tabular}
+\end{table*}

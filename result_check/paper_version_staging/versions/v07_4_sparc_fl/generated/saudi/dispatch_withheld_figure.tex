@@ -1,0 +1,18 @@
+\begin{figure}[t]\centering\begin{tikzpicture}
+\begin{axis}[ybar,width=\columnwidth,height=5cm,bar width=12pt,enlarge x limits=0.16,ymin=0,ymax=15,
+ ylabel={Honest client-rounds withheld (\%)},ylabel style={font=\footnotesize},
+ symbolic x coords={MI,MN,CI,CN},xtick=data,
+ xticklabels={{MNIST\\IID},{MNIST\\non-IID},{CIFAR-10\\IID},{CIFAR-10\\non-IID}},
+ xticklabel style={align=center,font=\footnotesize},yticklabel style={font=\footnotesize},
+ ymajorgrids,grid style={black!10},axis line style={black!40},tick style={black!40},
+ nodes near coords,nodes near coords style={font=\scriptsize,text=black!80,/pgf/number format/.cd,fixed,precision=1,zerofill},
+ legend style={at={(0.5,1.03)},anchor=south,font=\footnotesize,draw=none,/tikz/every even column/.append style={column sep=10pt}},
+ legend columns=2,legend cell align=left]
+\addplot[draw=ordinaryblue,fill=ordinaryblue,line width=0pt] coordinates {(MI,0.000) (MN,0.175) (CI,0.000) (CN,0.087)};
+\addlegendentry{Ordinary dispatch}
+\addplot[draw=challengeaqua,fill=challengeaqua,line width=0pt] coordinates {(MI,11.000) (MN,11.320) (CI,11.000) (CN,12.870)};
+\addlegendentry{Challenge dispatch}
+\end{axis}\end{tikzpicture}
+\caption{Honest responses withheld under ordinary and challenge dispatch (seed 42, 40\% free riders). Bars show the mean over FR1--FR4; Table~\ref{tab:passive} gives each attack. Both modes remove all 640 free riders and no honest client.}
+\label{fig:dispatch-withheld}
+\end{figure}

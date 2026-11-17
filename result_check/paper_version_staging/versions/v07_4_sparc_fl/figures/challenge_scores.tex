@@ -1,0 +1,23 @@
+\documentclass[tikz,border=4pt]{standalone}
+\input{figures/diagram_style.tex}
+\begin{document}
+\begin{tikzpicture}
+\begin{axis}[width=7.4cm,height=5.5cm,
+ xmin=-1.2,xmax=2.6,ymin=-1.8,ymax=3.2,
+ xlabel={$\operatorname{asinh}(\bar z_{\rm norm})$},
+ ylabel={$\operatorname{asinh}(\bar z_{\rm profile})$},
+ label style={font=\fontsize{10.5}{12}\selectfont},
+ tick label style={font=\fontsize{10.5}{12}\selectfont},
+ axis line style={black!60},tick style={black!60},
+ legend style={draw=none,font=\fontsize{10.5}{12}\selectfont,
+ at={(.5,-.30)},anchor=north,legend columns=2,/tikz/column sep=6pt},
+ legend cell align=left,scaled ticks=false]
+\addplot[only marks,mark=o,mark size=2pt,draw=honestblue]
+ table[x=x,y=y] {generated/visuals/scatter_cifar10_40_noniid_FR3_0.dat};
+\addlegendentry{Honest}
+\addplot[only marks,mark=triangle*,mark size=2.4pt,draw=riderorange,fill=riderorange]
+ table[x=x,y=y] {generated/visuals/scatter_cifar10_40_noniid_FR3_1.dat};
+\addlegendentry{Free rider}
+\end{axis}
+\end{tikzpicture}
+\end{document}

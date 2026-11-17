@@ -19,13 +19,16 @@ The standard IEEEtran journal template and TeX packages are required.
 Run `python validate_revision.py` with the repository's Python environment after
 building. It checks the PDFs, references, external link targets, completed-run
 inventory and frozen experiment source hashes. The resulting `VALIDATION.json`
-records 19 pages in each main-paper build and four pages in the supplement.
+records 19 pages in each main-paper build (validated 17 Nov 2026) and four pages in the supplement.
 
 `prepare_revision.py` records the one-time editorial construction from v7.2.
 It overwrites the derived manuscript when run, so do not rerun it after manual
 editing without reconciling the changes. Normal builds do not refresh evidence
 or overwrite writing. `generated/saudi/snapshot.json` records the evidence cutoff.
 
-The review still identifies experimental gaps. This revision does not establish
-that traps beat passive statistics or that BaitFL beats a successful baseline.
+The 17 November refresh (`refresh_evidence.py`, no prose changes) adds the complete
+low-share grid (48/48) and the matched passive ablation (16/16). The passive ablation
+shows **no detection gain from traps** at seed 42 / 40%; the paper now says so.
+The review still identifies experimental gaps: no successful comparative baseline,
+no adaptive attacks, and no passive runs at low prevalence.
 No live experiment code or registered plan was modified.

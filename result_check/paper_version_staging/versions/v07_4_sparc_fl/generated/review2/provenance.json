@@ -1,0 +1,1941 @@
+{
+  "proof": "For empty raw findings both guards restart the clock. For each nonempty audit the raw count exceeds the reconstructed active cooldown count, so both guards open review and unset the clock.",
+  "inputs": [
+    {
+      "path": "results/v15_4_mnist_seed42_fr30/v15_4_mnist_noniid_FR3_seed42/run_config.json",
+      "sha256": "f2ce80660272fef7e1608b27a5e8b0f35230b6219b8c6767a697d68f94fb9003"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr30/v15_4_mnist_noniid_FR3_seed42/global_metrics.csv",
+      "sha256": "b44a09f0dc6206c97058b9887f83bbae02bf5f7bea92fdafcfc3de10b36f24d8"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr30/v15_4_mnist_noniid_FR3_seed42/cycle_decisions.csv",
+      "sha256": "f62b0e0578f24712a5ae36de3c912c8bfddf91a27286b38a9862b40c6f0e764c"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr30/v15_4_mnist_noniid_FR3_seed42/candidate_events.csv",
+      "sha256": "d8cca2379c9094ac129980c98af789c9a6c2b5afa83dd8f6b332d3993f81207c"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr30/v15_4_mnist_noniid_FR3_seed42/cycle_policy.csv",
+      "sha256": "a295eea03179951c4436bb23b2d8052f931dd4fb9a994e53ad2865b1bf2da083"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr30/v15_4_mnist_noniid_FR4_seed42/run_config.json",
+      "sha256": "fd27a2445d990ee6e8b77fdab1ab0d80ed7100120485cea21af3a178aabb9c79"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr30/v15_4_mnist_noniid_FR4_seed42/global_metrics.csv",
+      "sha256": "c3d9a86eb151d077d8e2c4d32ff482644025a06df7abb44394cd7e2bf322de06"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr30/v15_4_mnist_noniid_FR4_seed42/cycle_decisions.csv",
+      "sha256": "a997c9eea9f40cdd731922792702a1358b46399581d9b305850b184c5c60d3fe"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr30/v15_4_mnist_noniid_FR4_seed42/candidate_events.csv",
+      "sha256": "d8cca2379c9094ac129980c98af789c9a6c2b5afa83dd8f6b332d3993f81207c"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr30/v15_4_mnist_noniid_FR4_seed42/cycle_policy.csv",
+      "sha256": "4b8a85f0f29238bb67f7d3801653a78f29ef3d75f7ef9460c26b4113bf27f90d"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr30/v15_4_mnist_noniid_FR2_seed42/run_config.json",
+      "sha256": "c29cef9da78c67cee52772bfc0edfdeec0ab2ba232b6386a33fb42559df565a2"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr30/v15_4_mnist_noniid_FR2_seed42/global_metrics.csv",
+      "sha256": "6c5e8a6e3b6931e65cf9160b06afb76babb81188e1c9bfb1ee2f7b0b41c9ab17"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr30/v15_4_mnist_noniid_FR2_seed42/cycle_decisions.csv",
+      "sha256": "045c3af283a5fac0784ff555cd88df0b117bafcb8946a45c1ffd6bc0de5bb8cb"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr30/v15_4_mnist_noniid_FR2_seed42/candidate_events.csv",
+      "sha256": "d8cca2379c9094ac129980c98af789c9a6c2b5afa83dd8f6b332d3993f81207c"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr30/v15_4_mnist_noniid_FR2_seed42/cycle_policy.csv",
+      "sha256": "15b225cfe86f93aacbe855a2b9571d092c1c6907061c18129198657cee6edd98"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr30/v15_4_mnist_noniid_FR1_seed42/run_config.json",
+      "sha256": "14a6c834a9718e6aa18aeedf941da03bd170dace3051c1471da50cedb1464894"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr30/v15_4_mnist_noniid_FR1_seed42/global_metrics.csv",
+      "sha256": "9dbadbedc49a817a1dd1ca71628a378a945050f22b612f89e94f258d3b50cfc2"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr30/v15_4_mnist_noniid_FR1_seed42/cycle_decisions.csv",
+      "sha256": "0126f34f1aeafda74dedb72b110ec6c091119064fdbfe079462d4a6ecf4b5e9e"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr30/v15_4_mnist_noniid_FR1_seed42/candidate_events.csv",
+      "sha256": "d8cca2379c9094ac129980c98af789c9a6c2b5afa83dd8f6b332d3993f81207c"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr30/v15_4_mnist_noniid_FR1_seed42/cycle_policy.csv",
+      "sha256": "b2fef6bb683b50dba67c891c568a5ddaa8c13deb04dbdf1c11fc0026a42a8a5d"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr30/v15_4_mnist_iid_FR4_seed42/run_config.json",
+      "sha256": "a26f94111f0f70e6bfefbc68e9184a4d1d53012b99ae08bb44d387ef6a3d6a7d"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr30/v15_4_mnist_iid_FR4_seed42/global_metrics.csv",
+      "sha256": "1671641b6a7e30e6718fd3d3213263fe5dfacb9cf3a63fa2be93e75b1b2ed83a"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr30/v15_4_mnist_iid_FR4_seed42/cycle_decisions.csv",
+      "sha256": "be35103205d1bb88cd6f200706b0ed78cc231493a4417136dfd524fdf8e25121"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr30/v15_4_mnist_iid_FR4_seed42/candidate_events.csv",
+      "sha256": "d8cca2379c9094ac129980c98af789c9a6c2b5afa83dd8f6b332d3993f81207c"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr30/v15_4_mnist_iid_FR4_seed42/cycle_policy.csv",
+      "sha256": "85b10671aa9cc521cf1ec5574f1d05a4839311a13cc55e30ea464b82ab93eb99"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr30/v15_4_mnist_iid_FR3_seed42/run_config.json",
+      "sha256": "1525535af849a4b55a1378ba8ba6430344a600ad27239af7f369b2e8d9e8c3ca"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr30/v15_4_mnist_iid_FR3_seed42/global_metrics.csv",
+      "sha256": "1a38b59a5f19deceff8cfb96fd942897814de248a6a07ebc548941afa6dda7cc"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr30/v15_4_mnist_iid_FR3_seed42/cycle_decisions.csv",
+      "sha256": "adf23ee2e8a83710c6989a9e44947833e34a937c13508112464ac2fe7324bbb7"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr30/v15_4_mnist_iid_FR3_seed42/candidate_events.csv",
+      "sha256": "d8cca2379c9094ac129980c98af789c9a6c2b5afa83dd8f6b332d3993f81207c"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr30/v15_4_mnist_iid_FR3_seed42/cycle_policy.csv",
+      "sha256": "7d20896aa1b9b4d07eb29080a675a0e008d7c846d80979a045f6c8bc09971d1d"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr30/v15_4_mnist_iid_FR2_seed42/run_config.json",
+      "sha256": "339e3f2d9493d71f7e9e7299965d0b341b936504b36858d76ce2d49de9a94ea4"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr30/v15_4_mnist_iid_FR2_seed42/global_metrics.csv",
+      "sha256": "214e39b8e22f27f05d3864303187826a333efafd9005ad359149f4a4db9bc060"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr30/v15_4_mnist_iid_FR2_seed42/cycle_decisions.csv",
+      "sha256": "82d2380453b02b0fe62c91ebef07174643c6c6d79495715eee7aaa28613976e1"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr30/v15_4_mnist_iid_FR2_seed42/candidate_events.csv",
+      "sha256": "d8cca2379c9094ac129980c98af789c9a6c2b5afa83dd8f6b332d3993f81207c"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr30/v15_4_mnist_iid_FR2_seed42/cycle_policy.csv",
+      "sha256": "446b3bde584245559948f63fc0ab1f49adff35b415348f1eae57a9ab81c2add9"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr30/v15_4_mnist_iid_FR1_seed42/run_config.json",
+      "sha256": "446552076aedd25030278617d42aae5e5f4f11dda036d294fcc31078228f385f"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr30/v15_4_mnist_iid_FR1_seed42/global_metrics.csv",
+      "sha256": "5715f361139c312d410ab3006efc5100c1cd58f570cf17414834ceed521da96e"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr30/v15_4_mnist_iid_FR1_seed42/cycle_decisions.csv",
+      "sha256": "f6c341fb3e78be0456c3337c485d2c7d3e54bb9564eaf8855e01cf4b126daad5"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr30/v15_4_mnist_iid_FR1_seed42/candidate_events.csv",
+      "sha256": "d8cca2379c9094ac129980c98af789c9a6c2b5afa83dd8f6b332d3993f81207c"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr30/v15_4_mnist_iid_FR1_seed42/cycle_policy.csv",
+      "sha256": "bcc0e69453c375385fde84fb3475a82eaf80bf48809a307c8bb286631ecc86c6"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr40/v15_4_mnist_noniid_FR3_seed42/run_config.json",
+      "sha256": "e0ee24ea691d068f01b7daf09c91bf005ed0f750a5c9b208cf12e1f26108ab6c"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr40/v15_4_mnist_noniid_FR3_seed42/global_metrics.csv",
+      "sha256": "5ee5696a94892a6c9e447ca26312dd3d4f17db87721c1477416bad55fc6e1ea7"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr40/v15_4_mnist_noniid_FR3_seed42/cycle_decisions.csv",
+      "sha256": "697253172a5eb487dd2e7d05a3386609ec6987119cecb92b86b674776e697990"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr40/v15_4_mnist_noniid_FR3_seed42/candidate_events.csv",
+      "sha256": "e67c8cb4420d0335b15cd0bc5ec446401729692fe94bcb48a5c8ebe1e3dc3eb8"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr40/v15_4_mnist_noniid_FR3_seed42/cycle_policy.csv",
+      "sha256": "e8bd7a5e531417e32cb4dc1597f684c70cb585d56d1d365790552dfc4a9a6527"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr40/v15_4_mnist_noniid_FR4_seed42/run_config.json",
+      "sha256": "aaea948734f4e33a19a935d10d9c4c4051fb507289b7c5cc1ad8a0e07c05b846"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr40/v15_4_mnist_noniid_FR4_seed42/global_metrics.csv",
+      "sha256": "ed5e67af5a1e28f3dcd67ab58230e7e476755731e7521dd36ae568ca70601456"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr40/v15_4_mnist_noniid_FR4_seed42/cycle_decisions.csv",
+      "sha256": "669a0297fe52b50e2f1e82e5e8b547a1c79763abea57c3a178a28343acc4dcfb"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr40/v15_4_mnist_noniid_FR4_seed42/candidate_events.csv",
+      "sha256": "d8cca2379c9094ac129980c98af789c9a6c2b5afa83dd8f6b332d3993f81207c"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr40/v15_4_mnist_noniid_FR4_seed42/cycle_policy.csv",
+      "sha256": "d755dfdd7218f1f3c3a6170150bdbaeab1ae3cab33181933ef777d14576dd56b"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr40/v15_4_mnist_noniid_FR2_seed42/run_config.json",
+      "sha256": "85ad7f80a9feedfe4f1149c8ee565e6bc480ae49ca59854845111c2ac8cd58e8"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr40/v15_4_mnist_noniid_FR2_seed42/global_metrics.csv",
+      "sha256": "20c3b01abdd0805c267cfabfb0e74e5845de8e2b0aa2f78e638b1908cb46cb1b"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr40/v15_4_mnist_noniid_FR2_seed42/cycle_decisions.csv",
+      "sha256": "b983159af6618a2cc6549e3410a3f3881a7b936d8b2b7d0aa8e9de04db4cc967"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr40/v15_4_mnist_noniid_FR2_seed42/candidate_events.csv",
+      "sha256": "d8cca2379c9094ac129980c98af789c9a6c2b5afa83dd8f6b332d3993f81207c"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr40/v15_4_mnist_noniid_FR2_seed42/cycle_policy.csv",
+      "sha256": "07920495bedd0bfce54319c97c28f92205b5c543e120bace6a6a65cbd8d606c1"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr40/v15_4_mnist_noniid_FR1_seed42/run_config.json",
+      "sha256": "05f884ed9ed29514e57220b438aceebcafaa38f8ad1be3ebfb2884da0b1a7232"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr40/v15_4_mnist_noniid_FR1_seed42/global_metrics.csv",
+      "sha256": "4acd9e3e8f3a2749df4ff2f7592f76e8e1150417ef04fb0431fb94312de5e1c2"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr40/v15_4_mnist_noniid_FR1_seed42/cycle_decisions.csv",
+      "sha256": "3f21b48d4a8a9a0057750fc4fd3aa826ede21f3211bd6368877a809a1518180c"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr40/v15_4_mnist_noniid_FR1_seed42/candidate_events.csv",
+      "sha256": "d8cca2379c9094ac129980c98af789c9a6c2b5afa83dd8f6b332d3993f81207c"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr40/v15_4_mnist_noniid_FR1_seed42/cycle_policy.csv",
+      "sha256": "7c70e436fce48378514b30b59e60ce5cec80f9e5ae2f751480ee8fc618ae43ae"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr40/v15_4_mnist_iid_FR4_seed42/run_config.json",
+      "sha256": "bde5d1f0bc451f0cc39e40136528567887a9df730cfd5ae38c31841fa5a26cdb"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr40/v15_4_mnist_iid_FR4_seed42/global_metrics.csv",
+      "sha256": "040d7dce8a683f1d18fc33fd0a2750e617196b9e55efb46be06007468ea3fb5e"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr40/v15_4_mnist_iid_FR4_seed42/cycle_decisions.csv",
+      "sha256": "e0b72e832ca2de2e7b9e913ca33fa6953b876232237e29906c9afe2132d59c71"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr40/v15_4_mnist_iid_FR4_seed42/candidate_events.csv",
+      "sha256": "d8cca2379c9094ac129980c98af789c9a6c2b5afa83dd8f6b332d3993f81207c"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr40/v15_4_mnist_iid_FR4_seed42/cycle_policy.csv",
+      "sha256": "7bf385b42d5dd2443990eede8713c6cee87484228b9717bb590032f771444215"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr40/v15_4_mnist_iid_FR3_seed42/run_config.json",
+      "sha256": "d38930ed0354dc9a7739f45ac178980bc8670975732cb33099aa0ddead3ed5f9"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr40/v15_4_mnist_iid_FR3_seed42/global_metrics.csv",
+      "sha256": "fa7c6db6874598460a63d2456ac0cda25f13d58048c55b014b4b9c6d6f5ba3d7"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr40/v15_4_mnist_iid_FR3_seed42/cycle_decisions.csv",
+      "sha256": "e9074a0eb8c08966474ad74dcca8e0ba6984e38dcb71450b55eb94a2aa77accd"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr40/v15_4_mnist_iid_FR3_seed42/candidate_events.csv",
+      "sha256": "d8cca2379c9094ac129980c98af789c9a6c2b5afa83dd8f6b332d3993f81207c"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr40/v15_4_mnist_iid_FR3_seed42/cycle_policy.csv",
+      "sha256": "8cce4550ca29d991732f968bc216d15b2f038ab5aec56670c0677fd863d164ca"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr40/v15_4_mnist_iid_FR2_seed42/run_config.json",
+      "sha256": "1e240df5848a5449118713845e14a1b536fddee664d0514be93dd2584167ae6d"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr40/v15_4_mnist_iid_FR2_seed42/global_metrics.csv",
+      "sha256": "57077e21b2bc2cb3a878efb40e7c3e148ba92fe62988bab2681a1067f4c2924a"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr40/v15_4_mnist_iid_FR2_seed42/cycle_decisions.csv",
+      "sha256": "d63a2f99e0f00af0de4357d18be00302fe8c37aba30522b8f31be3ac0dad6234"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr40/v15_4_mnist_iid_FR2_seed42/candidate_events.csv",
+      "sha256": "d8cca2379c9094ac129980c98af789c9a6c2b5afa83dd8f6b332d3993f81207c"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr40/v15_4_mnist_iid_FR2_seed42/cycle_policy.csv",
+      "sha256": "25a3fc499eaf552e3afecc6ecdf7742dbab4c0fead9343c689f944ba0740f224"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr40/v15_4_mnist_iid_FR1_seed42/run_config.json",
+      "sha256": "2bc86e3c9c53336bafc5a7b8cd845a7441c51699c84e307a09aad0353c29954e"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr40/v15_4_mnist_iid_FR1_seed42/global_metrics.csv",
+      "sha256": "67044fc04fff07934bfaf944917bc82942427cb6cc7aedeeec93401bb9d908c1"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr40/v15_4_mnist_iid_FR1_seed42/cycle_decisions.csv",
+      "sha256": "8d8a98f08585865869dde35d93671bbbadf492d3f60d70419d76551939f3c808"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr40/v15_4_mnist_iid_FR1_seed42/candidate_events.csv",
+      "sha256": "d8cca2379c9094ac129980c98af789c9a6c2b5afa83dd8f6b332d3993f81207c"
+    },
+    {
+      "path": "results/v15_4_mnist_seed42_fr40/v15_4_mnist_iid_FR1_seed42/cycle_policy.csv",
+      "sha256": "5ce25c52660963aa52e96c95d49c7ce23dc2aa2b47dbc4c2ab2b9d2989d73b94"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_noniid_FR3_fr40_seed43/run_config.json",
+      "sha256": "8e0419a0c46ae4d83bf92cfd6e661d16e3c10286054f5b784ea349d21ff7a325"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_noniid_FR3_fr40_seed43/global_metrics.csv",
+      "sha256": "e9168e9b0731a3693220bf04295e533fe135a3f2c9e311f5fe0bb5911afc6dec"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_noniid_FR3_fr40_seed43/cycle_decisions.csv",
+      "sha256": "db42c77331e0478da57b121f82ce0e0de6b8544fe9002a74b8d3f9a29adf3c68"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_noniid_FR3_fr40_seed43/candidate_events.csv",
+      "sha256": "ed6331db27dc3c0efa1b9b11192af175167445c0c7d8f29f07277c40b3c3d79a"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_noniid_FR3_fr40_seed43/cycle_policy.csv",
+      "sha256": "9e6fc17bbae50202b7cf58b017c660b7db4a425ba13af47a3a04520e743669e5"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_noniid_FR4_fr40_seed43/run_config.json",
+      "sha256": "f8313945591e744236990997c03ccc4b6ca583815007d4c4339a11124908edc0"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_noniid_FR4_fr40_seed43/global_metrics.csv",
+      "sha256": "332c0dcf203632e2d814b3937003437658c1f6685cb1ca703130aac8e8683523"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_noniid_FR4_fr40_seed43/cycle_decisions.csv",
+      "sha256": "c841305e58fbf1bbfebc2d3722b32bc3926b91948aa3478415c5fc2b566986ec"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_noniid_FR4_fr40_seed43/candidate_events.csv",
+      "sha256": "10d4800c72dbdc5a7a62e9d796ffca4cf1cd99963b420919b3f4ef3947da1eb3"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_noniid_FR4_fr40_seed43/cycle_policy.csv",
+      "sha256": "5f06e019b76fa3576a21cf9e97c2bcef7624207965c351c0523980365321f0d0"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_noniid_FR2_fr40_seed43/run_config.json",
+      "sha256": "005a58bd578b6c4d5a6911fcc69cd2b6a2c53251942956195a4638a1b9a29098"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_noniid_FR2_fr40_seed43/global_metrics.csv",
+      "sha256": "fc5ace10ca50bac8924b1417d966f20fc84bfd031cfd4cbdacd53e684ce6a368"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_noniid_FR2_fr40_seed43/cycle_decisions.csv",
+      "sha256": "5be429c89f52ed9d8d8868213b08480dbfc8e83e25e9b239c484afc6c4dad7d3"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_noniid_FR2_fr40_seed43/candidate_events.csv",
+      "sha256": "d8cca2379c9094ac129980c98af789c9a6c2b5afa83dd8f6b332d3993f81207c"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_noniid_FR2_fr40_seed43/cycle_policy.csv",
+      "sha256": "6920de8c69c498a87ba93987454071c57ae0699086cfab88bba6962f6e11a548"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_noniid_FR1_fr40_seed43/run_config.json",
+      "sha256": "c79de6e8eb469d21206563f5e8c00825da91807266ce52384c50b52ad6d56504"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_noniid_FR1_fr40_seed43/global_metrics.csv",
+      "sha256": "e8f414ff08f258dd004c7407fb98bd79baea64f170e6cf83bf645d79e36cfdc3"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_noniid_FR1_fr40_seed43/cycle_decisions.csv",
+      "sha256": "bc111344a029730275753d511c2e51bc0cc6064ecf3e84eca1e88277f7718f91"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_noniid_FR1_fr40_seed43/candidate_events.csv",
+      "sha256": "c00946cdd95d0d8f9944470f2f5b06991e6c89c8bec8014372a0a98b07ecab85"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_noniid_FR1_fr40_seed43/cycle_policy.csv",
+      "sha256": "10c63222484fcf421eba9c22e1e14c9f9f578a109d87e705cb3cdc72b291b333"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_noniid_FR3_fr30_seed43/run_config.json",
+      "sha256": "c923c94bcabc3d8eec29ce0fc981a1933ba51dfd49a739eab8775602476c1ea8"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_noniid_FR3_fr30_seed43/global_metrics.csv",
+      "sha256": "e0175c2dfe595eefcd2baa8403b8ab57f1862b6db1bbe909a1a22f5e395d46a3"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_noniid_FR3_fr30_seed43/cycle_decisions.csv",
+      "sha256": "91871fe13a44be7950755f177a0fd6190f1aa17c344e3a0193ee90a8cfc43928"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_noniid_FR3_fr30_seed43/candidate_events.csv",
+      "sha256": "689802f98399f117ad45550f26983a5aa9a505ca126d8208452f796733f344f3"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_noniid_FR3_fr30_seed43/cycle_policy.csv",
+      "sha256": "01c12124868aaf842bd22867d87bad9d0dc3872f57dddc29c0728848e3a40caf"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_noniid_FR4_fr30_seed43/run_config.json",
+      "sha256": "d5123aa35d175095faf0b5430cccccb5d656bc86d79db681201411dc2be8e826"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_noniid_FR4_fr30_seed43/global_metrics.csv",
+      "sha256": "9a39644f78facac0083b74b408044ebf692ad2fc54e8edc0332a8247697bb31d"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_noniid_FR4_fr30_seed43/cycle_decisions.csv",
+      "sha256": "67dcad46b6aced7d6326af07e9801246336cad2bcf18726ea669cfb5df522b05"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_noniid_FR4_fr30_seed43/candidate_events.csv",
+      "sha256": "8dbf21b9b374cbf4033c11b20b5376ad4e022066c0700459e789124c88737980"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_noniid_FR4_fr30_seed43/cycle_policy.csv",
+      "sha256": "8953c1a87d6212d21495b6975ce0cac32f876f3255a06d4c8ffc1fb2be4263a3"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_noniid_FR2_fr30_seed43/run_config.json",
+      "sha256": "0cfbf5e6e92e53dd7077308f98887fbdd096f7071caaf39ef6203a446022e862"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_noniid_FR2_fr30_seed43/global_metrics.csv",
+      "sha256": "c1dd217d70416e299b14430673db72c0cbeee0f81a022a964e7a89813bdf5a05"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_noniid_FR2_fr30_seed43/cycle_decisions.csv",
+      "sha256": "bc042ffeec8bf7f8087724ea3692497343fbb610aede0576329659599157b221"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_noniid_FR2_fr30_seed43/candidate_events.csv",
+      "sha256": "d8cca2379c9094ac129980c98af789c9a6c2b5afa83dd8f6b332d3993f81207c"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_noniid_FR2_fr30_seed43/cycle_policy.csv",
+      "sha256": "67eb8c43cd2b55ece7db3a02598a2054f445c30df40dc16b79d324c3dcab0e0a"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_noniid_FR1_fr30_seed43/run_config.json",
+      "sha256": "5eac3577534705939076b7199619296132ffbe9fee781df440b688dfa5795bdb"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_noniid_FR1_fr30_seed43/global_metrics.csv",
+      "sha256": "e224feac6e1fbc992fa531ee3d874753c0bf73a4309a994a341daf18cab4b1f3"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_noniid_FR1_fr30_seed43/cycle_decisions.csv",
+      "sha256": "e21e4f432d424af30914c50ac0cf38442163bb22c6046bac3d5b4fd64b7e3c94"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_noniid_FR1_fr30_seed43/candidate_events.csv",
+      "sha256": "d8cca2379c9094ac129980c98af789c9a6c2b5afa83dd8f6b332d3993f81207c"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_noniid_FR1_fr30_seed43/cycle_policy.csv",
+      "sha256": "a7b6efd3d5fdd0840bbd7b8e34ce6e4482975222ca77e5dc317580ee9e45e128"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_iid_FR4_fr40_seed43/run_config.json",
+      "sha256": "88baf09bf214d986c424669cf500512ece64da6cd34b53cdb396c51d320e492f"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_iid_FR4_fr40_seed43/global_metrics.csv",
+      "sha256": "e0f16472b5007cab1ab6240af34dd1ea5c323848440ed7889a32e3eac0067dff"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_iid_FR4_fr40_seed43/cycle_decisions.csv",
+      "sha256": "00b98a2be051079930d689b24aa8d328b9854e11f3d918ccb9dd669381169443"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_iid_FR4_fr40_seed43/candidate_events.csv",
+      "sha256": "d8cca2379c9094ac129980c98af789c9a6c2b5afa83dd8f6b332d3993f81207c"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_iid_FR4_fr40_seed43/cycle_policy.csv",
+      "sha256": "767adfee851f8423a303322e2df9ff922e2deadb80aa5e1790d16ff512272d40"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_iid_FR3_fr40_seed43/run_config.json",
+      "sha256": "31b7c81074d8ef1c93fd769ae6bab9d60553fcc8420082b5a7bee7260a3b01ac"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_iid_FR3_fr40_seed43/global_metrics.csv",
+      "sha256": "9b6f45947367b275dfc90d4fe6981988aacb95ffe25456b5087a9418de2153bf"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_iid_FR3_fr40_seed43/cycle_decisions.csv",
+      "sha256": "3e64d1b721b3d291b341bbae0d987bfde63cc12be091512fd89b2cdcde0abe50"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_iid_FR3_fr40_seed43/candidate_events.csv",
+      "sha256": "d8cca2379c9094ac129980c98af789c9a6c2b5afa83dd8f6b332d3993f81207c"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_iid_FR3_fr40_seed43/cycle_policy.csv",
+      "sha256": "6398dc02846a4be68c54088fda82ab2b8b89ed87e5cd7fe42cd9d92c66d1f8fb"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_iid_FR2_fr40_seed43/run_config.json",
+      "sha256": "e9f6abaa9a0b5790a21dfd243597b4a2b47614a8a9c7f713da77c60f7084168e"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_iid_FR2_fr40_seed43/global_metrics.csv",
+      "sha256": "65a22a66a574c1c26b5706c77b6110ce56342a437aa9868afd3bfd4e047eab25"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_iid_FR2_fr40_seed43/cycle_decisions.csv",
+      "sha256": "4e6cb2ad55cf74a1d41f8330d6f23b3bff153fa54285ea69a35d8d8724719a97"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_iid_FR2_fr40_seed43/candidate_events.csv",
+      "sha256": "d8cca2379c9094ac129980c98af789c9a6c2b5afa83dd8f6b332d3993f81207c"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_iid_FR2_fr40_seed43/cycle_policy.csv",
+      "sha256": "7a7331c5b17b37fd7528f347bcd51284379a74aadba46e89f6c9185e4e9931af"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_iid_FR1_fr40_seed43/run_config.json",
+      "sha256": "9547cf11b7b2c601ccb3e27f4752c7bc07dfff6b2f6e857afbe8d449f5939c15"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_iid_FR1_fr40_seed43/global_metrics.csv",
+      "sha256": "0d23b06d8860d40ab349dfc0dfbfa80883428e93cc4bffcf471227c4676d55bd"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_iid_FR1_fr40_seed43/cycle_decisions.csv",
+      "sha256": "8b1b2de803c456964121d88372734114f345fdc3f6e7c1797d3c98f067330f3c"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_iid_FR1_fr40_seed43/candidate_events.csv",
+      "sha256": "d8cca2379c9094ac129980c98af789c9a6c2b5afa83dd8f6b332d3993f81207c"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_iid_FR1_fr40_seed43/cycle_policy.csv",
+      "sha256": "cfba4f4d12cc04180d89b4afb23f306c62c2cf073b2acbb207c044809ab23f49"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_iid_FR4_fr30_seed43/run_config.json",
+      "sha256": "1050eaa29c29c86ce5c26402f5bc990193cd2fcf69f897071f745f676e5532ea"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_iid_FR4_fr30_seed43/global_metrics.csv",
+      "sha256": "0a7d6dd6cb557d127af139bccf89d0635911bd90c984dc1a543ff179ecf77b9a"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_iid_FR4_fr30_seed43/cycle_decisions.csv",
+      "sha256": "f1a41009fbcf42948f792fa039269350767ff2414d3958cb3bf4bacfd3242232"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_iid_FR4_fr30_seed43/candidate_events.csv",
+      "sha256": "d8cca2379c9094ac129980c98af789c9a6c2b5afa83dd8f6b332d3993f81207c"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_iid_FR4_fr30_seed43/cycle_policy.csv",
+      "sha256": "25706e4516bb0f2ac0f4ebd4d274a09f40b9dbf698aa40a8a0b7d984f9c49e73"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_iid_FR3_fr30_seed43/run_config.json",
+      "sha256": "a123bcabe585bcd1589b399dd41ec5af5f7044f545d8fc69c48da27ecbde1173"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_iid_FR3_fr30_seed43/global_metrics.csv",
+      "sha256": "823c87b8d9841a846871ef2c6d9bfcb80fc2b6c269c904eeaf47f749a60da96f"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_iid_FR3_fr30_seed43/cycle_decisions.csv",
+      "sha256": "aea0262776b11f3257977008d42046a469112ec40800bd69cae3ee603334bc39"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_iid_FR3_fr30_seed43/candidate_events.csv",
+      "sha256": "d8cca2379c9094ac129980c98af789c9a6c2b5afa83dd8f6b332d3993f81207c"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_iid_FR3_fr30_seed43/cycle_policy.csv",
+      "sha256": "4cb0a0a991c29b86e9dec41b0c17684d121da62b90b5ae822f65d50f9c1ba6c4"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_iid_FR2_fr30_seed43/run_config.json",
+      "sha256": "9ae9f1f77463c0bd1fe2938b43f4b654a104c553f6036f7c4cac096cd4c5a3e4"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_iid_FR2_fr30_seed43/global_metrics.csv",
+      "sha256": "aca87330d8b9bbf2a9d33946bfd2a46d37ecc85d5998b70597e3b1a68f26c5bc"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_iid_FR2_fr30_seed43/cycle_decisions.csv",
+      "sha256": "be10b7536899e4efe77eab5c49795e1968a275cdf52c1967f16f4662fc979a99"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_iid_FR2_fr30_seed43/candidate_events.csv",
+      "sha256": "d8cca2379c9094ac129980c98af789c9a6c2b5afa83dd8f6b332d3993f81207c"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_iid_FR2_fr30_seed43/cycle_policy.csv",
+      "sha256": "092090cdcbc2fe1731fb366eb98da887914b4b2892a61e9a2cf92649931bc623"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_iid_FR1_fr30_seed43/run_config.json",
+      "sha256": "badb66c47ce0a2aa2034cb8ee33c07e28e3a17c2e0c7ef1d610cb3cb1855d513"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_iid_FR1_fr30_seed43/global_metrics.csv",
+      "sha256": "1cc10941df30d91fa9e22d19c4d1bf4d0dac5d59b1f776d155eebc407387fbe1"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_iid_FR1_fr30_seed43/cycle_decisions.csv",
+      "sha256": "73b5e4f628da7eae46e89b35edbe9540f1ef5bbde637516d9ea75cce2744a5d8"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_iid_FR1_fr30_seed43/candidate_events.csv",
+      "sha256": "d8cca2379c9094ac129980c98af789c9a6c2b5afa83dd8f6b332d3993f81207c"
+    },
+    {
+      "path": "results/v15_4_mnist_seed43_fr30_fr40/v15_4_mnist_iid_FR1_fr30_seed43/cycle_policy.csv",
+      "sha256": "4b85f78c3dbd096ed534465562a524acbf1d83f71867608e25a61d709be34b19"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_noniid_FR3_fr40_seed73/run_config.json",
+      "sha256": "e57202c5144cebffc3bfa068d29cd3fcced9ccd4b1c053fe97f81449c1de6453"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_noniid_FR3_fr40_seed73/global_metrics.csv",
+      "sha256": "a7daeef377915c9b34a5877dc40f7071aee0aa02ee0517bec0f68295a0dd32a3"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_noniid_FR3_fr40_seed73/cycle_decisions.csv",
+      "sha256": "629312a2d82097fd5a2ed2c1dced0428b9c73e7b7615ea939bfb5aee256f3b36"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_noniid_FR3_fr40_seed73/candidate_events.csv",
+      "sha256": "1b9d4b9fe160374da4b293730d0a63329decccb15d070f051d1ad5a557dab204"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_noniid_FR3_fr40_seed73/cycle_policy.csv",
+      "sha256": "a2830d56db74b90a923d503c36319603958a5abb366ce702c7f1ff96c1258ed9"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_noniid_FR4_fr40_seed73/run_config.json",
+      "sha256": "8a1f90d06512a16a417e9fc02a0f8a2c8deb166282efe5394239b2895a429fd6"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_noniid_FR4_fr40_seed73/global_metrics.csv",
+      "sha256": "e6acd3b67b33d94adfc93ee81d9c748854efca4174ecb148330a8b6a0c0cea5c"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_noniid_FR4_fr40_seed73/cycle_decisions.csv",
+      "sha256": "eab75b3833d5ae0c5b807d61ed583b290431dc399c9e9aaf8e0ffde1d6315cdf"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_noniid_FR4_fr40_seed73/candidate_events.csv",
+      "sha256": "f52a4cd812c62ab2a87ee030a2f3836a334934f32975f6764db1675519bea6d5"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_noniid_FR4_fr40_seed73/cycle_policy.csv",
+      "sha256": "fa49eb7c1a21e40905746e496133641540aeadda394b0884afb8e577ae98e87b"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_noniid_FR2_fr40_seed73/run_config.json",
+      "sha256": "221972e3b2a6625c9305680efe5c77623d98fbfcf01d1cc2f1e49caecb7183d9"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_noniid_FR2_fr40_seed73/global_metrics.csv",
+      "sha256": "dd7495009e47db2f8b5992b9212bbf0a19d0a7b6c43edf01a85124bd246e7a58"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_noniid_FR2_fr40_seed73/cycle_decisions.csv",
+      "sha256": "f9516d5b733edc8df450829975cf94faeb6390d62be62772fb6ca7e23d53eac4"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_noniid_FR2_fr40_seed73/candidate_events.csv",
+      "sha256": "d8cca2379c9094ac129980c98af789c9a6c2b5afa83dd8f6b332d3993f81207c"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_noniid_FR2_fr40_seed73/cycle_policy.csv",
+      "sha256": "f643dd361628d760581b363166c303ffec026b2d91c74bc377c5f2ca0947f412"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_noniid_FR1_fr40_seed73/run_config.json",
+      "sha256": "701047beaf0d036420a0b30be6565142e1ef07acd28235377f462c21a58c12f3"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_noniid_FR1_fr40_seed73/global_metrics.csv",
+      "sha256": "44d10d197bf14e4f7f291b353da00e0c0813aecacb96781c06383ed9b69412ca"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_noniid_FR1_fr40_seed73/cycle_decisions.csv",
+      "sha256": "42638d6b3fec16f9c466dbf63605085d76ce687ff45b2d75b65d5871db757f68"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_noniid_FR1_fr40_seed73/candidate_events.csv",
+      "sha256": "d8cca2379c9094ac129980c98af789c9a6c2b5afa83dd8f6b332d3993f81207c"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_noniid_FR1_fr40_seed73/cycle_policy.csv",
+      "sha256": "75cb9478096b19aef77083ae537a4a722b6ce4f2129ff1aeab8ae72f71d12166"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_noniid_FR3_fr30_seed73/run_config.json",
+      "sha256": "ebdb1752a666fe282dfb9a500776be14d113d7042b89f18834de4638a27f7111"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_noniid_FR3_fr30_seed73/global_metrics.csv",
+      "sha256": "b95b732935bad4b96086ae18e16a73dc44b22713de96593e3879ec212f6bf0a2"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_noniid_FR3_fr30_seed73/cycle_decisions.csv",
+      "sha256": "7a34e37f69136f616fdda520e9088e5fb99d1d4d338b94816187beb2611265e3"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_noniid_FR3_fr30_seed73/candidate_events.csv",
+      "sha256": "d0da42a112e5be95a7391aa62b6f558e18fd88e7b1a8614956dc6334a8850263"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_noniid_FR3_fr30_seed73/cycle_policy.csv",
+      "sha256": "e835c47c51358e278abbce009a98a42ea114df6c59d39481dcacfe8d4c188ffe"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_noniid_FR4_fr30_seed73/run_config.json",
+      "sha256": "01445e84a25a407ce3f017032a6f529f9ee3f7092bbad588d2422ba2cbeaa4fd"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_noniid_FR4_fr30_seed73/global_metrics.csv",
+      "sha256": "f816b7593b09a477a653d947edb3c825b6c6c1409dcba5e42fa9f262d3f24f8c"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_noniid_FR4_fr30_seed73/cycle_decisions.csv",
+      "sha256": "bcce58f9c99d44cc9c63383a7ed59a15bee189cede935240b14181714e424a22"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_noniid_FR4_fr30_seed73/candidate_events.csv",
+      "sha256": "d8cca2379c9094ac129980c98af789c9a6c2b5afa83dd8f6b332d3993f81207c"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_noniid_FR4_fr30_seed73/cycle_policy.csv",
+      "sha256": "c6bac419db3604308089077d9e6201f1680a48320bb62177f677b74b53ee2498"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_noniid_FR2_fr30_seed73/run_config.json",
+      "sha256": "f85b669ca51a425f4d3e038a47e886a620f683159332fd11b7c903053ef7ac19"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_noniid_FR2_fr30_seed73/global_metrics.csv",
+      "sha256": "9540dda103130cb881659d8336c8734ed0728707790f99ab4247fa066a7d555f"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_noniid_FR2_fr30_seed73/cycle_decisions.csv",
+      "sha256": "7a23be4bbd7b219a9b40070a334fe6c1406a498e53c7864afa8cdefb0a32df15"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_noniid_FR2_fr30_seed73/candidate_events.csv",
+      "sha256": "d8cca2379c9094ac129980c98af789c9a6c2b5afa83dd8f6b332d3993f81207c"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_noniid_FR2_fr30_seed73/cycle_policy.csv",
+      "sha256": "d903862d57f44b9856cbef2a0ba333c151be56aab66aa3970e42d8b98bec2c32"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_noniid_FR1_fr30_seed73/run_config.json",
+      "sha256": "5b76dc2a7eb883cf2ee1cbd7d2555cc5e366d32386409046f4c711f3544404f2"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_noniid_FR1_fr30_seed73/global_metrics.csv",
+      "sha256": "e846a64114715c70f67909e4d41f89e68d9d21e65ec861d59d99d89329a20393"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_noniid_FR1_fr30_seed73/cycle_decisions.csv",
+      "sha256": "f8916f9d80d6b6a1d09d9c9d62a91509343e55e997b7e9fd01f0725091daa88e"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_noniid_FR1_fr30_seed73/candidate_events.csv",
+      "sha256": "d8cca2379c9094ac129980c98af789c9a6c2b5afa83dd8f6b332d3993f81207c"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_noniid_FR1_fr30_seed73/cycle_policy.csv",
+      "sha256": "fa4009bebe2fe99940673c68cb1c26ef6295ccbddb95b9ae01e28cda5816702d"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_iid_FR4_fr40_seed73/run_config.json",
+      "sha256": "69bb726bcedc9eb83c11ab874a238204bdd9fcec22a1c147d154a32e784cf420"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_iid_FR4_fr40_seed73/global_metrics.csv",
+      "sha256": "a569e973b3dd1c05692b907bcfa5fbd118d9d971045e976247587f9abeb8dbf6"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_iid_FR4_fr40_seed73/cycle_decisions.csv",
+      "sha256": "4b83317c1a2f968c7203fdee492a0645fe66f9192e43e3e5d261a2ed637922d9"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_iid_FR4_fr40_seed73/candidate_events.csv",
+      "sha256": "d8cca2379c9094ac129980c98af789c9a6c2b5afa83dd8f6b332d3993f81207c"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_iid_FR4_fr40_seed73/cycle_policy.csv",
+      "sha256": "705af10d224899dfa4fd39e4a6994265a6b50b7c5d60d8fbda59206efc52aea4"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_iid_FR3_fr40_seed73/run_config.json",
+      "sha256": "64e1710a2fab247b0193533affa4898224de3949558f409fc6875a55259e42ea"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_iid_FR3_fr40_seed73/global_metrics.csv",
+      "sha256": "bfca7b0ccc869724eb34f6181f9f61dfb14999b9d9f043a7fd2c2ee2c03848bd"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_iid_FR3_fr40_seed73/cycle_decisions.csv",
+      "sha256": "721d6e2e7cb8acaae6b6517a8a473467370d290b7e40d3b83f22cb1e1a571369"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_iid_FR3_fr40_seed73/candidate_events.csv",
+      "sha256": "d8cca2379c9094ac129980c98af789c9a6c2b5afa83dd8f6b332d3993f81207c"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_iid_FR3_fr40_seed73/cycle_policy.csv",
+      "sha256": "830582839a6c35fa90ab4d4893e56cc94d559958d4fc67dfcd8f4eb8fb2628aa"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_iid_FR2_fr40_seed73/run_config.json",
+      "sha256": "2bd05553682458c5ee6cf4ebe38fad7729dde473d1fe43bd0b2253c3295c31f7"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_iid_FR2_fr40_seed73/global_metrics.csv",
+      "sha256": "0d2b94f697310ad5a88e1fc1f14f7083174fc2b005f51241f8c7aba98f06c0b8"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_iid_FR2_fr40_seed73/cycle_decisions.csv",
+      "sha256": "acf159eaa59f53a06a747f26df0a052b2e40848775df801e296d00cd1d38f4d4"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_iid_FR2_fr40_seed73/candidate_events.csv",
+      "sha256": "d8cca2379c9094ac129980c98af789c9a6c2b5afa83dd8f6b332d3993f81207c"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_iid_FR2_fr40_seed73/cycle_policy.csv",
+      "sha256": "c2befdd3acfb8fccf238b0d656c1d120a19a655a07b9751339260c32daa614f1"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_iid_FR1_fr40_seed73/run_config.json",
+      "sha256": "d31f4704c70e66133395da70cc03e6e919054c48b77f7fa25ef679d06ef3865e"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_iid_FR1_fr40_seed73/global_metrics.csv",
+      "sha256": "04e5da040da1d9662501c88b7dd166bba20650f6edfee0990d96e29ec6cd6aa5"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_iid_FR1_fr40_seed73/cycle_decisions.csv",
+      "sha256": "efc2c8c10ea15e091f3a2be77f98dc2ad0952b975c20d0c7c7cf1994a951da25"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_iid_FR1_fr40_seed73/candidate_events.csv",
+      "sha256": "d8cca2379c9094ac129980c98af789c9a6c2b5afa83dd8f6b332d3993f81207c"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_iid_FR1_fr40_seed73/cycle_policy.csv",
+      "sha256": "c78400b5c777608314ac4291c784ab2591f6011431b801900c9e28ce1a4199c1"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_iid_FR4_fr30_seed73/run_config.json",
+      "sha256": "bc385fbef39086e73aaa57cf724d056fce55c09e58ec02c1a3776a7d7bb827f3"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_iid_FR4_fr30_seed73/global_metrics.csv",
+      "sha256": "606edb57b0852d53b05eec7d35c0f2410e985055c0f6e9e45c632588159eafca"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_iid_FR4_fr30_seed73/cycle_decisions.csv",
+      "sha256": "d09d84341438a31cbbb6efb13d9f01dbf6096028a613f401c63281cf6b4c72a0"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_iid_FR4_fr30_seed73/candidate_events.csv",
+      "sha256": "d8cca2379c9094ac129980c98af789c9a6c2b5afa83dd8f6b332d3993f81207c"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_iid_FR4_fr30_seed73/cycle_policy.csv",
+      "sha256": "5f0801f12e0ebdbb90ee955abe62a6fd20996fc4ab4ef25167e341569470602d"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_iid_FR3_fr30_seed73/run_config.json",
+      "sha256": "c263f111645ebe24595ecc0a70d511364098e19d97519f36fa172c77c42185d8"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_iid_FR3_fr30_seed73/global_metrics.csv",
+      "sha256": "bb51b68b215f6037046838ecc6b89d695276018f586b1756e488bc068b07756d"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_iid_FR3_fr30_seed73/cycle_decisions.csv",
+      "sha256": "f25faba46799584cd5bb0ab701aff4bcbe4032e10301102eb8047560824ea437"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_iid_FR3_fr30_seed73/candidate_events.csv",
+      "sha256": "d8cca2379c9094ac129980c98af789c9a6c2b5afa83dd8f6b332d3993f81207c"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_iid_FR3_fr30_seed73/cycle_policy.csv",
+      "sha256": "461a454621b3301f1ad6221b56868de7654696f59bb98888b4baa82983bb27aa"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_iid_FR2_fr30_seed73/run_config.json",
+      "sha256": "d5056095dfd758174ddae409b70db14788c4e7afca3e1a7b4176c0b65fde6e6e"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_iid_FR2_fr30_seed73/global_metrics.csv",
+      "sha256": "cb1d5229d2dd09752d590219dcc600af60673f2fd9936c49e79af7d4fad71d69"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_iid_FR2_fr30_seed73/cycle_decisions.csv",
+      "sha256": "25512ad1597727150918d814f9e03ab8ccc9d87e63c54ad4c1de7eea6154e03f"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_iid_FR2_fr30_seed73/candidate_events.csv",
+      "sha256": "d8cca2379c9094ac129980c98af789c9a6c2b5afa83dd8f6b332d3993f81207c"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_iid_FR2_fr30_seed73/cycle_policy.csv",
+      "sha256": "13ba51405a9563fed21000fe0c47d3e2143b0ab8656044900324c646306667e1"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_iid_FR1_fr30_seed73/run_config.json",
+      "sha256": "9a67a31d183f4862f10d330cf62ccee57b64d622357059f8ff7965889780a770"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_iid_FR1_fr30_seed73/global_metrics.csv",
+      "sha256": "de2f7a05fcbd9da91416592c5f8157b734ef861db912cbd8ede87b0d30bc3d63"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_iid_FR1_fr30_seed73/cycle_decisions.csv",
+      "sha256": "6902fe3e7feecda5cd8395e10a1626331c5f7cf4f22560374a6bc05e3a2541f7"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_iid_FR1_fr30_seed73/candidate_events.csv",
+      "sha256": "d8cca2379c9094ac129980c98af789c9a6c2b5afa83dd8f6b332d3993f81207c"
+    },
+    {
+      "path": "results/v15_4_mnist_seed73_fr30_fr40/v15_4_mnist_iid_FR1_fr30_seed73/cycle_policy.csv",
+      "sha256": "712951737a3ecdf87dd4303446c4898191c5a09399aa3f3b8ed888753e462d32"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr30/v15_4_cifar10_noniid_FR3_seed42/run_config.json",
+      "sha256": "b8b6218e28a5b7e62e7d2e2a9909ef6170fe11f9f947f68d5dfeed9242c11379"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr30/v15_4_cifar10_noniid_FR3_seed42/global_metrics.csv",
+      "sha256": "b8a365e947477bd20c6b2860bba1d137a69a4350e24985a04c7f539a593bb728"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr30/v15_4_cifar10_noniid_FR3_seed42/cycle_decisions.csv",
+      "sha256": "ac13c099222e2f0867d2960fbd6da9e7b0a0e4c4c463ced5947c7d3e0d977c42"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr30/v15_4_cifar10_noniid_FR3_seed42/candidate_events.csv",
+      "sha256": "1cbcfdf9759fe58c991491e29c89f0ab62124fba998db70af4b972189fd9f3bb"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr30/v15_4_cifar10_noniid_FR3_seed42/cycle_policy.csv",
+      "sha256": "b4097c2df17bac91473c3425c3f81073c8b9b746d89aedd5dfc19ae3d1c65ce8"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr30/v15_4_cifar10_noniid_FR4_seed42/run_config.json",
+      "sha256": "4d0f837507424d51339abb2e0dd3f10e5e51f5b47b29e8586351d6430cca1bac"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr30/v15_4_cifar10_noniid_FR4_seed42/global_metrics.csv",
+      "sha256": "8f53f95378de33bc0e7254a2942b31dd17934dc59b37093dc7b4733ceffc80b1"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr30/v15_4_cifar10_noniid_FR4_seed42/cycle_decisions.csv",
+      "sha256": "87d460f9164c0694f6802abf3b9d9e9b51a45ad973d0f7832ee82e63f05d086f"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr30/v15_4_cifar10_noniid_FR4_seed42/candidate_events.csv",
+      "sha256": "d8cca2379c9094ac129980c98af789c9a6c2b5afa83dd8f6b332d3993f81207c"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr30/v15_4_cifar10_noniid_FR4_seed42/cycle_policy.csv",
+      "sha256": "58b483b9abdba682157106f474cdc8affa2b9450c12a8a6c02404d379acc84e3"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr30/v15_4_cifar10_noniid_FR2_seed42/run_config.json",
+      "sha256": "9721f0578ccb764afbea7211da6920b791892dd606d7246ee510d5d7711f763c"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr30/v15_4_cifar10_noniid_FR2_seed42/global_metrics.csv",
+      "sha256": "f6e17270e1736aa82a2b24d7444fe3616047755b254b980be46a312b04793652"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr30/v15_4_cifar10_noniid_FR2_seed42/cycle_decisions.csv",
+      "sha256": "b8087ead941806abc6a5fa52f6fed02da869c9bfa574e761a0b16acc83b0a359"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr30/v15_4_cifar10_noniid_FR2_seed42/candidate_events.csv",
+      "sha256": "d8cca2379c9094ac129980c98af789c9a6c2b5afa83dd8f6b332d3993f81207c"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr30/v15_4_cifar10_noniid_FR2_seed42/cycle_policy.csv",
+      "sha256": "cf25b780354d7d5c0db8186b0541322d39b47a3bd896390f8fb909d8e70faf40"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr30/v15_4_cifar10_noniid_FR1_seed42/run_config.json",
+      "sha256": "345d121c355b6fdaab07cb86a3587992e1675f7be1cac3df605edcf343dcb659"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr30/v15_4_cifar10_noniid_FR1_seed42/global_metrics.csv",
+      "sha256": "90a67d403d9e81c8f6f465588e84d99e2b673446010b0be7f5b2206c1c5c279e"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr30/v15_4_cifar10_noniid_FR1_seed42/cycle_decisions.csv",
+      "sha256": "741110cc82bb40eb838940eb8993f3aaa2ef7a7a284738802fbc0ca4739a12f5"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr30/v15_4_cifar10_noniid_FR1_seed42/candidate_events.csv",
+      "sha256": "d8cca2379c9094ac129980c98af789c9a6c2b5afa83dd8f6b332d3993f81207c"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr30/v15_4_cifar10_noniid_FR1_seed42/cycle_policy.csv",
+      "sha256": "0607b2ba6544fc22998bdffa01ff21df7d0589a854b01f2788fae07ab22eac90"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr30/v15_4_cifar10_iid_FR4_seed42/run_config.json",
+      "sha256": "ecf5ce39a498e671edcccb97e359c2aecbd80c6b8e56e4f0cfd48a8dc13fae07"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr30/v15_4_cifar10_iid_FR4_seed42/global_metrics.csv",
+      "sha256": "0b63fd2b6ada1ecef63021230e893c805336a878daa48ce6eeaf1442bd453cff"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr30/v15_4_cifar10_iid_FR4_seed42/cycle_decisions.csv",
+      "sha256": "4d26f57e2229c4cb394439b17998b32347d016e301f798621fec61e260db84ca"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr30/v15_4_cifar10_iid_FR4_seed42/candidate_events.csv",
+      "sha256": "d8cca2379c9094ac129980c98af789c9a6c2b5afa83dd8f6b332d3993f81207c"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr30/v15_4_cifar10_iid_FR4_seed42/cycle_policy.csv",
+      "sha256": "71514713df26983965590e6190a442a0c278d464e486d2a13aecdb940ab505ac"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr30/v15_4_cifar10_iid_FR3_seed42/run_config.json",
+      "sha256": "6cc46ce1b6edb212ae92424e04b87b7b83acc276ce227282be51f3170b1a6775"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr30/v15_4_cifar10_iid_FR3_seed42/global_metrics.csv",
+      "sha256": "9e5b52b48dd4f4c65c9ddb5aef23822e12148f9ee011cca5164e6de5c498ee4a"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr30/v15_4_cifar10_iid_FR3_seed42/cycle_decisions.csv",
+      "sha256": "ca86893c47c231b628bc0543dc15ff8cc160ec094746d9a6d4c2e6f5aad59b18"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr30/v15_4_cifar10_iid_FR3_seed42/candidate_events.csv",
+      "sha256": "d8cca2379c9094ac129980c98af789c9a6c2b5afa83dd8f6b332d3993f81207c"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr30/v15_4_cifar10_iid_FR3_seed42/cycle_policy.csv",
+      "sha256": "12a8235b6d3d6892bd456ded73b39ae9d1400afb14503d3d03e52aa594b50bcf"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr30/v15_4_cifar10_iid_FR2_seed42/run_config.json",
+      "sha256": "bfb762e79b6a7e6a8184c0f84159b2879ef3db190a1fb03d4cfe1c3c3faf89ec"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr30/v15_4_cifar10_iid_FR2_seed42/global_metrics.csv",
+      "sha256": "e948e2a5cd36edb3b2adc13ac36e0df37a031ac01cd01370fb3f504bb2475cbd"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr30/v15_4_cifar10_iid_FR2_seed42/cycle_decisions.csv",
+      "sha256": "5338ba7c87deef865eaf01b7e99c47d36abdd1c3c5289800131eaab033f09bd0"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr30/v15_4_cifar10_iid_FR2_seed42/candidate_events.csv",
+      "sha256": "d8cca2379c9094ac129980c98af789c9a6c2b5afa83dd8f6b332d3993f81207c"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr30/v15_4_cifar10_iid_FR2_seed42/cycle_policy.csv",
+      "sha256": "d51c0ea32311a6e9721795397c64ba1231197c65ad358ee8d78acd7b3f2b9db3"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr30/v15_4_cifar10_iid_FR1_seed42/run_config.json",
+      "sha256": "81f56a537489656e1f49c78e3e7fc2d3258181bb8fc5d7621481b7a5ac5a75fd"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr30/v15_4_cifar10_iid_FR1_seed42/global_metrics.csv",
+      "sha256": "58293b264252cf875dc4cba4b0b3895040e240b8e6d6b6d2fa7c136306f69d6c"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr30/v15_4_cifar10_iid_FR1_seed42/cycle_decisions.csv",
+      "sha256": "20c5d4ef230f75445d17c7a083c07eda21eccf25be00be8b4407938625fffba0"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr30/v15_4_cifar10_iid_FR1_seed42/candidate_events.csv",
+      "sha256": "d8cca2379c9094ac129980c98af789c9a6c2b5afa83dd8f6b332d3993f81207c"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr30/v15_4_cifar10_iid_FR1_seed42/cycle_policy.csv",
+      "sha256": "21475120b53e5df4f61188c5964d5b15cb877b783de562b955496d4afaf854b9"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_noniid_FR3_seed42/run_config.json",
+      "sha256": "4758172f3dafee36ee279ec2a894f95f03e87f6ec899ae179d397ef67eb7eaad"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_noniid_FR3_seed42/global_metrics.csv",
+      "sha256": "618c9c94e63f51b6c554df579b608d22c0f32c3ba5ebda225d2ee99d006f771c"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_noniid_FR3_seed42/cycle_decisions.csv",
+      "sha256": "58a9e93ef249fc5f11f284634e3ab61e657b363504455d1da6267a20dbdd9d6c"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_noniid_FR3_seed42/candidate_events.csv",
+      "sha256": "1d3223eec2a7e387a91bbbc195fafe009d5e5ba7dfcf8baf0e2d6945791347ac"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_noniid_FR3_seed42/cycle_policy.csv",
+      "sha256": "e8008b3f05ddf62eb94544f532c1909b4878e083dc9574a4ce477a4d7f6fe79a"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_noniid_FR4_seed42/run_config.json",
+      "sha256": "5024380026f591a5949a3a5af6632e55f26ea2d7790fb83eb560b7de02f6d827"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_noniid_FR4_seed42/global_metrics.csv",
+      "sha256": "adcd6c8a390431df25afb64a1d2fc6bb75ac470a2c51358324d62a088bcd2be8"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_noniid_FR4_seed42/cycle_decisions.csv",
+      "sha256": "1558db1972422c15d7052a37ff319aed96b8f72888f47d678585c8d5a51dd323"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_noniid_FR4_seed42/candidate_events.csv",
+      "sha256": "d8cca2379c9094ac129980c98af789c9a6c2b5afa83dd8f6b332d3993f81207c"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_noniid_FR4_seed42/cycle_policy.csv",
+      "sha256": "c8acd52ca7fd0971c5ee3a78367d962b31796c28ab455654c112569584529ab2"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_noniid_FR2_seed42/run_config.json",
+      "sha256": "a58d35ade6ab5a346bbbaa7bb85c0d42e586220f8e2d449062f8c711945edea8"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_noniid_FR2_seed42/global_metrics.csv",
+      "sha256": "5795ef392b3088bdbd9ea45f2fd76b9ef7446c04ea6ed2c597bc941f46ca19c2"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_noniid_FR2_seed42/cycle_decisions.csv",
+      "sha256": "26d2b8cf486c8fa8b201a225db90fc4fde60957d4d872ad9ce8668b5f361467a"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_noniid_FR2_seed42/candidate_events.csv",
+      "sha256": "d8cca2379c9094ac129980c98af789c9a6c2b5afa83dd8f6b332d3993f81207c"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_noniid_FR2_seed42/cycle_policy.csv",
+      "sha256": "c1556b0345914faecd8161255a39347c883789bcafcf8ac980c02306bbcc5410"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_noniid_FR1_seed42/run_config.json",
+      "sha256": "b9e94826ad01cecae06e258cd9a0727a245470c6b18d226f7aa96aea0448bd41"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_noniid_FR1_seed42/global_metrics.csv",
+      "sha256": "16470b2c69c6335e2be590a2d69798fec2ed8f8735c55cecda0706d30eb2a7ef"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_noniid_FR1_seed42/cycle_decisions.csv",
+      "sha256": "3a3aad49e9789990bb57ccdce6d5283a4e517224db49e491d32fdbe127c99608"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_noniid_FR1_seed42/candidate_events.csv",
+      "sha256": "d8cca2379c9094ac129980c98af789c9a6c2b5afa83dd8f6b332d3993f81207c"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_noniid_FR1_seed42/cycle_policy.csv",
+      "sha256": "adf9a2a3e57f3f16b4d49609e7876800aba67e9ca89397cb9b95c7b089c7b4b6"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_iid_FR4_seed42/run_config.json",
+      "sha256": "ed5cae35ce791b47b733a6266d8e7b4e70e2b0c5d83909bedef04da259a11b21"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_iid_FR4_seed42/global_metrics.csv",
+      "sha256": "abd0a60f56b31332761526e4b571f6dc3192621880554a3c913d24c35489c7d1"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_iid_FR4_seed42/cycle_decisions.csv",
+      "sha256": "d97b4bbc2ce26683413ec654b2d6ae5a7059471f1ac361d5b50180eebe30bb70"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_iid_FR4_seed42/candidate_events.csv",
+      "sha256": "d8cca2379c9094ac129980c98af789c9a6c2b5afa83dd8f6b332d3993f81207c"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_iid_FR4_seed42/cycle_policy.csv",
+      "sha256": "ecf53e41781015e7e3e1531ef738088888b1d37ad86ab44f9caf29ae885cfbdb"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_iid_FR3_seed42/run_config.json",
+      "sha256": "81bcb7948c3795f20dc3db98ea41f24d47a732d69663defbaf2d6dc968ff783d"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_iid_FR3_seed42/global_metrics.csv",
+      "sha256": "5314fadacd507bdce1081bbd22763b68a209173436ec1e017abfdf3303b65a7c"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_iid_FR3_seed42/cycle_decisions.csv",
+      "sha256": "e5e87e84514724fe91d233cc434570b1ca1308913e46ff27e73c44a70b1b26df"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_iid_FR3_seed42/candidate_events.csv",
+      "sha256": "d8cca2379c9094ac129980c98af789c9a6c2b5afa83dd8f6b332d3993f81207c"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_iid_FR3_seed42/cycle_policy.csv",
+      "sha256": "f463b155c90546c5456bd77c0468e35c405f62416e57182bae3ad766cb7dc0e7"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_iid_FR2_seed42/run_config.json",
+      "sha256": "faa2dff245a0f9e76f040bddaabb934a46f5b6ebf20a0bab9d129656ae47be04"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_iid_FR2_seed42/global_metrics.csv",
+      "sha256": "54cb3f7fbcef025f4fc0466dc0cd0c3037fa819389b95da37fd72739dd64b5d1"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_iid_FR2_seed42/cycle_decisions.csv",
+      "sha256": "93fc3426782c621f72bee22d1a9e64eadf056f43467257553979252a2292469f"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_iid_FR2_seed42/candidate_events.csv",
+      "sha256": "d8cca2379c9094ac129980c98af789c9a6c2b5afa83dd8f6b332d3993f81207c"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_iid_FR2_seed42/cycle_policy.csv",
+      "sha256": "987cbf5a2c60ff20ec40e21562eaed3834c98c62904bee2336d18934f5e0f32a"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_iid_FR1_seed42/run_config.json",
+      "sha256": "5886201c6631bc3752f66ef445cff28d7205ecb6a916ffe5222f78c9a12512c7"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_iid_FR1_seed42/global_metrics.csv",
+      "sha256": "84b6491f0bfa3740de880592af9ffc22001f058e58c5381ac1d9f1aedcc3c3be"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_iid_FR1_seed42/cycle_decisions.csv",
+      "sha256": "f46bfda1a9f40ea2fef2730228ede388cb820a7e2e758e7eaebf1a8419268dd7"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_iid_FR1_seed42/candidate_events.csv",
+      "sha256": "d8cca2379c9094ac129980c98af789c9a6c2b5afa83dd8f6b332d3993f81207c"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_iid_FR1_seed42/cycle_policy.csv",
+      "sha256": "881971113c044f0a9d3e9964b0c72af10087d3d370333b77dfc170c688a686e8"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_noniid_FR3_fr40_seed43/run_config.json",
+      "sha256": "35854c54ababc9bd19ccadc0413014c7d49e61fbe13cdce8715960a963c572ee"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_noniid_FR3_fr40_seed43/global_metrics.csv",
+      "sha256": "d3c7dd4d3ecd518a7a7b7f5a0b932e00989c63be8425a5ba4f13dcf969704978"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_noniid_FR3_fr40_seed43/cycle_decisions.csv",
+      "sha256": "45027e863e736467c6cc468fbb8595e6aa5b49d0c204442d21ae80d04fed1fce"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_noniid_FR3_fr40_seed43/candidate_events.csv",
+      "sha256": "e11af442ce8ed0323838ef64a33088fa8509b67dd838c6df1e83400f1aaca88b"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_noniid_FR3_fr40_seed43/cycle_policy.csv",
+      "sha256": "f68b2519486df0a8ea78c0aaecff5ced2b6f2d629f310ad5c1fd908dd42fbcb9"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_noniid_FR4_fr40_seed43/run_config.json",
+      "sha256": "b3ed9251b574adad45adba8c16f36aedc083711599af82ec7a0557918cbb760a"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_noniid_FR4_fr40_seed43/global_metrics.csv",
+      "sha256": "50829b4dbcccd6d8f0b3c0e3fcf1f0ade3250dd9f52c555935af7e9e70646d8a"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_noniid_FR4_fr40_seed43/cycle_decisions.csv",
+      "sha256": "283a65bade5963884f2c924a37b874dbf7ba1d1e6c17000a7bf4a752e016aa36"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_noniid_FR4_fr40_seed43/candidate_events.csv",
+      "sha256": "d8cca2379c9094ac129980c98af789c9a6c2b5afa83dd8f6b332d3993f81207c"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_noniid_FR4_fr40_seed43/cycle_policy.csv",
+      "sha256": "aa876c99fe8fceca0384d3075856c36347a06f90e4d300c266be7bd0117c09f7"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_noniid_FR2_fr40_seed43/run_config.json",
+      "sha256": "d6877f3f75898ef65e2fb1391b66a9168c9edb206b042f2a553ce27ecbc80dbd"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_noniid_FR2_fr40_seed43/global_metrics.csv",
+      "sha256": "aac826c9013f6d36fb86dc511df939a7e2fcb62176cc1163ae1a3a9217696b4e"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_noniid_FR2_fr40_seed43/cycle_decisions.csv",
+      "sha256": "bf2985ce25c8ac2645346dc1afd8b03b2dec0a16add9f1c07ed3286dcd079e1f"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_noniid_FR2_fr40_seed43/candidate_events.csv",
+      "sha256": "d8cca2379c9094ac129980c98af789c9a6c2b5afa83dd8f6b332d3993f81207c"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_noniid_FR2_fr40_seed43/cycle_policy.csv",
+      "sha256": "536b92763c42d8bb587f2b7a1082fb13dfc30952323df166d5d48fae36654e84"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_noniid_FR1_fr40_seed43/run_config.json",
+      "sha256": "c0e7f09bab31651208791e223c32aac8dcb0a056269c7b5b96f067e5f065accb"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_noniid_FR1_fr40_seed43/global_metrics.csv",
+      "sha256": "9ce684ab93fb1e3039043fdc69e56ad2bc954533b01e4a9bd5e6c4fb40843a13"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_noniid_FR1_fr40_seed43/cycle_decisions.csv",
+      "sha256": "c341d26526586912a9cc4c71b024cbc09a99a8ef7cac7805218fb3ee4b06e7f9"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_noniid_FR1_fr40_seed43/candidate_events.csv",
+      "sha256": "d8cca2379c9094ac129980c98af789c9a6c2b5afa83dd8f6b332d3993f81207c"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_noniid_FR1_fr40_seed43/cycle_policy.csv",
+      "sha256": "fdd4270debabfabba372bd93edd3ce5fb702ce6b373c4fe7d65184c93f4a9e4f"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_noniid_FR3_fr30_seed43/run_config.json",
+      "sha256": "1485f9de142290cdf75e54e86aba92546fc12b599cd07fcd58c7574874a9291f"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_noniid_FR3_fr30_seed43/global_metrics.csv",
+      "sha256": "97cfa7384a48be686904913b9c00f91980b4a358c6886ab25ac15942fc54d5c4"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_noniid_FR3_fr30_seed43/cycle_decisions.csv",
+      "sha256": "743169e55f1fd69c9acab24d0425e621cc2e7a52ba0b534eb7d24e4b1dfce971"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_noniid_FR3_fr30_seed43/candidate_events.csv",
+      "sha256": "60de56b9ef79eb56030773db353915647c62e5bf4d7785fd57b89a00651d607a"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_noniid_FR3_fr30_seed43/cycle_policy.csv",
+      "sha256": "5c050b4de17e36d7eeb9b5cbecdf5377bcf77e42857768dfce460082b33947cf"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_noniid_FR4_fr30_seed43/run_config.json",
+      "sha256": "2b02bb059967799b9ad019dad27b9629da195a8aa1e0d25698b1899991147596"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_noniid_FR4_fr30_seed43/global_metrics.csv",
+      "sha256": "ede81a60ee43424f062353db32cdd7f5f33eedd9885f923150981ee30e17782b"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_noniid_FR4_fr30_seed43/cycle_decisions.csv",
+      "sha256": "9872fe81a34cd7ad00ebdc620470417efae05af4b05c81149388ccb6d01e55ac"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_noniid_FR4_fr30_seed43/candidate_events.csv",
+      "sha256": "d8cca2379c9094ac129980c98af789c9a6c2b5afa83dd8f6b332d3993f81207c"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_noniid_FR4_fr30_seed43/cycle_policy.csv",
+      "sha256": "e6ed7e5854a617c26305ee09fdedde082f93d5654376421270ebed2439be426b"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_noniid_FR2_fr30_seed43/run_config.json",
+      "sha256": "3662b4854be310978374b8261874810975cc8cab26782c8ed510095c37b8f0eb"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_noniid_FR2_fr30_seed43/global_metrics.csv",
+      "sha256": "bf1f3e7a4a951b17e8524baeda98cdc7b99ec174763af0042832dda5cb4c52ed"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_noniid_FR2_fr30_seed43/cycle_decisions.csv",
+      "sha256": "5519b60321338e5bad04ac5ef505fd320d483b3c7b87611b71d48fdfdc5b6516"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_noniid_FR2_fr30_seed43/candidate_events.csv",
+      "sha256": "d8cca2379c9094ac129980c98af789c9a6c2b5afa83dd8f6b332d3993f81207c"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_noniid_FR2_fr30_seed43/cycle_policy.csv",
+      "sha256": "613f6d45ca1eb79bd41976087b52d044b6178f37591f0fb2da304231f291cd59"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_noniid_FR1_fr30_seed43/run_config.json",
+      "sha256": "50e80e99d52b7f2a55baab9096629a61875a520dc851532915164aa0254a777b"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_noniid_FR1_fr30_seed43/global_metrics.csv",
+      "sha256": "b15bef85a038a0fb7783cb8e4964087cf5ab80bd9eff6216a0b2b632ac370fde"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_noniid_FR1_fr30_seed43/cycle_decisions.csv",
+      "sha256": "0bb95daf8684679015a03661fd6df612e9db9747548d53e69da7fd4f0376f2dd"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_noniid_FR1_fr30_seed43/candidate_events.csv",
+      "sha256": "d8cca2379c9094ac129980c98af789c9a6c2b5afa83dd8f6b332d3993f81207c"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_noniid_FR1_fr30_seed43/cycle_policy.csv",
+      "sha256": "5e2e9d98c5b36c04397f940d051cc4413b2b201c4adbb74f2bf812e556accc58"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_iid_FR4_fr40_seed43/run_config.json",
+      "sha256": "c38015836e6406700ce5231b039938b9486a9912b24d6a7126055c39b0c2c4e1"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_iid_FR4_fr40_seed43/global_metrics.csv",
+      "sha256": "0d31f7981b04a3bf2f63d979fe45592311ac88236a0db5322771e60272fd2ae9"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_iid_FR4_fr40_seed43/cycle_decisions.csv",
+      "sha256": "b3571fd3a6ad329a4f0956ecd87da9465f274b564bc69ddf61130d7976533dc2"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_iid_FR4_fr40_seed43/candidate_events.csv",
+      "sha256": "d8cca2379c9094ac129980c98af789c9a6c2b5afa83dd8f6b332d3993f81207c"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_iid_FR4_fr40_seed43/cycle_policy.csv",
+      "sha256": "f51d7e6b8c09cce48c468d8ae46af7900f621af81ff33e9c63257bba0f017b25"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_iid_FR3_fr40_seed43/run_config.json",
+      "sha256": "c4066589f96a046f03cfe86b64b892556bd6721caf6e307146989f0741785b52"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_iid_FR3_fr40_seed43/global_metrics.csv",
+      "sha256": "1b771fafe43378b2415e08c258573ac93e0bc5c952f2d93d9527bad63207e98d"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_iid_FR3_fr40_seed43/cycle_decisions.csv",
+      "sha256": "80985ea8894139305c95213b5a1597d2c559078a9509fb9237e89c929547ef4b"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_iid_FR3_fr40_seed43/candidate_events.csv",
+      "sha256": "d8cca2379c9094ac129980c98af789c9a6c2b5afa83dd8f6b332d3993f81207c"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_iid_FR3_fr40_seed43/cycle_policy.csv",
+      "sha256": "16fbabaade12fdabf93501bc0db7197ce4a9c59749ecab7eab423bd9cdbf003b"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_iid_FR2_fr40_seed43/run_config.json",
+      "sha256": "a4fc34be909cda490bbf10d566fc9dc337c2d04ac7a8d9e6b57c386cb507e925"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_iid_FR2_fr40_seed43/global_metrics.csv",
+      "sha256": "12d863b07f44fddc645954404e98e581e95906a2a544395b77c392e2677c20b7"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_iid_FR2_fr40_seed43/cycle_decisions.csv",
+      "sha256": "233b1bb0b3fe38a360140a52f7c7df1f1661670f9ce9cb8f4a78a366d8c257e4"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_iid_FR2_fr40_seed43/candidate_events.csv",
+      "sha256": "d8cca2379c9094ac129980c98af789c9a6c2b5afa83dd8f6b332d3993f81207c"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_iid_FR2_fr40_seed43/cycle_policy.csv",
+      "sha256": "d43d316a3b60b84072fb1ae067fccb8e8682e6b55329597014ac01cb39dfd050"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_iid_FR1_fr40_seed43/run_config.json",
+      "sha256": "e88c1b910043c673e80d9bf4f16ab48e80b3d6ce6292515a93e74dc160b66332"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_iid_FR1_fr40_seed43/global_metrics.csv",
+      "sha256": "860d15c61756efd0a6b204bb04e186d0d9116e6e804a87c59d550e2012d3039b"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_iid_FR1_fr40_seed43/cycle_decisions.csv",
+      "sha256": "41699f8467e2b0f78a82cf8303397e8fe084f9eaed902fdf15578f31441ce84a"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_iid_FR1_fr40_seed43/candidate_events.csv",
+      "sha256": "d8cca2379c9094ac129980c98af789c9a6c2b5afa83dd8f6b332d3993f81207c"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_iid_FR1_fr40_seed43/cycle_policy.csv",
+      "sha256": "7c7416195eb1e21e4e34f024e65b0c34fb0293c09132988ac809038a184917bb"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_iid_FR4_fr30_seed43/run_config.json",
+      "sha256": "0e67766f6644c350daeca0d7c76496368f50d26604329ce78a7d7e77cfdaca2f"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_iid_FR4_fr30_seed43/global_metrics.csv",
+      "sha256": "5155fb1663bce35f289cd868026cc5f3c847279c41e4a88b8d586b158cbc7b4e"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_iid_FR4_fr30_seed43/cycle_decisions.csv",
+      "sha256": "716f79d7abeac9e6336bf3b91f9bacc07bd2eab3214b9ebc6d3586965ce0240e"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_iid_FR4_fr30_seed43/candidate_events.csv",
+      "sha256": "d8cca2379c9094ac129980c98af789c9a6c2b5afa83dd8f6b332d3993f81207c"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_iid_FR4_fr30_seed43/cycle_policy.csv",
+      "sha256": "fbf19388dc298e89e1d2c83c8eafebaf40c2b8f500e7353577cbdcfa0738283b"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_iid_FR3_fr30_seed43/run_config.json",
+      "sha256": "3ebe85233f0dc5cf1d0fedcb63498e2a33a317961d009eb76cc68a8cb156b7bd"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_iid_FR3_fr30_seed43/global_metrics.csv",
+      "sha256": "61b12c82af1b5dc4b3ec60df09467bb7075bfca0a05742bb91ca07fe9ef46c12"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_iid_FR3_fr30_seed43/cycle_decisions.csv",
+      "sha256": "0381f0be1f905355073a77bb5b9ecefed1fe0cb989a03482ec331740f4b49d7e"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_iid_FR3_fr30_seed43/candidate_events.csv",
+      "sha256": "d8cca2379c9094ac129980c98af789c9a6c2b5afa83dd8f6b332d3993f81207c"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_iid_FR3_fr30_seed43/cycle_policy.csv",
+      "sha256": "57fce4b315d3be8b86d16b5698e36b291abcf28624ff2bac90fea17304f638b9"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_iid_FR2_fr30_seed43/run_config.json",
+      "sha256": "629f098f36f386d28a59e4d8dc076ff618f49bb0c1e6535253df3d19e98a909c"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_iid_FR2_fr30_seed43/global_metrics.csv",
+      "sha256": "f79feed591208f5ace1dba9280b2cfeb8280fed74552779d9a325b557529f932"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_iid_FR2_fr30_seed43/cycle_decisions.csv",
+      "sha256": "2ac3cfc08db757121bffa1c63e2f79bd4dba8ccb733bbbf9db15cd71969867ee"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_iid_FR2_fr30_seed43/candidate_events.csv",
+      "sha256": "d8cca2379c9094ac129980c98af789c9a6c2b5afa83dd8f6b332d3993f81207c"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_iid_FR2_fr30_seed43/cycle_policy.csv",
+      "sha256": "e9026f962ce0d592665fec0fb6bf92e34b7b09341a33240b5a0c1d580eeade46"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_iid_FR1_fr30_seed43/run_config.json",
+      "sha256": "4530d7b64e3ce2779fd0adcebff455a8a918aff469d0052d0485e4a77847803f"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_iid_FR1_fr30_seed43/global_metrics.csv",
+      "sha256": "6b3a31feaa8524ce507ec7bfb8d37b317b5c3dd71b4a7818c3fdb10e87ac29ff"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_iid_FR1_fr30_seed43/cycle_decisions.csv",
+      "sha256": "7882c6ad98b589acb44d1788cb6d54544cfd4f3914ef333283815aaa7a51961f"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_iid_FR1_fr30_seed43/candidate_events.csv",
+      "sha256": "d8cca2379c9094ac129980c98af789c9a6c2b5afa83dd8f6b332d3993f81207c"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed43_fr30_fr40/v15_4_cifar10_iid_FR1_fr30_seed43/cycle_policy.csv",
+      "sha256": "b522e9983020a4edc9dd086d2808df201ce35317cff90bfdcb0e195ca9ba7e9e"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_noniid_FR3_fr40_seed73/run_config.json",
+      "sha256": "eb840b533db1d75cbc687daa16f276a206a1f2edeba74e58c5e4800ee21bdebd"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_noniid_FR3_fr40_seed73/global_metrics.csv",
+      "sha256": "014066b9f718b3884ad13c3cb8a01a0e32a2ffd5f4b14e4b7b53d69ebcd18196"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_noniid_FR3_fr40_seed73/cycle_decisions.csv",
+      "sha256": "c2ec30a93b06b76b393b64a11e0e6020e5a2dff6d48bbd8660974924ee0a9a3e"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_noniid_FR3_fr40_seed73/candidate_events.csv",
+      "sha256": "5b886dfa2db28402e9858eaf58b652cc04dfefbb8f00a8f8d4628e15601aa4c9"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_noniid_FR3_fr40_seed73/cycle_policy.csv",
+      "sha256": "ea32ee2307566feecf1f0bb47e01cab868fb9cbd5d7601d0e910954e9d1017bf"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_noniid_FR4_fr40_seed73/run_config.json",
+      "sha256": "ccdac5be0d51f96415b2d09f4f8d0bbffa49766a87d8894d0c5dc0069e9200bf"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_noniid_FR4_fr40_seed73/global_metrics.csv",
+      "sha256": "723aff155b512896edaff1a5da4a50a35e42e3457ee7be0a31c87c7b7b14f56a"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_noniid_FR4_fr40_seed73/cycle_decisions.csv",
+      "sha256": "eda3f340e1317d7a93d43c28a16383e4f2112b7c253b567b9ca80faa10c04b3c"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_noniid_FR4_fr40_seed73/candidate_events.csv",
+      "sha256": "d8cca2379c9094ac129980c98af789c9a6c2b5afa83dd8f6b332d3993f81207c"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_noniid_FR4_fr40_seed73/cycle_policy.csv",
+      "sha256": "3b7333fed30c55b73dec774d156c6167792ef057523342cd8ecbb14cad9b4a8b"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_noniid_FR2_fr40_seed73/run_config.json",
+      "sha256": "03559b9cc4f21c3bf3036563d43b43078e1226014136fd997eb964b0f9517119"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_noniid_FR2_fr40_seed73/global_metrics.csv",
+      "sha256": "e64cc6bc8f140d8ecce9711a7c77805b33ab107d3dff6b30a0dc367c5605897f"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_noniid_FR2_fr40_seed73/cycle_decisions.csv",
+      "sha256": "28c3142db231b79f77e9d40338386d4611fba2c4f7f70e7ac99be7f3bd185984"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_noniid_FR2_fr40_seed73/candidate_events.csv",
+      "sha256": "d8cca2379c9094ac129980c98af789c9a6c2b5afa83dd8f6b332d3993f81207c"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_noniid_FR2_fr40_seed73/cycle_policy.csv",
+      "sha256": "93bbf9738be81b66388712f015720ecd86f6ae5e9deca61331ab859a912a3977"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_noniid_FR1_fr40_seed73/run_config.json",
+      "sha256": "b5ad61566b5f6f78927c34c8ee25ea03aab3b21ec72b6b2dcb059f1d446a0bdd"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_noniid_FR1_fr40_seed73/global_metrics.csv",
+      "sha256": "9224e871dddcbacfac551ffc6a185d20612a6550bbda08698d3c5fba93265948"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_noniid_FR1_fr40_seed73/cycle_decisions.csv",
+      "sha256": "29035b8d5c10581e033762d8e7b4202308f43f981c88bfb5bae59f3a355a07ec"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_noniid_FR1_fr40_seed73/candidate_events.csv",
+      "sha256": "d8cca2379c9094ac129980c98af789c9a6c2b5afa83dd8f6b332d3993f81207c"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_noniid_FR1_fr40_seed73/cycle_policy.csv",
+      "sha256": "d198add0088c44c5b320d5f11732bd9503c7fa315e790de2eaa537310dbeefba"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_noniid_FR3_fr30_seed73/run_config.json",
+      "sha256": "7a4cba8d2506c6d030e65352d5105cded76e8b61059026c820ecbc1bb416be92"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_noniid_FR3_fr30_seed73/global_metrics.csv",
+      "sha256": "28ac2ce36a750fe168c5e6d53a14e990790dc3a6952fe5bb5a42499c4d3e4c3e"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_noniid_FR3_fr30_seed73/cycle_decisions.csv",
+      "sha256": "94e17feb81bb6f9645e11a6fa025e82140b4c424573ac196d6a756405345f6b3"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_noniid_FR3_fr30_seed73/candidate_events.csv",
+      "sha256": "723db6e7bcd1df8f2a1c23844bf40cb890e9646ea19264408008714d9cef7aa7"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_noniid_FR3_fr30_seed73/cycle_policy.csv",
+      "sha256": "e26f04d8d7e87c7755622f46424da221671ad282fdca54d450d1195514515861"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_noniid_FR4_fr30_seed73/run_config.json",
+      "sha256": "a604806228da143d29d8ad27ba66700bce9170a0af6503d907d07337244745c7"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_noniid_FR4_fr30_seed73/global_metrics.csv",
+      "sha256": "5b589dff9c560c9bfe3fb47184d04ba4d80e79b95df10a0c46eba377631d07ee"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_noniid_FR4_fr30_seed73/cycle_decisions.csv",
+      "sha256": "8cc43086ba07176e94dd64854fdbefdba9826fb281f6085cdb3be3ccbbc940ab"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_noniid_FR4_fr30_seed73/candidate_events.csv",
+      "sha256": "6a0cb35aafa028993f1e43f3ddd57260624804d1b1f948d4249b855fc9f8f948"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_noniid_FR4_fr30_seed73/cycle_policy.csv",
+      "sha256": "1a8ac3568bab7042eaca39ff664e664626b717404fdb1c3ef0370dad4d8573f5"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_noniid_FR2_fr30_seed73/run_config.json",
+      "sha256": "cc8b53334db850d9e2679cae295c7b5640433ef0fbe8e4d2b9ee54b0e6689f6e"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_noniid_FR2_fr30_seed73/global_metrics.csv",
+      "sha256": "c7f03b5ae8fefc2f0a93e5614ab55625080633864dade209585719ff98f621da"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_noniid_FR2_fr30_seed73/cycle_decisions.csv",
+      "sha256": "48ab32fe6afefec7ea334a629c44389f3088677631f1745f2325b4761e6e9faa"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_noniid_FR2_fr30_seed73/candidate_events.csv",
+      "sha256": "d8cca2379c9094ac129980c98af789c9a6c2b5afa83dd8f6b332d3993f81207c"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_noniid_FR2_fr30_seed73/cycle_policy.csv",
+      "sha256": "d448e72717b77aea16ce0912f937bb051c102635a4826fdc3dbb6fa85b118c32"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_noniid_FR1_fr30_seed73/run_config.json",
+      "sha256": "dcbb15707a3b41f47a36873d5a493e6a11cb3d42b83062feaaf5a3c6b199ee30"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_noniid_FR1_fr30_seed73/global_metrics.csv",
+      "sha256": "0cebf5eb70198d1ecbee8adb6bcf90a173f0bd768e912fdce74e375a63824f6d"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_noniid_FR1_fr30_seed73/cycle_decisions.csv",
+      "sha256": "323ebd29bc8a2bc41014eabe94ea115be05238f50cec68be8533ba2ed965e508"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_noniid_FR1_fr30_seed73/candidate_events.csv",
+      "sha256": "d8cca2379c9094ac129980c98af789c9a6c2b5afa83dd8f6b332d3993f81207c"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_noniid_FR1_fr30_seed73/cycle_policy.csv",
+      "sha256": "b48d239e6ddeed11c82112424cf9355dbc01bb20108b2bf950ec3cc169d97145"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_iid_FR4_fr40_seed73/run_config.json",
+      "sha256": "082dbd33396a2e2936a61d49c96617c09465e3b5513b123b17120210bf9bc11a"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_iid_FR4_fr40_seed73/global_metrics.csv",
+      "sha256": "8ad1de890ac513662f739e5fee230b3bd489a92079ce8ea612c41b6ca2c0effb"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_iid_FR4_fr40_seed73/cycle_decisions.csv",
+      "sha256": "04ea4b6ea1b175013601e6e9aa806efb3845893e1eac80ab4a73337daaadb035"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_iid_FR4_fr40_seed73/candidate_events.csv",
+      "sha256": "d8cca2379c9094ac129980c98af789c9a6c2b5afa83dd8f6b332d3993f81207c"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_iid_FR4_fr40_seed73/cycle_policy.csv",
+      "sha256": "774506f7e1d6ce6f391b38f24e7743f4af17baba997d59a8e809f0a79478a890"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_iid_FR3_fr40_seed73/run_config.json",
+      "sha256": "dbc4373e64efd7600b96f0c3dab09049566cfc4f2737dcd80eae14b55ab90618"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_iid_FR3_fr40_seed73/global_metrics.csv",
+      "sha256": "d6d2c415c45e2cf185319bb98a5c1ae29b665051ea67ebaa4916cce0c4616a21"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_iid_FR3_fr40_seed73/cycle_decisions.csv",
+      "sha256": "ba1b3bd9c9c88ed2e2ecd4977e976d905391e147ddef8a020589fbbcc12c2aea"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_iid_FR3_fr40_seed73/candidate_events.csv",
+      "sha256": "d8cca2379c9094ac129980c98af789c9a6c2b5afa83dd8f6b332d3993f81207c"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_iid_FR3_fr40_seed73/cycle_policy.csv",
+      "sha256": "7cd5e6561b3c075ae044494fb36d7d46d99685c20c42c1529a964cc9f962326c"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_iid_FR2_fr40_seed73/run_config.json",
+      "sha256": "c0e14c48d78c1d5120cdc886d32fbec65390034610351c6d3a74475c6e86378d"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_iid_FR2_fr40_seed73/global_metrics.csv",
+      "sha256": "cbd648d37cb193bb39df5cec59966a5222ce46cd270d373aa5a02cc53734a823"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_iid_FR2_fr40_seed73/cycle_decisions.csv",
+      "sha256": "2c6c627ae83c48028b122cf2b82f6261f417e4e5206c7406cf0ab13825fea14f"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_iid_FR2_fr40_seed73/candidate_events.csv",
+      "sha256": "d8cca2379c9094ac129980c98af789c9a6c2b5afa83dd8f6b332d3993f81207c"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_iid_FR2_fr40_seed73/cycle_policy.csv",
+      "sha256": "4be645e05bf25da844f9bb4d1e657c5205a73cdd58a0eff4880b460d2172930d"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_iid_FR1_fr40_seed73/run_config.json",
+      "sha256": "2d5b12ce87072fbc063e2640c006231aa713aad9a9bc499c3dfd227b3720a334"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_iid_FR1_fr40_seed73/global_metrics.csv",
+      "sha256": "2d2823f8dc51c8567ac382e1d04d6477c02624346dcc972b6172aa20baa0922b"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_iid_FR1_fr40_seed73/cycle_decisions.csv",
+      "sha256": "befde25aa4e327c24ff9c985c340cc7bbddbe9376bf1cc79fe818df1164a1d44"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_iid_FR1_fr40_seed73/candidate_events.csv",
+      "sha256": "d8cca2379c9094ac129980c98af789c9a6c2b5afa83dd8f6b332d3993f81207c"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_iid_FR1_fr40_seed73/cycle_policy.csv",
+      "sha256": "1083b59e36b97927dcec4ae030bab8ea43ea467cd7938da3a17d06c32ca4565e"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_iid_FR4_fr30_seed73/run_config.json",
+      "sha256": "e1feddabab8692d4a13ef3fbd921e7e699ec489ab33884426c5cf846963bf6d8"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_iid_FR4_fr30_seed73/global_metrics.csv",
+      "sha256": "ff96246351622772b6869bf0b4523172ed249fb0f67cf9b689206acb2622a3cf"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_iid_FR4_fr30_seed73/cycle_decisions.csv",
+      "sha256": "1cde6cd1802a066fd24dff028a73308e4d2a74e8dc82d6b7ddc2f85a646a0b8e"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_iid_FR4_fr30_seed73/candidate_events.csv",
+      "sha256": "d8cca2379c9094ac129980c98af789c9a6c2b5afa83dd8f6b332d3993f81207c"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_iid_FR4_fr30_seed73/cycle_policy.csv",
+      "sha256": "9f0b6293706e46f41759be567b8c1f1804cb79c665b3fe38f3bc5d2ace0d5717"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_iid_FR3_fr30_seed73/run_config.json",
+      "sha256": "e7c486cbe8a44f5fa3d7d385f1bcd56b18ae0eacac1c5d46d32b8e73001dfa8f"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_iid_FR3_fr30_seed73/global_metrics.csv",
+      "sha256": "3815accfed1bad769d6722fa766214da292e46f7aac573b376f7211b4c93b7f8"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_iid_FR3_fr30_seed73/cycle_decisions.csv",
+      "sha256": "438c3284fd5c3dc0d9417710a68e3ca6c68bb4e832ac3a4392a912723f61aa95"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_iid_FR3_fr30_seed73/candidate_events.csv",
+      "sha256": "d8cca2379c9094ac129980c98af789c9a6c2b5afa83dd8f6b332d3993f81207c"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_iid_FR3_fr30_seed73/cycle_policy.csv",
+      "sha256": "5865942a91beee28890241c6cc12f7920f99e8a2d526563adc13ca3c6afefb47"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_iid_FR2_fr30_seed73/run_config.json",
+      "sha256": "ce0dd43a8254feeb7d40504fb708ddfdc4ac6233cae585fd21951ee1e9288e96"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_iid_FR2_fr30_seed73/global_metrics.csv",
+      "sha256": "8ee2a702e9abac74271baadd2d68ee0013061499b41dd046aa3aa4cae4fc7480"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_iid_FR2_fr30_seed73/cycle_decisions.csv",
+      "sha256": "0df9b5594cbcd08b795d84804ff207c9de4a3e1e235797a3b6096e346c812c17"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_iid_FR2_fr30_seed73/candidate_events.csv",
+      "sha256": "d8cca2379c9094ac129980c98af789c9a6c2b5afa83dd8f6b332d3993f81207c"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_iid_FR2_fr30_seed73/cycle_policy.csv",
+      "sha256": "b8906666ffae1754efabcde991b1485e73931ecac1fb54d0e358f1849b09bf66"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_iid_FR1_fr30_seed73/run_config.json",
+      "sha256": "2e33058fa4774a5a020f68564d12afa445cd72238ca7ea66cf9ecbece3e0b33c"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_iid_FR1_fr30_seed73/global_metrics.csv",
+      "sha256": "a726097d5d3dfddb7662f94c70860d89748b6d1b6495a4a368d3cfa39c55aa27"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_iid_FR1_fr30_seed73/cycle_decisions.csv",
+      "sha256": "5ada0e6c2c1838e2edf78c6098a6a21d8d00db80ba8ef708beb5decd7577bfc7"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_iid_FR1_fr30_seed73/candidate_events.csv",
+      "sha256": "d8cca2379c9094ac129980c98af789c9a6c2b5afa83dd8f6b332d3993f81207c"
+    },
+    {
+      "path": "results/v15_4_cifar10_seed73_fr30_fr40/v15_4_cifar10_iid_FR1_fr30_seed73/cycle_policy.csv",
+      "sha256": "f693a0d9b19705d41844b216a6b28dd04f7ed69d67f4e31d3366129d2b8fae85"
+    },
+    {
+      "path": "evidence/timing_mnist_20261103/std/segment_timings.csv",
+      "sha256": "c55c2e927b733487aecf3dddfc7ffe71dab2e0acb72b88f7cc3239fdd83dbc9b"
+    },
+    {
+      "path": "evidence/timing_cifar10_20261103/std/segment_timings.csv",
+      "sha256": "2e8f2b32c643b171b0bac547018a0c9da139030f07cc4920e5cef5afb5b02b97"
+    }
+  ],
+  "implementation_sha256": {
+    "server/v15_certificate_memory.py": "bd678fc1c7fd3d279836bf37f55667916bf87cf7567fe5f329bc33b88ebd4092",
+    "server/v15_protocol.py": "d9a712617554e309ddb6db1e12f1ea5feb20f0860c57432efb3e80803a64a4aa",
+    "server/v15_strict_norm.py": "65e51eaff541637159517bd27da9ab45c27fba6f519858b27c400ac53ab82833",
+    "train_v15_4.py": "69287b184df77f5b7106467b9478bee5815b8ea2cfb37e8e10984baaf20dc7b6",
+    "server/v15_evidence.py": "ac51b13801862771031798e4fbde86b54fd0101774f11a841489384605143e92",
+    "server/diagonal_decision.py": "5b103ab09cd11b749d9478e2661953db27aae72ef41671891ae24715ff872224"
+  }
+}

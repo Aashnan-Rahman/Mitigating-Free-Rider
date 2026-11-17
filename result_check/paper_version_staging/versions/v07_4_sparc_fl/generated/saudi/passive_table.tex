@@ -1,0 +1,29 @@
+\begin{table*}[t]\centering\footnotesize\setlength{\tabcolsep}{4.5pt}
+\caption{Ordinary versus challenge dispatch: matched seed-42 runs with 40\% free riders.}\label{tab:passive}
+\begin{tabular}{llcccccc@{\hspace{10pt}}c}\toprule
+& & \multicolumn{2}{c}{Completion round} & \multicolumn{2}{c}{Honest withheld (\%)} & \multicolumn{2}{c}{Final accuracy (\%)} & One-round \\
+\cmidrule(lr){3-4}\cmidrule(lr){5-6}\cmidrule(lr){7-8}
+Setting & Attack & Ordinary & Challenge & Ordinary & Challenge & Ordinary & Challenge & MAD screen \\ \midrule
+MNIST IID & FR1 & 30 & 30 & 0.0 & 11.0 & 98.92 & 98.90 & 40/40 \\
+ & FR2 & 30 & 30 & 0.0 & 11.0 & 98.93 & 98.91 & 0/40 \\
+ & FR3 & 30 & 30 & 0.0 & 11.0 & 98.94 & 98.85 & 0/40 \\
+ & FR4 & 30 & 30 & 0.0 & 11.0 & 98.82 & 98.77 & 0/40 \\
+\midrule
+MNIST non-IID & FR1 & 30 & 30 & 0.0 & 11.0 & 99.00 & 98.96 & 0/40 \\
+ & FR2 & 30 & 30 & 0.0 & 11.0 & 98.97 & 98.96 & 0/40 \\
+ & FR3 & 30 & 30 & 0.0 & 12.3 & 98.96 & 98.93 & 0/40 \\
+ & FR4 & 30 & 30 & 0.7 & 11.0 & 98.95 & 98.98 & 0/40 \\
+\midrule
+CIFAR-10 IID & FR1 & 30 & 30 & 0.0 & 11.0 & 77.27 & 77.46 & 40/40 \\
+ & FR2 & 30 & 30 & 0.0 & 11.0 & 77.45 & 77.65 & 40/40 \\
+ & FR3 & 30 & 30 & 0.0 & 11.0 & 77.33 & 77.27 & 40/40 \\
+ & FR4 & 30 & 30 & 0.0 & 11.0 & 77.31 & 77.36 & 40/40 \\
+\midrule
+CIFAR-10 non-IID & FR1 & 30 & 30 & 0.0 & 11.0 & 75.39 & 75.28 & 0/40 \\
+ & FR2 & 30 & 30 & 0.0 & 11.0 & 75.54 & 75.43 & 0/40 \\
+ & FR3 & 50 & 60 & 0.0 & 18.5 & 75.17 & 74.89 & 0/40 \\
+ & FR4 & 30 & 30 & 0.3 & 11.0 & 74.95 & 75.14 & 0/40 \\
+\bottomrule
+\end{tabular}
+\par\smallskip\parbox{.96\textwidth}{\scriptsize Both dispatch modes remove all 40 free riders and no honest client in every row. Ordinary dispatch keeps the audit schedule, response slots, statistics and confirmation rule, sends the current global model and aggregates every non-quarantined response; it uses the engine with the corrected audit clock. Challenge dispatch is the matched run of the main study. Withheld: active honest client-rounds not aggregated. One-round MAD screen: free riders flagged by a lower-tail robust norm threshold ($\alpha=0.01$) on all ordinary round-20 responses; it flags no honest client in any row.}
+\end{table*}
