@@ -5,10 +5,13 @@
 \usepackage{microtype}
 \usepackage{enumitem}
 \usepackage{needspace}
+\usepackage{booktabs}
+\usepackage{tabularx}
 \usepackage[hidelinks]{hyperref}
 \setlist{nosep,leftmargin=1.5em,topsep=3pt}
 \setlength{\parskip}{6pt}
 \setlength{\parindent}{0pt}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
 
 \newcommand{\point}[1]{\par\bigskip\needspace{6\baselineskip}\textbf{#1}\par}
 \newcommand{\sub}[1]{\par\smallskip\needspace{4\baselineskip}\textit{#1}\par}
@@ -28,10 +31,10 @@ Dear Reviewer,
 
 Thank you for the detailed review. It was very useful, and your first
 comment in particular changed the direction of the paper. Below we first
-explain the biggest change, then go through your comments one by one. For
-each, we say what we changed, what experiments are still running and why,
-and what we have not been able to address yet. Section, table and figure
-numbers refer to the revised manuscript.
+explain the biggest change and give a short overview, then go through your
+comments one by one. For each, we say what we changed, which experiments
+are scheduled and why, and what we have not addressed. Section, table and
+figure numbers refer to the revised manuscript.
 
 % ---------------------------------------------------------------------
 \point{1. We changed the title and the name of the method}
@@ -51,6 +54,23 @@ a later cycle. The traps are kept only as an optional ``challenge
 dispatch'' mode, reported together with their cost. The abstract,
 introduction, contributions and Section IV were rewritten around this, and
 Figures 2 and 3(a) were redrawn.
+
+% ---------------------------------------------------------------------
+\point{2. Overview}
+
+\begin{tabularx}{\linewidth}{@{}l Y Y@{}}
+\toprule
+Comment & Addressed in this revision & Scheduled or not addressed \\
+\midrule
+M1 Traps & Ordinary versus challenge dispatch at 40\% (Section V-H) & Same comparison at 30\%. Zero-perturbation control. Norm-only, profile-only, send-back-only and no-memory variants \\
+M2 Threat model & 5\%, 10\% and 20\% prevalence. Norm-matching diagnostic. Cohort minimum stated & Published decaying-noise and scaled-delta attacks. Full norm-matched FR4 and mixed attacks. S2-WEF not addressed \\
+M3 Baseline & Failed STD-DAGMM setup disclosed. Norm threshold. Requirement-based comparison (Section II) & STD-DAGMM check in Lin et al.'s setting. No re-implementation of methods needing extra client protocol \\
+M4 Cost & Absolute times, server-only share, withholding as its own cost & Synthetic scaling to 1,000 clients. Training gap disclosed, not explained \\
+M5 Honest harm & Four honest-only runs, per-run uncertainty & $\alpha = 0.1$ and $1.0$. Additional seeds \\
+M6 References & Rebuilt and extended & -- \\
+Minor 1--6 & All addressed & -- \\
+\bottomrule
+\end{tabularx}
 
 % ---------------------------------------------------------------------
 \point{M1. The traps are never shown to matter}
@@ -79,13 +99,18 @@ from the per-slot peer comparison and the repeated-confirmation rule, not
 from the traps and not from a single norm cut-off. You were also right that
 the additive FR4 response cancels the trap, and Section V-E now says so.
 
-\sub{Still running}
-The same comparison at 30\% free riders, so that it covers both
-prevalences used in the main study.
-
-\sub{Not addressed yet}
-The separate norm-only, profile-only, send-back-only and no-memory
-variants. Section VII-E lists them as a limitation.
+\sub{Scheduled}
+\begin{itemize}
+\item The same comparison at 30\% free riders, so it covers both
+  prevalences of the main study.
+\item A control that keeps the frozen dispatched model but sets the
+  perturbation to zero. It separates the effect of freezing the model
+  within a cycle from the effect of the noise itself.
+\item The four variants you listed: norm-only, profile-only,
+  send-back-only and no retained memory. In the norm-only and profile-only
+  variants the other statistic is switched off before nomination, not just
+  ignored afterwards, so they test each statistic on its own.
+\end{itemize}
 
 % ---------------------------------------------------------------------
 \point{M2. The threat model is too weak}
@@ -118,14 +143,20 @@ Under norm matching, the norm test caught no attacker. The profile test
 still caught 61.9\% of FR2 cases, but only 10.7\% of FR3 and 17.9\% of FR4,
 with ten honest false certificates. We report this openly as a weakness.
 
-\sub{Still running}
-The decaying-noise attack of Fraboni et al.\ and the scaled-delta attack of
-Zhu et al., because they are the published attacks closest to what you
-described and they do not rely on small updates.
+\sub{Scheduled}
+\begin{itemize}
+\item The decaying-noise attack of Fraboni et al.\ (the disguised free
+  rider) and the scaled-delta attack of Zhu et al. These are the published
+  attacks closest to your concern and do not rely on small updates.
+\item A full-model norm-matched FR4, trained end to end rather than replayed
+  on stored features, where the attacker is given the honest median norm
+  of the previous round. This is deliberately stronger than a real attacker.
+\item Mixed strategies, with FR1 to FR4 present in the same run.
+\end{itemize}
 
-\sub{Not addressed yet}
-Mixed strategies in one run, a fully trained norm-matched FR4 and the
-S2-WEF adaptive attack.
+\sub{Not addressed}
+The S2-WEF adaptive attack, which depends on the WEF client protocol
+discussed under M3.
 
 % ---------------------------------------------------------------------
 \point{M3. There is no working detection baseline}
@@ -139,12 +170,47 @@ comparison is presented only as a measurement of that setup (Section V-K).
 We added WEF-defense, S2-WEF, FLET and FLoomChecker to the related work,
 and the simple norm threshold described under M1.
 
-\sub{Not addressed yet}
-A working detection baseline. We see this as the most important remaining
-gap, especially now that the method is a statistical detector. When we add
-it, we plan to report each baseline's own decision (flag, down-weight or
-remove) and, separately, a common removal rule, so that the comparison does
-not quietly change how the baseline works.
+\sub{Why we did not re-implement the other detectors}
+SPARC-FL is meant for a specific setting: the server sees only the returned
+models, does not change what clients train on, does not ask clients for
+extra reports, and keeps its own computation small. Most of the suggested
+detectors need something outside this setting, so a matched benchmark would
+mean changing the threat model to fit each of them. Section II now sets out
+these requirements:
+\begin{itemize}
+\item \textbf{STD-DAGMM} fits an autoencoder to full update vectors every
+  round. With the encoder widths of our reproduction, its first layer alone
+  has 128 weights per model coordinate, about
+  26.5 million for our MNIST model and 79.5 million for CIFAR-10, so the
+  detector is far larger than the model it audits. Fitting took 15.76 s and
+  42.09 s per round in our runs, against 0.215 s and 0.791 s for our
+  checking.
+\item \textbf{FRIDA} needs honest clients to train on server-supplied
+  canaries, which changes their local objective, or infers properties of
+  their private data.
+\item \textbf{FRAD} relies on client-reported resource and contribution
+  information, and \textbf{PASS} on clients evaluating each other's models.
+\item \textbf{WEF-defense and S2-WEF} need clients to compute and upload
+  weight-evolution matrices, which the server cannot check against the
+  returned model. S2-WEF also simulates attack patterns on the server.
+\item \textbf{FLET and FLoomChecker} add test tasks or integrity evidence on
+  the client side.
+\end{itemize}
+For the cosine threshold you mentioned, Section V-H gives an argument rather
+than a measurement. FR4 adds the average of recent global changes, so its
+direction follows the global trend, and FR1's zero update has no direction.
+A cosine cut-off strict enough to catch FR4 would also flag non-IID honest
+clients.
+
+\sub{Scheduled}
+A check of STD-DAGMM in the setting of Lin et al.\ (MNIST, 100 clients, the
+published two-layer model and attacker), to see whether the method works
+when its own conditions are met.
+
+\sub{Not addressed}
+A matched detection benchmark against the methods above. We accept that this
+leaves the comparison partly argued rather than measured, and the paper says
+so in Section VII-E.
 
 % ---------------------------------------------------------------------
 \point{M4. The ``lightweight'' claim uses a misleading denominator}
@@ -165,13 +231,18 @@ not quietly change how the baseline works.
   unexplained, since our records cannot tell us the cause.
 \end{itemize}
 
-\sub{Still running}
-A reference run that excludes the free riders from the start, with no
-auditing at all. It separates how much accuracy we gain by removing free
-riders from how much we lose by withholding honest updates.
+\sub{Scheduled}
+\begin{itemize}
+\item A scaling test of the leave-one-out step at 100, 500 and 1,000
+  clients, timed separately for feature construction and decisions. It uses
+  synthetic client features, so it measures the server step alone.
+\item A reference run that excludes the free riders from the start, with no
+  auditing. It separates the accuracy gained by removing free riders from
+  the accuracy lost by withholding honest updates.
+\end{itemize}
 
-\sub{Not addressed yet}
-A controlled timing rerun and a scaling test beyond 100 clients.
+\sub{Not addressed}
+A controlled rerun that would explain the CIFAR-10 training-time gap.
 
 % ---------------------------------------------------------------------
 \point{M5. Honest-client harm is under-tested}
@@ -186,13 +257,15 @@ training and reference statistics. ``Unresolved'' is kept only as a
 defined label, not as an outcome, and all status terms are defined once in
 Table X.
 
-\sub{Still running}
-More repetitions of the main settings with new random seeds, to measure
-variation between runs properly. We are also completing the matching
-no-defense runs, so that every accuracy comparison has a partner.
-
-\sub{Not addressed yet}
-Stronger and weaker non-IID settings ($\alpha = 0.1$ and $1.0$).
+\sub{Scheduled}
+\begin{itemize}
+\item Stronger and weaker non-IID data ($\alpha = 0.1$ and $1.0$), each with
+  an honest-only run and runs with FR3 and FR4. False removals are expected
+  to be most likely at $\alpha = 0.1$.
+\item Repetitions of the main settings with new random seeds, to measure
+  variation between runs properly, and the remaining matched no-defense
+  runs so every accuracy comparison has a partner.
+\end{itemize}
 
 % ---------------------------------------------------------------------
 \point{M6. Reference and positioning problems}

@@ -5,9 +5,13 @@ import csv, hashlib, json, re, subprocess, html
 HERE=Path(__file__).resolve().parent; ROOT=HERE.parents[3]
 def sha(p): return hashlib.sha256(p.read_bytes()).hexdigest()
 def text(p): return p.read_text(encoding='utf-8-sig',errors='replace')
-registration=json.loads(text(ROOT/'configs/review2_registration.json'))
+import os
+# Registered sources are byte-pinned only on the experiment branch (.gitattributes).
+# When the paper is built from a separate worktree, check the experiment checkout.
+EXP=Path(os.environ.get('SPARC_EXPERIMENT_ROOT',ROOT))
+registration=json.loads(text(EXP/'configs/review2_registration.json'))
 for field in ['source_sha256','plan_sha256']:
-    for p,h in registration[field].items(): assert sha(ROOT/p)==h,p
+    for p,h in registration[field].items(): assert sha(EXP/p)==h,p
 preserved={}
 for version,stem in [('v07_1_methodology_redesign','paper_v7_1'),('v07_2_review_revision','paper_v7_2')]:
     for name in [stem+'.tex',stem+'.pdf',stem+'_all_in_one.tex',stem+'_all_in_one.pdf','refs.bib']:

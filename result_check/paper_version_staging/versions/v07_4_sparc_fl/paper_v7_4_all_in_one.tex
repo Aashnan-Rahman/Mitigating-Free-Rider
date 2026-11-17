@@ -371,6 +371,19 @@ SPARC-FL's response-only statistics and confirmation policy do not establish
 superiority to these approaches. Such a claim would require matched
 information access, attack settings and detection endpoints.
 
+These methods also differ in what they require. In our STD-DAGMM
+reproduction, the first encoder layer alone holds 128 weights per model
+coordinate (about 26.5 and 79.5 million for the two models), and fitting
+took 15.76 and 42.09 s per round, against
+0.215 and 0.791 s for SPARC-FL's checking. FRIDA trains honest clients on
+server-supplied canaries or infers private dataset properties. FRAD uses
+client-reported resource information, PASS peer evaluation, and
+WEF-defense and S2-WEF client-uploaded weight-evolution matrices that the
+server cannot check against the returned model. FLET and FLoomChecker add
+client-side test tasks or integrity evidence. SPARC-FL targets the setting
+where the server sees only returned models, so we position it by these
+requirements rather than through a matched benchmark.
+
 \section{Threat Model}\label{sec:threat}
 \subsection{Participants and Server Knowledge}
 A trusted server coordinates $N$ clients with persistent identities and
@@ -1804,7 +1817,10 @@ responses gives a simple passive reference. It flags no honest client.
 It flags every free rider only in CIFAR-10 IID and MNIST IID FR1, and none
 in the other 11 settings, because 40\% fabricated norms contaminate the
 median and MAD themselves. A single robust norm threshold therefore does
-not match the per-slot peer statistics and repeated certificates.
+not match the per-slot peer statistics and repeated certificates. We
+argue, without measuring, that a cosine threshold is similarly limited:
+FR4's update follows the recent global trend, FR1's zero update has no
+direction, and non-IID honest clients can diverge from the population.
 
 \subsection{Execution Time and Memory}
 Throughout this paper, lightweight refers to measured server computation
@@ -3903,6 +3919,8 @@ comparison covers 40\% prevalence only. Norm-only, profile-only,
 sendback-only and no-memory variants were not evaluated. No successful
 comparative detection baseline is included; the five-epoch STD-DAGMM
 recipe supplies flag diagnostics, not a ranking of detection methods.
+Methods that need canaries, client reports or peer evaluation were not
+re-implemented, for the reasons given in Section~\ref{sec:related}.
 
 Future work should compare against working detectors such as WEF-defense
 and FLET under matched endpoints~\cite{chen2022wef,guo2026flet}, and
