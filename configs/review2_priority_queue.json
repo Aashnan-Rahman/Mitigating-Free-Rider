@@ -1,10 +1,11 @@
 {
-  "description": "Review priorities first on one seed; existing matched MNIST replications and all additional multi-seed work last.",
+  "description": "Review priorities first on one seed; existing matched MNIST replications and all additional multi-seed work last. Amended 17 Nov 2026: passive 30% ablation inserted after the oracle phase.",
   "plans": [
     "configs/review2_01_honest_seed42.json",
     "configs/review2_02_low_share_seed42.json",
     "configs/review2_03_passive_seed42.json",
     "configs/review2_04_oracle_seed42.json",
+    "configs/review2_07_passive_fr30_seed42.json",
     "configs/review2_05_published_attacks_seed42.json",
     "configs/fedavg_mnist_baseline_seed73_fr30_fr40.json",
     "configs/fedavg_mnist_baseline_seed43_fr30_fr40.json",

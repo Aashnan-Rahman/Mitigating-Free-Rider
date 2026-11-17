@@ -5,9 +5,9 @@
   "queue": "configs/review2_priority_queue.json",
   "cpu_threads": 6,
   "auto_update_paper": false,
-  "description": "5 November 2026: frozen review priorities. Honest-only and low-share first, passive ablation, oracle, published attacks. Existing matched-baseline replications and five held-out seeds last. Preserve v15.4 records and checkpoint recovery.",
+  "description": "5 November 2026: frozen review priorities. Honest-only and low-share first, passive ablation, oracle, published attacks. Existing matched-baseline replications and five held-out seeds last. Preserve v15.4 records and checkpoint recovery. 17 Nov 2026: passive 30% ablation (review2_07) registered as an amendment and queued after the oracle phase.",
   "priority_handoff": {
-    "marker_content": "Owned priority handoff: review2_20261105; finish current experiment, defer remaining replication runs.",
-    "marker_path": "results/fedavg_mnist_baseline_seed43_fr30_fr40/STOP_REQUESTED"
+    "marker_content": "Owned priority handoff: queue_amendment_20261117; checkpoint current oracle round, reload queue with passive 30% phase.",
+    "marker_path": "results/review2_04_oracle_seed42/STOP_REQUESTED"
   }
 }
