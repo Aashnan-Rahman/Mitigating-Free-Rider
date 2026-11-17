@@ -16,7 +16,8 @@
     "configs/review2_03_passive_seed42.json": "f104f4d326be387520ac9fdaf4ae659309cd5e3f9d16db7cc1218ff2a886e953",
     "configs/review2_04_oracle_seed42.json": "26668756618f7bfbffc97aa5173e7bcaeccf20cb60576b547a434a13cc132c32",
     "configs/review2_05_published_attacks_seed42.json": "52c4ceba804f2b78c3c4d001f2aa894af00d329712ddfa2788d0f787f7dff6a3",
-    "configs/review2_06_heldout_multiseed_last.json": "6d6b9c1ec36abea3396056d162b36864597f4d2e4123d9638aa815a4517951ae"
+    "configs/review2_06_heldout_multiseed_last.json": "6d6b9c1ec36abea3396056d162b36864597f4d2e4123d9638aa815a4517951ae",
+    "configs/review2_07_passive_fr30_seed42.json": "321255f8403b42f11e4f8335bd237500ec0d9fe0821f6936881e0526aa0602c8"
   },
   "source_sha256": {
     "run_review2_batch.py": "0bc8ffc9fbcf53c6614409cedf88f05833dacc389a9da40c0888636fad195177",
@@ -48,5 +49,15 @@
     "change": "Evidence publication before checkpoint, rollback of uncommitted removal rows; no training, screening or confirmation change",
     "preserved_attempt": ".local_cleanup/review2_io_validation_20261105/warmup_attempt",
     "prior_phase": "warmup only; no review screening outcomes obtained"
-  }
+  },
+  "amendments": [
+    {
+      "created_utc": "2026-11-17T10:08:08.245521+00:00",
+      "prior_registration_sha256": "329b3fd281b884592a931be3856eaddb1da409562f571fd2e8ab6c3c06026ecf",
+      "added_plan": "configs/review2_07_passive_fr30_seed42.json",
+      "change": "Adds a 16-run passive ordinary-model ablation at 30% free riders (seed 42). Existing plans, sources, detector parameters and thresholds unchanged.",
+      "outcomes_available": "All review2_03 passive 40% outcomes, low-share and honest-only outcomes were observed before this amendment. The added phase extends coverage; it is not a confirmatory test of a new hypothesis.",
+      "queue_position": "after review2_04_oracle_seed42, before review2_05_published_attacks_seed42"
+    }
+  ]
 }
