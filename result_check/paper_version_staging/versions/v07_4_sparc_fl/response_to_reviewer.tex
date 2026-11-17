@@ -10,208 +10,222 @@
 \setlength{\parskip}{6pt}
 \setlength{\parindent}{0pt}
 
-\newcommand{\comment}[2]{\par\bigskip\needspace{6\baselineskip}\textbf{Comment #1: #2}\par}
-\newcommand{\response}{\par\textit{Response.}\ }
+\newcommand{\point}[1]{\par\bigskip\needspace{6\baselineskip}\textbf{#1}\par}
+\newcommand{\sub}[1]{\par\smallskip\needspace{4\baselineskip}\textit{#1}\par}
 
 \begin{document}
 
 \begin{center}
-{\large\bfseries Response to Reviewer Comments}\\[6pt]
-Original title: \emph{BaitFL: Lightweight Trap-Based Free-Rider Detection and\\
+{\large\bfseries Response to the Reviewer}\\[6pt]
+Previous title: \emph{BaitFL: Lightweight Trap-Based Free-Rider Detection and\\
 Mitigation in Federated Learning}\\[3pt]
-Revised title: \emph{SPARC-FL: Statistical Peer Auditing with Repeated\\
+New title: \emph{SPARC-FL: Statistical Peer Auditing with Repeated\\
 Confirmation for Free-Rider Detection in Federated Learning}
 \end{center}
 
 \bigskip
 Dear Reviewer,
 
-Thank you for your detailed and careful review of our manuscript. Your
-comments identified the most important weakness of the previous version,
-namely that the experiments did not test whether the traps themselves
-contribute to detection. We carried out that test for this revision. It
-showed that, for the attacks and settings we studied, the traps do not
-improve detection. We have therefore revised the paper substantially. The
-method is now presented as a statistical peer-auditing procedure with
-repeated confirmation, and it has been renamed SPARC-FL. Perturbed
-challenge models are retained only as an optional dispatch mode, reported
-together with their measured cost.
-
-Our responses to each comment follow. Section, table and figure numbers
-refer to the revised manuscript.
+Thank you for the detailed review. It was very useful, and your first
+comment in particular changed the direction of the paper. Below we first
+explain the biggest change, then go through your comments one by one. For
+each, we say what we changed, what experiments are still running and why,
+and what we have not been able to address yet. Section, table and figure
+numbers refer to the revised manuscript.
 
 % ---------------------------------------------------------------------
-\comment{M1}{The traps are never shown to matter}
+\point{1. We changed the title and the name of the method}
 
-\response We agree with this comment, and the new experiment confirms it.
-We compared the original procedure, now called challenge dispatch, with an
-ordinary-dispatch variant. The two differ only in the model sent to the
-audit slots and in whether those responses are aggregated. Ordinary
-dispatch keeps the same audit schedule,
-response slots, norm and profile statistics, send-back check and removal
-rule, but sends the current global model and withholds no responses. The
-comparison covers both datasets, both partitions and all four attacks at
-40\% free riders, with each run matched to the corresponding run of the
-main study.
+You pointed out that nothing in the paper showed the traps actually help.
+We ran that test (details under M1), and they do not, at least for the
+attacks and settings we studied. Sending the ordinary model in place of the
+trap catches exactly the same free riders, and it does not throw away
+about 11\% of honest training.
 
-The results are reported in Section V-H, Table VI and Figure 6. Both
-variants removed all 640 free riders and no honest client. Detection was
-completed in the same round in 15 of the 16 settings, and ordinary dispatch
-was faster in the remaining one (round 50 rather than 60). Final accuracy
-differed by at most 0.3 percentage points. Ordinary dispatch withheld at
-most 0.7\% of honest client-rounds, compared with 11\% to 18.5\% under
-challenge dispatch.
-
-We also evaluated the simple norm threshold suggested in your report, a
-one-round robust (median and MAD) screen on the same ordinary responses.
-It flagged no honest client, but identified all free riders in only 5 of
-the 16 settings, because a large share of fabricated updates distorts the
-median and MAD themselves. Detection therefore comes from the per-slot
-peer statistics and the repeated-certificate rule rather than from the
-traps or from a single norm threshold.
-
-You also pointed out that the additive FR4 response cancels the trap. We
-agree, and Section V-E now states this explicitly. In response to this
-comment we have changed the title and the method name, rewritten the
-abstract, introduction and contributions, and restructured Section IV
-around audit slots that may carry either the ordinary model or a
-challenge. Figures 2 and 3(a) were redrawn accordingly.
-
-The norm-only, profile-only, send-back-only and no-memory variants you
-proposed were not evaluated in this revision. Section VII-E lists them as
-a limitation.
+Since the paper could no longer honestly be called ``trap-based'', we
+renamed the method SPARC-FL (Statistical Peer Auditing with Repeated
+Confirmation) and changed the title. The contribution is now what the
+evidence supports: comparing each client's update with peers, and removing
+a client only when the same evidence comes back on two audit slots and in
+a later cycle. The traps are kept only as an optional ``challenge
+dispatch'' mode, reported together with their cost. The abstract,
+introduction, contributions and Section IV were rewritten around this, and
+Figures 2 and 3(a) were redrawn.
 
 % ---------------------------------------------------------------------
-\comment{M2}{The threat model is too weak to support the detection claims}
+\point{M1. The traps are never shown to matter}
 
-\response We accept that the original evaluation covered only large,
-homogeneous and non-adaptive attacker groups. We made three additions.
+\sub{What we did}
+We ran the ablation you asked for. The ordinary-dispatch version keeps
+everything the same (audit schedule, response slots, norm and profile
+statistics, send-back check and removal rule) but sends the normal global
+model and aggregates the responses. We matched it against the original
+runs on both datasets, both partitions and all four attacks with 40\%
+free riders (Section V-H, Table VI, Figure 6).
 
-First, we evaluated lower prevalence. We ran 5\%, 10\% and 20\% free riders
-for all four attacks on both datasets and both partitions (Section V-G,
-Table V). At 5\%, FR2 to FR4 were not removed in any setting, and only FR1
-was removed through the exact send-back check. At 10\% and 20\%, all free
-riders were removed. One honest client was removed across these runs. As
-you anticipated, the cohort-support rule is the reason for the misses at
-5\%. The abstract now states that statistical certification requires a
-nominated cohort of at least ten clients when 100 clients are active. One
-qualification is that the rule constrains the size of the nominated cohort
-rather than the number of free riders, so a small group could in principle
-be certified within a larger mixed cohort. This did not occur in our
-experiments.
+\sub{What we found}
+Both versions removed all 640 free riders and no honest client. They
+finished in the same round in 15 of the 16 settings, and the ordinary
+version was faster in the last one (round 50 against 60). Accuracy
+differed by at most 0.3 percentage points. The ordinary version withheld
+at most 0.7\% of honest client-rounds, compared with 11\% to 18.5\% with
+traps.
 
-Second, we tested sensitivity to norm matching (Section V-F, Table IV). We
-replayed all 72 initial FR2 to FR4 decisions from the main study after
-replacing each free rider's update norm with the honest median, which gives
-the attacker more information than it would normally have. The norm test
-then certified no attacker. The profile test still certified 61.9\% of
-FR2 cases, but only 10.7\% of FR3 and 17.9\% of FR4 cases, with ten honest
-certificates in total. We report this as a clear limitation of the method.
+We also tried the simple norm threshold you suggested, a one-round robust
+screen using the median and MAD. It flagged no honest client but caught all
+free riders in only 5 of the 16 settings, because with so many fabricated
+updates the median and MAD are pulled towards them. So the detection comes
+from the per-slot peer comparison and the repeated-confirmation rule, not
+from the traps and not from a single norm cut-off. You were also right that
+the additive FR4 response cancels the trap, and Section V-E now says so.
 
-Third, Section VII-D now explains that colluding clients can compare the
-hashes of the models they receive, so undisclosed challenges are not a
-defence against collusion, and that copying another client's update
-cancels a challenge in the same way as FR4.
+\sub{Still running}
+The same comparison at 30\% free riders, so that it covers both
+prevalences used in the main study.
 
-Mixed attack strategies within one run, a fully trained norm-matched FR4,
-the disguised free rider of Fraboni et al.\ and the S2-WEF adaptive attack
-are not included in this revision. Experiments with the published
-decaying-noise and scaled-delta attacks are in progress and will be reported
-once they are complete.
+\sub{Not addressed yet}
+The separate norm-only, profile-only, send-back-only and no-memory
+variants. Section VII-E lists them as a limitation.
 
 % ---------------------------------------------------------------------
-\comment{M3}{There is no working detection baseline}
+\point{M2. The threat model is too weak}
 
-\response We agree that a reimplementation which flags none of the free
-riders cannot serve as a detection baseline. The manuscript now describes
-our five-epoch STD-DAGMM recipe as an unsuccessful reproduction of that
-baseline, separates our chosen fitting budget from the published method,
-and makes no claim of better detection. The timing comparison is presented
-only as a measurement of that particular recipe (Section V-K). We added
-WEF-defense, S2-WEF, FLET and FLoomChecker to the related work (Section II)
+\sub{What we did}
+\begin{itemize}
+\item \textbf{Lower prevalence.} We ran 5\%, 10\% and 20\% free riders for
+  all four attacks on both datasets and partitions (Section V-G, Table V).
+\item \textbf{Norm matching.} We replayed all 72 initial FR2 to FR4
+  decisions from the main study with each free rider's norm replaced by the
+  honest median, which gives the attacker extra information (Section V-F,
+  Table IV).
+\item \textbf{Collusion.} Section VII-D now says that colluders can compare
+  hashes of the models they receive, and that copying another client's
+  update cancels a trap just as FR4 does. We make no collusion claim.
+\end{itemize}
+
+\sub{What we found}
+Your concern was correct. At 5\%, FR2 to FR4 were not caught in any
+setting, and only FR1 was removed through the exact send-back check. At
+10\% and 20\% all free riders were removed, with one honest removal across
+all of these runs. The misses at 5\% come from the cohort-support rule,
+and the abstract now states that statistical removal needs a nominated
+group of at least ten clients when 100 are active. One small note: the
+rule limits the size of the nominated group rather than the number of free
+riders, so a few free riders could in principle be caught inside a larger
+mixed group. That did not happen in our runs.
+
+Under norm matching, the norm test caught no attacker. The profile test
+still caught 61.9\% of FR2 cases, but only 10.7\% of FR3 and 17.9\% of FR4,
+with ten honest false certificates. We report this openly as a weakness.
+
+\sub{Still running}
+The decaying-noise attack of Fraboni et al.\ and the scaled-delta attack of
+Zhu et al., because they are the published attacks closest to what you
+described and they do not rely on small updates.
+
+\sub{Not addressed yet}
+Mixed strategies in one run, a fully trained norm-matched FR4 and the
+S2-WEF adaptive attack.
+
+% ---------------------------------------------------------------------
+\point{M3. There is no working detection baseline}
+
+\sub{What we did}
+We agree that a baseline which flags no free rider is not a useful
+comparison. The paper now says plainly that our five-epoch STD-DAGMM setup
+did not work as a detector, keeps our chosen training budget separate from
+the original method, and makes no claim of better detection. The timing
+comparison is presented only as a measurement of that setup (Section V-K).
+We added WEF-defense, S2-WEF, FLET and FLoomChecker to the related work,
 and the simple norm threshold described under M1.
 
-A faithful STD-DAGMM configuration and comparisons with WEF-defense and a
-cosine threshold are not yet included, and Section VII-E acknowledges this.
-Since the method is now positioned as a statistical detector, we regard
-such a comparison as the most important remaining work. Regarding a common
-endpoint, we intend to report each baseline's own decision (flagging,
-down-weighting or removal) alongside a separately declared common removal
-rule, so that the comparison does not alter the baseline method itself.
+\sub{Not addressed yet}
+A working detection baseline. We see this as the most important remaining
+gap, especially now that the method is a statistical detector. When we add
+it, we plan to report each baseline's own decision (flag, down-weight or
+remove) and, separately, a common removal rule, so that the comparison does
+not quietly change how the baseline works.
 
 % ---------------------------------------------------------------------
-\comment{M4}{The lightweight claim uses a misleading denominator}
+\point{M4. The ``lightweight'' claim uses a misleading denominator}
 
-\response We agree with this comment. The abstract now reports absolute
-checking times of 215 ms per round on MNIST and 791 ms on CIFAR-10. It
-expresses their share relative to server-side work only, at about 88\% and
-89\% of checking plus aggregation, rather than relative to the simulated
-total. The term ``lightweight'' is defined once and restricted to measured
-server computation at 100 clients (Section V-I).
+\sub{What we did}
+\begin{itemize}
+\item The abstract now gives absolute checking times, 215 ms per round on
+  MNIST and 791 ms on CIFAR-10, and compares them with server-side work only
+  (about 88\% and 89\% of checking plus aggregation), not with the whole
+  simulation.
+\item ``Lightweight'' is defined once, as measured server computation at
+  100 clients (Section V-I).
+\item Withheld honest training is reported as a separate cost (Section
+  V-D). As M1 shows, ordinary dispatch removes almost all of it.
+\item Section V-K explains that client diagnostic evaluation is only
+  simulator bookkeeping, is not needed in deployment and is left out of
+  checking time. The 8.95 s CIFAR-10 training gap is reported as
+  unexplained, since our records cannot tell us the cause.
+\end{itemize}
 
-Withheld honest training is now reported as a separate cost (Section V-D).
-The ablation under M1 shows that ordinary dispatch avoids almost all of
-this cost without loss of detection. Section V-K explains that client
-diagnostic evaluation is simulator bookkeeping, that it is not part of
-a deployment, and that it is excluded from checking time. It also
-discloses the 8.95 s difference in honest CIFAR-10 training time as
-unexplained, since the stored records do not identify its cause. A
-controlled timing rerun and a scaling test of the leave-one-out step
-beyond 100 clients were not carried out for this revision.
+\sub{Still running}
+A reference run that excludes the free riders from the start, with no
+auditing at all. It separates how much accuracy we gain by removing free
+riders from how much we lose by withholding honest updates.
 
-% ---------------------------------------------------------------------
-\comment{M5}{Honest-client harm is under-tested}
-
-\response We added four runs without free riders covering both datasets
-and both partitions (Section V-G). None removed an honest client. We report
-this as evidence from four federations. The exact 95\% interval for the
-probability of any honest removal per run is $[0, 0.60]$, which is wide. We
-deliberately do not treat the 6,240 honest client-cases of the main study
-as independent trials, because clients in the same federation share
-training and reference statistics, and doing so would understate the
-uncertainty. The ``unresolved'' status is retained only as a defined
-operational label and is not used as an outcome or classifier (Table X).
-
-Additional Dirichlet concentrations ($\alpha = 0.1$ and $1.0$) were not
-evaluated in this revision and are listed in Section VII-E.
+\sub{Not addressed yet}
+A controlled timing rerun and a scaling test beyond 100 clients.
 
 % ---------------------------------------------------------------------
-\comment{M6}{Reference and positioning problems}
+\point{M5. Honest-client harm is under-tested}
 
-\response All reference links were rebuilt from the bibliography source and
-checked in the compiled document. WEF-defense, S2-WEF (marked as a
-preprint), FLET and FLoomChecker were added and discussed in Section II.
-WEF-defense is cited in the form whose metadata we were able to verify.
-These works are discussed as related approaches and were not executed as
-baselines.
+\sub{What we did}
+We added four runs with no free riders, on both datasets and partitions.
+None removed an honest client (Section V-G). Four runs is a small number,
+and we say so: the exact 95\% interval for the chance of any honest removal
+in a run is $[0, 0.60]$. We do not treat the 6,240 honest client-cases in
+the main study as independent, because clients in one federation share
+training and reference statistics. ``Unresolved'' is kept only as a
+defined label, not as an outcome, and all status terms are defined once in
+Table X.
+
+\sub{Still running}
+More repetitions of the main settings with new random seeds, to measure
+variation between runs properly. We are also completing the matching
+no-defense runs, so that every accuracy comparison has a partner.
+
+\sub{Not addressed yet}
+Stronger and weaker non-IID settings ($\alpha = 0.1$ and $1.0$).
 
 % ---------------------------------------------------------------------
-\par\bigskip
-\textbf{Minor comments}
+\point{M6. Reference and positioning problems}
+
+All reference links were rebuilt from the bibliography and checked in the
+compiled PDF. WEF-defense, S2-WEF (marked as a preprint), FLET and
+FLoomChecker were added to Section II. We cite WEF-defense in the version
+whose details we could verify. These works are discussed as related
+approaches and were not run as baselines.
+
+% ---------------------------------------------------------------------
+\point{Minor comments}
 \begin{enumerate}
-\item The abstract now states the minimum cohort size, the withheld honest
-  training under challenge dispatch and the non-adaptive attacker model.
-\item Client diagnostic evaluation is explained in Section V-K. It is not
-  required in a deployment.
-\item ``Lightweight'' is defined as measured server computation at
-  $N = 100$.
+\item The abstract now states the minimum group size, the withheld
+  training under traps and that the attackers are non-adaptive.
+\item Client diagnostic evaluation is explained in Section V-K and is not
+  needed in deployment.
+\item ``Lightweight'' means measured server computation at $N = 100$.
 \item The equations and Table I were rebuilt directly in LaTeX and checked
-  in the compiled document.
-\item The captions of the score plots (Figure 3(b) and Appendix Figures 11
-  and 12) state that they show averaged coordinates rather than the
-  individual per-slot certificate tests.
+  in the PDF.
+\item The captions of the score plots (Figure 3(b) and Figures 11 and 12)
+  now say they show averaged coordinates, not the per-slot tests.
 \item Evidence outcomes and participation states are defined once in
   Table X and used consistently.
 \end{enumerate}
 
 \par\bigskip\needspace{9\baselineskip}
-We are grateful for the time and care you put into this review. It led
-directly to the central result of the revision, even though that result
-was not the one we expected, and we believe the paper is more accurate as
-a consequence.
+Thank you again for the time you put into this review. It led to the main
+result of this revision, even if it was not the result we were hoping for,
+and the paper is more accurate because of it.
 
 \par\bigskip
-Sincerely,\\
+Best regards,\\
 Aashnan Rahman
 
 \end{document}
