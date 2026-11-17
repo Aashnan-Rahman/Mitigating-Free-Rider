@@ -2,12 +2,12 @@
   "auto_resume": true,
   "workflow": "v15_detection",
   "plan": "configs/review2_01_honest_seed42.json",
-  "queue": "configs/review3_priority_queue.json",
+  "queue": "configs/review3_priority_queue_amended_20261117.json",
   "cpu_threads": 6,
   "auto_update_paper": false,
-  "description": "12 November 2026 amendment: finish registered low-share/passive, isolated analyses and separate Block B, published attacks, oracle/baselines, all registered held-out seeds last. No original detector/source/plan changes.",
+  "description": "12 November 2026 amendment: finish registered low-share/passive, isolated analyses and separate Block B, published attacks, oracle/baselines, all registered held-out seeds last. No original detector/source/plan changes. 17 Nov 2026: activated on this machine; queue adds review2_07 passive 30% after the 40% passive phase.",
   "priority_handoff": {
-    "marker_content": "Owned priority handoff: review2_20261105; finish current experiment, defer remaining replication runs.",
-    "marker_path": "results/fedavg_mnist_baseline_seed43_fr30_fr40/STOP_REQUESTED"
+    "marker_content": "Owned priority handoff: review3_activation_20261117; checkpoint the paused oracle run and reload the amended review3 queue.",
+    "marker_path": "results/review2_04_oracle_seed42/STOP_REQUESTED"
   }
 }
