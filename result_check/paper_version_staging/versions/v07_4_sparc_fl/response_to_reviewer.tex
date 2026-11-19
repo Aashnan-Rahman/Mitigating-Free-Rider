@@ -1,158 +1,206 @@
 \documentclass[11pt,a4paper]{article}
 \usepackage[margin=2.5cm]{geometry}
 \usepackage[T1]{fontenc}
-\usepackage{lmodern,microtype,booktabs,tabularx}
-\usepackage[hidelinks]{hyperref}
+\usepackage{lmodern,microtype,booktabs,longtable,array}
 \setlength{\parskip}{6pt}
 \setlength{\parindent}{0pt}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
 
 \begin{document}
 
-{\Large\bfseries Response to the reviewer\par}
-\textit{SPARC-FL, manuscript revision v7.4}
-
 Thank you for the detailed review.
 
-In v7.4, we renamed the method from BaitFL to SPARC-FL (Statistical Peer
-Auditing with Repeated Confirmation). The revision describes how the server
-compares updates with peers and requires fresh evidence across cycles before
-removing a client. Perturbed models are now presented as an optional
-challenge mode. Section and table references below are to v7.4. Experiment
-updates are current as of 19 November 2026.
+In the latest version (v7.4), the method was renamed from BaitFL to
+SPARC-FL (Statistical Peer Auditing with Repeated Confirmation) because
+the ordinary global model achieved the same removal results as perturbed
+challenges in the matched tests. The manuscript now focuses on comparing
+client updates with their peers and requiring fresh evidence across cycles
+before removal. Perturbed challenges are presented as an optional mode.
 
-\section*{M1. Do traps improve detection?}
+\section*{M1. Role of challenges}
 
-\textbf{What we did.} We kept the peer statistics and confirmation rule
-and ran a version that sends the ordinary global model. This version can
-aggregate the sampled responses when the clients are eligible. We compared
-it with the challenge version on MNIST and CIFAR-10, under IID and non-IID
-partitions, for FR1 through FR4. Section V-H and Table VI report the 40\%
-comparison. The 30\% comparison finished after the v7.4 evidence cutoff.
+An ordinary-dispatch version was tested using the same audit slots, peer
+statistics, exact sendback check and confirmation rule as the challenge
+version. The ordinary global model was sent in the selected slots, and
+eligible responses could still be aggregated. Section V-H and Table VI
+cover the 40\% comparison. The 30\% comparison finished after the v7.4
+evidence cutoff.
 
-\textbf{What we found.} Across the 32 matched settings at seed 42, each
-mode removed all 1,120 free riders with zero honest removals. Completion
-rounds matched in 30 settings. For CIFAR-10 non-IID FR3, ordinary dispatch
-removed the last free rider by round 30 versus 80 at 30\% prevalence and
-round 50 versus 60 at 40\%. At 40\%, ordinary dispatch withheld at most
-0.7\% of honest client-rounds, compared with about 11\% to 18.5\% with
-challenges. These results support the revised focus on peer auditing and
-confirmation. The contribution of each statistic and the confirmation
-rule is still being tested.
+Across 32 matched seed-42 settings on MNIST and CIFAR-10, each mode removed
+all 1,120 free riders with zero honest removals. Completion rounds matched
+in 30 settings. Ordinary dispatch finished earlier in CIFAR-10 non-IID
+FR3, at round 30 versus 80 at 30\% prevalence and round 50 versus 60 at 40\%.
+At 40\%, ordinary dispatch withheld at most 0.7\% of honest client-rounds,
+compared with about 11\% to 18.5\% with challenges.
 
-\textbf{What is running.} The zero-perturbation control keeps the frozen
-model and challenge schedule but removes the perturbation. Five of 16
-runs are complete. On MNIST non-IID at 40\%, this control removed 27 of
-40 FR3 free riders and 6 of 40 FR4 free riders. Both ordinary dispatch
-and perturbed challenges removed all 40 in these settings. Perturbation
-helped relative to the frozen, unperturbed model in those two cases.
-Sending the ordinary model also worked.
-
-In FR4, subtracting the dispatched model cancels its direct addition.
-The models the client receives also enter its history and can affect its
-fabricated update and noise scale. This is why the three dispatch conditions
-are useful to compare.
+The control that sends frozen models with zero perturbation is running.
+Seven of 16 runs are complete, with MNIST IID FR4 in progress. MNIST IID FR3 finished with 40/40 free riders removed and zero honest removals. On MNIST
+non-IID at 40\%, this control removed 27/40 FR3 and 6/40 FR4 free riders.
+Both ordinary dispatch and perturbed challenges removed 40/40 in those
+settings. For FR4, the dispatched model cancels when the server computes
+the delta, while received models can still affect the client's
+history-derived update and noise scale. The next runs test norm only,
+profile only, exact sendback only, and confirmation without retained
+evidence across ambiguous cycles.
 
 \section*{M2. Threat model and low prevalence}
 
-\textbf{What we did.} We completed 48 runs at 5\%, 10\% and 20\%
-prevalence. We also replayed 72 initial FR2--FR4 decisions with each free
-rider's norm replaced by the honest median for that slot (Sections V-F
-and V-G).
+The lower-prevalence evaluation covered 48 runs at 5\%, 10\% and 20\%.
+A separate replay covered 72 initial FR2--FR4 decisions, replacing each
+free rider's norm with the honest median for that slot. The cohort
+minimum and the risk of clients comparing received models are described
+in the manuscript.
 
-\textbf{What we found.} The entries below count permanent removals.
-
-\begin{center}
-\begin{tabular}{@{}lrr@{}}
-\toprule
-Free-rider share & Free riders removed & Honest clients removed \\
-\midrule
-5\%  & 20/80   & 0 \\
-10\% & 160/160 & 1 \\
-20\% & 320/320 & 0 \\
-\bottomrule
-\end{tabular}
-\end{center}
-
-At 5\%, all removals came from the exact sendback check for FR1.
-FR2--FR4 were missed in every setting. At 100 active clients, statistical
-certification requires at least ten nominated clients. A smaller attacker
-group could qualify as part of a larger mixed cohort.
+At 5\%, only the 20 FR1 free riders were removed, through exact sendback.
+All 60 FR2--FR4 free riders were missed. Removal was complete at 10\%
+(160/160) and 20\% (320/320), with one honest removal at 10\%. At 100
+active clients, the statistical rule requires ten nominated clients.
+A smaller attacker group can qualify as part of a larger mixed cohort.
 
 In the norm-matching replay, the norm channel issued zero attacker
-certificates. Profile certificates covered 61.9\% of FR2, 10.7\% of FR3
-and 17.9\% of FR4, with ten honest certificates. These are initial-cycle
-results. End-to-end tests of norm-matched FR4, mixed strategies and
-published decaying-noise and scaled-delta attacks are queued. The paper
-also discusses the risk of clients comparing the models they receive.
+certificates. The profile channel covered 61.9\% of FR2, 10.7\% of FR3
+and 17.9\% of FR4, with ten honest certificates. These are first-cycle
+results. Full-model norm-matched FR4, mixed strategies, and published
+decaying-noise and scaled-delta attacks are queued.
 
 \section*{M3. Detection baselines}
 
-\textbf{What we did.} We reported the zero attacker flags from the
-five-epoch STD-DAGMM setup and scoped its timing comparison to that setup
-(Section V-K). We also tested a median-and-MAD norm screen on ordinary
-updates. It flagged no honest client and caught all free riders in 5 of
-16 settings at round 20. Those are roundwise flags.
+The five-epoch STD-DAGMM setup flagged zero attacker responses. Its timing
+comparison in Section V-K is limited to that setup. A median-and-MAD
+norm screen on ordinary updates flagged all free riders in 5 of 16
+settings at round 20, with zero honest flags. Those flags are a separate
+endpoint from permanent removal.
 
-\textbf{New findings.} Two ten-round STD-DAGMM validation runs in an
-approximation of Lin et al.'s MNIST setting are complete. At a global
-learning rate of 0.3, mean AUROC was 1.00 and the chosen threshold flagged
-the free-rider response in all ten rounds. At 1.0, mean AUROC was 0.54 and
-it flagged the free-rider response in four rounds. These results show how
-much the reproduction depends on the setting. A matched detection
-benchmark is still open. WEF-Defense and S2-WEF require clients to upload
-weight-evolution matrices, so their information requirements would need
-to be stated in a comparison.
+Two ten-round STD-DAGMM checks using an approximation of Lin et al.'s
+MNIST setting are complete. At global learning rate 0.3, mean AUROC was
+1.00 and the chosen threshold flagged the free-rider response in all ten
+rounds. At 1.0, mean AUROC was 0.54 and it was flagged in four rounds.
+
+A matched detection benchmark remains open. The related-work section
+describes the information each method uses. For example, WEF-Defense
+and S2-WEF require clients to upload weight-evolution matrices. A
+comparison would need to account for that additional information.
 
 \section*{M4. Cost and scaling}
 
-\textbf{What we did.} We report 215 ms and 791 ms of checking per round on
-MNIST and CIFAR-10, respectively, in the instrumented 100-client runs.
-That is about 88\% and 89\% of checking plus aggregation, excluding client
-training, evaluation and I/O. The paper reports withheld honest responses
-as a separate cost. Client diagnostic evaluation measures fabricated
-responses for simulator reporting. The detector does not use it.
-The roughly 8.95 s CIFAR-10 honest-training gap remains unexplained by
-the timing logs.
+The instrumented 100-client runs measured 215 ms of checking per round
+on MNIST and 791 ms on CIFAR-10. These represent about 88\% and 89\% of
+checking plus aggregation, respectively. Withheld honest responses are
+reported separately. Client diagnostic evaluation measures fabricated
+responses for simulator reporting, outside the detector.
 
-\textbf{New findings.} In the completed synthetic scaling test with eight
-features and one PyTorch thread, leave-one-out feature construction took
-about 0.29, 6.93 and 27.93 seconds at 100, 500 and 1,000 clients.
-The decision step took about 0.03, 0.14 and 0.27 seconds. These measurements
-cover one synthetic audit cycle and help explain why the 100-client
-round timings should not be extrapolated directly. Four of twelve oracle
-utility reference runs are also complete. These runs exclude known free
-riders before training.
+A synthetic scaling test with eight features and one PyTorch thread is
+complete. Leave-one-out feature construction took about 0.29, 6.93 and
+27.93 seconds at 100, 500 and 1,000 clients, respectively. The decision
+step took about 0.03, 0.14 and 0.27 seconds. These measurements cover
+one synthetic audit cycle.
+
+Four of twelve oracle utility reference runs are complete. These runs
+exclude known free riders before training and provide a reference for
+model accuracy. The timing logs leave the roughly 8.95 s CIFAR-10
+honest-training gap unexplained.
 
 \section*{M5. Honest-client removals}
 
-The four honest-only runs finished with zero removals. Four runs still
-leave substantial uncertainty. In the low-prevalence tests, the one
-honest removal occurred in CIFAR-10 non-IID FR3 at 10\%. The paper defines
-unresolved evidence separately from review, quarantine and removal
-(Table X). Honest-only and attack runs at $\alpha=0.1$ and $1.0$ are
-queued, followed later by the registered held-out seed block.
+Four honest-only runs were completed across MNIST and CIFAR-10 with IID
+and non-IID partitions. Table X defines unresolved evidence, review,
+quarantine and removal separately.
 
-\section*{M6 and minor comments}
+No honest clients were removed in the four honest-only runs. One honest
+client was removed in the low-prevalence evaluation, in CIFAR-10 non-IID
+FR3 at 10\%. The small number of honest-only runs leaves substantial
+uncertainty about the rate in other settings.
 
-We rebuilt the bibliography links and checked them in the PDF.
-Section II discusses WEF-Defense, S2-WEF, FLET and FLoomChecker and
-describes their information requirements. The abstract states the
-cohort minimum, the cost of withholding responses under challenges,
-and the non-adaptive scope of the main attacks. We checked the equations
-and Table I in the compiled PDF. The score-plot captions distinguish the
-averaged coordinates from the individual slot tests.
+Honest-only and attack runs at $\alpha=0.1$ and $1.0$ are queued to test
+different degrees of non-IID data. The registered held-out seed block
+remains last, after the remaining utility and no-defense comparisons.
+
+\section*{M6. References and positioning}
+
+The bibliography links were rebuilt and checked in the compiled PDF.
+Section II was expanded to cover WEF-Defense, S2-WEF, FLET and
+FLoomChecker.
+
+The related-work discussion describes the information and computation
+each method requires. It distinguishes client-reported weight-evolution
+matrices, additional test tasks and integrity evidence from the returned
+model updates used by SPARC-FL.
+
+The revised positioning reflects the completed dispatch comparison.
+Any future empirical comparison with these methods can be reported
+alongside the information available to each detector and its decision
+endpoint.
+
+\section*{Minor comments}
+
+The abstract now states the cohort minimum, the cost of withholding
+responses under challenges and the non-adaptive scope of the main
+attacks. Section V-K explains the simulator's client diagnostic
+evaluation.
+
+The equations and Table I were checked in the compiled PDF. The
+score-plot captions explain that the plotted coordinates average the
+two slots. Table X defines the evidence outcomes and participation
+states used in the text.
+
+The manuscript reports the cost measurements with their dataset and
+100-client scope. The separate scaling results above give an initial
+measure of how the work grows with client count.
+
 
 \section*{Summary}
 
-v7.4 centers the paper on peer auditing and repeated confirmation.
-The completed 30\% and 40\% comparisons show equal removal performance
-with and without challenges on seed 42. The 5\% tests show a clear
-limitation for FR2--FR4. We are currently running the frozen-model
-zero-perturbation controls. Next are the norm-only, profile-only,
-sendback-only and no-retained-memory runs. Published and stronger attack
-tests, the heterogeneity and perturbation sweeps, the remaining utility
-and no-defense comparisons, and the held-out seed block follow in the
-queue.
+\small
+\begin{longtable}{@{}L{.20\textwidth} L{.43\textwidth} L{\dimexpr.37\textwidth-4\tabcolsep\relax}@{}}
+\toprule
+Review point & Changes and results & Current or planned work \\
+\midrule
+\endhead
+M1. Role of challenges &
+Ordinary dispatch matched removals at both shares and completed two
+CIFAR-10 FR3 settings earlier. The method was renamed and the claim about
+challenges was narrowed. &
+Zero-perturbation controls are running. Component and memory comparisons
+are next. The perturbation sweep is queued. \\
+\addlinespace
+M2. Threat model &
+48 lower-prevalence runs are complete. Removals were 20/80 at 5\%,
+160/160 at 10\%, and 320/320 at 20\%. In the 72-case first-cycle
+norm-matching replay, the norm channel issued no attacker certificates.
+Profile coverage was 61.9\%, 10.7\%, and 17.9\% for FR2, FR3, and FR4,
+with ten honest certificates. &
+Published decaying-noise and scaled-delta attacks, norm-matched FR4,
+and mixed strategies are queued. \\
+\addlinespace
+M3. Detection baselines &
+A round-20 median-and-MAD screen flagged all free riders in 5/16 settings
+and no honest clients. In the two Lin-like STD-DAGMM checks, mean AUROC
+was 1.00 at global learning rate 0.3 and 0.54 at 1.0. &
+A matched detection benchmark remains open. The manuscript reports the
+information requirements of WEF-Defense and S2-WEF. \\
+\addlinespace
+M4. Cost and scaling &
+At 100 clients, checking averaged 215 ms on MNIST and 791 ms on CIFAR-10
+per round, about 88\% and 89\% of checking plus aggregation. In the
+synthetic audit, leave-one-out feature construction took about 0.29,
+6.93, and 27.93 s at 100, 500, and 1,000 clients. &
+Four of twelve oracle utility reference runs are complete. The timing
+logs leave the 8.95 s CIFAR-10 honest-training gap unexplained. \\
+\addlinespace
+M5. Honest-client removals &
+No clients were removed in the four honest-only runs. One honest client
+was removed in the 10\% CIFAR-10 non-IID FR3 run. &
+Tests with $\alpha=0.1$ and $1.0$ are queued. The held-out seeds remain
+last, after the remaining utility and no-defense comparisons. \\
+\addlinespace
+M6 and minor comments &
+Bibliography links and PDF rendering were checked. Related work was
+expanded, participation states were defined, and score-plot captions
+were clarified. &
+\\
+\bottomrule
+\end{longtable}
+\normalsize
 
 Please let me know if there are further things you would like us to address.
 
