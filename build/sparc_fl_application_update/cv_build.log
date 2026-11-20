@@ -1,0 +1,252 @@
+perl: warning: Setting locale failed.
+perl: warning: Please check that your locale settings:
+	LC_ALL = "C.UTF-8",
+	LC_CTYPE = "C",
+	LC_NUMERIC = "C",
+	LC_COLLATE = "C",
+	LC_TIME = (unset),
+	LC_MONETARY = (unset),
+	LANG = "C.UTF-8"
+    are supported and installed on your system.
+perl: warning: Falling back to the system default locale ("English_United States.1252").
+Initial Win CP for (console input, console output, system): (CP437, CP65001, CP1252)
+I changed them all to CP1252
+Rc files read:
+  NONE
+Latexmk: This is Latexmk, John Collins, 15 June 2025. Version 4.87.
+Latexmk: Changing directory to 'D:/Code/Mitigating Free Rider/build/sparc_fl_application_update/CV/'
+No existing .aux file, so I'll make a simple one, and require run of *latex.
+Latexmk: applying rule 'pdflatex'...
+Rule 'pdflatex':  Reasons for rerun
+Category 'other':
+  Rerun of 'pdflatex' forced or previously required:
+    Reason or flag: 'Initial setup'
+
+------------
+Run number 1 of rule 'pdflatex'
+------------
+------------
+Running 'pdflatex  -interaction=nonstopmode -halt-on-error -recorder  "2026_11_17.tex"'
+------------
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025) (preloaded format=pdflatex)
+ restricted \write18 enabled.
+entering extended mode
+(./2026_11_17.tex
+LaTeX2e <2025-11-01>
+L3 programming layer <2025-11-14>
+(d:/texlive/2025/texmf-dist/tex/latex/base/article.cls
+Document Class: article 2025/01/22 v1.4n Standard LaTeX document class
+(d:/texlive/2025/texmf-dist/tex/latex/base/size10.clo))
+(d:/texlive/2025/texmf-dist/tex/latex/geometry/geometry.sty
+(d:/texlive/2025/texmf-dist/tex/latex/graphics/keyval.sty)
+(d:/texlive/2025/texmf-dist/tex/generic/iftex/ifvtex.sty
+(d:/texlive/2025/texmf-dist/tex/generic/iftex/iftex.sty)))
+(d:/texlive/2025/texmf-dist/tex/latex/base/fontenc.sty)
+(d:/texlive/2025/texmf-dist/tex/latex/base/inputenc.sty)
+(d:/texlive/2025/texmf-dist/tex/latex/newtx/newtxtext.sty
+`newtxtext' v1.744, 2024/04/01 Text macros taking advantage of TeXGyre Termes a
+nd its extensions (msharpe)
+(d:/texlive/2025/texmf-dist/tex/latex/xpatch/xpatch.sty
+(d:/texlive/2025/texmf-dist/tex/latex/l3kernel/expl3.sty
+(d:/texlive/2025/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def))
+(d:/texlive/2025/texmf-dist/tex/latex/l3packages/xparse/xparse.sty)
+(d:/texlive/2025/texmf-dist/tex/latex/etoolbox/etoolbox.sty))
+(d:/texlive/2025/texmf-dist/tex/latex/xcolor/xcolor.sty
+(d:/texlive/2025/texmf-dist/tex/latex/graphics-cfg/color.cfg)
+(d:/texlive/2025/texmf-dist/tex/latex/graphics-def/pdftex.def)
+(d:/texlive/2025/texmf-dist/tex/latex/graphics/mathcolor.ltx))
+(d:/texlive/2025/texmf-dist/tex/latex/xkeyval/xkeyval.sty
+(d:/texlive/2025/texmf-dist/tex/generic/xkeyval/xkeyval.tex
+(d:/texlive/2025/texmf-dist/tex/generic/xkeyval/xkvutils.tex)))
+(d:/texlive/2025/texmf-dist/tex/latex/base/textcomp.sty)
+(d:/texlive/2025/texmf-dist/tex/generic/xstring/xstring.sty
+(d:/texlive/2025/texmf-dist/tex/generic/xstring/xstring.tex))
+(d:/texlive/2025/texmf-dist/tex/latex/base/ifthen.sty)
+(d:/texlive/2025/texmf-dist/tex/latex/carlisle/scalefnt.sty)
+(d:/texlive/2025/texmf-dist/tex/generic/kastrup/binhex.tex)
+(d:/texlive/2025/texmf-dist/tex/latex/fontaxes/fontaxes.sty
+(d:/texlive/2025/texmf-dist/tex/latex/figureversions/figureversions.sty)))
+(d:/texlive/2025/texmf-dist/tex/latex/titlesec/titlesec.sty)
+(d:/texlive/2025/texmf-dist/tex/latex/enumitem/enumitem.sty)
+(d:/texlive/2025/texmf-dist/tex/latex/tools/multicol.sty)
+(d:/texlive/2025/texmf-dist/tex/latex/fontawesome5/fontawesome5.sty
+(d:/texlive/2025/texmf-dist/tex/latex/l3packages/l3keys2e/l3keys2e.sty)
+(d:/texlive/2025/texmf-dist/tex/latex/fontawesome5/fontawesome5-generic-helper.
+sty (d:/texlive/2025/texmf-dist/tex/latex/fontawesome5/fontawesome5-mapping.def
+))) (d:/texlive/2025/texmf-dist/tex/latex/graphics/dvipsnam.def)
+(d:/texlive/2025/texmf-dist/tex/latex/hyperref/hyperref.sty
+(d:/texlive/2025/texmf-dist/tex/latex/kvsetkeys/kvsetkeys.sty)
+(d:/texlive/2025/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty)
+(d:/texlive/2025/texmf-dist/tex/generic/pdfescape/pdfescape.sty
+(d:/texlive/2025/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty)
+(d:/texlive/2025/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty
+(d:/texlive/2025/texmf-dist/tex/generic/infwarerr/infwarerr.sty)))
+(d:/texlive/2025/texmf-dist/tex/latex/hycolor/hycolor.sty)
+(d:/texlive/2025/texmf-dist/tex/latex/hyperref/nameref.sty
+(d:/texlive/2025/texmf-dist/tex/latex/refcount/refcount.sty)
+(d:/texlive/2025/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty
+(d:/texlive/2025/texmf-dist/tex/latex/kvoptions/kvoptions.sty)))
+(d:/texlive/2025/texmf-dist/tex/generic/stringenc/stringenc.sty)
+(d:/texlive/2025/texmf-dist/tex/latex/hyperref/pd1enc.def)
+(d:/texlive/2025/texmf-dist/tex/generic/intcalc/intcalc.sty)
+(d:/texlive/2025/texmf-dist/tex/latex/hyperref/puenc.def)
+(d:/texlive/2025/texmf-dist/tex/latex/url/url.sty)
+(d:/texlive/2025/texmf-dist/tex/generic/bitset/bitset.sty
+(d:/texlive/2025/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty)))
+(d:/texlive/2025/texmf-dist/tex/latex/hyperref/hpdftex.def
+(d:/texlive/2025/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty
+(d:/texlive/2025/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty)))
+(d:/texlive/2025/texmf-dist/tex/latex/needspace/needspace.sty)
+(d:/texlive/2025/texmf-dist/tex/latex/newtx/t1ntxtlf.fd) (./2026_11_17.aux)
+*geometry* driver: auto-detecting
+*geometry* detected driver: pdftex
+(d:/texlive/2025/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+) (d:/texlive/2025/texmf-dist/tex/latex/fontawesome5/ufontawesomefree1.fd)
+(d:/texlive/2025/texmf-dist/tex/latex/fontawesome5/ufontawesomebrands0.fd)
+(d:/texlive/2025/texmf-dist/tex/latex/fontawesome5/ufontawesomefree2.fd)
+(d:/texlive/2025/texmf-dist/tex/latex/newtx/ts1ntxtlf.fd) [1{d:/texlive/2025/te
+xmf-var/fonts/map/pdftex/updmap/pdftex.map}{d:/texlive/2025/texmf-dist/fonts/en
+c/dvips/newtx/ntx-ec-tlf.enc}{d:/texlive/2025/texmf-dist/fonts/enc/dvips/fontaw
+esome5/fa5free1.enc}{d:/texlive/2025/texmf-dist/fonts/enc/dvips/fontawesome5/fa
+5brands0.enc}{d:/texlive/2025/texmf-dist/fonts/enc/dvips/fontawesome5/fa5free2.
+enc}{d:/texlive/2025/texmf-dist/fonts/enc/dvips/tex-gyre/q-ts1.enc}] [2]
+(./2026_11_17.aux)
+
+Package rerunfilecheck Warning: File `2026_11_17.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+ )<d:/texlive/2025/texmf-dist/fonts/type1/public/fontawesome5/FontAwesome5Brand
+s-Regular.pfb><d:/texlive/2025/texmf-dist/fonts/type1/public/fontawesome5/FontA
+wesome5Free-Solid.pfb><d:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/c
+m/cmsy10.pfb><d:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.p
+fb><d:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy9.pfb><d:/tex
+live/2025/texmf-dist/fonts/type1/public/tex-gyre/qtmr.pfb><d:/texlive/2025/texm
+f-dist/fonts/type1/public/newtx/ztmb.pfb><d:/texlive/2025/texmf-dist/fonts/type
+1/public/newtx/ztmr.pfb><d:/texlive/2025/texmf-dist/fonts/type1/public/newtx/zt
+mri.pfb>
+Output written on 2026_11_17.pdf (2 pages, 195781 bytes).
+Transcript written on 2026_11_17.log.
+Latexmk: Getting log file '2026_11_17.log'
+Latexmk: Examining '2026_11_17.fls'
+Latexmk: Examining '2026_11_17.log'
+Latexmk: References changed.
+Latexmk: Log file says output to '2026_11_17.pdf'
+Latexmk: Using bibtex to make bibliography file(s).
+Latexmk: applying rule 'pdflatex'...
+Rule 'pdflatex':  Reasons for rerun
+Changed files or newly in use/created:
+  2026_11_17.aux
+  2026_11_17.out
+
+------------
+Run number 2 of rule 'pdflatex'
+------------
+------------
+Running 'pdflatex  -interaction=nonstopmode -halt-on-error -recorder  "2026_11_17.tex"'
+------------
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025) (preloaded format=pdflatex)
+ restricted \write18 enabled.
+entering extended mode
+(./2026_11_17.tex
+LaTeX2e <2025-11-01>
+L3 programming layer <2025-11-14>
+(d:/texlive/2025/texmf-dist/tex/latex/base/article.cls
+Document Class: article 2025/01/22 v1.4n Standard LaTeX document class
+(d:/texlive/2025/texmf-dist/tex/latex/base/size10.clo))
+(d:/texlive/2025/texmf-dist/tex/latex/geometry/geometry.sty
+(d:/texlive/2025/texmf-dist/tex/latex/graphics/keyval.sty)
+(d:/texlive/2025/texmf-dist/tex/generic/iftex/ifvtex.sty
+(d:/texlive/2025/texmf-dist/tex/generic/iftex/iftex.sty)))
+(d:/texlive/2025/texmf-dist/tex/latex/base/fontenc.sty)
+(d:/texlive/2025/texmf-dist/tex/latex/base/inputenc.sty)
+(d:/texlive/2025/texmf-dist/tex/latex/newtx/newtxtext.sty
+`newtxtext' v1.744, 2024/04/01 Text macros taking advantage of TeXGyre Termes a
+nd its extensions (msharpe)
+(d:/texlive/2025/texmf-dist/tex/latex/xpatch/xpatch.sty
+(d:/texlive/2025/texmf-dist/tex/latex/l3kernel/expl3.sty
+(d:/texlive/2025/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def))
+(d:/texlive/2025/texmf-dist/tex/latex/l3packages/xparse/xparse.sty)
+(d:/texlive/2025/texmf-dist/tex/latex/etoolbox/etoolbox.sty))
+(d:/texlive/2025/texmf-dist/tex/latex/xcolor/xcolor.sty
+(d:/texlive/2025/texmf-dist/tex/latex/graphics-cfg/color.cfg)
+(d:/texlive/2025/texmf-dist/tex/latex/graphics-def/pdftex.def)
+(d:/texlive/2025/texmf-dist/tex/latex/graphics/mathcolor.ltx))
+(d:/texlive/2025/texmf-dist/tex/latex/xkeyval/xkeyval.sty
+(d:/texlive/2025/texmf-dist/tex/generic/xkeyval/xkeyval.tex
+(d:/texlive/2025/texmf-dist/tex/generic/xkeyval/xkvutils.tex)))
+(d:/texlive/2025/texmf-dist/tex/latex/base/textcomp.sty)
+(d:/texlive/2025/texmf-dist/tex/generic/xstring/xstring.sty
+(d:/texlive/2025/texmf-dist/tex/generic/xstring/xstring.tex))
+(d:/texlive/2025/texmf-dist/tex/latex/base/ifthen.sty)
+(d:/texlive/2025/texmf-dist/tex/latex/carlisle/scalefnt.sty)
+(d:/texlive/2025/texmf-dist/tex/generic/kastrup/binhex.tex)
+(d:/texlive/2025/texmf-dist/tex/latex/fontaxes/fontaxes.sty
+(d:/texlive/2025/texmf-dist/tex/latex/figureversions/figureversions.sty)))
+(d:/texlive/2025/texmf-dist/tex/latex/titlesec/titlesec.sty)
+(d:/texlive/2025/texmf-dist/tex/latex/enumitem/enumitem.sty)
+(d:/texlive/2025/texmf-dist/tex/latex/tools/multicol.sty)
+(d:/texlive/2025/texmf-dist/tex/latex/fontawesome5/fontawesome5.sty
+(d:/texlive/2025/texmf-dist/tex/latex/l3packages/l3keys2e/l3keys2e.sty)
+(d:/texlive/2025/texmf-dist/tex/latex/fontawesome5/fontawesome5-generic-helper.
+sty (d:/texlive/2025/texmf-dist/tex/latex/fontawesome5/fontawesome5-mapping.def
+))) (d:/texlive/2025/texmf-dist/tex/latex/graphics/dvipsnam.def)
+(d:/texlive/2025/texmf-dist/tex/latex/hyperref/hyperref.sty
+(d:/texlive/2025/texmf-dist/tex/latex/kvsetkeys/kvsetkeys.sty)
+(d:/texlive/2025/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty)
+(d:/texlive/2025/texmf-dist/tex/generic/pdfescape/pdfescape.sty
+(d:/texlive/2025/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty)
+(d:/texlive/2025/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty
+(d:/texlive/2025/texmf-dist/tex/generic/infwarerr/infwarerr.sty)))
+(d:/texlive/2025/texmf-dist/tex/latex/hycolor/hycolor.sty)
+(d:/texlive/2025/texmf-dist/tex/latex/hyperref/nameref.sty
+(d:/texlive/2025/texmf-dist/tex/latex/refcount/refcount.sty)
+(d:/texlive/2025/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty
+(d:/texlive/2025/texmf-dist/tex/latex/kvoptions/kvoptions.sty)))
+(d:/texlive/2025/texmf-dist/tex/generic/stringenc/stringenc.sty)
+(d:/texlive/2025/texmf-dist/tex/latex/hyperref/pd1enc.def)
+(d:/texlive/2025/texmf-dist/tex/generic/intcalc/intcalc.sty)
+(d:/texlive/2025/texmf-dist/tex/latex/hyperref/puenc.def)
+(d:/texlive/2025/texmf-dist/tex/latex/url/url.sty)
+(d:/texlive/2025/texmf-dist/tex/generic/bitset/bitset.sty
+(d:/texlive/2025/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty)))
+(d:/texlive/2025/texmf-dist/tex/latex/hyperref/hpdftex.def
+(d:/texlive/2025/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty
+(d:/texlive/2025/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty)))
+(d:/texlive/2025/texmf-dist/tex/latex/needspace/needspace.sty)
+(d:/texlive/2025/texmf-dist/tex/latex/newtx/t1ntxtlf.fd) (./2026_11_17.aux)
+*geometry* driver: auto-detecting
+*geometry* detected driver: pdftex
+(d:/texlive/2025/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+) (./2026_11_17.out) (./2026_11_17.out)
+(d:/texlive/2025/texmf-dist/tex/latex/fontawesome5/ufontawesomefree1.fd)
+(d:/texlive/2025/texmf-dist/tex/latex/fontawesome5/ufontawesomebrands0.fd)
+(d:/texlive/2025/texmf-dist/tex/latex/fontawesome5/ufontawesomefree2.fd)
+(d:/texlive/2025/texmf-dist/tex/latex/newtx/ts1ntxtlf.fd) [1{d:/texlive/2025/te
+xmf-var/fonts/map/pdftex/updmap/pdftex.map}{d:/texlive/2025/texmf-dist/fonts/en
+c/dvips/newtx/ntx-ec-tlf.enc}{d:/texlive/2025/texmf-dist/fonts/enc/dvips/fontaw
+esome5/fa5free1.enc}{d:/texlive/2025/texmf-dist/fonts/enc/dvips/fontawesome5/fa
+5brands0.enc}{d:/texlive/2025/texmf-dist/fonts/enc/dvips/fontawesome5/fa5free2.
+enc}{d:/texlive/2025/texmf-dist/fonts/enc/dvips/tex-gyre/q-ts1.enc}] [2]
+(./2026_11_17.aux) )<d:/texlive/2025/texmf-dist/fonts/type1/public/fontawesome5
+/FontAwesome5Brands-Regular.pfb><d:/texlive/2025/texmf-dist/fonts/type1/public/
+fontawesome5/FontAwesome5Free-Solid.pfb><d:/texlive/2025/texmf-dist/fonts/type1
+/public/amsfonts/cm/cmsy10.pfb><d:/texlive/2025/texmf-dist/fonts/type1/public/a
+msfonts/cm/cmsy8.pfb><d:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm
+/cmsy9.pfb><d:/texlive/2025/texmf-dist/fonts/type1/public/tex-gyre/qtmr.pfb><d:
+/texlive/2025/texmf-dist/fonts/type1/public/newtx/ztmb.pfb><d:/texlive/2025/tex
+mf-dist/fonts/type1/public/newtx/ztmr.pfb><d:/texlive/2025/texmf-dist/fonts/typ
+e1/public/newtx/ztmri.pfb>
+Output written on 2026_11_17.pdf (2 pages, 196662 bytes).
+Transcript written on 2026_11_17.log.
+Latexmk: Getting log file '2026_11_17.log'
+Latexmk: Examining '2026_11_17.fls'
+Latexmk: Examining '2026_11_17.log'
+Latexmk: Log file says output to '2026_11_17.pdf'
+Latexmk: Using bibtex to make bibliography file(s).
+Latexmk: All targets (2026_11_17.pdf) are up-to-date
+Latexmk: Undoing directory change
+
+Reverting Windows console CPs to (in,out) = (437,65001)

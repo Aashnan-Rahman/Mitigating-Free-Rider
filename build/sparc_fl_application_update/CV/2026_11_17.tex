@@ -1,0 +1,246 @@
+\documentclass[10pt,letterpaper]{article}
+
+\usepackage[
+    top=1.65cm,
+    bottom=1.65cm,
+    left=1.8cm,
+    right=1.8cm,
+    footskip=0.8cm
+]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{newtxtext}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{multicol}
+\usepackage{fontawesome5}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{hyperref}
+\usepackage{needspace}
+
+\definecolor{linkColor}{RGB}{0,66,125}
+\definecolor{mutedColor}{RGB}{65,65,65}
+
+\hypersetup{
+    pdftitle={Aashnan Rahman -- Academic CV (November 2026)},
+    pdfauthor={Aashnan Rahman},
+    colorlinks=true,
+    urlcolor=linkColor
+}
+
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+\raggedright
+\setcounter{secnumdepth}{0}
+
+\titleformat{\section}
+    {\needspace{3\baselineskip}\bfseries\large}
+    {}{0pt}{}
+    [\vspace{1pt}\titlerule]
+\titlespacing{\section}{0pt}{9pt}{5pt}
+
+\newcommand{\entry}[3]{%
+    \textbf{#1}\hfill #2\\[-1pt]
+    #3
+}
+
+\newenvironment{cvitems}{%
+    \begin{itemize}[
+        leftmargin=13pt,
+        topsep=2pt,
+        itemsep=1pt,
+        parsep=0pt,
+        partopsep=0pt
+    ]
+}{\end{itemize}}
+
+\newenvironment{courseitems}{%
+    \footnotesize
+    \begin{itemize}[
+        label=$\circ$,
+        leftmargin=14pt,
+        topsep=1pt,
+        itemsep=0pt,
+        parsep=0pt,
+        partopsep=0pt
+    ]
+}{\end{itemize}}
+
+\begin{document}
+
+\begin{center}
+    {\fontsize{24pt}{26pt}\selectfont\textbf{Aashnan Rahman}}\\[7pt]
+    \faEnvelope~\href{mailto:aashnanrahman@iut-dhaka.edu}{aashnanrahman@iut-dhaka.edu}
+    \quad
+    \faGithub~\href{https://github.com/Aashnan-Rahman}{Aashnan-Rahman}
+    \quad
+    \faGraduationCap~\href{https://scholar.google.com/citations?user=fVx0lr4AAAAJ&hl=en&oi=ao}{Aashnan Rahman}
+    \quad
+    \faMapMarker*~Dhaka, Bangladesh
+\end{center}
+
+\vspace{-4pt}
+
+\section{Research Interests}
+Trustworthy Federated Learning, Computer Security, Adversarial Machine Learning, Security and Privacy in Distributed Learning, and Resource-Efficient Attack Detection. 
+%My work focuses on lightweight, deployable defenses against adversarial and non-cooperative client behavior --- label-flipping, free-riding, and related integrity threats --- in resource-constrained federated systems.
+
+\section{Education}
+\entry{Master of Science in Computer Science and Engineering}{September 2024--Present}{%
+    \textit{Islamic University of Technology (IUT), Gazipur, Bangladesh}\\[-1pt]
+    CGPA: 4.00/4.00 (coursework completed, thesis defense pending) \quad $|$ \quad Expected graduation: Early 2027\\[-1pt]
+    Thesis: \textit{A Lightweight Framework for Free-Rider Detection and Mitigation in Federated Learning.}
+}
+
+\vspace{5pt}
+
+\entry{Bachelor of Science in Computer Science and Engineering}{January 2020--June 2024}{%
+    \textit{Islamic University of Technology (IUT), Gazipur, Bangladesh}\\[-1pt]
+    CGPA: 3.97/4.00 (ranked 2nd in a class of 86)\\[-1pt]
+    Thesis: \textit{Mitigation of Label-Flipping Attacks by Local Evaluation in a Federated Learning Environment.}
+}
+
+\section{Publications and Preprints}
+\textbf{Peer-Reviewed Publication}
+\\[2pt]
+\textbf{Probabilistic Feature Imputation and Uncertainty-Aware Multimodal Federated Aggregation}\hfill 2026\\[-1pt]
+N. F. Shahid, M. Ahmed, M. A. Haider, S. R. Sagor, \textbf{A. Rahman}, and M. A. Hossain\\[-1pt]
+{\small\color{mutedColor}\textit{Proceedings of the 9th International Conference on Medical Imaging with Deep Learning (MIDL)}, PMLR 315:3593--3607}\\[-1pt]
+\href{https://proceedings.mlr.press/v315/shahid26a.html}{\faFile\ Paper}
+\quad \href{https://github.com/NafisFuadShahid/PFIN-UQAVG}{\faGithub\ Code}\\[-1pt]
+Introduces probabilistic feature imputation and uncertainty-aware aggregation for federated healthcare learning, achieving up to a 5.36\% AUC gain over deterministic baselines in the most challenging missing-modality configuration.
+
+\vspace{6pt}
+\textbf{Preprint}
+\\[2pt]
+\textbf{AntiFLipper: A Secure and Efficient Defense Against Label-Flipping Attacks in Federated Learning}\hfill 2025\\[-1pt]
+\textbf{A. Rahman}, A. Hasan, S. Arifin, F. H. Bappy, T. Hossain, T. Islam, A. R. M. Kamal, and M. A. Hossain\\[-1pt]
+{\small\color{mutedColor}\textit{Under review} \quad arXiv:2509.22873}\\[-1pt]
+\href{https://arxiv.org/abs/2509.22873}{\faFile\ Preprint}
+\quad \href{https://github.com/abidh8820/AntiFlipper}{\faGithub\ Code}\\[-1pt]
+Presents a client-level defense against label-flipping attacks that achieves accuracy comparable to existing defenses across IID and non-IID distributions on MNIST and CIFAR-10, with server-side aggregation time comparable to FedAvg. Evaluating on 10\% of local data has an estimated client-side overhead of 1.1\%.
+
+\section{Ongoing Research}
+\entry{SPARC-FL: Statistical Peer Auditing with Repeated Confirmation for Free-Rider Detection}{September 2025--Present}{%
+    \textit{Master's Thesis $\cdot$ Network and Data Analysis Group (NDAG), Islamic University of Technology}\\[-1pt]
+    \href{https://aashnan-rahman.github.io/academic-profile/Resources/Masters/masters_paper.pdf}{\faFile\ Preprint}
+    \quad \href{https://github.com/Aashnan-Rahman/Mitigating-Free-Rider}{\faGithub\ Code}\\[-1pt]
+    \begin{cvitems}
+        \item Designed a server-side framework that audits each client's update norms and layer-wise profiles against its peers, removing a client only after the same evidence recurs across audit cycles, with no auxiliary detector.
+        \item Removed all tested free riders across 96 challenge-dispatch runs, with three honest-client removals. In 16 matched runs at 40\% free riders, ordinary dispatch achieved the same removals while withholding fewer honest updates.
+    \end{cvitems}
+}
+
+\vspace{9pt}
+\begin{minipage}{\textwidth}
+\section{Teaching and Student Supervision}
+\entry{Junior Lecturer, Department of Computer Science and Engineering}{September 2024--Present}{%
+    \textit{Islamic University of Technology, Gazipur, Bangladesh}
+    \begin{cvitems}
+        \vspace{-1pt}
+        \item \textbf{Theory courses}
+        {\setlength{\multicolsep}{0pt}
+        \begin{multicols}{2}
+        \begin{courseitems}
+            \item Digital Logic Design  (Summer 2023--24 and 2024--25)
+            \item Internetworking Protocols (Summer 2024--25)
+            \item Legal Issues and Cyber Law (Winter 2024--25)
+            \item Linear Algebra (Winter 2023--24 and 2024--25)
+        \end{courseitems}
+        \end{multicols}}
+        \vspace{-1pt}
+        \item \textbf{Laboratory courses}
+        {\setlength{\multicolsep}{0pt}
+        \begin{multicols}{2}
+        \begin{courseitems}
+            %\item Bioinformatics (Winter 2023--24)
+            \item Data Structures (Winter 2023--24 and 2024--25)
+            \item Digital Logic Design (Summer 2023--24 and 2024--25)
+            \item Internetworking Protocols (Summer 2024--25)
+            \item Microprocessor and Assembly Language (Winter 2024--25)
+            \item Microprocessor and Interfacing (Summer 2023--24)
+            \item Peripherals and Interfacing (Summer 2023--24 and 2024--25)
+            %\item Software Project Lab I (Winter 2024--25)
+            \item Software Project Lab (Summer 2023--24, 2024--25)
+            \item Software Security (Winter 2023--24)
+        \end{courseitems}
+        \end{multicols}}
+        \vspace{-1pt}
+        \item \textbf{Project and thesis supervision}
+        \begin{courseitems}
+            \item Advised undergraduate teams in developing software projects through Software Project Labs and Design Project.
+            \item Advised undergraduate research teams in federated learning and computer security as a member of the Network and Data Analysis Group (NDAG).
+        \end{courseitems}
+    \end{cvitems}
+}
+\end{minipage}
+
+\section{Relevant Coursework}
+\textbf{Master's}\\ Advanced Image Processing, Advanced Human--Computer Interaction, Deep Learning, Cloud Computing, Big Data Analysis and Management, and Cryptography.\\[2pt]
+\textbf{Undergraduate}\\ Structured Programming, Data Structures, Object-Oriented Programming, Algorithms, Digital Logic Design, Linear Algebra, Computer Networks, Machine Learning, Artificial Intelligence, Digital Image Processing, Numerical Methods, Data and Telecommunication, Database Management Systems, Systems Analysis and Design, Discrete Mathematics, Operating Systems, Microprocessor and Assembly Language, Cryptography and Network Security, Algorithm Engineering, Theory of Computing, and Graph Theory.
+
+\section{Technical Skills}
+\textbf{Programming languages:} Python, C/C++, Java, SQL\\[-1pt]
+\textbf{Machine learning and scientific computing:} PyTorch, Keras, scikit-learn, NumPy, OpenCV\\[-1pt]
+\textbf{Tools:} Git, GitHub, LaTeX
+
+\section{Selected Technical Projects}
+\textbf{InvisiMark}
+\quad \href{https://github.com/Aashnan-Rahman/ACADEMIC-PROJECTS/blob/main/ADIP\%20Project/ADIP_Project_v4_3.ipynb}{\faGithub\ Code}
+\quad \href{https://academic-projects-three.vercel.app/}{\faGlobe\ Demo}
+\hfill 2025\\[-1pt]
+{\small\color{mutedColor}\textit{Python $\cdot$ OpenCV $\cdot$ DWT/DCT}}\\[-1pt]
+Hybrid image watermarking using DWT and DCT to embed and recover a binary watermark in the frequency domain.
+
+\vspace{5pt}
+
+\textbf{GAFFER}
+\quad \href{https://github.com/sanz47/Gaffer}{\faGithub\ Code}
+\quad \href{https://gaffer-silk.vercel.app/Gaffer-main/}{\faGlobe\ Demo}
+\hfill 2023\\[-1pt]
+{\small\color{mutedColor}\textit{PHP $\cdot$ JavaScript $\cdot$ MySQL}}\\[-1pt]
+Football club management software for administering player statistics, match schedules, and financial records.
+
+\vspace{5pt}
+
+\textbf{NimBus}
+\quad \href{https://github.com/Aashnan-Rahman/ACADEMIC-PROJECTS/tree/main/NimBus-main}{\faGithub\ Code}
+\quad \href{https://nimbus-seven-dusky.vercel.app/}{\faGlobe\ Demo}
+\hfill 2022\\[-1pt]
+{\small\color{mutedColor}\textit{C++ $\cdot$ JavaScript $\cdot$ HTML/CSS}}\\[-1pt]
+Interactive platform for simulating and analyzing strategies for the game of Nim.
+
+\section{Academic and Co-curricular Service}
+\vspace{-\baselineskip}
+\setlength{\columnsep}{20pt}
+\begin{multicols}{2}
+    \textbf{IUT Computer Society (IUT CS)}\\[-1pt]
+    Assistant Operations Executive (Design) \hfill \textit{2021--2023}\\[-1pt]
+    Islamic University of Technology, Gazipur\\[-1pt]
+    \underline{Activities}:
+    \begin{cvitems}
+        \item Led a team to organize several webinars and seminars.
+        \item Helped organize and volunteered at the IUT 11th National ICT Fest.
+    \end{cvitems}
+
+    \columnbreak
+
+    \textbf{Notre Dame College Math Club}\\[-1pt]
+    Member \hfill \textit{2017--2019}\\[-1pt]
+    Notre Dame College, Dhaka\\[-1pt]
+    \underline{Activities}:
+    \begin{cvitems}
+        \item Assisted in coordinating guest lectures, workshops, and mathematics competitions.
+        \item Helped organize and facilitate club events and activities.
+    \end{cvitems}
+\end{multicols}
+
+\section{Honors and Awards}
+\entry{IUT OIC Partial Scholarship}{2021--2024}{%
+    Islamic University of Technology\\[-1pt]
+    Three-year studentship valued at approximately \$13,500, awarded by the Organisation of Islamic Cooperation based on admission-test merit. \\
+    Ranked 231st among approximately 4,000 participants.
+}
+
+\end{document}
