@@ -1,0 +1,538 @@
+{
+  "auroc": [
+    {
+      "endpoint": "initial-cycle separation, not removal",
+      "input_sha256": "3a145fc67784054e7d10688e230de891b963a82de8d460953e30d127662f91e1",
+      "norm_auc": 1.0,
+      "path": "results/review2_03_passive_seed42/passive_cifar10_iid_FR1_fr40_seed42/cycle_signals.csv",
+      "profile_auc": 1.0
+    },
+    {
+      "endpoint": "initial-cycle separation, not removal",
+      "input_sha256": "5357076977bd32f50570337f1182989bbed66b45c8b22d4e947585a9113d2e62",
+      "norm_auc": 1.0,
+      "path": "results/review2_03_passive_seed42/passive_cifar10_iid_FR2_fr40_seed42/cycle_signals.csv",
+      "profile_auc": 1.0
+    },
+    {
+      "endpoint": "initial-cycle separation, not removal",
+      "input_sha256": "4a0933b45d4ef633a4ff1853efccd835ecb665f65f1babe72df394ca7cfb0271",
+      "norm_auc": 1.0,
+      "path": "results/review2_03_passive_seed42/passive_cifar10_iid_FR3_fr40_seed42/cycle_signals.csv",
+      "profile_auc": 1.0
+    },
+    {
+      "endpoint": "initial-cycle separation, not removal",
+      "input_sha256": "aa07e4e144b65801d77c193b5d0c787e7852cde3f0d057683f41666c3615e061",
+      "norm_auc": 1.0,
+      "path": "results/review2_03_passive_seed42/passive_cifar10_iid_FR4_fr40_seed42/cycle_signals.csv",
+      "profile_auc": 1.0
+    },
+    {
+      "endpoint": "initial-cycle separation, not removal",
+      "input_sha256": "04369343e4c5af14d2a80d51a56399d6ce333304294fe82143800d158fdede8f",
+      "norm_auc": 1.0,
+      "path": "results/review2_03_passive_seed42/passive_cifar10_noniid_FR1_fr40_seed42/cycle_signals.csv",
+      "profile_auc": 1.0
+    },
+    {
+      "endpoint": "initial-cycle separation, not removal",
+      "input_sha256": "83336bc30a8b80e9fedd1d77cd420a8ecd04027670e653ab1e8aca036ee5e9ea",
+      "norm_auc": 1.0,
+      "path": "results/review2_03_passive_seed42/passive_cifar10_noniid_FR2_fr40_seed42/cycle_signals.csv",
+      "profile_auc": 1.0
+    },
+    {
+      "endpoint": "initial-cycle separation, not removal",
+      "input_sha256": "85f5bc312afe7b6c0ced30262a9fc5b170b658689b388e129a8a8fc6148208e2",
+      "norm_auc": 1.0,
+      "path": "results/review2_03_passive_seed42/passive_cifar10_noniid_FR3_fr40_seed42/cycle_signals.csv",
+      "profile_auc": 0.5354166666666667
+    },
+    {
+      "endpoint": "initial-cycle separation, not removal",
+      "input_sha256": "1f8a9d0df57bb5f32f2b5e257b1c3132c03a55ac6ad581ae6551412d9e619ada",
+      "norm_auc": 1.0,
+      "path": "results/review2_03_passive_seed42/passive_cifar10_noniid_FR4_fr40_seed42/cycle_signals.csv",
+      "profile_auc": 0.9933333333333333
+    },
+    {
+      "endpoint": "initial-cycle separation, not removal",
+      "input_sha256": "1e69644d2dfcf04c60aff70c28a29503a07d7deeea5a30adf2130a796473a6e7",
+      "norm_auc": 1.0,
+      "path": "results/review2_03_passive_seed42/passive_mnist_iid_FR1_fr40_seed42/cycle_signals.csv",
+      "profile_auc": 1.0
+    },
+    {
+      "endpoint": "initial-cycle separation, not removal",
+      "input_sha256": "69f654c6c35f915d1e32ab903de39d526b880139e3d49eccacd3d1999313960f",
+      "norm_auc": 1.0,
+      "path": "results/review2_03_passive_seed42/passive_mnist_iid_FR2_fr40_seed42/cycle_signals.csv",
+      "profile_auc": 1.0
+    },
+    {
+      "endpoint": "initial-cycle separation, not removal",
+      "input_sha256": "287922296239551ae0f7627bdaa8ea482c66c8d6684f00487817af30021e0d6b",
+      "norm_auc": 1.0,
+      "path": "results/review2_03_passive_seed42/passive_mnist_iid_FR3_fr40_seed42/cycle_signals.csv",
+      "profile_auc": 1.0
+    },
+    {
+      "endpoint": "initial-cycle separation, not removal",
+      "input_sha256": "8794f2baba5670262dfbabe412f97bb1db5387af956bb689fc8059ab5e5d507a",
+      "norm_auc": 1.0,
+      "path": "results/review2_03_passive_seed42/passive_mnist_iid_FR4_fr40_seed42/cycle_signals.csv",
+      "profile_auc": 1.0
+    },
+    {
+      "endpoint": "initial-cycle separation, not removal",
+      "input_sha256": "20e80e6fccb4471874838a6407b7e1335edc5f8200c5aec4861b9733f3d2e9f7",
+      "norm_auc": 1.0,
+      "path": "results/review2_03_passive_seed42/passive_mnist_noniid_FR1_fr40_seed42/cycle_signals.csv",
+      "profile_auc": 1.0
+    },
+    {
+      "endpoint": "initial-cycle separation, not removal",
+      "input_sha256": "0eab9390534b8c522f69ce80ef9a02c5c3bb21705ea8285b2057e7519ce821e2",
+      "norm_auc": 1.0,
+      "path": "results/review2_03_passive_seed42/passive_mnist_noniid_FR2_fr40_seed42/cycle_signals.csv",
+      "profile_auc": 1.0
+    },
+    {
+      "endpoint": "initial-cycle separation, not removal",
+      "input_sha256": "95e917a99aa3988f3e823f99fec55d112ef9dc4f3934a5df48583a60d87f6a30",
+      "norm_auc": 1.0,
+      "path": "results/review2_03_passive_seed42/passive_mnist_noniid_FR3_fr40_seed42/cycle_signals.csv",
+      "profile_auc": 1.0
+    },
+    {
+      "endpoint": "initial-cycle separation, not removal",
+      "input_sha256": "b4ae1f79781d55da78b94b2c77feafcb6cb12b219fa78b8433e4670a44a3cdff",
+      "norm_auc": 1.0,
+      "path": "results/review2_03_passive_seed42/passive_mnist_noniid_FR4_fr40_seed42/cycle_signals.csv",
+      "profile_auc": 0.9929166666666667
+    },
+    {
+      "endpoint": "initial-cycle separation, not removal",
+      "input_sha256": "255f173dfb5f72752224d97658fabcefe9549a62fffff63232d3d8f909612697",
+      "norm_auc": 1.0,
+      "path": "results/v15_4_mnist_seed42_fr40/v15_4_mnist_iid_FR1_seed42/cycle_signals.csv",
+      "profile_auc": 1.0
+    },
+    {
+      "endpoint": "initial-cycle separation, not removal",
+      "input_sha256": "0ae7055e6dc91c82b6e9b6bf553d63fa2450a64c7b67b7f0c0039c70300c709b",
+      "norm_auc": 1.0,
+      "path": "results/v15_4_mnist_seed42_fr40/v15_4_mnist_iid_FR2_seed42/cycle_signals.csv",
+      "profile_auc": 1.0
+    },
+    {
+      "endpoint": "initial-cycle separation, not removal",
+      "input_sha256": "20cf293dc71fa4f249a075849304fe5045096460573f60c9a303232bcdd9a976",
+      "norm_auc": 1.0,
+      "path": "results/v15_4_mnist_seed42_fr40/v15_4_mnist_iid_FR3_seed42/cycle_signals.csv",
+      "profile_auc": 1.0
+    },
+    {
+      "endpoint": "initial-cycle separation, not removal",
+      "input_sha256": "88c3e47304a18adafb8e3e36dd85905f46259627493aabece8b7bb2c8cdd3924",
+      "norm_auc": 1.0,
+      "path": "results/v15_4_mnist_seed42_fr40/v15_4_mnist_iid_FR4_seed42/cycle_signals.csv",
+      "profile_auc": 1.0
+    },
+    {
+      "endpoint": "initial-cycle separation, not removal",
+      "input_sha256": "f2e8f415b48246089e29b43e86238ad38be23f777e30c0deeca77252405337c9",
+      "norm_auc": 1.0,
+      "path": "results/v15_4_mnist_seed42_fr40/v15_4_mnist_noniid_FR1_seed42/cycle_signals.csv",
+      "profile_auc": 1.0
+    },
+    {
+      "endpoint": "initial-cycle separation, not removal",
+      "input_sha256": "5fa4cec65efcc0b3b5a1f94fcf6e3b063a55d8a739fe6c669ac255d73973eb95",
+      "norm_auc": 1.0,
+      "path": "results/v15_4_mnist_seed42_fr40/v15_4_mnist_noniid_FR2_seed42/cycle_signals.csv",
+      "profile_auc": 1.0
+    },
+    {
+      "endpoint": "initial-cycle separation, not removal",
+      "input_sha256": "d6d1a92a75549b3a544d7aa5e8d7e419360764fd4aba9254347a576d36a5c29c",
+      "norm_auc": 1.0,
+      "path": "results/v15_4_mnist_seed42_fr40/v15_4_mnist_noniid_FR3_seed42/cycle_signals.csv",
+      "profile_auc": 1.0
+    },
+    {
+      "endpoint": "initial-cycle separation, not removal",
+      "input_sha256": "5baf4cfe0cbab749ef5f53c1f8c95b62aa3a51853eedb7ccad03fcebe32ea4a0",
+      "norm_auc": 1.0,
+      "path": "results/v15_4_mnist_seed42_fr40/v15_4_mnist_noniid_FR4_seed42/cycle_signals.csv",
+      "profile_auc": 1.0
+    },
+    {
+      "endpoint": "initial-cycle separation, not removal",
+      "input_sha256": "83c74bab63ac378238821050591ee9dff65e0e768fadecf76341c765c49e9d4e",
+      "norm_auc": 1.0,
+      "path": "results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_iid_FR1_seed42/cycle_signals.csv",
+      "profile_auc": 1.0
+    },
+    {
+      "endpoint": "initial-cycle separation, not removal",
+      "input_sha256": "bfc2d13289f72f5401cea2ea3311b0a93819a07a90b0190186443a83f2475d2b",
+      "norm_auc": 1.0,
+      "path": "results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_iid_FR2_seed42/cycle_signals.csv",
+      "profile_auc": 1.0
+    },
+    {
+      "endpoint": "initial-cycle separation, not removal",
+      "input_sha256": "26aad9bdfa6d9a678aeadec41a65bf6c7e3a0a37bcaaf662779d53c7d3bc84a6",
+      "norm_auc": 1.0,
+      "path": "results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_iid_FR3_seed42/cycle_signals.csv",
+      "profile_auc": 1.0
+    },
+    {
+      "endpoint": "initial-cycle separation, not removal",
+      "input_sha256": "d17c3cf832bac54510f44cda0ccdb316d7627b1558b86cd4a80700050d29e4ff",
+      "norm_auc": 1.0,
+      "path": "results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_iid_FR4_seed42/cycle_signals.csv",
+      "profile_auc": 1.0
+    },
+    {
+      "endpoint": "initial-cycle separation, not removal",
+      "input_sha256": "a28508ff776cb83983b69b4f64306e9809c4c0e5a4d52cbd8f5a585985b0f75c",
+      "norm_auc": 1.0,
+      "path": "results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_noniid_FR1_seed42/cycle_signals.csv",
+      "profile_auc": 1.0
+    },
+    {
+      "endpoint": "initial-cycle separation, not removal",
+      "input_sha256": "653a8eca06833a58a98a27eaacd2e84e976e9bbfad971f5dcf7df6ea2133ce5e",
+      "norm_auc": 1.0,
+      "path": "results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_noniid_FR2_seed42/cycle_signals.csv",
+      "profile_auc": 1.0
+    },
+    {
+      "endpoint": "initial-cycle separation, not removal",
+      "input_sha256": "91eb81ecd78873f82d9dd1bc6836a1424093a453b65d10f6eeb6e94983661062",
+      "norm_auc": 1.0,
+      "path": "results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_noniid_FR3_seed42/cycle_signals.csv",
+      "profile_auc": 0.6504166666666666
+    },
+    {
+      "endpoint": "initial-cycle separation, not removal",
+      "input_sha256": "e4e79a3ddf419af987aff8cadef1808f4251ca7f4946531f5862f55702149ff9",
+      "norm_auc": 1.0,
+      "path": "results/v15_4_cifar10_seed42_fr40/v15_4_cifar10_noniid_FR4_seed42/cycle_signals.csv",
+      "profile_auc": 1.0
+    }
+  ],
+  "mad": [
+    {
+      "endpoint": "round-20 observational flags, not confirmed permanent removals",
+      "fn": 40,
+      "fp": 0,
+      "id": "passive_mnist_noniid_FR3_fr40_seed42",
+      "nominal_lower_tail_alpha": 0.01,
+      "precision": null,
+      "recall": 0.0,
+      "round": 20,
+      "tp": 0
+    },
+    {
+      "endpoint": "round-20 observational flags, not confirmed permanent removals",
+      "fn": 40,
+      "fp": 0,
+      "id": "passive_mnist_noniid_FR4_fr40_seed42",
+      "nominal_lower_tail_alpha": 0.01,
+      "precision": null,
+      "recall": 0.0,
+      "round": 20,
+      "tp": 0
+    },
+    {
+      "endpoint": "round-20 observational flags, not confirmed permanent removals",
+      "fn": 40,
+      "fp": 0,
+      "id": "passive_mnist_noniid_FR2_fr40_seed42",
+      "nominal_lower_tail_alpha": 0.01,
+      "precision": null,
+      "recall": 0.0,
+      "round": 20,
+      "tp": 0
+    },
+    {
+      "endpoint": "round-20 observational flags, not confirmed permanent removals",
+      "fn": 40,
+      "fp": 0,
+      "id": "passive_mnist_noniid_FR1_fr40_seed42",
+      "nominal_lower_tail_alpha": 0.01,
+      "precision": null,
+      "recall": 0.0,
+      "round": 20,
+      "tp": 0
+    },
+    {
+      "endpoint": "round-20 observational flags, not confirmed permanent removals",
+      "fn": 40,
+      "fp": 0,
+      "id": "passive_cifar10_noniid_FR3_fr40_seed42",
+      "nominal_lower_tail_alpha": 0.01,
+      "precision": null,
+      "recall": 0.0,
+      "round": 20,
+      "tp": 0
+    },
+    {
+      "endpoint": "round-20 observational flags, not confirmed permanent removals",
+      "fn": 40,
+      "fp": 0,
+      "id": "passive_cifar10_noniid_FR4_fr40_seed42",
+      "nominal_lower_tail_alpha": 0.01,
+      "precision": null,
+      "recall": 0.0,
+      "round": 20,
+      "tp": 0
+    },
+    {
+      "endpoint": "round-20 observational flags, not confirmed permanent removals",
+      "fn": 40,
+      "fp": 0,
+      "id": "passive_cifar10_noniid_FR2_fr40_seed42",
+      "nominal_lower_tail_alpha": 0.01,
+      "precision": null,
+      "recall": 0.0,
+      "round": 20,
+      "tp": 0
+    },
+    {
+      "endpoint": "round-20 observational flags, not confirmed permanent removals",
+      "fn": 40,
+      "fp": 0,
+      "id": "passive_cifar10_noniid_FR1_fr40_seed42",
+      "nominal_lower_tail_alpha": 0.01,
+      "precision": null,
+      "recall": 0.0,
+      "round": 20,
+      "tp": 0
+    },
+    {
+      "endpoint": "round-20 observational flags, not confirmed permanent removals",
+      "fn": 40,
+      "fp": 0,
+      "id": "passive_mnist_iid_FR3_fr40_seed42",
+      "nominal_lower_tail_alpha": 0.01,
+      "precision": null,
+      "recall": 0.0,
+      "round": 20,
+      "tp": 0
+    },
+    {
+      "endpoint": "round-20 observational flags, not confirmed permanent removals",
+      "fn": 40,
+      "fp": 0,
+      "id": "passive_mnist_iid_FR4_fr40_seed42",
+      "nominal_lower_tail_alpha": 0.01,
+      "precision": null,
+      "recall": 0.0,
+      "round": 20,
+      "tp": 0
+    },
+    {
+      "endpoint": "round-20 observational flags, not confirmed permanent removals",
+      "fn": 40,
+      "fp": 0,
+      "id": "passive_mnist_iid_FR2_fr40_seed42",
+      "nominal_lower_tail_alpha": 0.01,
+      "precision": null,
+      "recall": 0.0,
+      "round": 20,
+      "tp": 0
+    },
+    {
+      "endpoint": "round-20 observational flags, not confirmed permanent removals",
+      "fn": 0,
+      "fp": 0,
+      "id": "passive_mnist_iid_FR1_fr40_seed42",
+      "nominal_lower_tail_alpha": 0.01,
+      "precision": 1.0,
+      "recall": 1.0,
+      "round": 20,
+      "tp": 40
+    },
+    {
+      "endpoint": "round-20 observational flags, not confirmed permanent removals",
+      "fn": 0,
+      "fp": 0,
+      "id": "passive_cifar10_iid_FR3_fr40_seed42",
+      "nominal_lower_tail_alpha": 0.01,
+      "precision": 1.0,
+      "recall": 1.0,
+      "round": 20,
+      "tp": 40
+    },
+    {
+      "endpoint": "round-20 observational flags, not confirmed permanent removals",
+      "fn": 0,
+      "fp": 0,
+      "id": "passive_cifar10_iid_FR4_fr40_seed42",
+      "nominal_lower_tail_alpha": 0.01,
+      "precision": 1.0,
+      "recall": 1.0,
+      "round": 20,
+      "tp": 40
+    },
+    {
+      "endpoint": "round-20 observational flags, not confirmed permanent removals",
+      "fn": 0,
+      "fp": 0,
+      "id": "passive_cifar10_iid_FR2_fr40_seed42",
+      "nominal_lower_tail_alpha": 0.01,
+      "precision": 1.0,
+      "recall": 1.0,
+      "round": 20,
+      "tp": 40
+    },
+    {
+      "endpoint": "round-20 observational flags, not confirmed permanent removals",
+      "fn": 0,
+      "fp": 0,
+      "id": "passive_cifar10_iid_FR1_fr40_seed42",
+      "nominal_lower_tail_alpha": 0.01,
+      "precision": 1.0,
+      "recall": 1.0,
+      "round": 20,
+      "tp": 40
+    }
+  ],
+  "scaling": [
+    {
+      "clients": 100,
+      "decision_seconds": 0.029689099988900125,
+      "feature_seconds": 0.2905253999924753,
+      "input_kind": "synthetic continuous profiles, no full models; RSS snapshots are not peak memory",
+      "repeat": 1,
+      "rss_after_bytes": 207990784,
+      "rss_before_bytes": 207937536,
+      "tensors": 8,
+      "torch_threads": 1
+    },
+    {
+      "clients": 100,
+      "decision_seconds": 0.02925000002142042,
+      "feature_seconds": 0.28701700002420694,
+      "input_kind": "synthetic continuous profiles, no full models; RSS snapshots are not peak memory",
+      "repeat": 2,
+      "rss_after_bytes": 208289792,
+      "rss_before_bytes": 207990784,
+      "tensors": 8,
+      "torch_threads": 1
+    },
+    {
+      "clients": 100,
+      "decision_seconds": 0.03042900000582449,
+      "feature_seconds": 0.2881273999810219,
+      "input_kind": "synthetic continuous profiles, no full models; RSS snapshots are not peak memory",
+      "repeat": 3,
+      "rss_after_bytes": 208359424,
+      "rss_before_bytes": 208289792,
+      "tensors": 8,
+      "torch_threads": 1
+    },
+    {
+      "clients": 500,
+      "decision_seconds": 0.13576110001304187,
+      "feature_seconds": 6.911592899996322,
+      "input_kind": "synthetic continuous profiles, no full models; RSS snapshots are not peak memory",
+      "repeat": 1,
+      "rss_after_bytes": 218443776,
+      "rss_before_bytes": 218095616,
+      "tensors": 8,
+      "torch_threads": 1
+    },
+    {
+      "clients": 500,
+      "decision_seconds": 0.13569480000296608,
+      "feature_seconds": 6.9643920000235084,
+      "input_kind": "synthetic continuous profiles, no full models; RSS snapshots are not peak memory",
+      "repeat": 2,
+      "rss_after_bytes": 218419200,
+      "rss_before_bytes": 218443776,
+      "tensors": 8,
+      "torch_threads": 1
+    },
+    {
+      "clients": 500,
+      "decision_seconds": 0.1347480000113137,
+      "feature_seconds": 6.906367299990961,
+      "input_kind": "synthetic continuous profiles, no full models; RSS snapshots are not peak memory",
+      "repeat": 3,
+      "rss_after_bytes": 218447872,
+      "rss_before_bytes": 218419200,
+      "tensors": 8,
+      "torch_threads": 1
+    },
+    {
+      "clients": 1000,
+      "decision_seconds": 0.2661696999857668,
+      "feature_seconds": 27.891139600018505,
+      "input_kind": "synthetic continuous profiles, no full models; RSS snapshots are not peak memory",
+      "repeat": 1,
+      "rss_after_bytes": 231395328,
+      "rss_before_bytes": 231182336,
+      "tensors": 8,
+      "torch_threads": 1
+    },
+    {
+      "clients": 1000,
+      "decision_seconds": 0.2686730000132229,
+      "feature_seconds": 28.00606140002492,
+      "input_kind": "synthetic continuous profiles, no full models; RSS snapshots are not peak memory",
+      "repeat": 2,
+      "rss_after_bytes": 231337984,
+      "rss_before_bytes": 231395328,
+      "tensors": 8,
+      "torch_threads": 1
+    },
+    {
+      "clients": 1000,
+      "decision_seconds": 0.26588260001153685,
+      "feature_seconds": 27.888413500011666,
+      "input_kind": "synthetic continuous profiles, no full models; RSS snapshots are not peak memory",
+      "repeat": 3,
+      "rss_after_bytes": 212062208,
+      "rss_before_bytes": 231337984,
+      "tensors": 8,
+      "torch_threads": 1
+    }
+  ],
+  "std_smoke": {
+    "auc": 1.0,
+    "epochs": 50,
+    "interpretation": "numerical smoke diagnostic only; labels evaluated after scores; not real free-rider effectiveness"
+  },
+  "timing": [
+    {
+      "aggregation_mean_ms": 29.92269499996837,
+      "checking_fraction_of_checking_plus_aggregation": 0.8779303316744175,
+      "checking_mean_ms": 215.2053159991192,
+      "checking_sd_ms": 92.94423653789245,
+      "client_diagnostic_evaluation_seconds": 0.16126162099990324,
+      "dataset": "mnist",
+      "honest_training_gap_seconds": 0.4139736639998475,
+      "honest_training_seconds_ours": 34.29983273999946,
+      "honest_training_seconds_std": 33.88585907599961,
+      "interpretation": "server-core denominator excludes client SGD and evaluation/I/O; training gap cause not identifiable from these observational logs; not a detector-only native speedup"
+    },
+    {
+      "aggregation_mean_ms": 96.39698400045745,
+      "checking_fraction_of_checking_plus_aggregation": 0.8913745620708345,
+      "checking_mean_ms": 791.0285199898499,
+      "checking_sd_ms": 243.96312375156998,
+      "client_diagnostic_evaluation_seconds": 0.899273786999147,
+      "dataset": "cifar10",
+      "honest_training_gap_seconds": 8.948593500006567,
+      "honest_training_seconds_ours": 81.37146847000407,
+      "honest_training_seconds_std": 72.42287496999751,
+      "interpretation": "server-core denominator excludes client SGD and evaluation/I/O; training gap cause not identifiable from these observational logs; not a detector-only native speedup"
+    }
+  ]
+}

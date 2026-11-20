@@ -1,0 +1,15 @@
+round,population,evaluated,suspected,candidate,safe,newly_removed
+20,free_rider,40,40,0,0,0
+20,honest,60,0,4,56,0
+30,free_rider,40,40,0,0,40
+30,honest,60,1,5,54,0
+40,free_rider,0,0,0,0,0
+40,honest,60,0,37,23,0
+50,free_rider,0,0,0,0,0
+50,honest,60,0,48,12,0
+60,free_rider,0,0,0,0,0
+60,honest,60,0,33,27,0
+70,free_rider,0,0,0,0,0
+70,honest,60,0,34,26,0
+80,free_rider,0,0,0,0,0
+80,honest,60,0,60,0,0
